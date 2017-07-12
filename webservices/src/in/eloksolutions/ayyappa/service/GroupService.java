@@ -18,14 +18,10 @@ public class GroupService {
 	}
 
 	public List<Group> getGroup() {
-		
 		return groupDAO.getGroup();
 	}
 
-	public List<Group> searchById(String groupid) {
-		
+	public Group searchById(String groupid) {
 		return groupDAO.searchById(groupid);
 	}
-
-	
 }

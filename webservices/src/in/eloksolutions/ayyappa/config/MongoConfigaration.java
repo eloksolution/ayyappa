@@ -28,7 +28,7 @@ public class MongoConfigaration {
     @Bean
     public MongoClient getMongoClient() {
     	try {
-    		MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://13.59.85.184:27017"));
+    		MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
     		db = mongoClient.getDB("ayyappaDB");
 			return mongoClient;
 		} catch (UnknownHostException e) {

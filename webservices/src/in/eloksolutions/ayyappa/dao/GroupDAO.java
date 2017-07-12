@@ -58,20 +58,19 @@ public class GroupDAO {
         return groups;
 	}
 
-	public List<Group> searchById(String groupid) {
+	public Group searchById(String groupid) {
 		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+groupid));
 		System.out.println("query issiihhkkh is  "+query);
 		 DBCursor  cursor = collection.find(query);
-		 List<Group> groupp=new ArrayList<>();
-		 
+		Group dbgroup=null;
 	        while (cursor.hasNext()) { 
 	           DBObject group = cursor.next();
 	           ObjectId mobjid=(ObjectId)group.get("_id");
 	           System.out.println("description "+group.get("description"));
-	           groupp.add(new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner")));
+	           dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"));
 	        }
 	        cursor.close();
-	        return groupp;
+	        return dbgroup;
 
 	}
 }

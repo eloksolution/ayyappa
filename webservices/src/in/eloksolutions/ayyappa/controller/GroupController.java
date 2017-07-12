@@ -41,10 +41,9 @@ public class GroupController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/groupEdit/{groupid}")
-	public List<Group> memberEdit(@PathVariable("groupid") String groupid, HttpServletRequest request) {
+	public Group memberEdit(@PathVariable("groupid") String groupid, HttpServletRequest request) {
 		System.out.println("Fetching all members with X00001 memberEdit " + groupid);
-		List<Group>  groupedit = groupService.searchById(groupid);
-		
+		Group  groupedit = groupService.searchById(groupid);
 		System.out.println("Fetching all Group details " + groupedit);
 		return groupedit;
 	}
