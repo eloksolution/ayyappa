@@ -47,15 +47,4 @@ public class UserController {
 		System.out.println("Fetching all user details " + useredit);
 		return useredit;
 	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/check")
-	public User check(@RequestBody User user) {
-		System.out.println("Fetching all members with X00001 memberEdit " + userid);
-		User  useredit = userService.searchById(userid);
-		System.out.println("Fetching all user details " + useredit);
-		return useredit;
-	}
-	
-
 }

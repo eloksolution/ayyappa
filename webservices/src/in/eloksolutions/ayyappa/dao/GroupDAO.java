@@ -12,9 +12,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.WriteResult;
 
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
+import in.eloksolutions.ayyappa.model.Discussion;
 import in.eloksolutions.ayyappa.model.Group;
+import in.eloksolutions.ayyappa.vo.GroupMember;
 
 @Repository("groupDAO")
 public class GroupDAO {
@@ -72,5 +75,22 @@ public class GroupDAO {
 	        cursor.close();
 	        return dbgroup;
 
+	}
+	
+	public String join(GroupMember groupMem ){
+		System.out.println("Updating topic "+groupMem);
+		DBObject groupUser= toDBDissObject(groupMem.getUserId(),groupMem.getUserName());
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "members", groupUser ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(groupMem.getGroupId()) );
+		WriteResult rs=collection.update(match,update);
+		System.out.println("Write result is "+rs.getLastError());
+		return rs.getError();
+	}
+
+	private DBObject toDBDissObject(String userId, String userName) {
+		 return new BasicDBObject("userId", userId)
+         .append("userName", userName);
 	}
 }

@@ -3,6 +3,7 @@ package in.eloksolutions.ayyappa.controller;
 
 import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.service.GroupService;
+import in.eloksolutions.ayyappa.vo.GroupMember;
 
 import java.util.List;
 
@@ -48,6 +49,11 @@ public class GroupController {
 		return groupedit;
 	}
 	
-	
-
+	@ResponseBody
+	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	public String join( @RequestBody GroupMember groupMem){
+		System.out.println("Request xxxx is groupMem  "+groupMem);
+		String msg = groupService.join(groupMem);
+		return msg;
+	}
 }

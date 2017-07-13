@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import in.eloksolutions.ayyappa.dao.GroupDAO;
 import in.eloksolutions.ayyappa.model.Group;
+import in.eloksolutions.ayyappa.vo.GroupMember;
 
 @Repository("groupService")
 public class GroupService {
@@ -23,5 +24,9 @@ public class GroupService {
 
 	public Group searchById(String groupid) {
 		return groupDAO.searchById(groupid);
+	}
+	
+	public String join(GroupMember groupMem ) {
+		return groupDAO.join(groupMem);
 	}
 }
