@@ -1,5 +1,7 @@
 package in.eloksolutions.ayyappa.model;
 
+import java.util.List;
+
 public class Group {
 	 String groupId;
 	String name;
@@ -10,6 +12,7 @@ public class Group {
 	String type;
 	String imagePath;
 	String catgory;
+	List<User> groupMembers; 
 	public Group(){
 		
 	}
@@ -27,6 +30,19 @@ public class Group {
 		//this.imagePath = imagePath;
 	}
 	
+	public List<User> getGroupMembers() {
+		return groupMembers;
+	}
+	public void setGroupMembers(List<User> groupMembers) {
+		this.groupMembers = groupMembers;
+	}
+	public void addGroupMembers(User groupMembers) {
+		this.groupMembers.add(groupMembers);
+	}
+	
+	public void removeGroupMembers(User groupMembers) {
+		this.groupMembers.remove(groupMembers);
+	}
 	public String getName() {
 		return name;
 	}

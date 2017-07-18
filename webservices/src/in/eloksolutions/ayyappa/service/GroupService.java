@@ -1,13 +1,13 @@
 package in.eloksolutions.ayyappa.service;
 
+import in.eloksolutions.ayyappa.dao.GroupDAO;
+import in.eloksolutions.ayyappa.model.Group;
+import in.eloksolutions.ayyappa.vo.GroupMember;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import in.eloksolutions.ayyappa.dao.GroupDAO;
-import in.eloksolutions.ayyappa.model.Group;
-import in.eloksolutions.ayyappa.vo.GroupMember;
 
 @Repository("groupService")
 public class GroupService {
