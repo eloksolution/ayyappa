@@ -10,6 +10,7 @@ import in.eloksolutions.ayyappa.service.PadipoojaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,15 @@ public class PadiPoojaController {
 		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja();
 		System.out.println("Colection is coming "+padipoojaCol);
 		return padipoojaCol;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/padipoojaEdit/{padipoojaid}")
+	public Padipooja memberEdit(@PathVariable("padipoojaid") String padipoojaid, HttpServletRequest request) {
+		System.out.println("Fetching all padipoojaid with X00001 memberEdit " + padipoojaid);
+		Padipooja  groupedit = padipoojaService.searchById(padipoojaid);
+		System.out.println("Fetching all Group details " + groupedit);
+		return groupedit;
 	}
 		
 

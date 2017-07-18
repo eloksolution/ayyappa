@@ -1,7 +1,9 @@
 package in.eloksolutions.ayyappa.dao;
 
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
+import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.Padipooja;
+import in.eloksolutions.ayyappa.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,5 +69,22 @@ public class PadipojaDAO {
                  
         }
         return padipooja;
+	}
+	public Padipooja searchById(String padipoojaid) {
+		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+padipoojaid));
+		System.out.println("query padipooja issiihhkkh is  "+query);
+		 DBCursor  cursor = collection.find(query);
+      	 Padipooja dbPadi=null; 
+
+	        while (cursor.hasNext()) { 
+	           DBObject padiPooja = cursor.next();
+	           ObjectId mobjid=(ObjectId)padiPooja.get("_id");
+	           System.out.println("description "+padiPooja.get("description"));
+	           dbPadi = (new Padipooja((String)mobjid.toString(), (String)padiPooja.get("eventName"), (String)padiPooja.get("location"),(String)padiPooja.get("description") , (String)padiPooja.get("date")
+	        		   , (String)padiPooja.get("time"), (String)padiPooja.get("memid"), (String)padiPooja.get("name")));
+	                 	        }
+	        cursor.close();
+	        return dbPadi;
+		
 	}
 }
