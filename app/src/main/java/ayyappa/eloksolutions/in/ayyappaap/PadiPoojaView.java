@@ -66,30 +66,30 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         Intent createpadipoojaintent=getIntent();
         padiPoojaId=createpadipoojaintent.getStringExtra("padiPoojaId");
         Log.i(tag,"padiPoojaId"+padiPoojaId);
-      //  Relative1=(RelativeLayout)findViewById(R.id.Relative1);
+        //  Relative1=(RelativeLayout)findViewById(R.id.Relative1);
         event_name = (TextView)findViewById(R.id.event_name);
         eventdate = (TextView)findViewById(R.id.event_date);
         eventtime = (TextView)findViewById(R.id.event_time);
         location = (TextView)findViewById(R.id.location);
         description = (TextView)findViewById(R.id.description);
-       // no_of_mem = (TextView)findViewById(R.id.no_of_mem);
-        tvname = (TextView)findViewById(R.id.hostmember);
+        // no_of_mem = (TextView)findViewById(R.id.no_of_mem);
+      //  tvname = (TextView)findViewById(R.id.hostmember);
         card_view = (CardView)findViewById(R.id.card_view);
-         text1 = (TextView)findViewById(R.id.text1);
+        text1 = (TextView)findViewById(R.id.text1);
         //join_status = (TextView)findViewById(R.id.join_status);
-       //  leavebtn = (Button) findViewById(R.id.leavebtn);
-        btnInvite = (ImageButton) findViewById(R.id.invitebtn);
-        edit = (ImageView)findViewById(R.id.edit);
-       // delete = (ImageView)findViewById(R.id.delete);
-        show = (ImageButton) findViewById(R.id.show);
-        btnInvite.setOnClickListener(this);
+        //  leavebtn = (Button) findViewById(R.id.leavebtn);
+      //  btnInvite = (ImageButton) findViewById(R.id.invitebtn);
+     //   edit = (ImageView)findViewById(R.id.edit);
+        // delete = (ImageView)findViewById(R.id.delete);
+      //  show = (ImageButton) findViewById(R.id.show);
+//        btnInvite.setOnClickListener(this);
         joinbtn=(ImageButton) findViewById(R.id.joinbtn);
 
         joinbtn.setOnClickListener(this);
-        show.setOnClickListener(this);
-        hide = (ImageButton) findViewById(R.id.hide);
-        hide.setOnClickListener(this);
-        listview = (ayyappa.eloksolutions.in.ayyappaap.ExpandableListView) findViewById(R.id.listview);
+      //  show.setOnClickListener(this);
+       // hide = (ImageButton) findViewById(R.id.hide);
+       // hide.setOnClickListener(this);
+       // listview = (ayyappa.eloksolutions.in.ayyappaap.ExpandableListView) findViewById(R.id.listview);
         EventViewHelper eventViewHelper = new EventViewHelper(this);
         String surl = Config.SERVER_URL + "padipooja/padipoojaEdit/"+padiPoojaId;
         try {
@@ -99,6 +99,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         }catch (Exception e){}
 
     }
+
     @Override
     public void onClick(View v) {
         Log.i(tag,"Onclick for join"+v.getId());
@@ -134,7 +135,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         }
         if (v == joinbtn) {
 
-            btnInvite.setVisibility(View.VISIBLE);
             joinbtn.setVisibility(View.GONE);
             joinEvent();
 
@@ -161,7 +161,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     private void joinEvent() {
         EventMembers eventMembers = buildDTOObject();
         EventViewHelper eventViewHelper = new EventViewHelper(this);
-        String surl = Config.SERVER_URL + "event_mem_save.php";
+        String surl = Config.SERVER_URL + "padipooja/join";
         try {
             String joinmem=eventViewHelper.new JoinEvent(eventMembers,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
@@ -198,8 +198,8 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             eventnamesms=fromJson.getEventName();
             eventdate.setText(fromJson.getDate());
             eventtime.setText(fromJson.gettime());
-            tvname.setText(fromJson.getOwnerName());
-            sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
+//            tvname.setText(fromJson.getOwnerName());
+          //  sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
             System.out.println("past from event view" + fromJson.getPast());
           /*  count=fromJson.getMems().size();
             if (fromJson.getMems() != null)
@@ -278,10 +278,12 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
     private EventMembers buildDTOObject() {
         EventMembers eventMembers = new EventMembers();
-        eventMembers.setEventId(padiPoojaId);
-        eventMembers.setmemId(memId);
-        eventMembers.setOwner(ownerId);
-        eventMembers.setMemberName(name);
+        eventMembers.setPadiId(padiPoojaId);
+        eventMembers.setUserId("595dfb76b3708f62b1f794ae");
+        eventMembers.setFirstName("suresh");
+        eventMembers.setLastName("ramesh");
+        eventMembers.setPadiName(eventnamesms);
+
         return eventMembers;
     }
     private void leaveEvent(String result) {
@@ -323,7 +325,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
 
 
-    }
+}
 
 
 

@@ -29,7 +29,7 @@ public class PadiPoojaFull extends AppCompatActivity implements View.OnClickList
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
-        String url= Config.SERVER_URL+"padipooja/getpadipooja";
+        String url= Config.SERVER_URL+"padipooja/getpoojas";
         GetEvents getEvents=new GetEvents(context,url,rvPadi);
         getEvents.execute();
     }

@@ -73,10 +73,11 @@ public class EventViewHelper {
             try {
                 url = new URL(surl);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("eventId", eventMembers.getEventId());
-                jsonObject.accumulate("memId", eventMembers.getMemId());
-                jsonObject.accumulate("memName", eventMembers.getMemberName());
-                jsonObject.accumulate("owner", eventMembers.getOwner());
+                jsonObject.accumulate("padiId", eventMembers.getPadiId());
+                jsonObject.accumulate("userId", eventMembers.getUserId());
+                jsonObject.accumulate("firstName", eventMembers.getFirstName());
+                jsonObject.accumulate("lastName", eventMembers.getLastName());
+                jsonObject.accumulate("padiName", eventMembers.getPadiName());
                 json = jsonObject.toString();
                 System.out.println("json values"+json);
             } catch (Exception e) {

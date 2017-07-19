@@ -1,92 +1,61 @@
 package ayyappa.eloksolutions.in.ayyappaap.helper;
 
-import java.util.Date;
-
-
 public class EventMembers {
-	private String id;
-	private String eventId;
-	private String eventName;
-	private String memId;
-	private String memberName;
-	private String owner;
-	private String pincode;
-	private Date updatedTs;
+	private String padiId;
+	private String userId;
+	private String firstName;
+	private String lastName;
+	private String padiName;
 
-	public EventMembers(){}
 
-	public EventMembers(String id, String eventId, String eventName, String memId, String memberName, String owner, String pincode, Date updatedTs) {
-		this.id = id;
-		this.eventId = eventId;
-		this.eventName = eventName;
-		this.memId = memId;
-		this.memberName = memberName;
-		this.owner = owner;
-		this.pincode = pincode;
-		this.updatedTs = updatedTs;
+	public String getPadiId() {
+		return padiId;
 	}
 
-	public String getId() {
-		return id;
+	public void setPadiId(String padiId) {
+		this.padiId = padiId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public String getEventId() {
-		return eventId;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public String getEventName() {
-		return eventName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public String getMemId() {
-		return memId;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public void setmemId(String memId) {
-		this.memId = memId;
+	public String getPadiName() {
+		return padiName;
 	}
 
-	public String getMemberName() {
-		return memberName;
+	public void setPadiName(String padiName) {
+		this.padiName = padiName;
 	}
 
-	public void setMemberName(String memberName) {
-		this.memberName = memberName;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	public String getPincode() {
-		return pincode;
-	}
-
-	public void setPincode(String pincode) {
-		this.pincode = pincode;
-	}
-
-	public Date getUpdatedTs() {
-		return updatedTs;
-	}
-
-	public void setUpdatedTs(Date updatedTs) {
-		this.updatedTs = updatedTs;
+	@Override
+	public String toString() {
+		return "EventMembers{" +
+				"padiId='" + padiId + '\'' +
+				", userId='" + userId + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", padiName='" + padiName + '\'' +
+				'}';
 	}
 }

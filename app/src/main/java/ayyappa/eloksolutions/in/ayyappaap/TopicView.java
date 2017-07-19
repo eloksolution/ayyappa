@@ -14,10 +14,11 @@ import com.google.gson.Gson;
 
 import java.util.concurrent.ExecutionException;
 
+import ayyappa.eloksolutions.in.ayyappaap.beans.DiscussionDTO;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupMembers;
 import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
-import ayyappa.eloksolutions.in.ayyappaap.helper.TopicHelper;
+import ayyappa.eloksolutions.in.ayyappaap.helper.DiscussionHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.TopicViewHelper;
 
 
@@ -26,7 +27,7 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.TopicViewHelper;
  */
 
 public class TopicView extends AppCompatActivity {
-    ImageView TopicImage,discussionCrate;
+    ImageView TopicImage,discussionCreate;
     TextView topicName, description, noOfJoins;
     EditText addDisscussion;
 
@@ -39,11 +40,15 @@ public class TopicView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.topic_view);
+        discussionCreate =(ImageView) findViewById(R.id.but_diss);
+        topicName=(TextView) findViewById(R.id.topic_view_title);
+        description=(TextView) findViewById(R.id.topic_view_desc);
+        addDisscussion =(EditText) findViewById(R.id.add_discu);
         context=this;
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId is"+topicId);
         final Context ctx = this;
-        discussionCrate.setOnClickListener(new View.OnClickListener() {
+        discussionCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -57,11 +62,11 @@ public class TopicView extends AppCompatActivity {
 
 
 
-        TopicViewHelper getGroupsValue=new TopicViewHelper(this);
+        TopicViewHelper gettopicValue=new TopicViewHelper(this);
         String surl = Config.SERVER_URL+"topic/"+topicId;
-        System.out.println("url for group list"+surl);
+        System.out.println("url for group topic view list"+surl);
         try {
-            String output=getGroupsValue.new TopicViewTask(surl).execute().get();
+            String output=gettopicValue.new TopicViewTask(surl).execute().get();
             System.out.println("the output from Topic"+output);
             setValuesToTextFields(output);
         }catch (Exception e){}
@@ -70,7 +75,7 @@ public class TopicView extends AppCompatActivity {
     }
 
     public void setValuesToTextFields(String result) {
-        System.out.println("json xxxx from groupview" + result);
+        System.out.println("json xxxx from Topic" + result);
         if (result!=null){
             Gson gson = new Gson();
             TopicDTO fromJsonn = gson.fromJson(result, TopicDTO.class);
@@ -82,14 +87,15 @@ public class TopicView extends AppCompatActivity {
         }
     }
     private String saveEventToServer() {
-        TopicDTO topicDto=buildDTOObject();
+        DiscussionDTO discussionDto=buildDTOObject();
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(TopicView.this)) {
-                TopicHelper createtopicpHelper = new TopicHelper(TopicView.this);
-                String gurl = Config.SERVER_URL +"topic/add";
+                DiscussionHelper createtopicpHelper = new DiscussionHelper(TopicView.this);
+                String gurl = Config.SERVER_URL +"topic/addDiscussion";
                 try {
-                    String gId= createtopicpHelper.new CreateTopic(topicDto, gurl).execute().get();
+                    String gId= createtopicpHelper.new CreateDiscussion(discussionDto, gurl).execute().get();
                     return gId;
+
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -103,15 +109,13 @@ public class TopicView extends AppCompatActivity {
         }
         return null;
     }
-    private TopicDTO buildDTOObject() {
-        TopicDTO topicDto= new TopicDTO();
+    private DiscussionDTO buildDTOObject() {
+        DiscussionDTO discussionDTO= new DiscussionDTO();
         String gname= addDisscussion.getText().toString();
-        topicDto.setTopic(gname);
-        String gdesc= description.getText().toString();
-        topicDto.setDescription(gdesc);
-        topicDto.setGroupId(topicId);
-        topicDto.setOwner("suresh");
-        return topicDto;
+        discussionDTO.setComment(gname);
+        discussionDTO.setTopicId(topicId);
+        discussionDTO.setOwnerId("suresh");
+        return discussionDTO;
     }
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();

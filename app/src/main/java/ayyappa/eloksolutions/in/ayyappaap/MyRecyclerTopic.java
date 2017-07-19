@@ -34,7 +34,7 @@ public class MyRecyclerTopic extends RecyclerView
           // label2 = (TextView) itemView.findViewById(R.id.group_desc);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
-            imageView = (ImageView) itemView.findViewById(R.id.imgPlay);
+            imageView = (ImageView) itemView.findViewById(R.id.topic_view_click);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -43,6 +43,7 @@ public class MyRecyclerTopic extends RecyclerView
                     Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
                     Intent topicView=new Intent(view.getContext(), TopicView.class);
                     topicView.putExtra("topicId",dataObject.getTopicId());
+                    Log.i(LOG_TAG, "topicId is imag eclick :"+dataObject.getTopicId());
                     view.getContext().startActivity(topicView);
                 }
             });
