@@ -1,5 +1,9 @@
 package in.eloksolutions.ayyappa.model;
 
+import in.eloksolutions.ayyappa.vo.PadiMember;
+
+import java.util.List;
+
 public class Padipooja {
 	String padipoojaId;
 	String eventName;
@@ -9,6 +13,8 @@ public class Padipooja {
 	String time;
 	String memId;
 	String name;
+	List<User> padiMembers;
+	
 	public Padipooja(String padipoojaId, String eventName, String location, String description, String date, String time, String memId
 			,String name){
 		super();
@@ -19,12 +25,7 @@ public class Padipooja {
 		this.date=date;
 		this.memId=memId;
 		this.name=name;
-		
-		
-		
-		
 	}
-	
 	
 	public String getPadipoojaId() {
 		return padipoojaId;
@@ -75,6 +76,16 @@ public class Padipooja {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public List<User> getPadiMembers() {
+		return padiMembers;
+	}
+
+
+	public void setPadiMembers(List<User> padiMembers) {
+		this.padiMembers = padiMembers;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Padipooja [padipoojaId=" + padipoojaId + ", eventName="

@@ -41,7 +41,7 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/user/{userid}")
-	public User memberEdit(@PathVariable("userid") String userid, HttpServletRequest request) {
+	public User getUserById(@PathVariable("userid") String userid, HttpServletRequest request) {
 		System.out.println("Fetching all members with X00001 memberEdit " + userid);
 		User  useredit = userService.searchById(userid);
 		System.out.println("Fetching all user details " + useredit);

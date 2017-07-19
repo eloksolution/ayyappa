@@ -1,12 +1,12 @@
 package in.eloksolutions.ayyappa.controller;
 
+import in.eloksolutions.ayyappa.model.Padipooja;
+import in.eloksolutions.ayyappa.service.PadipoojaService;
+import in.eloksolutions.ayyappa.vo.PadiMember;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
-import in.eloksolutions.ayyappa.model.Group;
-import in.eloksolutions.ayyappa.model.Padipooja;
-import in.eloksolutions.ayyappa.service.PadipoojaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,5 +47,11 @@ public class PadiPoojaController {
 		return groupedit;
 	}
 		
-
+	@ResponseBody
+	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	public String join( @RequestBody PadiMember padiMember){
+		System.out.println("Request xxxx is padiMember  "+padiMember);
+		String msg = padipoojaService.join(padiMember);
+		return msg;
+	}
 }
