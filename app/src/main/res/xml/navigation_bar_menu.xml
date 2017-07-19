@@ -1,0 +1,28 @@
+<tabs>
+    <tab
+        id="@+id/tab_calls"
+        icon="@drawable/ic_home1"
+        title="Home"
+        activeColor="@color/colorAccent"
+        />
+    <tab
+        id="@+id/tab_groups"
+        icon="@drawable/ic_groups"
+        title="Groups"
+        activeColor="@color/colorAccent" />
+    <tab
+        id="@+id/tab_chats"
+        icon="@drawable/icon_event"
+        title="padipooja"
+        activeColor="@color/colorAccent"/>
+    <tab
+        id="@+id/tab_home"
+        icon="@drawable/ic_locate"
+        title="location"
+        activeColor="@color/colorAccent" />
+    <tab
+        id="@+id/tab_profile"
+        icon="@drawable/ic_profile"
+        title="Profile"
+        activeColor="@color/colorAccent" />
+</tabs>

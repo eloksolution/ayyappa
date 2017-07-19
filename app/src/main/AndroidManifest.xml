@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ayyappa.eloksolutions.in.ayyappaap">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ayyappa_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".SpalshScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="AyyappaApp"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".CreateGroup"
+            android:label="createGroup"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".GroupList"
+            android:label="GroupList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GroupView"
+            android:label="GroupView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FlexibleActivity"
+            android:label="GroupList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreatePadiPooja"
+            android:label="padiPooja"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PadiPoojaFull"
+            android:label="padipooja"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Registartion"
+            android:label="Registration"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PadiPoojaView"
+            android:label="Registration"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TopicFull"
+            android:label="Topic"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TopicView"
+            android:label="Topic View"
+            android:theme="@style/AppTheme" />
+
+
+
+    </application>
+
+</manifest>

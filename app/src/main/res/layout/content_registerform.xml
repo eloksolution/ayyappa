@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="#FCF6EB"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/tool_bar"
+            android:tag="cards main container"
+            android:padding="10dp"
+
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view4"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="2dp"
+                android:layout_margin="2dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:contentPadding="2dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+                    <EditText
+                        android:id="@+id/etname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:hint="First Name"
+                        android:textSize="14dp"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view7"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="2dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:contentPadding="2dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+                    <EditText
+                        android:id="@+id/etlname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:hint="Last Name"
+                        android:textSize="14dp"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view5"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/mobile"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:hint="Last Name"
+                        android:textSize="14dp"/>
+
+                </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view8"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:hint="Enter Email"
+                        android:textSize="14dp"/>
+
+                </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view9"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:hint="Enter Password"
+                        android:textSize="14dp"/>
+
+                </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view11"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/location"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:hint="Enter location"
+                        android:textSize="14dp"/>
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view10"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+
+                    <Button
+                        android:id="@+id/group_image_add"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add Image Here"
+                        android:background="@drawable/myrect"
+                        android:paddingRight="15dp"
+                        android:elevation="2dp"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view6"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                card_view:cardUseCompatPadding="true">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2">
+                    <Button
+                        android:id="@+id/butRegister"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Create Here"
+                        android:background="@drawable/myrect"
+                        android:elevation="2dp"
+                        android:padding="2dp"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/toolbar" />
+
+    </RelativeLayout>
+</ScrollView>
