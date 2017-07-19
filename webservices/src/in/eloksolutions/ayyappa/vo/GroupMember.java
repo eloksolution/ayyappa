@@ -5,11 +5,18 @@ public class GroupMember {
 	private String userId;
 	private String firstName;
 	private String lastName;
-	
+	private String groupName;
 	public GroupMember(){
 		
 	}
 	
+	public GroupMember(String groupId, String userId, String groupName) {
+		super();
+		this.groupId = groupId;
+		this.userId = userId;
+		this.groupName = groupName;
+	}
+
 	public GroupMember(String groupId, String userId, String firstName,
 			String lastName) {
 		super();
@@ -18,9 +25,6 @@ public class GroupMember {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-
-
-
 	public String getGroupId() {
 		return groupId;
 	}
@@ -49,7 +53,13 @@ public class GroupMember {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	public String getGroupName() {
+		return groupName;
+	}
 
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 	@Override
 	public String toString() {
 		return "GroupMember [groupId=" + groupId + ", userId=" + userId

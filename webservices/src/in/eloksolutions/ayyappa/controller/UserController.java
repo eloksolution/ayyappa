@@ -47,4 +47,6 @@ public class UserController {
 		System.out.println("Fetching all user details " + useredit);
 		return useredit;
 	}
+	
+	
 }

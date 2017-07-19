@@ -1,5 +1,9 @@
 package in.eloksolutions.ayyappa.model;
 
+import in.eloksolutions.ayyappa.vo.GroupMember;
+
+import java.util.List;
+
 public class User {
 	private String userId;
 	private String firstName;
@@ -11,6 +15,8 @@ public class User {
 	private String state;
 	private String password;
 	private String createDate;
+	private List<GroupMember> groups;
+	
 	
 	public User(){
 		
@@ -87,6 +93,14 @@ public class User {
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
+	
+	public List<GroupMember> getGroups() {
+		return groups;
+	}
+	public void setGroups(List<GroupMember> groups) {
+		this.groups = groups;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

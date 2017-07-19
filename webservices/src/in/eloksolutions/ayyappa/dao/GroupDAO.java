@@ -36,9 +36,11 @@ public class GroupDAO {
 		collection = MongoConfigaration.getDb().getCollection("groups");
 	}
 	
-	public void addGroup(Group group){
+	public String addGroup(Group group){
 		DBObject dbgroup = toDBObject(group);
-		collection.save(dbgroup);
+		collection.insert(dbgroup);
+		ObjectId id = (ObjectId)dbgroup.get( "_id" );
+		return id.toString();
 	}
 	public static final DBObject toDBObject(Group group) {
 	    return new BasicDBObject("name", group.getName())

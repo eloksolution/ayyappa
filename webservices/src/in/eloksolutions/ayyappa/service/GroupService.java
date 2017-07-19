@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappa.service;
 
 import in.eloksolutions.ayyappa.dao.GroupDAO;
+import in.eloksolutions.ayyappa.dao.UserDAO;
 import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 
@@ -13,9 +14,13 @@ import org.springframework.stereotype.Repository;
 public class GroupService {
 	@Autowired
 	GroupDAO groupDAO;
+	@Autowired
+	UserDAO userDAO;
 	
 	public void addGroup(Group group){
-		groupDAO.addGroup(group);
+		String groupId=groupDAO.addGroup(group);
+		GroupMember gm=new GroupMember(groupId,group.getOwner(),group.getName());
+		userDAO.addUserGroup(gm);
 	}
 
 	public List<Group> getGroup() {

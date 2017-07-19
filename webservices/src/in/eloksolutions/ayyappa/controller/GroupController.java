@@ -2,7 +2,6 @@ package in.eloksolutions.ayyappa.controller;
 
 
 import in.eloksolutions.ayyappa.model.Group;
-import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.service.GroupService;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 
