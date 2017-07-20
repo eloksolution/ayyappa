@@ -59,7 +59,7 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         time.setText("" + DateFormat.format("hh:mm a", System.currentTimeMillis()));
         location = (EditText) findViewById(R.id.location);
         description = (EditText) findViewById(R.id.description);
-        SharedPreferences preferences = getSharedPreferences(Config.Member_ID, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
          memid = preferences.getString("memid", "");
          name = preferences.getString("name", "");
         date.setOnClickListener(this);

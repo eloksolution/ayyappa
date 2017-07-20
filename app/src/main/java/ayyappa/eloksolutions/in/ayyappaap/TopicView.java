@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.DiscussionDTO;
@@ -20,6 +23,7 @@ import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.DiscussionHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.TopicViewHelper;
+import ayyappa.eloksolutions.in.ayyappaap.util.DisObject;
 
 
 /**
@@ -30,6 +34,7 @@ public class TopicView extends AppCompatActivity {
     ImageView TopicImage,discussionCreate;
     TextView topicName, description, noOfJoins;
     EditText addDisscussion;
+    RecyclerView rvPadi;
 
     String topicId;
 
@@ -48,19 +53,6 @@ public class TopicView extends AppCompatActivity {
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId is"+topicId);
         final Context ctx = this;
-        discussionCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String createdisscussionHelper=saveEventToServer();
-                Intent topicView = new Intent(ctx, TopicView.class);
-                topicView.putExtra("id",createdisscussionHelper);
-                startActivity(topicView);
-            }
-        });
-
-
-
 
         TopicViewHelper gettopicValue=new TopicViewHelper(this);
         String surl = Config.SERVER_URL+"topic/"+topicId;
@@ -71,6 +63,20 @@ public class TopicView extends AppCompatActivity {
             setValuesToTextFields(output);
         }catch (Exception e){}
 
+        discussionCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String createdisscussionHelper=saveEventToServer();
+                Intent topicView = new Intent(ctx, TopicView.class);
+                topicView.putExtra("id",createdisscussionHelper);
+                startActivity(topicView);
+            }
+        });
+        rvPadi = (RecyclerView) findViewById(R.id.rv_disscussions);
+        rvPadi.setHasFixedSize(true);
+        LinearLayoutManager lmPadi = new LinearLayoutManager(this);
+        rvPadi.setLayoutManager(lmPadi);
 
     }
 
@@ -82,8 +88,17 @@ public class TopicView extends AppCompatActivity {
             topicName.setText(fromJsonn.getTopic());
             description.setText(fromJsonn.getDescription());
 
+            if (fromJsonn.getDiscussions()!=null) {
+                ArrayList results = new ArrayList<DisObject>();
+                for (DiscussionDTO d : fromJsonn.getDiscussions()) {
 
 
+
+                }
+                MyRecyclerPadiMembers mAdapter = new MyRecyclerPadiMembers(results);
+                rvPadi.setAdapter(mAdapter);
+                System.out.println("object resul myrecycler results list view is " + results);
+            }
         }
     }
     private String saveEventToServer() {
@@ -125,8 +140,6 @@ public class TopicView extends AppCompatActivity {
         groupMembers.setLastName("ramesh");
         return groupMembers;
     }
-
-
 
 
     private boolean checkValidation() {

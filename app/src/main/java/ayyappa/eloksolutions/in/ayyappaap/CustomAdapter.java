@@ -51,10 +51,10 @@ public class CustomAdapter extends BaseAdapter{
         View rowView;       
              rowView = inflater.inflate(R.layout.program_list, null);
              holder.tv=(TextView) rowView.findViewById(R.id.textView1);
-             holder.img=(ImageView) rowView.findViewById(R.id.imageView1);       
+             holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
+
          holder.tv.setText(result[position]);
-         holder.img.setImageResource(imageId[position]);         
-         rowView.setOnClickListener(new OnClickListener() {            
+         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();

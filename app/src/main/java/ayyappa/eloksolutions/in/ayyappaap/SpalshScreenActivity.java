@@ -2,6 +2,7 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 
 /**
  * Created by welcome on 7/14/2017.
@@ -45,6 +48,10 @@ public class SpalshScreenActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.logo);
         iv.clearAnimation();
         iv.startAnimation(anim);
+        SharedPreferences preferences=getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
+        id=preferences.getString("memId","");
+        otp=preferences.getString("otp","");
+        System.out.println("id in splash"+id+"and otp"+otp);
         new Handler().postDelayed(new Runnable() {
 
             /*

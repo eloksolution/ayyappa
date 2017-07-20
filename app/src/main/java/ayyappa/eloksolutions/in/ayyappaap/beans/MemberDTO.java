@@ -3,28 +3,32 @@ package ayyappa.eloksolutions.in.ayyappaap.beans;
 import java.util.Date;
 
 public class MemberDTO {
-	private String memId;
-	private String memberName;
-	private Date updatedTs;
-	public String getMemId() {
-		return memId;
-	}
-	public void setMemId(String memberId) {
-		this.memId = memId;
-	}
-	public String getMemberName() {
-		return memberName;
-	}
-	public void setMemberName(String memberName) {
-		this.memberName = memberName;
-	}
-	public Date getUpdatedTs() {
-		return updatedTs;
-	}
-	public void setUpdatedTs(Date updatedTs) {
-		this.updatedTs = updatedTs;
-	}
-	
-	
+	private String userId;
+	private String firstName;
+	private Date lastName;
 
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public Date getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(Date lastName) {
+		this.lastName = lastName;
+	}
 }

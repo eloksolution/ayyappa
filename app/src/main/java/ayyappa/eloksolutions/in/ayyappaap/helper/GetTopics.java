@@ -58,6 +58,7 @@ public class GetTopics extends AsyncTask<String, Void, String> {
                 Type type = new TypeToken<List<TopicDTO>>() { }.getType();
                 List<TopicDTO> fromJson = gson.fromJson(result, type);
                 ArrayList results = new ArrayList<TopicObject>();
+
                 String events[]=new String[fromJson.size()];
 
                 for (TopicDTO event : fromJson) {

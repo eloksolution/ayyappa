@@ -31,7 +31,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/member_name"
+                    android:id="@+id/member_namee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -45,7 +45,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_below="@+id/member_name"
+                    android:layout_below="@+id/member_namee"
                     android:text="post"
                     android:textSize="14dp"/>
 

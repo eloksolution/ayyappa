@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,9 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.EventDTO;
+import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.EventMembers;
 import ayyappa.eloksolutions.in.ayyappaap.helper.EventViewHelper;
+import ayyappa.eloksolutions.in.ayyappaap.helper.PadiObject;
 import ayyappa.eloksolutions.in.ayyappaap.util.Constants;
 
 
@@ -47,6 +51,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     ArrayList<HashMap<String, String>> oslist = new ArrayList<>();
     RelativeLayout   Relative1;
     Context ctx;
+    RecyclerView rvPadi;
 
 
     @Override
@@ -55,7 +60,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_padi_pooja_view);
 
-        SharedPreferences preferences = getSharedPreferences(Config.Member_ID, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
         REG_TOKEN=preferences.getString("TOKEN", null);
         System.out.println("Registration token is "+REG_TOKEN);
         memId = preferences.getString("memId", null);
@@ -72,7 +77,9 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         eventtime = (TextView)findViewById(R.id.event_time);
         location = (TextView)findViewById(R.id.location);
         description = (TextView)findViewById(R.id.description);
-        // no_of_mem = (TextView)findViewById(R.id.no_of_mem);
+        listview=(ExpandableListView) findViewById(R.id.listview);
+
+        no_of_mem = (TextView)findViewById(R.id.joins_view);
       //  tvname = (TextView)findViewById(R.id.hostmember);
         card_view = (CardView)findViewById(R.id.card_view);
         text1 = (TextView)findViewById(R.id.text1);
@@ -97,6 +104,13 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             System.out.println("the output from PadiPooja"+output);
             setValuesToTextFields(output);
         }catch (Exception e){}
+
+         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
+        rvPadi.setHasFixedSize(true);
+        LinearLayoutManager lmPadi = new LinearLayoutManager(this);
+        rvPadi.setLayoutManager(lmPadi);
+
+
 
     }
 
@@ -198,12 +212,14 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             eventnamesms=fromJson.getEventName();
             eventdate.setText(fromJson.getDate());
             eventtime.setText(fromJson.gettime());
-//            tvname.setText(fromJson.getOwnerName());
-          //  sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
+            System.out.println("past from event getmems view" + fromJson.getPadiMembers());
+
+//           tvname.setText(fromJson.getOwnerName());
+      //     sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
             System.out.println("past from event view" + fromJson.getPast());
-          /*  count=fromJson.getMems().size();
-            if (fromJson.getMems() != null)
-                no_of_mem.setText(fromJson.getMems().size() + " members are going");
+           count=fromJson.getPadiMembers().size();
+            if (fromJson.getPadiMembers() != null)
+                no_of_mem.setText(fromJson.getPadiMembers().size() + " members are going");
             else
                 no_of_mem.setText("No Members Joined Yet");
             eventdate.setText(fromJson.getdate()+"");
@@ -237,24 +253,26 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                 }
             }
-            if (!fromJson.getPast()) {
-                joinbtn.setVisibility(View.GONE);
-                join_status.setText("Event is inactive");
-                no_of_mem.setText(fromJson.getMems().size() + " members went");
-            }
 
-            for (MemberDTO m : fromJson.getMems()) {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("id",m.getMemId());
-                map.put("Name", m.getMemberName());
-                oslist.add(map);
+            if (fromJson.getPadiMembers()!=null) {
+                ArrayList results = new ArrayList<PadiObject>();
+                for (RegisterDTO m : fromJson.getPadiMembers()) {
+
+                    PadiObject mem = new PadiObject(m.getUserId(), m.getFirstName(), R.drawable.ayyappa_logo, m.getLastName());
+                    results.add(mem);
+
+                }
+                MyRecyclerPadiMembers mAdapter = new MyRecyclerPadiMembers(results);
+                rvPadi.setAdapter(mAdapter);
+                System.out.println("object resul myrecycler results list view is " + results);
             }
             System.out.println("object list view is " + oslist);
             CustomAdapter adapter = new CustomAdapter(this, oslist,
                     R.layout.activity_padi_pooja_list_view,
-                    new String[]{"Name"}, new int[]{R.id.member_name});
+                    new String[]{"Name"}, new int[]{R.id.member_namee});
+
             listview.setAdapter(adapter);
-            listview.setFocusable(false); */
+            listview.setFocusable(false);
 
         }
     }
@@ -271,7 +289,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         oslist.add(map);
         CustomAdapter adapter = new CustomAdapter(this, oslist,
                 R.layout.activity_padi_pooja_list_view,
-                new String[]{"Name"}, new int[]{R.id.member_name});
+                new String[]{"Name"}, new int[]{R.id.member_namee});
         listview.setAdapter(adapter);
         listview.setFocusable(false);
     }
@@ -305,7 +323,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             oslist.remove(map);
             CustomAdapter adapter = new CustomAdapter(this, oslist,
                     R.layout.activity_padi_pooja_list_view,
-                    new String[]{name}, new int[]{R.id.member_name});
+                    new String[]{name}, new int[]{R.id.member_namee});
             listview.setAdapter(adapter);
             listview.setFocusable(false);
         } catch (Exception e) {

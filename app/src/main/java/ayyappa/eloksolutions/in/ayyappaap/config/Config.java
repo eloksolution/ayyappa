@@ -2,7 +2,7 @@ package ayyappa.eloksolutions.in.ayyappaap.config;
 
 public interface Config {
 
-   String SERVER_URL="http://192.168.0.4:8080/AyyappaService/";
+   String SERVER_URL="http://192.168.0.2:8080/AyyappaService/";
    // String SERVER_URL="http://192.168.0.2:8080/melzol/";
    // CONSTANTS
    String YOUR_SERVER_URL =  "http://192.168.0.2:8080/AyyappaService/";
@@ -14,7 +14,7 @@ public interface Config {
             "info.activities.services.myarea.DISPLAY_MESSAGE";
 
      String EXTRA_MESSAGE = "message";
-   String Member_ID="Member_ID";
+   String User_ID="User_ID";
    String Member_Name="Member_Name";
     String Pincode="Pincode";
       

@@ -25,15 +25,44 @@ public class EventDTO {
 	private String state;
 	private String country;
 
+
 	//list of members
 
 	//list of members
-	List<MemberDTO> mems=new ArrayList<MemberDTO>();
+	List<RegisterDTO> padiMembers=new ArrayList<RegisterDTO>();
 
-	public List<MemberDTO> getMems() {
-		return mems;
+
+	public void setPadipoojaId(String padipoojaId) {
+		this.padipoojaId = padipoojaId;
 	}
-	
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public boolean isMember() {
+		return member;
+	}
+
+	public boolean isPast() {
+		return past;
+	}
+
+	public void setPast(boolean past) {
+		this.past = past;
+	}
+
+	public List<RegisterDTO> getPadiMembers() {
+		return padiMembers;
+	}
+
+	public void setPadiMembers(List<RegisterDTO> padiMembers) {
+		this.padiMembers = padiMembers;
+	}
 
 	public String getPadipoojaId() {
 		return padipoojaId;

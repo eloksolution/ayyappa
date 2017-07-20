@@ -1,10 +1,12 @@
 package ayyappa.eloksolutions.in.ayyappaap;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.concurrent.ExecutionException;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
@@ -24,18 +30,22 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.RegisterHelper;
  */
 
 public class Registartion extends AppCompatActivity {
-    EditText name, description, emailId, password, city, phoneNumber, lastName;
+    EditText name, description, emailId, password, city, phoneNumber, lastName, area;
     ImageView gImage;
     Spinner gCatagery;
-
+    SharedPreferences.Editor edit;
+    UesrSession session;
+    private ProgressDialog progress;
+    String tag="Registarion";
+String userId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_registerform);
-
+              SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Config.User_ID, MODE_PRIVATE);
+              edit=sharedPreferences.edit();
         Button createRegister=(Button) findViewById(R.id.butRegister);
 
-        Button imagePick=(Button) findViewById(R.id.group_image_add);
         final Context ctx = this;
 
         createRegister.setOnClickListener(new View.OnClickListener() {
@@ -48,27 +58,15 @@ public class Registartion extends AppCompatActivity {
             }
         });
 
-        imagePick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.drawable.ayy1);
 
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.setType("image/png");
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                startActivity(Intent.createChooser(shareIntent, "Share via"));
-
-            }
-        });
-
-        name=(EditText) findViewById(R.id.etname);
-        lastName=(EditText) findViewById(R.id.etname);
-        emailId=(EditText) findViewById(R.id.email);
-        password=(EditText) findViewById(R.id.password);
-        phoneNumber=(EditText) findViewById(R.id.mobile);
-        city=(EditText) findViewById(R.id.location);
+        name=(EditText) findViewById(R.id.etName);
+        lastName=(EditText) findViewById(R.id.et_laName);
+        emailId=(EditText) findViewById(R.id.etEmailid);
+        password=(EditText) findViewById(R.id.et_password);
+        phoneNumber=(EditText) findViewById(R.id.etPhoneNumber);
+        area=(EditText) findViewById(R.id.etLocation);
+        city=(EditText) findViewById(R.id.etCity);
 
 
     }
@@ -108,11 +106,37 @@ public class Registartion extends AppCompatActivity {
         registerDto.setMobile(phone);
         String rcity=city.getText().toString();
         registerDto.setCity(rcity);
+        String are=area.getText().toString();
+        registerDto.setArea(are);
         String pass=password.getText().toString();
         registerDto.setPassword(pass);
 
 
         return registerDto;
+    }
+    protected void onPostExecute(String result) {
+        if(!result.equals("")) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<RegisterDTO>() {}.getType();
+            RegisterDTO fromJson = gson.fromJson(result, type);
+            String id = fromJson.getUserId();
+            String name = fromJson.getFirstName();
+            String pincode = fromJson.getArea();
+            edit.putString("memId", id);
+            edit.putString("name", name);
+            edit.putString("pincode", pincode);
+            edit.putString("phone", fromJson.getMobile());
+            edit.putString("area",fromJson.getArea());
+            edit.putString("city",fromJson.getCity());
+            edit.putString("state",fromJson.getState());
+
+            edit.commit();
+        }else{
+            CheckInternet.showAlertDialog(Registartion.this, "Invalid Details",
+                    "Please Enter Correct Details.");
+        }
+        Log.i(tag, "result is Registartions xxxxx" +result);
+        progress.dismiss();
     }
 
     private boolean checkValidation() {

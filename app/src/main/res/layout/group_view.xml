@@ -76,7 +76,6 @@
                 card_view:contentPadding="4dp"
                 >
                 <Button
-
                     android:id="@+id/group_join"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
@@ -99,15 +98,12 @@
                 card_view:contentPadding="4dp"
                 >
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:weightSum="1">
-
-
                     <TextView
                         android:id="@+id/group_join_count"
                         android:layout_width="100dp"
@@ -118,9 +114,7 @@
                         android:background="@drawable/round_corner"
                         android:layout_weight="0.59" />
 
-
                     <Button
-
                         android:id="@+id/group_like"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
@@ -130,16 +124,13 @@
                         android:textColor="#666"
                         android:layout_weight="0.20" />
 
-
                     <Button
-
                         android:id="@+id/group_share"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:textColor="#666"
                         android:layout_marginLeft="14dp"
                         android:text="share"
-
                         android:background="@drawable/round_corner"
                         android:layout_weight="0.22" />
 

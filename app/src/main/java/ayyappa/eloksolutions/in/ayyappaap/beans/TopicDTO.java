@@ -1,5 +1,8 @@
 package ayyappa.eloksolutions.in.ayyappaap.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by welcome on 7/11/2017.
  */
@@ -13,6 +16,15 @@ public class TopicDTO {
     String createDate;
     String owner;
     int noOfMembers;
+List<DiscussionDTO> discussions = new ArrayList<DiscussionDTO>();
+
+    public List<DiscussionDTO> getDiscussions() {
+        return discussions;
+    }
+
+    public void setDiscussions(List<DiscussionDTO> discussions) {
+        this.discussions = discussions;
+    }
 
     public String getTopicId() {
         return topicId;
