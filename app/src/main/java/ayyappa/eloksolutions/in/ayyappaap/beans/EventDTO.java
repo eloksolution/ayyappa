@@ -24,6 +24,7 @@ public class EventDTO {
 	private String city;
 	private String state;
 	private String country;
+	private String memId;
 
 
 	//list of members
@@ -31,6 +32,13 @@ public class EventDTO {
 	//list of members
 	List<RegisterDTO> padiMembers=new ArrayList<RegisterDTO>();
 
+	public String getMemId() {
+		return memId;
+	}
+
+	public void setMemId(String memId) {
+		this.memId = memId;
+	}
 
 	public void setPadipoojaId(String padipoojaId) {
 		this.padipoojaId = padipoojaId;

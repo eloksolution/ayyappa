@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(MainActivity.this, TopicFull.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_chats) {
-                    Intent i = new Intent(MainActivity.this, GroupView.class);
+                    Intent i = new Intent(MainActivity.this, CreateGroup.class);
                     startActivity(i);
 
                 }

@@ -165,6 +165,18 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="13dp"
                 android:layout_marginStart="13dp" />
+            <Button
+                android:id="@+id/update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="update"
+                android:clickable="true"
+                android:layout_below="@+id/joinbtn"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp" />
+
         </RelativeLayout>
 
         <LinearLayout

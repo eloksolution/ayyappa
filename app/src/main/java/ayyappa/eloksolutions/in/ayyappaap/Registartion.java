@@ -42,23 +42,10 @@ String userId;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_registerform);
-              SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Config.User_ID, MODE_PRIVATE);
-              edit=sharedPreferences.edit();
+
         Button createRegister=(Button) findViewById(R.id.butRegister);
 
         final Context ctx = this;
-
-        createRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String createGroupHelper=saveEventToServer();
-                Intent main = new Intent(ctx, MainActivity.class);
-                startActivity(main);
-            }
-        });
-
-
 
         name=(EditText) findViewById(R.id.etName);
         lastName=(EditText) findViewById(R.id.et_laName);
@@ -67,6 +54,19 @@ String userId;
         phoneNumber=(EditText) findViewById(R.id.etPhoneNumber);
         area=(EditText) findViewById(R.id.etLocation);
         city=(EditText) findViewById(R.id.etCity);
+        createRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("ayyappa", ctx.MODE_PRIVATE);
+                edit=sharedPreferences.edit();
+                edit.putString("id", name.getText().toString());
+                edit.commit();
+                Log.i(tag, "id is the sharepreferance"+name.getText().toString());
+                String createGroupHelper=saveEventToServer();
+                Intent main = new Intent(ctx, MainActivity.class);
+                startActivity(main);
+            }
+        });
 
 
     }
@@ -122,15 +122,7 @@ String userId;
             String id = fromJson.getUserId();
             String name = fromJson.getFirstName();
             String pincode = fromJson.getArea();
-            edit.putString("memId", id);
-            edit.putString("name", name);
-            edit.putString("pincode", pincode);
-            edit.putString("phone", fromJson.getMobile());
-            edit.putString("area",fromJson.getArea());
-            edit.putString("city",fromJson.getCity());
-            edit.putString("state",fromJson.getState());
 
-            edit.commit();
         }else{
             CheckInternet.showAlertDialog(Registartion.this, "Invalid Details",
                     "Please Enter Correct Details.");

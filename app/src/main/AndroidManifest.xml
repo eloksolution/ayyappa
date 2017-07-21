@@ -62,7 +62,21 @@
         <activity
             android:name=".TopicView"
             android:label="Topic View"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GroupUpdate"
+            android:label="GroupUpdate"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PadiPoojaUpdate"
+            android:label="PadiPooja Update"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TopicUpdate"
+            android:label="Topic Update"
+            android:theme="@style/AppTheme" />
+
+
 
 
 

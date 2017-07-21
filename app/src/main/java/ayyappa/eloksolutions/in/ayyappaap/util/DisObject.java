@@ -59,4 +59,15 @@ public class DisObject {
     public void setImgResource(int imgResource) {
         this.imgResource = imgResource;
     }
+
+    @Override
+    public String toString() {
+        return "DisObject{" +
+                "userId='" + userId + '\'' +
+                ", sPostDate='" + sPostDate + '\'' +
+                ", dissId='" + dissId + '\'' +
+                ", comment='" + comment + '\'' +
+                ", imgResource=" + imgResource +
+                '}';
+    }
 }

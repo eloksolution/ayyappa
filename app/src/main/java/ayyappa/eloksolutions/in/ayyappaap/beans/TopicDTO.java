@@ -16,13 +16,13 @@ public class TopicDTO {
     String createDate;
     String owner;
     int noOfMembers;
-List<DiscussionDTO> discussions = new ArrayList<DiscussionDTO>();
+List<TopicDissDTO> discussions = new ArrayList<TopicDissDTO>();
 
-    public List<DiscussionDTO> getDiscussions() {
+    public List<TopicDissDTO> getDiscussions() {
         return discussions;
     }
 
-    public void setDiscussions(List<DiscussionDTO> discussions) {
+    public void setDiscussions(List<TopicDissDTO> discussions) {
         this.discussions = discussions;
     }
 
