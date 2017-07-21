@@ -1,8 +1,11 @@
 package in.eloksolutions.ayyappa.controller;
 
+import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.service.PadipoojaService;
+import in.eloksolutions.ayyappa.vo.GroupVO;
 import in.eloksolutions.ayyappa.vo.PadiMember;
+import in.eloksolutions.ayyappa.vo.PadipoojaVo;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class PadiPoojaController {
 	}
 		
 	@ResponseBody
-	@RequestMapping(value = "/getpadipooja", method = RequestMethod.GET)
+	@RequestMapping(value = "/getpoojas", method = RequestMethod.GET)
 	public List getPadipooja( HttpServletRequest request){
 		System.out.println("Request padipooja xxxx is coming "+request);
 		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja();
@@ -53,5 +56,15 @@ public class PadiPoojaController {
 		System.out.println("Request xxxx is padiMember  "+padiMember);
 		String msg = padipoojaService.join(padiMember);
 		return msg;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String updatePadipooja(@RequestBody PadipoojaVo padiVO){
+		System.out.println("Request is coming padiVO "+padiVO);
+		Padipooja uPadi=new Padipooja(padiVO.getPadipoojaId(),padiVO.getEventName(),padiVO.getLocation(),padiVO.getDescription(),padiVO.getDate(),padiVO.getTime(),padiVO.getMemId(),padiVO.getName());
+		 padipoojaService.update(uPadi);
+		 System.out.println("Updating  is coming groupVO "+uPadi);
+		 return "success";
 	}
 }

@@ -3,6 +3,7 @@ package in.eloksolutions.ayyappa.dao;
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
 import in.eloksolutions.ayyappa.model.Discussion;
 import in.eloksolutions.ayyappa.model.Topic;
+import in.eloksolutions.ayyappa.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,9 +40,10 @@ public class TopicDAO {
 		collection.save(dbTopic);
 	}
 	public void updateTopic(Topic topic){
+		DBObject dbTopic=toDBObject(topic);
 		collection.update(
 		    new BasicDBObject("_id", new ObjectId(topic.getTopicId())),
-		    new BasicDBObject("$set", new BasicDBObject("topic", topic.getTopic()))
+		    dbTopic
 		);
 	}
 	public void addDiscussion(String topicId,Discussion diss){
@@ -75,7 +77,7 @@ public class TopicDAO {
         while (cursor.hasNext()) { 
            DBObject topic = cursor.next();
            ObjectId objid=(ObjectId)topic.get("_id");
-           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("name"),(String)topic.get("description"),(String)topic.get("groupId"),(String)topic.get("owner"),objid.getTime());
+           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("topic"),(String)topic.get("description"),(String)topic.get("groupId"),(String)topic.get("owner"),objid.getTime());
 		   System.out.println("description "+topic.get("description"));
 		   List<Discussion> diss=getDiscussions(topic);
 		   topicDB.setDiscussions(diss);
@@ -104,20 +106,27 @@ public class TopicDAO {
 	}
 
 	public Topic searchById(String topicId) {
-		BasicDBObject query = new BasicDBObject("_id", topicId);
+		BasicDBObject query = new BasicDBObject("_id", new ObjectId(topicId));
 		DBCursor cursor = collection.find(query);
-
+            Topic dbtop=null;
 		try {
 		   while(cursor.hasNext()) {
 			   DBObject topic = cursor.next();
 	           ObjectId mobjid=(ObjectId)topic.get("_id");
 		       System.out.println("mobjid" +mobjid);
-		       return new Topic(mobjid.toString(),(String) topic.get("topic"), (String)topic.get("description"), (String)topic.get("groupId"),
-		    		   (String)topic.get("owner"),mobjid.getTime() );
+		      dbtop= (new Topic((String)mobjid.toString(),(String) topic.get("topic"), (String)topic.get("description"), (String)topic.get("groupId"),
+		    		   (String)topic.get("owner"),mobjid.getTime() ));
+		      List<Discussion> diss=getDiscussions(topic);
+		      dbtop.setDiscussions(diss);
+		      
 		   }
 		} finally {
 		   cursor.close();
 		}
-		return null;
+		return dbtop;
 	}
+
+	
+
+	
 }
