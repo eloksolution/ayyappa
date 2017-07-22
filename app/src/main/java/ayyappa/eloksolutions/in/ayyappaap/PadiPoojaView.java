@@ -59,7 +59,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_padi_pooja_view);
-
         SharedPreferences preferences = getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
         REG_TOKEN=preferences.getString("TOKEN", null);
         System.out.println("Registration token is "+REG_TOKEN);
@@ -91,7 +90,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
       //  show = (ImageButton) findViewById(R.id.show);
 //        btnInvite.setOnClickListener(this);
         joinbtn=(ImageButton) findViewById(R.id.joinbtn);
-
         joinbtn.setOnClickListener(this);
         upDate.setOnClickListener(this);
        // hide = (ImageButton) findViewById(R.id.hide);
@@ -105,7 +103,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             setValuesToTextFields(output);
         }catch (Exception e){}
 
-         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
+        rvPadi = (RecyclerView) findViewById(R.id.rv_members);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);

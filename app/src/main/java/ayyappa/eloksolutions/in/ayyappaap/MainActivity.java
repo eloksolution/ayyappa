@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(i);
                 } else if (tabId == R.id.tab_groups) {
 
-                    Intent i = new Intent(MainActivity.this, TopicFull.class);
+                    Intent i = new Intent(MainActivity.this, CreatePadiPooja.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_chats) {
                     Intent i = new Intent(MainActivity.this, CreateGroup.class);

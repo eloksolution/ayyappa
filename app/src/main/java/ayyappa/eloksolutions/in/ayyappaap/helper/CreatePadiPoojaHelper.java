@@ -2,13 +2,14 @@ package ayyappa.eloksolutions.in.ayyappaap.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.net.URL;
 
+import ayyappa.eloksolutions.in.ayyappaap.PadiPoojaFull;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.EventDTO;
 
@@ -67,9 +68,9 @@ public class CreatePadiPoojaHelper {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             String eventid=result;
-
-            Log.i(tag, "result is " +result);
             progress.dismiss();
+            Intent padipoojaView = new Intent(mcontext, PadiPoojaFull.class);
+            mcontext.startActivity(padipoojaView);
         }
 
     }

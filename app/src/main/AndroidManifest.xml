@@ -75,9 +75,14 @@
             android:name=".TopicUpdate"
             android:label="Topic Update"
             android:theme="@style/AppTheme" />
-
-
-
+        <activity
+            android:name=".UserView"
+            android:label="User View"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserUpdate"
+            android:label="User Update"
+            android:theme="@style/AppTheme" />
 
 
     </application>

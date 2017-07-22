@@ -35,10 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_calls"
+                android:src="@drawable/user_view"
                 android:fitsSystemWindows="true"/>
-
-
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -57,7 +55,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/number_textview"
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -85,7 +83,7 @@
                 />
 
             <TextView
-                android:id="@+id/fdate"
+                android:id="@+id/user_location"
                 android:layout_toRightOf="@+id/fIcon"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"

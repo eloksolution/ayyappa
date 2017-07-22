@@ -2,7 +2,6 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,9 +43,7 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
 
                 String eventid=saveEventToServer();
-                Intent padipoojaView = new Intent(ctx, CreateGroup.class);
-                padipoojaView.putExtra("eventid",eventid);
-                   startActivity(padipoojaView);
+
             }
         });
 
