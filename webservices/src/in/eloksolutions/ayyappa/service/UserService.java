@@ -13,8 +13,8 @@ public class UserService {
 	@Autowired
 	UserDAO userDAO;
 	
-	public void adduser(User user){
-		userDAO.adduser(user);
+	public String adduser(User user){
+		return userDAO.adduser(user);
 	}
 
 	public List<User> getuser() {
@@ -23,5 +23,10 @@ public class UserService {
 
 	public User searchById(String userid) {
 		return userDAO.searchById(userid);
+	}
+
+	public String update(User user) {
+		return userDAO.update(user);
+		
 	}
 }

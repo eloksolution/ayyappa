@@ -1,13 +1,10 @@
 package in.eloksolutions.ayyappa.dao;
 
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
-import in.eloksolutions.ayyappa.model.Discussion;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,9 +33,11 @@ public class UserDAO {
 		collection = MongoConfigaration.getDb().getCollection("users");
 	}
 	
-	public void adduser(User user){
+	public String adduser(User user){
 		DBObject dbuser = toDBObject(user);
-		collection.save(dbuser);
+		collection.insert(dbuser);
+		ObjectId id = (ObjectId)dbuser.get( "_id" );
+		return id.toString();
 	}
 	public static final DBObject toDBObject(User user) {
 	    return new BasicDBObject("FIRSTNAME", user.getFirstName())
@@ -138,5 +137,14 @@ public class UserDAO {
 	private DBObject toDBDissObject(GroupMember groupMember) {
 		 return new BasicDBObject("GROUPID", groupMember.getGroupId())
         .append("GROUPNAME", groupMember.getGroupName());
+	}
+
+	public String update(User user) {
+		DBObject dbGroup=toDBObject(user);
+		WriteResult wr=collection.update(
+		    new BasicDBObject("_id", new ObjectId(user.getUserId())),
+		    dbGroup
+		);
+		return wr.getError();
 	}
 }

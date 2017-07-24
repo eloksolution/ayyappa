@@ -1,8 +1,11 @@
 package in.eloksolutions.ayyappa.controller;
 
 
+import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.service.UserService;
+import in.eloksolutions.ayyappa.vo.GroupVO;
+import in.eloksolutions.ayyappa.vo.UserVo;
 
 import java.util.List;
 
@@ -46,6 +49,15 @@ public class UserController {
 		User  useredit = userService.searchById(userid);
 		System.out.println("Fetching all user details " + useredit);
 		return useredit;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String updateUser(@RequestBody UserVo userVo){
+		System.out.println("Request is coming groupVO "+userVo);
+		User user=new User(userVo.getUserId(),userVo.getFirstName(),userVo.getLastName(),userVo.getMobile(),userVo.getEmail(),userVo.getArea(),userVo.getCity(),userVo.getState());
+		 userService.update(user);
+		 return "success";
 	}
 	
 	
