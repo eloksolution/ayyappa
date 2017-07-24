@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 import ayyappa.eloksolutions.in.ayyappaap.beans.DiscussionDTO;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupMembers;
 import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
+import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDissDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.DiscussionHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.TopicViewHelper;
@@ -35,6 +37,7 @@ public class TopicView extends AppCompatActivity {
     TextView topicName, description, noOfJoins;
     EditText addDisscussion;
     RecyclerView rvPadi;
+    Button topicUpDate;
 
     String topicId;
 
@@ -49,6 +52,7 @@ public class TopicView extends AppCompatActivity {
         topicName=(TextView) findViewById(R.id.topic_view_title);
         description=(TextView) findViewById(R.id.topic_view_desc);
         addDisscussion =(EditText) findViewById(R.id.add_discu);
+        topicUpDate =(Button) findViewById(R.id.but_topic_update);
         context=this;
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId is"+topicId);
@@ -62,6 +66,14 @@ public class TopicView extends AppCompatActivity {
             System.out.println("the output from Topic"+output);
             setValuesToTextFields(output);
         }catch (Exception e){}
+        topicUpDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent topicUp = new Intent(ctx, TopicUpdate.class);
+                topicUp.putExtra("topicId",""+topicId);
+                startActivity(topicUp);
+            }
+        });
 
         discussionCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,16 +100,17 @@ public class TopicView extends AppCompatActivity {
             topicName.setText(fromJsonn.getTopic());
             description.setText(fromJsonn.getDescription());
 
+            System.out.println("object resul myrecycler results list view is " + fromJsonn.getDiscussions());
             if (fromJsonn.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();
-                for (DiscussionDTO d : fromJsonn.getDiscussions()) {
-
-
+                for (TopicDissDTO d : fromJsonn.getDiscussions()) {
+                    DisObject disObject=new DisObject(d.getUserId(),d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
+                    results.add(disObject);
 
                 }
-                MyRecyclerPadiMembers mAdapter = new MyRecyclerPadiMembers(results);
+                MyRecyclerDisscusion mAdapter = new MyRecyclerDisscusion(results);
                 rvPadi.setAdapter(mAdapter);
-                System.out.println("object resul myrecycler results list view is " + results);
+                System.out.println("object result myrecycler results list view is " + results);
             }
         }
     }
@@ -129,7 +142,7 @@ public class TopicView extends AppCompatActivity {
         String gname= addDisscussion.getText().toString();
         discussionDTO.setComment(gname);
         discussionDTO.setTopicId(topicId);
-        discussionDTO.setOwnerId("suresh");
+        discussionDTO.setOwnerId(Config.User_ID);
         return discussionDTO;
     }
     private GroupMembers memBuildDTOObject() {

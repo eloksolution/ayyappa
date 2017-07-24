@@ -3,7 +3,6 @@ package ayyappa.eloksolutions.in.ayyappaap.helper;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -46,11 +45,11 @@ public class CreatePadiPoojaHelper {
                 url = new URL(surl);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.accumulate("eventName", eventDTO.getEventName());
-                jsonObject.accumulate("date", eventDTO.getdate());
-                jsonObject.accumulate("time", eventDTO.gettime());
                 jsonObject.accumulate("location", eventDTO.getLocation());
                 jsonObject.accumulate("description", eventDTO.getDescription());
-                jsonObject.accumulate("memId", eventDTO.getOwner());
+                jsonObject.accumulate("date", eventDTO.getDate());
+                jsonObject.accumulate("time", eventDTO.getTime());
+                jsonObject.accumulate("memId", eventDTO.getMemId());
                 jsonObject.accumulate("name", eventDTO.getOwnerName());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
@@ -67,9 +66,8 @@ public class CreatePadiPoojaHelper {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             String eventid=result;
-
-            Log.i(tag, "result is " +result);
             progress.dismiss();
+
         }
 
     }

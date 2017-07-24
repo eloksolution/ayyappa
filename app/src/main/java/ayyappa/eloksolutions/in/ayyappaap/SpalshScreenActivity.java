@@ -13,14 +13,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import ayyappa.eloksolutions.in.ayyappaap.config.Config;
-
 /**
  * Created by welcome on 7/14/2017.
  */
 
 public class SpalshScreenActivity extends AppCompatActivity {
     String id,otp;
+    public static final String DEFAULT="";
     Intent mainIntent;
     Context ctx=this;
     private static int SPLASH_TIME_OUT = 3000;
@@ -48,9 +47,9 @@ public class SpalshScreenActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.logo);
         iv.clearAnimation();
         iv.startAnimation(anim);
-        SharedPreferences preferences=getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
-        id=preferences.getString("memId","");
-        otp=preferences.getString("otp","");
+        SharedPreferences preference=getSharedPreferences("ayyappa", Context.MODE_PRIVATE);
+        id= preference.getString("name",DEFAULT);
+
         System.out.println("id in splash"+id+"and otp"+otp);
         new Handler().postDelayed(new Runnable() {
 

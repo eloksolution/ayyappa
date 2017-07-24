@@ -43,7 +43,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     ImageButton show, hide;
     ImageView edit,delete;
     ImageButton btnInvite, joinbtn;
-    Button leavebtn;
+    Button leavebtn,upDate;
     CardView card_view;
     String padiPoojaId,REG_TOKEN,ownerId, memId, name,sharesms,eventnamesms;
     String tag="PadiPoojaView";
@@ -59,7 +59,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_padi_pooja_view);
-
         SharedPreferences preferences = getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
         REG_TOKEN=preferences.getString("TOKEN", null);
         System.out.println("Registration token is "+REG_TOKEN);
@@ -78,7 +77,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         location = (TextView)findViewById(R.id.location);
         description = (TextView)findViewById(R.id.description);
         listview=(ExpandableListView) findViewById(R.id.listview);
-
+        upDate=(Button) findViewById(R.id.update);
         no_of_mem = (TextView)findViewById(R.id.joins_view);
       //  tvname = (TextView)findViewById(R.id.hostmember);
         card_view = (CardView)findViewById(R.id.card_view);
@@ -91,9 +90,8 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
       //  show = (ImageButton) findViewById(R.id.show);
 //        btnInvite.setOnClickListener(this);
         joinbtn=(ImageButton) findViewById(R.id.joinbtn);
-
         joinbtn.setOnClickListener(this);
-      //  show.setOnClickListener(this);
+        upDate.setOnClickListener(this);
        // hide = (ImageButton) findViewById(R.id.hide);
        // hide.setOnClickListener(this);
        // listview = (ayyappa.eloksolutions.in.ayyappaap.ExpandableListView) findViewById(R.id.listview);
@@ -105,11 +103,10 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             setValuesToTextFields(output);
         }catch (Exception e){}
 
-         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
+        rvPadi = (RecyclerView) findViewById(R.id.rv_members);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
-
 
 
     }
@@ -155,6 +152,11 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         }
         if (v == leavebtn) {
             leaveEvent();
+        }
+        if (v == upDate) {
+            Intent padiUdate=new Intent(ctx, PadiPoojaUpdate.class);
+            padiUdate.putExtra("padiPoojaId", ""+padiPoojaId);
+          startActivity(padiUdate);
         }
     }
 
@@ -217,7 +219,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 //           tvname.setText(fromJson.getOwnerName());
       //     sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
             System.out.println("past from event view" + fromJson.getPast());
-           count=fromJson.getPadiMembers().size();
+
             if (fromJson.getPadiMembers() != null)
                 no_of_mem.setText(fromJson.getPadiMembers().size() + " members are going");
             else
@@ -266,13 +268,8 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                 rvPadi.setAdapter(mAdapter);
                 System.out.println("object resul myrecycler results list view is " + results);
             }
-            System.out.println("object list view is " + oslist);
-            CustomAdapter adapter = new CustomAdapter(this, oslist,
-                    R.layout.activity_padi_pooja_list_view,
-                    new String[]{"Name"}, new int[]{R.id.member_namee});
 
-            listview.setAdapter(adapter);
-            listview.setFocusable(false);
+
 
         }
     }
@@ -337,10 +334,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         // Necessary to restore the BottomBar's state, otherwise we would
         // lose the current tab on orientation change.
     }
-
-
-
-
 
 
 }

@@ -73,6 +73,14 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:weightSum="1">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Update Here"
+                android:id="@+id/but_topic_update"
+                />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_disscussions"
                 android:layout_width="match_parent"

@@ -27,14 +27,14 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(@IdRes int tabId) {
 
                 if (tabId == R.id.tab_calls) {
-                    Intent i = new Intent(MainActivity.this, GroupList.class);
+                    Intent i = new Intent(MainActivity.this, CardViewActivity.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_groups) {
 
-                    Intent i = new Intent(MainActivity.this, TopicFull.class);
+                    Intent i = new Intent(MainActivity.this, CreateGroup.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_chats) {
-                    Intent i = new Intent(MainActivity.this, GroupView.class);
+                    Intent i = new Intent(MainActivity.this, CreatePadiPooja.class);
                     startActivity(i);
 
                 }
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, PadiPoojaFull.class);
                 startActivity(i);
             } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(MainActivity.this, Registartion.class);
+                    Intent regiser=new Intent(MainActivity.this, PadiViewExample.class);
                     startActivity(regiser);
 
 

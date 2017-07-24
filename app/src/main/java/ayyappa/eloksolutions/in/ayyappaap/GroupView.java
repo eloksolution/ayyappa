@@ -38,7 +38,7 @@ public class GroupView extends AppCompatActivity {
     TextView groupName, description, noOfJoins;
     EditText addTopic;
     RecyclerView groupTopics;
-    Button groupJoin, groupLike,groupShare;
+    Button groupJoin, groupLike,groupShare, groupUpdate;
     String groupId;
 
     Context context;
@@ -49,7 +49,6 @@ public class GroupView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_view);
         context=this;
-
          groupId=getIntent().getStringExtra("groupId");
         Log.i(tag, "groupId is"+groupId);
         groupName = (TextView) findViewById(R.id.group_view_title);
@@ -58,7 +57,7 @@ public class GroupView extends AppCompatActivity {
         addTopic = (EditText) findViewById(R.id.add_topic);
          topicCrate =(ImageView) findViewById(R.id.but_topic);
         noOfJoins =(TextView) findViewById(R.id.group_join_count);
-
+        groupUpdate=(Button) findViewById(R.id.group_update);
 
         final Context ctx = this;
         topicCrate.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +75,15 @@ public class GroupView extends AppCompatActivity {
             public void onClick(View view) {
                 groupJoin.setVisibility(View.GONE);
                 joinEvent();
+
+            }
+        });
+        groupUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent groupUdate=new Intent(view.getContext(), GroupUpdate.class);
+                groupUdate.putExtra("groupId", ""+groupId);
+                view.getContext().startActivity(groupUdate);
 
             }
         });

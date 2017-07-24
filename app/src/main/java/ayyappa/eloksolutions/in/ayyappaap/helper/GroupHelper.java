@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
-import ayyappa.eloksolutions.in.ayyappaap.GroupView;
+import ayyappa.eloksolutions.in.ayyappaap.GroupList;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
 
@@ -74,10 +74,9 @@ public class GroupHelper {
         protected void onPostExecute(String result) {
             Log.i(tag, "result is " +result);
             super.onPostExecute(result);
-            Intent groupView = new Intent(mcontext, GroupView.class);
-            groupView.putExtra("id", result);
+            Intent groupView = new Intent(mcontext, GroupList.class);
             mcontext.startActivity(groupView);
-            Log.i(tag, "result is " +result);
+            Log.i(tag, "result groupId is " +result);
             progress.dismiss();
         }
 

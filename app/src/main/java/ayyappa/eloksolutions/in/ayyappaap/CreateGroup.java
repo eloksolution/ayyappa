@@ -1,10 +1,10 @@
 package ayyappa.eloksolutions.in.ayyappaap;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import java.util.concurrent.ExecutionException;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
+import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.GroupHelper;
 
 /**
@@ -27,9 +28,9 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.GroupHelper;
 
 public class CreateGroup extends AppCompatActivity {
     EditText name, description;
-    ImageView gImage;
+    ImageView gImage, imgView;
     Spinner gCatagery;
-
+    private static int PICK_FROM_GALLERY;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +46,11 @@ public class CreateGroup extends AppCompatActivity {
         String[] catageries = new String[]{"Select Group catagory","Padipooja","Pilgrimage","AyyappaSwami Temples","Ayyappa Stories","Bhakthi News"};
         gCatagery = (Spinner) findViewById(R.id.gcatagery);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, catageries);
+                android.R.layout.simple_spinner_dropdown_item, catageries);
         gCatagery.setAdapter(adapter);
 
         Button createGroup=(Button) findViewById(R.id.butgcreate);
-
+        imgView=(ImageView) findViewById(R.id.img_view);
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         final Context ctx = this;
 
@@ -65,12 +66,21 @@ public class CreateGroup extends AppCompatActivity {
         imagePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                // call android default gallery
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                // ******** code for crop image
+                intent.putExtra("crop", "true");
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                try {
+                    intent.putExtra("return-data", true);
+                    startActivityForResult(Intent.createChooser(intent,"Complete action using"),     PICK_FROM_GALLERY);
 
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
-                            + "/myFolder/");
-                    intent.setDataAndType(uri, "text/csv");
-                    startActivity(Intent.createChooser(intent, "Open folder"));
+                } catch (ActivityNotFoundException e) {
+                }
+
 
             }
         });
@@ -86,7 +96,7 @@ public class CreateGroup extends AppCompatActivity {
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(CreateGroup.this)) {
                 GroupHelper createGroupHelper = new GroupHelper(CreateGroup.this);
-                String gurl = "http://192.168.0.2:8080/AyyappaService/group/add";
+                String gurl = Config.SERVER_URL+"group/add";
                 try {
                     String gId= createGroupHelper.new CreateGroup(groupDto, gurl).execute().get();
                     return gId;
@@ -112,10 +122,18 @@ public class CreateGroup extends AppCompatActivity {
         groupDto.setDescription(gdesc);
         String groupCatagery = gCatagery.getSelectedItem().toString();
         groupDto.setGroupCatagory(groupCatagery);
-
         return groupDto;
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == PICK_FROM_GALLERY && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            imgView.setImageURI(imageUri);
+
+        }
+    }
     private boolean checkValidation() {
         boolean ret = true;
         if (!Validation.hasText(description)) ret = false;
