@@ -90,9 +90,7 @@ public class TopicUpdate extends AppCompatActivity {
                     results.add(disObject);
 
                 }
-                MyRecyclerDisscusion mAdapter = new MyRecyclerDisscusion(results);
-                rvPadi.setAdapter(mAdapter);
-                System.out.println("object result myrecycler results list view is " + results);
+
             }
         }
     }

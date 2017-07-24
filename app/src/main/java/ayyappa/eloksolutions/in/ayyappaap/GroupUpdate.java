@@ -33,6 +33,7 @@ public class GroupUpdate extends AppCompatActivity {
     ImageView gImage;
     Spinner gCatagery;
     String groupId,tag="GroupUpDate";
+    Button createGroup;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class GroupUpdate extends AppCompatActivity {
         description=(EditText) findViewById(R.id.gdescription);
         gCatagery=(Spinner) findViewById(R.id.gcatagery);
 
-        Button createGroup=(Button) findViewById(R.id.butgcreate);
+         createGroup=(Button) findViewById(R.id.butgcreate);
 
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         final Context ctx = this;
@@ -94,7 +95,7 @@ public class GroupUpdate extends AppCompatActivity {
             GroupDTO fromJsonn = gson.fromJson(result, GroupDTO.class);
             name.setText(fromJsonn.getName());
             description.setText(fromJsonn.getDescription());
-
+            createGroup.setText("Update Here");
 
         }
     }
