@@ -55,7 +55,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".PadiPoojaView"
-            android:label="Registration"
+            android:label="PadiPooja View"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".TopicFull"
@@ -109,12 +109,6 @@
             android:name=".PadiViewExample"
             android:label="Padi View Example"
             android:theme="@style/AppTheme" />
-
-
-
-
-
-
 
 
     </application>
