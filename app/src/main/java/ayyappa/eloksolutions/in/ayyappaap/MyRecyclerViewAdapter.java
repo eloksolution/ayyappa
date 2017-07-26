@@ -24,15 +24,16 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label;
-        TextView label2;
+        TextView label, label2, count;
+         ;
+
         ImageView imageView;
  
         public DataObjectHolder(View itemView) {
             super(itemView);
             label = (TextView) itemView.findViewById(R.id.textView);
             label2 = (TextView) itemView.findViewById(R.id.textView2);
-
+            count  =(TextView) itemView.findViewById(R.id.badge_notification);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
             imageView = (ImageView) itemView.findViewById(R.id.imgPlay);
@@ -74,7 +75,6 @@ public class MyRecyclerViewAdapter extends RecyclerView
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_row, parent, false);
- 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
     }
@@ -85,6 +85,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.label2.setText(mDataset.get(position).getmText2());
         Log.i(LOG_TAG, "Adding description :"+mDataset.get(position).getmText2());
         holder.imageView.setImageResource(mDataset.get(position).getImgResource());
+
     }
  
     public void addItem(DataObjectPadiPooja dataObj, int index) {

@@ -177,8 +177,6 @@
                     android:orientation="vertical"
                     android:weightSum="1">
 
-
-
                     <LinearLayout
                         android:id="@+id/heading_layout"
                         android:layout_width="match_parent"
@@ -210,8 +208,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-
     <include
         layout="@layout/type_message_area"
         android:layout_width="match_parent"

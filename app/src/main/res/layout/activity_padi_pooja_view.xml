@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -316,4 +316,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

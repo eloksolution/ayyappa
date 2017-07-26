@@ -43,7 +43,7 @@ public class FeedBackUserTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... urls) {
             String json = "";
             try {
-                String surl = Config.SERVER_URL + "feedback_save.php";
+                String surl = Config.SERVER_URL + "feedback/add";
                 System.out.println("Connection to url ................." + surl);
                 url = new URL(surl);
                 JSONObject jsonObject = new JSONObject();
@@ -63,11 +63,7 @@ public class FeedBackUserTask extends AsyncTask<String, Void, String> {
         SharedPreferences.Editor edit;
         edit= preferences.edit();
         if(!result.equals("")) {
-
-
-
             String id = result;
-
             edit.putString("memId", id);
             edit.putString("name", name);
             edit.putString("mobile", phoneNumber);

@@ -64,7 +64,6 @@ public class GetEvents extends AsyncTask<String, Void, String> {
 
                     DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), R.drawable.ayy1,event.getPadipoojaId());
                     results.add(obj);
-
                 }
                 MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results);
                 rvPadi.setAdapter(mAdapter);
