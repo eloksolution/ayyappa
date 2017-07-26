@@ -56,7 +56,7 @@ public class GroupView extends AppCompatActivity {
         description = (TextView) findViewById(R.id.group_view_desc);
         addTopic = (EditText) findViewById(R.id.add_topic);
          topicCrate =(ImageView) findViewById(R.id.but_topic);
-        noOfJoins =(TextView) findViewById(R.id.group_join_count);
+     //   noOfJoins =(TextView) findViewById(R.id.group_join_count);
         groupUpdate=(Button) findViewById(R.id.group_update);
 
         final Context ctx = this;

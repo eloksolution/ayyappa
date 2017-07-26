@@ -11,6 +11,8 @@ public class DataObjectPadiPooja {
         mText2 = text2;
         this.padipoojaId = padipoojaId;
         this.imgResource = imgResource;
+
+
     }
 
     public int getImgResource() {
@@ -44,6 +46,8 @@ public class DataObjectPadiPooja {
     public void setPadipoojaId(String groupId) {
         this.padipoojaId = padipoojaId;
     }
+
+
 
     @Override
     public String toString() {
