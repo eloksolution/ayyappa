@@ -3,8 +3,10 @@ package in.eloksolutions.ayyappa.dao;
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.vo.GroupMember;
+import in.eloksolutions.ayyappa.vo.UserConnectionVO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,8 +24,6 @@ import com.mongodb.WriteResult;
 
 @Repository("userDAO")
 public class UserDAO {
-	
-	
 	MongoClient mongoClient;
 	DBCollection collection;
 	
@@ -46,7 +46,8 @@ public class UserDAO {
 	                     .append("EMAIL", user.getEmail())
 	                     .append("AREA", user.getArea())
 	                     .append("CITY", user.getCity())
-	                     .append("STATE", user.getState());
+	                     .append("STATE", user.getState())
+	    				 .append("createDate", new Date());
 	   
 	                    
 	}
@@ -146,5 +147,53 @@ public class UserDAO {
 		    dbGroup
 		);
 		return wr.getError();
+	}
+	
+	public String connect(UserConnectionVO user) {
+		DBObject dbUsers= toDBUser(user);
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "CONNECTIONS", dbUsers ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(user.getUserId()) );
+		WriteResult rs=collection.update(match,update);
+		DBObject dbFromUsers= toDBFromUser(user);
+		update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "CONNECTIONS", dbFromUsers ) );
+		match = new BasicDBObject();
+		match.put( "_id",new ObjectId(user.getConnectedToId()) );
+		rs=collection.update(match,update);
+		System.out.println("Write result is "+rs.getLastError());
+		return rs.getError();
+	}
+	private List<User> getConnections(User user) {
+		BasicDBObject query=new BasicDBObject("_id",new ObjectId(user.getUserId()));
+		System.out.println("query issiihhkkh is  "+query);
+		 DBCursor  cursor = collection.find(query);
+		 DBObject dbUser = cursor.next();
+		BasicDBList connections = ( BasicDBList ) dbUser.get( "CONNECTIONS" );
+		if(connections==null)return null;
+		List<User> userConnections=new ArrayList<>();
+		for( Iterator< Object > it = connections.iterator(); it.hasNext(); ){
+			BasicDBObject dbo     = ( BasicDBObject ) it.next();
+			User  u = new User();
+			u.setUserId(dbo.getString("USERID"));
+			u.setFirstName(dbo.getString("TOFIRSTNAME"));
+			u.setLastName(dbo.getString("TOLASTNAME"));
+			userConnections.add(u);
+		}
+		return userConnections;
+	}
+	
+	
+	public static final DBObject toDBUser(UserConnectionVO userConnection) {
+	    return new BasicDBObject("CONNECTIONDATE", new Date())
+						 .append("TOFIRSTNAME", userConnection.getToFirstName())
+					     .append("TOLASTNAME", userConnection.getToLastName());
+	}
+	
+	public static final DBObject toDBFromUser(UserConnectionVO userConnection) {
+	    return new BasicDBObject("FIRSTNAME", userConnection.getFirstName())
+	                     .append("LASTNAME", userConnection.getLastName())
+	                     .append("CONNECTIONDATE", new Date());
 	}
 }

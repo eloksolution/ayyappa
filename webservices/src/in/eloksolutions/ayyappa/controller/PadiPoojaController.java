@@ -62,9 +62,9 @@ public class PadiPoojaController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updatePadipooja(@RequestBody PadipoojaVo padiVO){
 		System.out.println("Request is coming padiVO "+padiVO);
-		Padipooja uPadi=new Padipooja(padiVO.getPadipoojaId(),padiVO.getEventName(),padiVO.getLocation(),padiVO.getDescription(),padiVO.getDate(),padiVO.getTime(),padiVO.getMemId(),padiVO.getName());
-		 padipoojaService.update(uPadi);
-		 System.out.println("Updating  is coming groupVO "+uPadi);
+		/*Padipooja uPadi=new Padipooja(padiVO.getPadipoojaId(),padiVO.getEventName(),padiVO.getLocation(),padiVO.getDescription(),padiVO.getDate(),padiVO.getTime(),padiVO.getMemId(),padiVO.getEventName());
+		 padipoojaService.update(uPadi);*/
+		// System.out.println("Updating  is coming groupVO "+uPadi);
 		 return "success";
 	}
 }

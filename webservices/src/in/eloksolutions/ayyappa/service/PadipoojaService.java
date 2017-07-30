@@ -1,11 +1,10 @@
 package in.eloksolutions.ayyappa.service;
 
-import java.util.List;
-
 import in.eloksolutions.ayyappa.dao.PadipojaDAO;
 import in.eloksolutions.ayyappa.model.Padipooja;
-import in.eloksolutions.ayyappa.vo.GroupMember;
 import in.eloksolutions.ayyappa.vo.PadiMember;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,5 +29,10 @@ public class PadipoojaService {
 	}
 	public String join(PadiMember padiMember ) {
 		return padipoojaDao.join(padiMember);
+	}
+
+	public void update(Padipooja uPadi) {
+		// TODO Auto-generated method stub
+		
 	}
 }

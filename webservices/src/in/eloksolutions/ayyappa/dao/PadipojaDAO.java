@@ -1,7 +1,6 @@
 package in.eloksolutions.ayyappa.dao;
 
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
-import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.vo.PadiMember;
@@ -133,10 +132,26 @@ public class PadipojaDAO {
 		return rs.getError();
 	}
 	
+	public String leave(PadiMember padiMember ){
+		System.out.println("Updating padiMember "+padiMember);
+		DBObject dbPadiUser= toDBMember(padiMember.getUserId(),padiMember.getFirstName(),padiMember.getLastName());
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$pull", new BasicDBObject( "members", dbPadiUser ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(padiMember.getPadiId()) );
+		WriteResult rs=collection.update(match,update);
+		System.out.println("Write result is "+rs.getLastError());
+		return rs.getError();
+	}
+	
 	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
 		 return new BasicDBObject("userId", userId)
         .append("firstName", firstName)
         .append("lastName", lastName)
         .append("joinDate", new Date());
+	}
+	
+	private DBObject toDBMember(String userId, String firstName, String lastName) {
+		 return new BasicDBObject("userId", userId);
 	}
 }
