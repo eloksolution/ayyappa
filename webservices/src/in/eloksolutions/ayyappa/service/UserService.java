@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappa.service;
 
 import in.eloksolutions.ayyappa.dao.UserDAO;
+import in.eloksolutions.ayyappa.model.Feedback;
 import in.eloksolutions.ayyappa.model.User;
 
 import java.util.List;
@@ -29,4 +30,6 @@ public class UserService {
 		return userDAO.update(user);
 		
 	}
+
+	
 }

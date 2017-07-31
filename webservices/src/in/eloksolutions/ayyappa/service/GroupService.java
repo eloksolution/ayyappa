@@ -34,4 +34,8 @@ public class GroupService {
 	public String join(GroupMember groupMem ) {
 		return groupDAO.join(groupMem);
 	}
+
+	public String update(Group group) {
+		return groupDAO.update(group);
+	}
 }

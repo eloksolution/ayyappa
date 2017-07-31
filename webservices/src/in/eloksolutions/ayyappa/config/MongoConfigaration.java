@@ -29,7 +29,7 @@ public class MongoConfigaration {
     public MongoClient getMongoClient() {
     	try {
     		MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-    		db = mongoClient.getDB("ayyappaDB");
+    		db = mongoClient.getDB("ayyappaDb");
 			return mongoClient;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

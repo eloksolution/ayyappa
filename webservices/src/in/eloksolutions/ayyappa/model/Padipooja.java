@@ -15,6 +15,9 @@ public class Padipooja {
 	String name;
 	List<User> padiMembers;
 	
+	public Padipooja(){
+		
+	}
 	public Padipooja(String padipoojaId, String eventName, String location, String description, String date, String time, String memId
 			,String name){
 		super();
@@ -23,6 +26,7 @@ public class Padipooja {
 		this.location=location;
 		this.description=description;
 		this.date=date;
+		this.time=time;
 		this.memId=memId;
 		this.name=name;
 	}

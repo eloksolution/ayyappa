@@ -54,6 +54,13 @@ public class GroupDAO {
 	   
 	                    
 	}
+	public void updateGroup(Group group){
+		DBObject dbGroup=toDBObject(group);
+		collection.update(
+		    new BasicDBObject("_id", new ObjectId(group.getGroupId())),
+		    dbGroup
+		);
+	}
 	public List<Group> getGroup(){
         DBCursor  cursor = collection.find();
         List<Group> groups=new ArrayList<>();
@@ -125,4 +132,15 @@ public class GroupDAO {
          .append("lastName", lastName)
          .append("joinDate", new Date());
 	}
+
+	public String update(Group group) {
+		DBObject dbGroup=toDBObject(group);
+		WriteResult wr=collection.update(
+		    new BasicDBObject("_id", new ObjectId(group.getGroupId())),
+		    dbGroup
+		);
+		return wr.getError();
+	}
+	
+	
 }

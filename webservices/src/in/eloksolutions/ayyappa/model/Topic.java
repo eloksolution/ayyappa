@@ -10,7 +10,7 @@ public class Topic {
 	String description;
 	Date createDate;
 	String owner;
-	int noOfMembers;
+	
 	List<Discussion> discussions;
 	public Topic(String id, String topic, String description, String groupId,
 			String owner, long timestamp) {
@@ -73,12 +73,6 @@ public class Topic {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	public int getNoOfMembers() {
-		return noOfMembers;
-	}
-	public void setNoOfMembers(int noOfMembers) {
-		this.noOfMembers = noOfMembers;
-	}
 	public List<Discussion> getDiscussions() {
 		return discussions;
 	}
@@ -90,8 +84,7 @@ public class Topic {
 		return "Topic [groupId=" + groupId + ", topicId=" + topicId
 				+ ", topic=" + topic + ", description=" + description
 				+ ", createDate=" + createDate + ", owner=" + owner
-				+ ", noOfMembers=" + noOfMembers + ", discussions="
-				+ discussions + "]";
+				+ ", discussions="+ discussions + "]";
 	}
 	
 	

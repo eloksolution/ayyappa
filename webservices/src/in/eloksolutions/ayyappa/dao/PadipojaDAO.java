@@ -121,6 +121,14 @@ public class PadipojaDAO {
 		}
 		return padiMembers;
 	}
+	public String update(Padipooja uPadi) {
+		DBObject dbPadi=padiDBObject(uPadi);
+		WriteResult wr=collection.update(
+		    new BasicDBObject("_id", new ObjectId(uPadi.getPadipoojaId())),
+		    dbPadi
+		);
+		return wr.getError();
+	}
 	public String join(PadiMember padiMember ){
 		System.out.println("Updating padiMember "+padiMember);
 		DBObject dbPadiUser= toDBDissObject(padiMember.getUserId(),padiMember.getFirstName(),padiMember.getLastName());
@@ -139,4 +147,9 @@ public class PadipojaDAO {
         .append("lastName", lastName)
         .append("joinDate", new Date());
 	}
+	
+	
+
 }
+	
+

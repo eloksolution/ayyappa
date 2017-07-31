@@ -2,9 +2,13 @@ package in.eloksolutions.ayyappa.controller;
 
 
 import in.eloksolutions.ayyappa.model.Group;
+import in.eloksolutions.ayyappa.model.Topic;
 import in.eloksolutions.ayyappa.service.GroupService;
 import in.eloksolutions.ayyappa.vo.GroupMember;
+import in.eloksolutions.ayyappa.vo.GroupVO;
+import in.eloksolutions.ayyappa.vo.TopicVO;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +36,16 @@ public class GroupController {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String updateGroup(@RequestBody GroupVO groupVO){
+		System.out.println("Request is coming groupVO "+groupVO);
+		Group group=new Group(groupVO.getGroupId(),groupVO.getName(),groupVO.getDescription(),groupVO.getOwner());
+		 groupService.update(group);
+		 System.out.println("Updating  is coming groupVO "+group);
+		 return "success";
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/getgroups", method = RequestMethod.GET)
 	public List<Group> getGroup( HttpServletRequest request){
 		System.out.println("Request xxxx is coming "+request);
@@ -42,7 +56,7 @@ public class GroupController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/groupEdit/{groupid}")
-	public Group memberEdit(@PathVariable("groupid") String groupid, HttpServletRequest request) {
+	public Group getGroupById(@PathVariable("groupid") String groupid, HttpServletRequest request) {
 		System.out.println("Fetching all members with X00001 memberEdit " + groupid);
 		Group  groupedit = groupService.searchById(groupid);
 		System.out.println("Fetching all Group details " + groupedit);

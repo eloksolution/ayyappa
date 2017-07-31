@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappa.dao;
 
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
+import in.eloksolutions.ayyappa.model.Feedback;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 
@@ -81,6 +82,8 @@ public class UserDAO {
 	        		   ,(String)user.get("AREA")
 	        		    ,(String)user.get("CITY")
 	        		   ,(String)user.get("STATE"));
+		        System.out.println("Fetching all user testing details " + dbuser);
+
 	           
 	        }
 	        cursor.close();
@@ -147,4 +150,6 @@ public class UserDAO {
 		);
 		return wr.getError();
 	}
+
+	
 }

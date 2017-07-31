@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappa.controller;
 
 
+import in.eloksolutions.ayyappa.model.Feedback;
 import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.service.UserService;
@@ -45,7 +46,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/user/{userid}")
 	public User getUserById(@PathVariable("userid") String userid, HttpServletRequest request) {
-		System.out.println("Fetching all members with X00001 memberEdit " + userid);
+		System.out.println("Fetching all Users with X00001 UserEdit " + userid);
 		User  useredit = userService.searchById(userid);
 		System.out.println("Fetching all user details " + useredit);
 		return useredit;

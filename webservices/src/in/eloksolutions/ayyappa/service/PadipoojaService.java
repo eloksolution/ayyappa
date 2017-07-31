@@ -17,6 +17,7 @@ public class PadipoojaService {
 
 	public void addPadipooja(Padipooja padipooja) {
 		padipoojaDao.addPadipooja(padipooja);
+
 	}
 
 	public List<Padipooja> getPadipooja() {
@@ -30,5 +31,10 @@ public class PadipoojaService {
 	}
 	public String join(PadiMember padiMember ) {
 		return padipoojaDao.join(padiMember);
+	}
+
+	public String update(Padipooja uPadi) {
+		return padipoojaDao.update(uPadi);
+		
 	}
 }
