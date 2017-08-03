@@ -81,7 +81,7 @@ public class TopicView extends AppCompatActivity {
 
                 String createdisscussionHelper=saveEventToServer();
                 Intent topicView = new Intent(ctx, TopicView.class);
-                topicView.putExtra("id",createdisscussionHelper);
+                topicView.putExtra("topicId",""+topicId);
                 startActivity(topicView);
             }
         });
@@ -104,7 +104,7 @@ public class TopicView extends AppCompatActivity {
             if (fromJsonn.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();
                 for (TopicDissDTO d : fromJsonn.getDiscussions()) {
-                    DisObject disObject=new DisObject(d.getUserId(),d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
+                    DisObject disObject=new DisObject(d.getUserId(),d.getUserName(),d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
                     results.add(disObject);
 
                 }
@@ -142,15 +142,16 @@ public class TopicView extends AppCompatActivity {
         String gname= addDisscussion.getText().toString();
         discussionDTO.setComment(gname);
         discussionDTO.setTopicId(topicId);
-        discussionDTO.setOwnerId(Config.User_ID);
+        discussionDTO.setOwnerId("596c75e0a4ff23ccc3e363e1");
+        discussionDTO.setOwnerName("suresh");
         return discussionDTO;
     }
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(topicId);
-        groupMembers.setUserId("595dfb76b3708f62b1f794ae");
-        groupMembers.setFirstname("suresh");
-        groupMembers.setLastName("ramesh");
+        groupMembers.setUserId("596c75e0a4ff23ccc3e363e1");
+        groupMembers.setFirstname("Rajesh");
+        groupMembers.setLastName("rakesh");
         return groupMembers;
     }
 

@@ -9,6 +9,7 @@ public class TopicDissDTO {
     String comment;
     String sPostDate;
     String userId;
+    String userName;
 
     public String getDissId() {
         return dissId;
@@ -38,6 +39,14 @@ public class TopicDissDTO {
         return userId;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -49,6 +58,7 @@ public class TopicDissDTO {
                 ", comment='" + comment + '\'' +
                 ", sPostDate='" + sPostDate + '\'' +
                 ", userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
                 '}';
     }
 }

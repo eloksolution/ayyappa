@@ -52,6 +52,7 @@ public class DiscussionHelper {
                 jsonObject.accumulate("topicId", discussionDto.getTopicId());
                 jsonObject.accumulate("comment", discussionDto.getComment());
                 jsonObject.accumulate("ownerId", discussionDto.getOwnerId());
+                jsonObject.accumulate("ownerName", discussionDto.getOwnerName());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
 

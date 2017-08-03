@@ -1,5 +1,8 @@
 package ayyappa.eloksolutions.in.ayyappaap.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by welcome on 6/28/2017.
  */
@@ -14,6 +17,7 @@ public class GroupDTO {
     String type;
     String imagePath;
     String groupCatagory;
+    List<RegisterDTO> groupMembers=new ArrayList<RegisterDTO>();
 
     public String getName() {
         return name;
@@ -85,6 +89,14 @@ public class GroupDTO {
 
     public void setGroupCatagory(String groupCatagory) {
         this.groupCatagory = groupCatagory;
+    }
+
+    public List<RegisterDTO> getGroupMembers() {
+        return groupMembers;
+    }
+
+    public void setGroupMembers(List<RegisterDTO> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 
     @Override

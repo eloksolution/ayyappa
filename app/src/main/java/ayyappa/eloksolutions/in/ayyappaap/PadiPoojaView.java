@@ -269,8 +269,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                 System.out.println("object resul myrecycler results list view is " + results);
             }
 
-
-
         }
     }
     private void addingMember(String result) throws JSONException {
