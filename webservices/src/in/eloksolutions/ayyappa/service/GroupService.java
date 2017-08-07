@@ -23,14 +23,13 @@ public class GroupService {
 		userDAO.addUserGroup(gm);
 	}
 
-	public List<Group> getGroup() {
-		return groupDAO.getGroup();
+	public List<Group> getGroups() {
+		return groupDAO.getGroups();
 	}
 
-	public Group searchById(String groupid) {
+	public Group searchById(String groupid,String userId) {
 		return groupDAO.searchById(groupid);
 	}
-	
 	public String join(GroupMember groupMem ) {
 		return groupDAO.join(groupMem);
 	}

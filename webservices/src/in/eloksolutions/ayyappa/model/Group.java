@@ -12,7 +12,10 @@ public class Group {
 	String type;
 	String imagePath;
 	String catgory;
+	String isMember;
+	
 	List<User> groupMembers; 
+	
 	public Group(){
 		
 	}
@@ -100,6 +103,12 @@ public class Group {
 	}
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+	public String getIsMember() {
+		return isMember;
+	}
+	public void setIsMember(String isMember) {
+		this.isMember = isMember;
 	}
 	@Override
 	public String toString() {

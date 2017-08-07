@@ -9,6 +9,7 @@ public class Discussion {
 	Date postDate;
 	String sPostDate;
 	String userId;
+	String userName;
 	
 	public Discussion() {
 		super();
@@ -20,11 +21,13 @@ public class Discussion {
 		this.comment = comment;
 		this.postDate = postDate;
 		this.userId = userId;
+		
 	}
-	public Discussion(String comment, String userId) {
+	public Discussion(String comment, String userId,String userName) {
 		super();
 		this.comment = comment;
 		this.userId = userId;
+		this.userName=userName;
 	}
 	public String getDissId() {
 		return dissId;
@@ -56,6 +59,12 @@ public class Discussion {
 	}
 	public void setsPostDate(String sPostDate) {
 		this.sPostDate = sPostDate;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	@Override
 	public String toString() {

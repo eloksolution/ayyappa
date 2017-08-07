@@ -64,7 +64,7 @@ public class TopicController {
 	@RequestMapping(value = "/addDiscussion",method = RequestMethod.POST)
 	public String addDiscussion(@RequestBody DiscussionVO discussion) {
 		System.out.println("Fetching alldiscussion " + discussion);
-		topicService.addDiscussion(discussion.getTopicId(), new Discussion(discussion.getComment(),discussion.getOwnerId()));
+		topicService.addDiscussion(discussion.getTopicId(), new Discussion(discussion.getComment(),discussion.getOwnerId(),discussion.getOwnerName()));
 		System.out.println("Updated the discussion ");
 		return "success";
 	}

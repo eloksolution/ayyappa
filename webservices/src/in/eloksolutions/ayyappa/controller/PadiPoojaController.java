@@ -59,6 +59,14 @@ public class PadiPoojaController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/leave", method = RequestMethod.POST)
+	public String leave( @RequestBody PadiMember padiMember){
+		System.out.println("Request xxxx is padiMember  "+padiMember);
+		String msg = padipoojaService.leave(padiMember);
+		return msg;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updatePadipooja(@RequestBody PadipoojaVo padiVO){
 		System.out.println("Request is coming padiVO "+padiVO);

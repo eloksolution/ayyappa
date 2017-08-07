@@ -4,6 +4,7 @@ public class DiscussionVO {
 	String topicId;	
 	String comment;
 	String ownerId;
+	String ownerName;
 	
 	public String getTopicId() {
 		return topicId;
@@ -27,6 +28,14 @@ public class DiscussionVO {
 
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
+	}
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
 	}
 
 	@Override

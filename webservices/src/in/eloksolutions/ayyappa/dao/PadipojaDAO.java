@@ -33,10 +33,26 @@ public class PadipojaDAO {
 		this.mongoClient=mongoClient;
 		collection = MongoConfigaration.getDb().getCollection("padipooja");
 	}
-  public void addPadipooja(Padipooja padipooja) {
+
+	public String addPadipooja(Padipooja padipooja) {
 		DBObject dbpadi = padiDBObject(padipooja);
-		collection.save(dbpadi);	
+		collection.insert(dbpadi);
+		ObjectId id = (ObjectId) dbpadi.get("_id");
+		
+		DBObject dbUserPadi= toDBUserPadi(padipooja,id.toString());
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "PADIS", dbUserPadi ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(padipooja.getMemId()));
+		WriteResult rs=collection.update(match,update);
+		System.out.println("result is "+rs.getError());
+		return id.toString();
 	}
+	private DBObject toDBUserPadi(Padipooja padipooja, String padiID) {
+		 return new BasicDBObject("PADIID", padiID)
+			.append("PADI", padipooja.getName());
+	}
+
 	public static final DBObject padiDBObject(Padipooja padipooja) {
 	    return new BasicDBObject("eventName", padipooja.getEventName())
 	                     .append("description", padipooja.getDescription())
@@ -45,44 +61,46 @@ public class PadipojaDAO {
 	                     .append("time", padipooja.getTime())
 	                     .append("memId", padipooja.getMemId())
 	                     .append("name", padipooja.getName());
-	                    
-	   
-	                    
 	}
 	
 	public List<Padipooja> getPadipooja() {
-		
-		DBCursor  cursor = collection.find();
-        List<Padipooja> padipooja=new ArrayList<>();
-        while (cursor.hasNext()) { 
-           DBObject padi = cursor.next();
-           Object objid=padi.get("_id");
-			ObjectId mobjid=null;
-			String sObjid="";
-			if(objid instanceof ObjectId){
-				mobjid=(ObjectId)padi.get("_id");
-				sObjid=mobjid.toString();
-			}
-			if(objid instanceof String)
-				sObjid=(String)padi.get("_id");
-			
-			System.out.println("id is  "+sObjid);
-           System.out.println("name "+padi.get("eventName"));
-           System.out.println("description "+padi.get("description"));
-           padipooja.add(new Padipooja((String)sObjid, (String)padi.get("eventName"), (String)padi.get("location"),(String)padi.get("description") , (String)padi.get("date")
-        		   , (String)padi.get("time"), (String)padi.get("memid"), (String)padi.get("name")));
-                 
-        }
-        return padipooja;
+		DBCursor cursor = collection.find();
+		List<Padipooja> padipooja = new ArrayList<>();
+		while (cursor.hasNext()) {
+			DBObject padi = cursor.next();
+			ObjectId mobjid = (ObjectId) padi.get("_id");
+			System.out.println("name " + padi.get("eventName"));
+			padipooja.add(new Padipooja( mobjid.toString(), (String) padi
+					.get("eventName"), (String) padi.get("location"),
+					(String) padi.get("description"),
+					(String) padi.get("date"), (String) padi.get("time"),
+					(String) padi.get("memid"), (String) padi.get("name")));
+		}
+		return padipooja;
 	}
 
+	public Padipooja searchById(String padipoojaid,String userId) {
+		Padipooja padipooja= searchById(padipoojaid);
+		List<User> members=padipooja.getPadiMembers();
+		if(members==null){
+			return padipooja;
+		}
+		boolean flag=isMember(members,userId);
+		if(flag){
+			padipooja.setIsMember("Y");
+		}
+		return padipooja;
+	}
+	
+	private boolean isMember(List<User> members, String userId) {
+		for(User u:members){
+			if(u.getUserId().equals(userId))return true;
+		}
+		return false;
+	}
 	public Padipooja searchById(String padipoojaid) {
-		BasicDBObject query = new BasicDBObject("_id", new ObjectId(""
-				+ padipoojaid));
-		System.out.println("query padipooja issiihhkkh is  " + query);
-		DBCursor cursor = collection.find(query);
+		DBCursor cursor = getPadiCursor(padipoojaid);
 		Padipooja dbPadi = null;
-
 		while (cursor.hasNext()) {
 			DBObject padiPooja = cursor.next();
 			ObjectId mobjid = (ObjectId) padiPooja.get("_id");
@@ -101,6 +119,11 @@ public class PadipojaDAO {
 		cursor.close();
 		return dbPadi;
 
+	}
+	private DBCursor getPadiCursor(String padipoojaid) {
+		BasicDBObject query = new BasicDBObject("_id", new ObjectId(padipoojaid));
+		DBCursor cursor = collection.find(query);
+		return cursor;
 	}
 	private List<User> getPadiMembers(DBObject group) {
 		BasicDBList dbMembers = ( BasicDBList ) group.get( "members" );
@@ -142,7 +165,7 @@ public class PadipojaDAO {
 	
 	public String leave(PadiMember padiMember ){
 		System.out.println("Updating padiMember "+padiMember);
-		DBObject dbPadiUser= toDBMember(padiMember.getUserId(),padiMember.getFirstName(),padiMember.getLastName());
+		DBObject dbPadiUser=new BasicDBObject("userId", padiMember.getUserId());
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$pull", new BasicDBObject( "members", dbPadiUser ) );
 		BasicDBObject match = new BasicDBObject();
@@ -159,14 +182,6 @@ public class PadipojaDAO {
         .append("joinDate", new Date());
 	}
 	
-<<<<<<< HEAD
-	
-
-=======
-	private DBObject toDBMember(String userId, String firstName, String lastName) {
-		 return new BasicDBObject("userId", userId);
-	}
->>>>>>> 73af88f715561ee3a6f02b296589559b1fd56a2e
 }
 	
 

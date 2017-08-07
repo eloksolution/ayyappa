@@ -1,6 +1,9 @@
 package in.eloksolutions.ayyappa.model;
 
 import in.eloksolutions.ayyappa.vo.GroupMember;
+import in.eloksolutions.ayyappa.vo.UserConnectionVO;
+import in.eloksolutions.ayyappa.vo.UserPadis;
+import in.eloksolutions.ayyappa.vo.UserTopics;
 
 import java.util.List;
 
@@ -15,8 +18,11 @@ public class User {
 	private String state;
 	private String password;
 	private String createDate;
+	private LatLong loc;
 	private List<GroupMember> groups;
-	
+	private List<UserTopics> userTopics;
+	private List<UserConnectionVO> userConnections;
+	private List<UserPadis> userPadis;
 	
 	public User(){
 		
@@ -32,6 +38,19 @@ public class User {
 		this.area = area;
 		this.city = city;
 		this.state = state;
+	}
+	public User(String userId, String firstName, String lastName,
+			String mobile, String email, String area, String city, String state,String lat,String lon) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mobile = mobile;
+		this.email = email;
+		this.area = area;
+		this.city = city;
+		this.state = state;
+		this.loc=new LatLong(lat, lon);
 	}
 	public String getFirstName() {
 		return firstName;
@@ -100,7 +119,30 @@ public class User {
 	public void setGroups(List<GroupMember> groups) {
 		this.groups = groups;
 	}
-	
+	public List<UserTopics> getUserTopics() {
+		return userTopics;
+	}
+	public void setUserTopics(List<UserTopics> userTopics) {
+		this.userTopics = userTopics;
+	}
+	public List<UserConnectionVO> getUserConnections() {
+		return userConnections;
+	}
+	public void setUserConnections(List<UserConnectionVO> userConnections) {
+		this.userConnections = userConnections;
+	}
+	public List<UserPadis> getUserPadis() {
+		return userPadis;
+	}
+	public void setUserPadis(List<UserPadis> userPadis) {
+		this.userPadis = userPadis;
+	}
+	public LatLong getLoc() {
+		return loc;
+	}
+	public void setLoc(LatLong loc) {
+		this.loc = loc;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -124,5 +166,31 @@ public class User {
 			return false;
 		return true;
 	}
-	
+	public class LatLong{
+		String lat;
+		String lon;
+		
+		public String getLat() {
+			return lat;
+		}
+
+		public String getLon() {
+			return lon;
+		}
+
+		public void setLat(String lat) {
+			this.lat = lat;
+		}
+
+		public void setLon(String lon) {
+			this.lon = lon;
+		}
+
+		public LatLong(String lat, String lon) {
+			super();
+			this.lat = lat;
+			this.lon = lon;
+		}
+		
+	}
 }
