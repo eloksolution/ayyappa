@@ -143,6 +143,10 @@ public class User {
 	public void setLoc(LatLong loc) {
 		this.loc = loc;
 	}
+	
+	public void setLoc(String lat,String lon) {
+		this.loc = new LatLong(lat,lon);
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -169,7 +173,9 @@ public class User {
 	public class LatLong{
 		String lat;
 		String lon;
-		
+		public LatLong(){
+			
+		}
 		public String getLat() {
 			return lat;
 		}

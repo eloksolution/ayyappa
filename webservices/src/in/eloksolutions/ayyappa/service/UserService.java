@@ -41,5 +41,8 @@ public class UserService {
 	public User getPadis(String userid) {
 		return userDAO.getUserWithPaids(userid);
 	}
+	public List<User> findNearMe(String userid) {
+		return userDAO.findNearMe(userid);
+	}
 	
 }

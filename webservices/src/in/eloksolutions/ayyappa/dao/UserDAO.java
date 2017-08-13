@@ -4,11 +4,13 @@ import in.eloksolutions.ayyappa.config.MongoConfigaration;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.util.Util;
 import in.eloksolutions.ayyappa.vo.GroupMember;
+import in.eloksolutions.ayyappa.vo.LocationVO;
 import in.eloksolutions.ayyappa.vo.UserConnectionVO;
 import in.eloksolutions.ayyappa.vo.UserPadis;
 import in.eloksolutions.ayyappa.vo.UserTopics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -56,6 +58,7 @@ public class UserDAO {
 	                    
 	}
 	private DBObject toDBLoc(String lon,String lat) {
+		if(Util.isEmpty(lon) || Util.isEmpty(lat)) return null;
 		Double dlon=Double.parseDouble(lon);
 		Double dlat=Double.parseDouble(lat);
 		ArrayList<Double> loc=new ArrayList<>();
@@ -164,15 +167,28 @@ public class UserDAO {
 	}
 
 	private User getUser(DBObject user) {
-		User dbuser;
 		ObjectId mobjid=(ObjectId)user.get("_id");
 		   System.out.println("description "+user.get("description"));
-		   dbuser=new User((String)mobjid.toString(),(String)user.get("FIRSTNAME"),(String)user.get("LASTNAME"),(String)user.get("MOBILE")
+		   User dbuser=new User((String)mobjid.toString(),(String)user.get("FIRSTNAME"),(String)user.get("LASTNAME"),(String)user.get("MOBILE")
 				   ,(String)user.get("EMAIL")
 				   ,(String)user.get("AREA")
 				    ,(String)user.get("CITY")
 				   ,(String)user.get("STATE"));
+		   DBObject dbo=(DBObject) user.get("LOC");
+		   BasicDBList locs = (BasicDBList) dbo.get("coordinates");
+		   System.out.println("LOCATION 2222"+locs.get(0));
+		   System.out.println("LOCATION 22221111"+locs.get(1));
+		   dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
 		return dbuser;
+	}
+	
+	private LocationVO getUserLocation(String userid) {
+		DBCursor dbUserCursor = getDBUser(userid);
+		if (dbUserCursor == null)return null;
+		DBObject user = dbUserCursor.next();
+		   DBObject dbo=(DBObject) user.get("LOC");
+		   BasicDBList locs = (BasicDBList) dbo.get("coordinates");
+		return new LocationVO(userid, (Double)locs.get(0), (Double)locs.get(1));
 	}
 	private List<GroupMember> getGroups(DBObject user) {
 		BasicDBList groups = ( BasicDBList ) user.get( "GROUPS" );
@@ -273,5 +289,32 @@ public class UserDAO {
 	                      .append("USERID", userConnection.getLastName())
 	                     .append("CONNECTIONDATE", new Date());
 	}
+	
+	public List<User> findNearMe(String userid) {
+		LocationVO loc=getUserLocation(userid);
+		BasicDBObject query = new BasicDBObject("LOC",getNearObj(loc.getLat(), loc.getLon()));
+		System.out.println("query issiihhkkh is  " + query);
+		DBCursor cursor = collection.find(query);
+		ArrayList<User> users=new ArrayList<User>();
+		while (cursor.hasNext()) {
+			DBObject user = cursor.next();
+			users.add(getUser(user));
+		}
+		cursor.close();
+		return users;
+	}
 
+	private DBObject getNearObj(double d, double e) {
+		BasicDBObject query = new BasicDBObject("$near",getGeoObj(d,e));
+		return query;
+	}
+
+	private Object getGeoObj(double d, double e) {
+		return new BasicDBObject("$geometry",getCoordObj(d,e));
+	}
+
+	private Object getCoordObj(double d, double e) {
+		return new BasicDBObject("type","Point" )
+								.append("coordinates", Arrays.asList(new Double[]{78.5369922, 17.4495948}));
+	}
 }

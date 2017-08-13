@@ -86,4 +86,12 @@ public class UserController {
 	public User getPadis(@PathVariable("userid") String userid, HttpServletRequest request) {
 		return userService.getPadis(userid);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/loc/{userid}")
+	public List<User> findNearMe(@PathVariable("userid") String userid, HttpServletRequest request) {
+		return userService.findNearMe(userid);
+	}
+	
+	
 }
