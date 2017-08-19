@@ -32,13 +32,11 @@ public class PadipoojaService {
 		return padipoojaDao.join(padiMember);
 	}
 
-<<<<<<< HEAD
 	public String update(Padipooja uPadi) {
 		return padipoojaDao.update(uPadi);
-=======
-	public void update(Padipooja uPadi) {
-		// TODO Auto-generated method stub
->>>>>>> 73af88f715561ee3a6f02b296589559b1fd56a2e
-		
+	}
+
+	public String leave(PadiMember padiMember) {
+		return padipoojaDao.leave(padiMember);
 	}
 }

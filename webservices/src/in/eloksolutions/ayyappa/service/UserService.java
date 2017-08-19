@@ -1,10 +1,9 @@
 package in.eloksolutions.ayyappa.service;
 
-import in.eloksolutions.ayyappa.dao.UserDAO;
-import in.eloksolutions.ayyappa.model.Feedback;
-import in.eloksolutions.ayyappa.model.User;
-
 import java.util.List;
+
+import in.eloksolutions.ayyappa.dao.UserDAO;
+import in.eloksolutions.ayyappa.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,22 +13,33 @@ public class UserService {
 	@Autowired
 	UserDAO userDAO;
 	
-	public String adduser(User user){
-		return userDAO.adduser(user);
+	public String addUser(User user){
+		return userDAO.addUser(user);
 	}
-
-	public List<User> getuser() {
-		return userDAO.getuser();
+	public List<User> getUsers(){
+		return userDAO.getUsers();
 	}
-
 	public User searchById(String userid) {
 		return userDAO.searchById(userid);
 	}
 
 	public String update(User user) {
 		return userDAO.update(user);
-		
 	}
 
+	public User getConnections(String userid) {
+		return userDAO.getConnections(userid);
+	}
+
+	public User getGroups(String userid) {
+		return userDAO.getUserWithGroups(userid);
+	}
+	public User getTopics(String userid) {
+		return userDAO.getUserWithTopics(userid);
+	}
+
+	public User getPadis(String userid) {
+		return userDAO.getUserWithPaids(userid);
+	}
 	
 }

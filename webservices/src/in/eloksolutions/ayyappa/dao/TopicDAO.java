@@ -3,7 +3,6 @@ package in.eloksolutions.ayyappa.dao;
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
 import in.eloksolutions.ayyappa.model.Discussion;
 import in.eloksolutions.ayyappa.model.Topic;
-import in.eloksolutions.ayyappa.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,11 +33,26 @@ public class TopicDAO {
 		collection = MongoConfigaration.getDb().getCollection("topics");
 	}
 	
-	public void addTopic(Topic topic){
+	public String addTopic(Topic topic){
 		DBObject dbTopic = toDBObject(topic);
 		System.out.println("Topics is "+dbTopic);
-		collection.save(dbTopic);
+		collection.insert(dbTopic);
+		ObjectId id = (ObjectId)dbTopic.get( "_id" );
+		
+		DBObject dbUserTopic= toDBUserTopic(topic,id.toString());
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "TOPICS", dbUserTopic ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(topic.getOwner()) );
+		WriteResult rs=collection.update(match,update);
+		System.out.println("result is "+rs.getError());
+		return id.toString();
 	}
+	private DBObject toDBUserTopic(Topic topic, String topicId) {
+		 return new BasicDBObject("TOPICID", topicId)
+			.append("TOPIC", topic.getTopic());
+	}
+
 	public void updateTopic(Topic topic){
 		DBObject dbTopic=toDBObject(topic);
 		collection.update(
@@ -58,17 +72,19 @@ public class TopicDAO {
 	}
 	
 	public static final DBObject toDBDissObject(Discussion topic) {
-	    return new BasicDBObject("comment", topic.getComment())
-	    					.append("postDate", new Date())
-	    					.append("owner", topic.getUserId());
+	    return new BasicDBObject("COMMENT", topic.getComment())
+	    					.append("POSTDATE", new Date())
+	    					.append("OWNERNAME", topic.getUserName())
+	    					.append("OWNER", topic.getUserId());
 	                     
 	}
 	
 	public static final DBObject toDBObject(Topic topic) {
-	    return new BasicDBObject("topic", topic.getTopic())
-	                     .append("owner", topic.getOwner())
-	                     .append("groupId", topic.getGroupId())
-	                     .append("description", topic.getDescription());
+	    return new BasicDBObject("TOPIC", topic.getTopic())
+	                     .append("OWNER", topic.getOwner())
+	                     .append("GROUPID", topic.getGroupId())
+	                      .append("CREATEDATE", new Date())
+	                     .append("DESCRIPTION", topic.getDescription());
 	}
 
 	public List<Topic> getTopics() {
@@ -77,8 +93,8 @@ public class TopicDAO {
         while (cursor.hasNext()) { 
            DBObject topic = cursor.next();
            ObjectId objid=(ObjectId)topic.get("_id");
-           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("topic"),(String)topic.get("description"),(String)topic.get("groupId"),(String)topic.get("owner"),objid.getTime());
-		   System.out.println("description "+topic.get("description"));
+           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("TOPIC"),(String)topic.get("DESCRIPTION"),(String)topic.get("GROUPID"),(String)topic.get("OWNER"),objid.getTime());
+		   System.out.println("DESCRIPTION "+topic.get("DESCRIPTION"));
 		   List<Discussion> diss=getDiscussions(topic);
 		   topicDB.setDiscussions(diss);
            topics.add(topicDB);
@@ -87,45 +103,39 @@ public class TopicDAO {
 	}
 
 	private List<Discussion> getDiscussions(DBObject topic) {
-		BasicDBList discussions = ( BasicDBList ) topic.get( "discussions" );
+		BasicDBList discussions = ( BasicDBList ) topic.get( "DISCUSSIONS" );
 		if(discussions==null)return null;
 		List<Discussion> discussDB=new ArrayList<>();
 		for( Iterator< Object > it = discussions.iterator(); it.hasNext(); ){
 			BasicDBObject dbo     = ( BasicDBObject ) it.next();
 			Discussion  discussion = new Discussion();
-			discussion.setComment(dbo.getString("comment"));
-			Date d=dbo.getDate("postDate");
+			discussion.setComment(dbo.getString("COMMENT"));
+			Date d=dbo.getDate("POSTDATE");
 			if(d!=null){
 				discussion.setPostDate(d);
 				discussion.setsPostDate((String)(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(discussion.getPostDate())));
 			}
-			discussion.setUserId(dbo.getString("userId"));
+			discussion.setUserId(dbo.getString("OWNERNAME"));
+			discussion.setUserName(dbo.getString("OWNER"));
 			discussDB.add(discussion);
 		}
 		return discussDB;
 	}
 
 	public Topic searchById(String topicId) {
-		BasicDBObject query = new BasicDBObject("_id", new ObjectId(topicId));
-		DBCursor cursor = collection.find(query);
-            Topic dbtop=null;
-		try {
-		   while(cursor.hasNext()) {
-			   DBObject topic = cursor.next();
-	           ObjectId mobjid=(ObjectId)topic.get("_id");
-		       System.out.println("mobjid" +mobjid);
-		      dbtop= (new Topic((String)mobjid.toString(),(String) topic.get("topic"), (String)topic.get("description"), (String)topic.get("groupId"),
-		    		   (String)topic.get("owner"),mobjid.getTime() ));
-		      List<Discussion> diss=getDiscussions(topic);
-		      dbtop.setDiscussions(diss);
-		      
-		   }
-		} finally {
-		   cursor.close();
-		}
+		DBCursor cursor=getDBTopicCursor(topicId);
+		DBObject topic = cursor.next();
+	    ObjectId mobjid=(ObjectId)topic.get("_id");
+	    Topic dbtop= new Topic((String)mobjid.toString(),(String) topic.get("TOPIC"), (String)topic.get("DESCRIPTION"), (String)topic.get("GROUPID"),
+		    		   (String)topic.get("OWNER"),mobjid.getTime() );
+	    List<Discussion> diss=getDiscussions(topic);
+	    dbtop.setDiscussions(diss);
 		return dbtop;
 	}
-
+	private DBCursor getDBTopicCursor(String topicId) {
+		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+topicId));
+		return collection.find(query);
+	}
 	
 
 	

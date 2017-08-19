@@ -3,6 +3,7 @@ package in.eloksolutions.ayyappa.dao;
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
 import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.User;
+import in.eloksolutions.ayyappa.util.Util;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 
 import java.text.SimpleDateFormat;
@@ -25,8 +26,6 @@ import com.mongodb.WriteResult;
 
 @Repository("groupDAO")
 public class GroupDAO {
-	
-	
 	MongoClient mongoClient;
 	DBCollection collection;
 	
@@ -40,13 +39,26 @@ public class GroupDAO {
 		DBObject dbgroup = toDBObject(group);
 		collection.insert(dbgroup);
 		ObjectId id = (ObjectId)dbgroup.get( "_id" );
+		
+		DBObject dbUserGroup= toDBUserGroup(group,id.toString());
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "GROUPS", dbUserGroup ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(group.getOwner()) );
+		WriteResult rs=collection.update(match,update);
+		System.out.println("result is "+rs.getError());
 		return id.toString();
 	}
+	private DBObject toDBUserGroup(Group group, String groupId) {
+		 return new BasicDBObject("GROUPID", groupId)
+			.append("GROUPNAME", group.getName());
+	}
+
 	public static final DBObject toDBObject(Group group) {
 	    return new BasicDBObject("name", group.getName())
 	                     .append("description", group.getDescription())
 	                     .append("owner", group.getOwner())
-	                     .append("createDate", group.getCreateDate())
+	                     .append("createDate", new Date())
 	                     .append("numberOfMembers", group.getNumberOfMembers())
 	                     .append("type", group.getType())
 	                     .append("imagePath", group.getImagePath())
@@ -54,14 +66,8 @@ public class GroupDAO {
 	   
 	                    
 	}
-	public void updateGroup(Group group){
-		DBObject dbGroup=toDBObject(group);
-		collection.update(
-		    new BasicDBObject("_id", new ObjectId(group.getGroupId())),
-		    dbGroup
-		);
-	}
-	public List<Group> getGroup(){
+	
+	public List<Group> getGroups(){
         DBCursor  cursor = collection.find();
         List<Group> groups=new ArrayList<>();
         while (cursor.hasNext()) { 
@@ -70,11 +76,28 @@ public class GroupDAO {
 			System.out.println("id is  "+mobjid);
 			Group dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"));
 			List<User> groupMember=getGroupMembers(group);
-			dbgroup.setGroupMembers(groupMember);
+			if(!Util.isListEmpty(groupMember))
+				dbgroup.setGroupMembers(groupMember);
            groups.add(dbgroup);
         }
         cursor.close();
         return groups;
+	}
+
+	public Group searchById(String groupid,String userId) {
+		Group group=searchById(groupid);
+		 List<User> groupMembers=group.getGroupMembers();
+		 if(!Util.isListEmpty(groupMembers)){
+			 if(isMemberInGroup(groupMembers,userId))
+				 group.setIsMember("Y");
+		 }
+		 return group;
+	}
+	private boolean isMemberInGroup(List<User> groupMembers, String userId) {
+		for(User u:groupMembers){
+			if(u.getUserId().equalsIgnoreCase(userId))return true;
+		}
+		return false;
 	}
 
 	public Group searchById(String groupid) {
@@ -126,6 +149,17 @@ public class GroupDAO {
 		return rs.getError();
 	}
 
+	public String leave(GroupMember groupMem ){
+		System.out.println("Updating topic "+groupMem);
+		DBObject groupUser= new BasicDBObject("userId", groupMem.getUserId());
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$pull", new BasicDBObject( "members", groupUser ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(groupMem.getGroupId()) );
+		WriteResult rs=collection.update(match,update);
+		System.out.println("Write result is "+rs.getLastError());
+		return rs.getError();
+	}
 	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
 		 return new BasicDBObject("userId", userId)
          .append("firstName", firstName)

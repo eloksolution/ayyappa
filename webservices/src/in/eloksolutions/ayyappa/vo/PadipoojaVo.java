@@ -1,7 +1,6 @@
 package in.eloksolutions.ayyappa.vo;
 
 public class PadipoojaVo {
-<<<<<<< HEAD
 	String padipoojaId;
 	String eventName;
 	String location;
@@ -58,43 +57,5 @@ public class PadipoojaVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-=======
-	private String memId;
-	
-	public String getMemId() {
-		return memId;
-	}
-
-	public String getEventName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getPadipoojaId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
->>>>>>> 73af88f715561ee3a6f02b296589559b1fd56a2e
 
 }

@@ -2,13 +2,10 @@ package in.eloksolutions.ayyappa.controller;
 
 
 import in.eloksolutions.ayyappa.model.Group;
-import in.eloksolutions.ayyappa.model.Topic;
 import in.eloksolutions.ayyappa.service.GroupService;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 import in.eloksolutions.ayyappa.vo.GroupVO;
-import in.eloksolutions.ayyappa.vo.TopicVO;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,18 +44,18 @@ public class GroupController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getgroups", method = RequestMethod.GET)
-	public List<Group> getGroup( HttpServletRequest request){
+	public List<Group> getGroups( HttpServletRequest request){
 		System.out.println("Request xxxx is coming "+request);
-		List<Group> groupcollection = groupService.getGroup();
+		List<Group> groupcollection = groupService.getGroups();
 		System.out.println("Colection is coming "+groupcollection);
 		return groupcollection;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/groupEdit/{groupid}")
-	public Group getGroupById(@PathVariable("groupid") String groupid, HttpServletRequest request) {
+	@RequestMapping(value = "/getgroup/{groupid}/{userid}")
+	public Group getGroupById(@PathVariable("groupid") String groupid,@PathVariable("userid") String userId, HttpServletRequest request) {
 		System.out.println("Fetching all members with X00001 memberEdit " + groupid);
-		Group  groupedit = groupService.searchById(groupid);
+		Group  groupedit = groupService.searchById(groupid,userId);
 		System.out.println("Fetching all Group details " + groupedit);
 		return groupedit;
 	}
@@ -70,4 +67,6 @@ public class GroupController {
 		String msg = groupService.join(groupMem);
 		return msg;
 	}
+	
+	
 }

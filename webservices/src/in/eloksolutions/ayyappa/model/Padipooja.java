@@ -13,6 +13,8 @@ public class Padipooja {
 	String time;
 	String memId;
 	String name;
+	String isMember;
+
 	List<User> padiMembers;
 	
 	public Padipooja(){
@@ -88,8 +90,14 @@ public class Padipooja {
 	public void setPadiMembers(List<User> padiMembers) {
 		this.padiMembers = padiMembers;
 	}
+	
 
-
+	public String getIsMember() {
+		return isMember;
+	}
+	public void setIsMember(String isMember) {
+		this.isMember = isMember;
+	}
 	@Override
 	public String toString() {
 		return "Padipooja [padipoojaId=" + padipoojaId + ", eventName="
