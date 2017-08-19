@@ -86,7 +86,7 @@ public class TopicUpdate extends AppCompatActivity {
             if (fromJsonn.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();
                 for (TopicDissDTO d : fromJsonn.getDiscussions()) {
-                    DisObject disObject=new DisObject(d.getUserId(),d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
+                    DisObject disObject=new DisObject(d.getUserId(),d.getUserName(), d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
                     results.add(disObject);
 
                 }

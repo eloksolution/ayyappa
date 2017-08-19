@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/expandableButton0"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#ff4000"
-        android:onClick="expandableButton0"
-        android:paddingRight="10dp"
-        android:text="Deeksha Rules"
-        android:padding="20dp"
- />
 
     <Button
         android:id="@+id/expandableButton1"
@@ -21,9 +15,8 @@
         android:background="#ba1f04"
         android:drawableRight="@android:drawable/arrow_down_float"
         android:onClick="expandableButton1"
-        android:layout_below="@+id/expandableButton0"
         android:paddingRight="10dp"
-        android:text="@string/who_can"
+        android:text="Expandable Layout Example"
         android:textColor="#fff" />
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -41,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/deeksha_rules" />
+           android:id="@+id/text1" />
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
 
@@ -54,7 +47,7 @@
         android:drawableRight="@android:drawable/arrow_down_float"
         android:onClick="expandableButton2"
         android:paddingRight="10dp"
-        android:text="@string/when"
+        android:text="Expandable Views Tutorial"
         android:textColor="#fff" />
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -84,7 +77,7 @@
         android:drawableRight="@android:drawable/arrow_down_float"
         android:onClick="expandableButton3"
         android:paddingRight="10dp"
-        android:text="@string/where"
+        android:text="Expand/Collapse Android Widgets"
         android:textColor="#fff" />
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -102,7 +95,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/deeksha_rules2"/>
+            android:text="@string/deeksha_rules2" />
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
 
@@ -115,7 +108,7 @@
         android:drawableRight="@android:drawable/arrow_down_float"
         android:onClick="expandableButton4"
         android:paddingRight="10dp"
-        android:text="@string/What_to_do"
+        android:text="Expand/Collapse Android Example"
         android:textColor="#fff" />
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -136,3 +129,4 @@
             android:text="@string/deeksha_rules3" />
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 </RelativeLayout>
+    </ScrollView>

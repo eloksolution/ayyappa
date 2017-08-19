@@ -35,10 +35,10 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.TopicHelper;
 
 public class GroupView extends AppCompatActivity {
     ImageView groupImage,topicCrate;
-    TextView groupName, description, noOfJoins;
+    TextView groupName, description;
     EditText addTopic;
     RecyclerView groupTopics;
-    Button groupJoin, groupLike,groupShare, groupUpdate;
+    Button groupJoin, noOfJoins,groupShare, groupUpdate;
     String groupId;
 
     Context context;
@@ -58,6 +58,8 @@ public class GroupView extends AppCompatActivity {
          topicCrate =(ImageView) findViewById(R.id.but_topic);
      //   noOfJoins =(TextView) findViewById(R.id.group_join_count);
         groupUpdate=(Button) findViewById(R.id.group_update);
+        noOfJoins =(Button) findViewById(R.id.group_like);
+
 
         final Context ctx = this;
         topicCrate.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +67,20 @@ public class GroupView extends AppCompatActivity {
             public void onClick(View view) {
 
                 String createGroupHelper=saveEventToServer();
-                Intent groupView = new Intent(ctx, GroupView.class);
-                groupView.putExtra("id",createGroupHelper);
+                Intent groupView = new Intent(ctx, TopicView.class);
+                groupView.putExtra("topicId",createGroupHelper);
                 startActivity(groupView);
+            }
+        });
+
+        noOfJoins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent groupMembers=new Intent(view.getContext(), GroupMembersList.class);
+                groupMembers.putExtra("groupId", ""+groupId);
+                view.getContext().startActivity(groupMembers);
+
             }
         });
         groupJoin.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +128,11 @@ public class GroupView extends AppCompatActivity {
             GroupDTO fromJsonn = gson.fromJson(result, GroupDTO.class);
             groupName.setText(fromJsonn.getName());
             description.setText(fromJsonn.getDescription());
+            if(fromJsonn.getGroupMembers()!=null) {
+                noOfJoins.setText(fromJsonn.getGroupMembers().size() + "  joins");
+                System.out.println("json xxxx from fromJsonn.getGroupMembers().size()" + fromJsonn.getGroupMembers().size());
 
-
+            }
 
         }
     }
@@ -155,7 +171,7 @@ public class GroupView extends AppCompatActivity {
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
-        groupMembers.setUserId("595dfb76b3708f62b1f794ae");
+        groupMembers.setUserId("596c75afa4ff23ccc3e363e0");
         groupMembers.setFirstname("suresh");
         groupMembers.setLastName("ramesh");
         return groupMembers;
@@ -179,7 +195,7 @@ public class GroupView extends AppCompatActivity {
         groupJoin.setVisibility(View.GONE);
 
         count=count+1;
-        noOfJoins.setText(count + " members are going");
+       // noOfJoins.setText(count + " members are going");
 
 
     }

@@ -36,12 +36,10 @@ public class CreateGroup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_group);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Create Group");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         String[] catageries = new String[]{"Select Group catagory","Padipooja","Pilgrimage","AyyappaSwami Temples","Ayyappa Stories","Bhakthi News"};
         gCatagery = (Spinner) findViewById(R.id.gcatagery);

@@ -7,13 +7,15 @@ package ayyappa.eloksolutions.in.ayyappaap.util;
 public class DisObject {
 
     private String userId;
+    private String userName;
     private String sPostDate;
     private String dissId;
     private String comment;
     private int imgResource;
 
-    public DisObject(String userId, String sPostDate,String dissId, String comment, int imgResource) {
+    public DisObject(String userId, String userName, String sPostDate,String dissId, String comment, int imgResource) {
         this.userId = userId;
+        this.userName=userName;
         this.sPostDate = sPostDate;
         this.dissId = dissId;
         this.comment=comment;
@@ -60,10 +62,19 @@ public class DisObject {
         this.imgResource = imgResource;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "DisObject{" +
                 "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
                 ", sPostDate='" + sPostDate + '\'' +
                 ", dissId='" + dissId + '\'' +
                 ", comment='" + comment + '\'' +
