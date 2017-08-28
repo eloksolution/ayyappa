@@ -46,7 +46,7 @@ public class GroupMembersList extends AppCompatActivity implements View.OnClickL
         }); */
 
         GroupMemberHelper getGroupsValue=new GroupMemberHelper(this);
-        String surl = Config.SERVER_URL+"group/groupEdit/"+groupId;
+        String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/598839b6e4b0ca1af7a13b";
         System.out.println("url for group list"+surl);
         try {
             String output=getGroupsValue.new GroupViewTask(surl).execute().get();

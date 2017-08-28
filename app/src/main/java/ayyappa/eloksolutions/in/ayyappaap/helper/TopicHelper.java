@@ -67,8 +67,6 @@ public class TopicHelper {
         }
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
-
             Log.i(tag, "result is " +result);
             progress.dismiss();
         }

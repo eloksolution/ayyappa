@@ -48,7 +48,7 @@ public class UserUpdate extends AppCompatActivity {
         final Context ctx = this;
 
         UserUpdateHelper getUserValue=new UserUpdateHelper(this);
-        String surl = Config.SERVER_URL+"user/user/"+userId;
+        String surl = Config.SERVER_URL+"user/user/5997eeb6e4b031b734205daa";
         System.out.println("url for group topic view list"+surl);
         try {
             String output=getUserValue.new UserUpdateTask(surl).execute().get();

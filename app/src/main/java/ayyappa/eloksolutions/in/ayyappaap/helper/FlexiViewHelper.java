@@ -44,7 +44,6 @@ public class FlexiViewHelper {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (result!=null){
-                mcontext.setValuesToTextFields(result);
             }
             System.out.println("event from eventview" + result);
             progress.dismiss();

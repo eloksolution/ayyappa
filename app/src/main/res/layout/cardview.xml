@@ -19,7 +19,7 @@
             android:padding="16dp"
             >
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:id="@+id/person_photo"
@@ -46,7 +46,7 @@
                 android:id="@+id/person_date"
                android:paddingLeft="57dp"
                 android:layout_below="@+id/person_name"
-                android:text="22"
+                android:text="22 are going"
 
                 />
             <TextView

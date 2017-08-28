@@ -24,6 +24,7 @@ public class EventDTO {
 	private String city;
 	private String state;
 	private String country;
+	private String imagePath;
 	private String memId;
 
 
@@ -198,6 +199,14 @@ public class EventDTO {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	@Override

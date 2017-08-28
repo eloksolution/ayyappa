@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +21,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,14 +46,17 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.EventMembers;
 import ayyappa.eloksolutions.in.ayyappaap.helper.EventViewHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.PadiObject;
 import ayyappa.eloksolutions.in.ayyappaap.util.Constants;
+import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 
 public class PadiPoojaView extends AppCompatActivity implements View.OnClickListener {
+
 
     ayyappa.eloksolutions.in.ayyappaap.ExpandableListView listview;
     TextView description, event_name,eventdate,eventtime, location, no_of_mem, join_status, text1,tvname;
     ImageButton show, hide;
     ImageView edit,delete;
+    ImageView padiImage;
     ImageButton btnInvite;
     Button leavebtn,upDate, joinbtn;
     CardView card_view;
@@ -52,14 +67,19 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     RelativeLayout   Relative1;
     Context ctx;
     RecyclerView rvPadi;
-
+    File fileToDownload ;
+    AmazonS3 s3;
+    EventDTO eventDTO;
+    TransferUtility transferUtility;
+    TransferObserver transferObserver;
+    SharedPreferences preference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_padi_pooja_view);
-        SharedPreferences preferences = getSharedPreferences(Config.User_ID, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
         REG_TOKEN=preferences.getString("TOKEN", null);
         System.out.println("Registration token is "+REG_TOKEN);
         memId = preferences.getString("memId", null);
@@ -76,7 +96,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         eventtime = (TextView)findViewById(R.id.event_timee);
         location = (TextView)findViewById(R.id.location);
         description = (TextView)findViewById(R.id.description);
-
+        padiImage=(ImageView) findViewById(R.id.padi_image_view);
         upDate=(Button) findViewById(R.id.update);
         no_of_mem = (TextView)findViewById(R.id.joins_view);
       //  tvname = (TextView)findViewById(R.id.hostmember);
@@ -92,15 +112,30 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         joinbtn=(Button) findViewById(R.id.joinbtn);
         joinbtn.setOnClickListener(this);
         upDate.setOnClickListener(this);
-       // hide = (ImageButton) findViewById(R.id.hide);
+        preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        // hide = (ImageButton) findViewById(R.id.hide);
        // hide.setOnClickListener(this);
        // listview = (ayyappa.eloksolutions.in.ayyappaap.ExpandableListView) findViewById(R.id.listview);
+        try {
+
+            File outdirectory=this.getCacheDir();
+            fileToDownload=File.createTempFile("GRO","jpg",outdirectory);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        credentialsProvider();
+        setTransferUtility();
+
         EventViewHelper eventViewHelper = new EventViewHelper(this);
         String surl = Config.SERVER_URL + "padipooja/padipoojaEdit/"+padiPoojaId;
         try {
             String output=eventViewHelper.new Eventview(surl).execute().get();
             System.out.println("the output from PadiPooja"+output);
             setValuesToTextFields(output);
+            System.out.println("groupDTO.getImagePath()"+eventDTO.getImagePath());
+            setFileToDownload("padipooja/P_535_1503928966841");
         }catch (Exception e){}
 
         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
@@ -110,6 +145,92 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
 
     }
+
+    public void credentialsProvider(){
+
+        // Initialize the Amazon Cognito credentials provider
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
+                Regions.AP_NORTHEAST_1 // Region
+        );
+
+        setAmazonS3Client(credentialsProvider);
+    }
+    public void transferObserverListener(TransferObserver transferObserver){
+
+        Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
+        transferObserver.setTransferListener(new TransferListener(){
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                Log.i("File down load status ", state+"");
+                Log.i("File down load id", id+"");
+                if("COMPLETED".equals(state.toString())){
+                    Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
+                    padiImage.setImageBitmap(bit);
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                int percentage = (int) (bytesCurrent/bytesTotal * 100);
+                Log.e("percentage",percentage +"");
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Log.e("error","error");
+            }
+
+
+        });
+    }
+    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
+
+        // Create an S3 client
+        s3 = new AmazonS3Client(credentialsProvider);
+
+        // Set the region of your S3 bucket
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+    }
+
+    public void setTransferUtility(){
+
+        transferUtility = new TransferUtility(s3, getApplicationContext());
+    }
+    public void setFileToDownload(String imageKey){
+        if (Util.isEmpty(imageKey))return;
+       /* try {
+            S3Object s3Object=s3.getObject("elokayyappa",imageKey);
+            InputStream reader = s3Object.getObjectContent();
+            FileOutputStream fos=(new FileOutputStream(fileToDownload));
+            byte[] buffer=new byte[4096];
+            int read=0;
+            while ((read=reader.read(buffer))!=-1) {
+                fos.write(buffer,0,read);
+            }
+            fos.flush();
+            fos.close();
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+
+
+        transferObserver = transferUtility.download(
+                "elokayyappa",     // The bucket to download from *//*
+                imageKey,    // The key for the object to download *//*
+                fileToDownload        // The file to download the object to *//*
+        );
+
+        transferObserverListener(transferObserver);
+
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -209,32 +330,32 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         System.out.println("json from eventview" + result);
         if (result!=null){
             Gson gson = new Gson();
-            EventDTO fromJson = gson.fromJson(result, EventDTO.class);
-            event_name.setText(fromJson.getEventName());
-            eventnamesms=fromJson.getEventName();
-            eventdate.setText(fromJson.getDate());
-            eventtime.setText(fromJson.gettime());
-            System.out.println("past from eventfromJson.gettime()" + fromJson.gettime());
+             eventDTO = gson.fromJson(result, EventDTO.class);
+            event_name.setText(eventDTO.getEventName());
+            eventnamesms=eventDTO.getEventName();
+            eventdate.setText(eventDTO.getDate());
+            eventtime.setText(eventDTO.gettime());
+            System.out.println("past from eventfromJson.gettime()" + eventDTO.gettime());
 
 //           tvname.setText(fromJson.getOwnerName());
       //     sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
-            System.out.println("past from event view" + fromJson.getPast());
+            System.out.println("past from event view" + eventDTO.getPast());
 
-            if (fromJson.getPadiMembers() != null)
-                no_of_mem.setText(fromJson.getPadiMembers().size() + " members are going");
+            if (eventDTO.getPadiMembers() != null)
+                no_of_mem.setText(eventDTO.getPadiMembers().size() + " members are going");
             else
                 no_of_mem.setText("No Members Joined Yet");
-            eventdate.setText(fromJson.getdate()+"");
-            location.setText(fromJson.getLocation());
-            description.setText(fromJson.getDescription());
-            if (String.valueOf(fromJson.getPadipoojaId()).equals(memId)){
+            eventdate.setText(eventDTO.getdate()+"");
+            location.setText(eventDTO.getLocation());
+            description.setText(eventDTO.getDescription());
+            if (String.valueOf(eventDTO.getPadipoojaId()).equals(memId)){
                 Log.i(tag,"memberid and owner"+memId);
                 Relative1.setVisibility(View.GONE);
                 edit.setVisibility(View.VISIBLE);
                 delete.setVisibility(View.VISIBLE);
             }
             String topic= Constants.EVENT_TOPIC+padiPoojaId;
-            if (fromJson.getMember()) {
+            if (eventDTO.getMember()) {
                 btnInvite.setVisibility(View.VISIBLE);
                 joinbtn.setVisibility(View.GONE);
                 try {
@@ -256,9 +377,9 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                 }
             }
 
-            if (fromJson.getPadiMembers()!=null) {
+            if (eventDTO.getPadiMembers()!=null) {
                 ArrayList results = new ArrayList<PadiObject>();
-                for (RegisterDTO m : fromJson.getPadiMembers()) {
+                for (RegisterDTO m : eventDTO.getPadiMembers()) {
 
                     PadiObject mem = new PadiObject(m.getUserId(), m.getFirstName(), R.drawable.ayyappa_logo, m.getLastName());
                     results.add(mem);

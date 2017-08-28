@@ -17,6 +17,7 @@ import ayyappa.eloksolutions.in.ayyappaap.MyRecyclerViewAdapter;
 import ayyappa.eloksolutions.in.ayyappaap.R;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.EventDTO;
+import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectPadiPooja;
 
 
@@ -61,8 +62,11 @@ public class GetEvents extends AsyncTask<String, Void, String> {
                 String events[]=new String[fromJson.size()];
 
                 for (EventDTO event : fromJson) {
-
-                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), R.drawable.ayy1,event.getPadipoojaId());
+                    List<RegisterDTO> padiMembers=event.getPadiMembers();
+                    int memberSize=0;
+                    if(padiMembers !=null)
+                        memberSize=padiMembers.size();
+                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), R.drawable.ayy1,event.getPadipoojaId(),memberSize,event.getDate());
                     results.add(obj);
                 }
                 MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results);

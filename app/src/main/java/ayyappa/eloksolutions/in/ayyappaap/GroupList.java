@@ -3,18 +3,22 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.IdRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.GetGroups;
 
-public class GroupList extends AppCompatActivity implements View.OnClickListener {
+public class GroupList extends CardViewActivity {
     Context context;
-
+private BottomBar bottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +39,14 @@ public class GroupList extends AppCompatActivity implements View.OnClickListener
                 startActivity(groupView);
             }
         }); */
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent groupCreate= new Intent(GroupList.this, CreateGroup.class);
+                startActivity(groupCreate);
+            }
+        });
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
@@ -44,17 +55,40 @@ public class GroupList extends AppCompatActivity implements View.OnClickListener
         GetGroups getGroups=new GetGroups(context,url,rvGroups);
         System.out.println("url for group list"+url);
         getGroups.execute();
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+
+                if (tabId == R.id.tab_calls) {
+
+
+
+                } else if (tabId == R.id.tab_groups) {
+
+                    Intent i = new Intent(getBaseContext(), GroupList.class);
+                    startActivity(i);
+                } else if (tabId == R.id.tab_chats) {
+                    Intent i = new Intent(getBaseContext(), PadiPoojaFull.class);
+                    startActivity(i);
+
+                }
+                else if (tabId == R.id.tab_home) {
+
+                    Intent i = new Intent(getBaseContext(), MapsActivity.class);
+                    startActivity(i);
+                } else if (tabId == R.id.tab_profile) {
+                    Intent regiser=new Intent(getBaseContext(), UserView.class);
+                    startActivity(regiser);
+
+
+                }
+            }
+        });
 
     }
 
-    public void onClick(View v) {
-
-        if (v == v) {
-            Intent intent = new Intent(getBaseContext(), GroupView.class);
-
-            startActivity(intent);
-        }
 
     }
 
-}
+

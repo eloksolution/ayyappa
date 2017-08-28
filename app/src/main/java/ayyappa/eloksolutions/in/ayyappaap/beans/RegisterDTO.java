@@ -14,6 +14,24 @@ public class RegisterDTO {
     String city;
     String state;
     String password;
+    double longi;
+    double lati;
+
+    public double getLongi() {
+        return longi;
+    }
+
+    public void setLongi(double longi) {
+        this.longi = longi;
+    }
+
+    public double getLati() {
+        return lati;
+    }
+
+    public void setLati(double lati) {
+        this.lati = lati;
+    }
 
     public String getUserId() {
         return userId;
@@ -100,6 +118,8 @@ public class RegisterDTO {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", password='" + password + '\'' +
+                ", longi=" + longi +
+                ", lati=" + lati +
                 '}';
     }
 }

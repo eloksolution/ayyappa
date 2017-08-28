@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import ayyappa.eloksolutions.in.ayyappaap.config.Config;
+
 /**
  * Created by welcome on 7/14/2017.
  */
@@ -47,10 +49,10 @@ public class SpalshScreenActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.logo);
         iv.clearAnimation();
         iv.startAnimation(anim);
-        SharedPreferences preference=getSharedPreferences("ayyappa", Context.MODE_PRIVATE);
-        id= preference.getString("name",DEFAULT);
+        SharedPreferences preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
+        id= preference.getString("userId",DEFAULT);
 
-        System.out.println("id in splash"+id+"and otp"+otp);
+        System.out.println("id in splash"+id);
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -61,10 +63,12 @@ public class SpalshScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(id!=null && id.length()>0){
-                    mainIntent = new Intent(SpalshScreenActivity.this, MainActivity.class);
+                    System.out.println("id in splash XXXX");
+
+                    mainIntent = new Intent(SpalshScreenActivity.this, CardViewActivity.class);
                 }
                 else {
-                    mainIntent = new Intent(SpalshScreenActivity.this, MainActivity.class);
+                    mainIntent = new Intent(SpalshScreenActivity.this, Registartion.class);
                 }
                 // This method will be executed once the timer is over
                 // Start your app main activity

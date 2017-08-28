@@ -59,7 +59,7 @@ public class FeedBackUserTask extends AsyncTask<String, Void, String> {
             return RestServices.POST(url, json);
         }
     protected void onPostExecute(String result) {
-        SharedPreferences preferences = context.getSharedPreferences(Config.User_ID, context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(Config.userId, context.MODE_PRIVATE);
         SharedPreferences.Editor edit;
         edit= preferences.edit();
         if(!result.equals("")) {

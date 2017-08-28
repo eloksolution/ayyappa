@@ -2,12 +2,14 @@ package ayyappa.eloksolutions.in.ayyappaap.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
 import java.net.URL;
 
+import ayyappa.eloksolutions.in.ayyappaap.PadiPoojaFull;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.EventDTO;
 
@@ -51,6 +53,7 @@ public class CreatePadiPoojaHelper {
                 jsonObject.accumulate("time", eventDTO.getTime());
                 jsonObject.accumulate("memId", eventDTO.getMemId());
                 jsonObject.accumulate("name", eventDTO.getOwnerName());
+               // jsonObject.accumulate("imagePath", eventDTO.getImagePath());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
             } catch (Exception e) {
@@ -65,7 +68,10 @@ public class CreatePadiPoojaHelper {
         }
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            String eventid=result;
+            String padiPoojaId=result;
+            Intent padiView = new Intent(mcontext, PadiPoojaFull.class);
+            padiView.putExtra("padiPoojaId", padiPoojaId);
+            mcontext.startActivity(padiView);
             progress.dismiss();
 
         }

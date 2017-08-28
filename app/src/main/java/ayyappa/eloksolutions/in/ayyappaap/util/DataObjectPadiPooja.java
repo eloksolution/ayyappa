@@ -5,12 +5,15 @@ public class DataObjectPadiPooja {
     private String mText2;
     private String padipoojaId;
     private int imgResource;
-
-    public DataObjectPadiPooja(String text1, String text2, int imgResource, String padipoojaId) {
+    private int padiMembers;
+    private String date;
+    public DataObjectPadiPooja(String text1, String text2, int imgResource, String padipoojaId, int padiMembers, String date) {
         mText1 = text1;
         mText2 = text2;
         this.padipoojaId = padipoojaId;
         this.imgResource = imgResource;
+        this.padiMembers= padiMembers;
+        this.date=date;
 
 
     }
@@ -47,7 +50,21 @@ public class DataObjectPadiPooja {
         this.padipoojaId = padipoojaId;
     }
 
+    public int getPadiMembers() {
+        return padiMembers;
+    }
 
+    public void setPadiMembers(int padiMembers) {
+        this.padiMembers = padiMembers;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {
@@ -56,6 +73,7 @@ public class DataObjectPadiPooja {
                 ", mText2='" + mText2 + '\'' +
                 ", padipoojaId='" + padipoojaId + '\'' +
                 ", imgResource=" + imgResource +
+                ", padiMembers=" + padiMembers +
                 '}';
     }
 }

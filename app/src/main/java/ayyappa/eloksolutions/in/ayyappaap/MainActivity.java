@@ -3,7 +3,6 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomBar bottomBar;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = (TextView) findViewById(R.id.textView);
@@ -27,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(@IdRes int tabId) {
 
                 if (tabId == R.id.tab_calls) {
-                    Intent i = new Intent(MainActivity.this, CardViewActivity.class);
-                    startActivity(i);
+
+
+
                 } else if (tabId == R.id.tab_groups) {
 
                     Intent i = new Intent(MainActivity.this, CreateGroup.class);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, PadiPoojaFull.class);
                 startActivity(i);
             } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(MainActivity.this, PadiViewExample.class);
+                    Intent regiser=new Intent(MainActivity.this, PadiPoojaFull.class);
                     startActivity(regiser);
 
 

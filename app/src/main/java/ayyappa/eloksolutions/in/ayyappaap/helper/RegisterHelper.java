@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -11,6 +12,7 @@ import java.net.URL;
 
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
+import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 /**
  * Created by welcome on 6/28/2017.
@@ -57,6 +59,10 @@ public class RegisterHelper {
                 jsonObject.accumulate("city", registerDto.getCity());
                 jsonObject.accumulate("state", registerDto.getState());
                 jsonObject.accumulate("password",registerDto.getPassword());
+                jsonObject.accumulate("lon",registerDto.getLongi());
+                jsonObject.accumulate("lat",registerDto.getLati());
+
+                //  jsonObject.accumulate("loc",registerDto.getLati());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
 
@@ -70,8 +76,14 @@ public class RegisterHelper {
             return result;
         }
         protected void onPostExecute(String result) {
-
-            Log.i(tag, "result is " +result);
+            if (result!=null&&!result.startsWith("ERROR")) {
+                registerDto.setUserId(result);
+                Util.setPreferances(mcontext, registerDto);
+                Log.i(tag, "result is registerDto " +registerDto);
+            }else{
+                Toast.makeText(mcontext, "Not able to Registered", Toast.LENGTH_LONG).show();
+            }
+            Log.i(tag, "result is  " +result);
             progress.dismiss();
         }
 

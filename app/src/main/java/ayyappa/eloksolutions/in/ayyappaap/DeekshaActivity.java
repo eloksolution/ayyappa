@@ -1,18 +1,9 @@
 package ayyappa.eloksolutions.in.ayyappaap;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import ayyappa.eloksolutions.in.ayyappaap.beans.DeekshaUserTask;
-import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 
 
 /**
@@ -22,21 +13,21 @@ import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 
 
 
-    public class DeekshaActivity extends AppCompatActivity implements View.OnClickListener {
+    public class DeekshaActivity extends AppCompatActivity  {
     EditText description;
     TextView fdate, txtdate;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.shedule);
-        ImageView shedule=(ImageView) findViewById(R.id.button);
+            setContentView(R.layout.padicreate);
+       /* ImageView shedule=(ImageView) findViewById(R.id.button);
         final TextView edate=(TextView) findViewById(R.id.txtdate);
         final TextView tdate=(TextView) findViewById(R.id.fdate);
         final TextView desc=(TextView) findViewById(R.id.description);
 
         final Context ctx = this;
-        SharedPreferences preferences = getSharedPreferences(Config.User_ID, MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.userId, MODE_PRIVATE);
        final String memId=preferences.getString("memId", null);
         shedule.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +62,7 @@ import ayyappa.eloksolutions.in.ayyappaap.config.Config;
         if (v == txtdate) {
             DateAndTimePicker.datePickerDialog(this, txtdate);
         }
-
+*/
 
     }
 

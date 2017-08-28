@@ -15,8 +15,6 @@ public class ContactUs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactus);
 
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

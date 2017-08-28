@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,13 +32,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
-import ayyappa.eloksolutions.in.ayyappaap.helper.GetContacts;
-import ayyappa.eloksolutions.in.ayyappaap.helper.GetEvents;
+import ayyappa.eloksolutions.in.ayyappaap.helper.GetEventsHome;
+import ayyappa.eloksolutions.in.ayyappaap.helper.GetGroups;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObject;
 
 
 public class CardViewActivity extends AppCompatActivity {
-
+    private BottomBar bottomBar;
 
     ListView lv;
     Context context;
@@ -68,11 +72,37 @@ public class CardViewActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_action_name);
         // Enabling Up / Back navigation
         actionBar.show();*/
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
 
+                if (tabId == R.id.tab_calls) {
+
+                } else if (tabId == R.id.tab_groups) {
+
+                    Intent i = new Intent(getBaseContext(), GroupList.class);
+                    startActivity(i);
+
+                } else if (tabId == R.id.tab_chats) {
+                    Intent i = new Intent(getBaseContext(), PadiPoojaFull.class);
+                    startActivity(i);
+                }
+                else if (tabId == R.id.tab_home) {
+                    Intent i = new Intent(getBaseContext(),MapsActivity.class);
+                    startActivity(i);
+                } else if (tabId == R.id.tab_profile) {
+                    Intent regiser=new Intent(getBaseContext(), UserView.class);
+                    startActivity(regiser);
+
+                }
+            }
+        });
         context=this;
-        SharedPreferences preferences = getSharedPreferences(Config.User_ID, MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         String deekshaStartDate=preferences.getString("startDate",null);
         String deekshaEndDate=preferences.getString("endDate",null);
+
        /* final ScrollView scrollView=(ScrollView) findViewById(R.id.scrollView);
         scrollView.smoothScrollTo(0, 0);
         scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
@@ -91,6 +121,8 @@ public class CardViewActivity extends AppCompatActivity {
 
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.imgDeeksha);
         final TextView tvDays=(TextView) findViewById(R.id.tvDays);
+        Log.i(TAG,"Deeksha Config.getUserId()"+Config.getUserId());
+        Log.i(TAG,"Deeksha Config.getUserName()"+Config.getFirstName());
 
         if(deekshaStartDate!=null){
             Log.i(TAG,"Deeksha start date"+deekshaStartDate);
@@ -117,6 +149,7 @@ public class CardViewActivity extends AppCompatActivity {
                     startActivity(new Intent(context, DeekshaActivity.class));
                 }
             });
+
         }
 
         songPlayerSetup();
@@ -141,21 +174,22 @@ public class CardViewActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi);
+        RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
-        String url= Config.SERVER_URL+"getevents.php";
-        GetEvents getEvents=new GetEvents(context,url,rvPadi);
+        String url= Config.SERVER_URL+"padipooja/gettoppoojas";
+        GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi);
         getEvents.execute();
-        RecyclerView contact = (RecyclerView) findViewById(R.id.rvContacts);
-        contact.setHasFixedSize(true);
-        LinearLayoutManager lmcontacts = new LinearLayoutManager(this);
-        contact.setLayoutManager(lmcontacts);
-        String url1= Config.SERVER_URL+"get_contacts.php";
-        GetContacts getContacts=new GetContacts(context,url1,contact);
-        getContacts.execute();
 
+        RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups_home);
+        rvGroups.setHasFixedSize(true);
+        LinearLayoutManager groups = new LinearLayoutManager(this);
+        rvGroups.setLayoutManager(groups);
+        String gurl= Config.SERVER_URL+"group/getfirstgroups";
+        GetGroups getGroups=new GetGroups(context,gurl,rvGroups);
+        System.out.println("url for group list"+gurl);
+        getGroups.execute();
         final ImageView ivFull=(ImageView) findViewById(R.id.ivFull);
         ivFull.setOnClickListener(new View.OnClickListener() {
             @Override
