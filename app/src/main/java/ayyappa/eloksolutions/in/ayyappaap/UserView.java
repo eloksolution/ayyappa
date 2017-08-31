@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.DiscussionDTO;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
-import ayyappa.eloksolutions.in.ayyappaap.beans.UserGroupsHelper;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.DiscussionHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.UserViewHelper;
@@ -31,11 +30,12 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.UserViewHelper;
 public class UserView extends CardViewActivity {
     ImageView userImage,discussionCreate;
     TextView userName, userLocation;
-    Button userUpDate;
+    RegisterDTO registerDTO;
     String userId;
     private BottomBar bottomBar;
     Context context;
     int count;
+    TextView contacts;
     String tag="TopicView";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +43,23 @@ public class UserView extends CardViewActivity {
         setContentView(R.layout.myactivities_listview);
         userName=(TextView) findViewById(R.id.user_name);
         userLocation=(TextView) findViewById(R.id.user_location);
-        userUpDate=(Button) findViewById(R.id.user_contacts);
-        Button groups=(Button) findViewById(R.id.user_groups);
+        contacts=(TextView) findViewById(R.id.user_contacts);
+        TextView groups=(TextView) findViewById(R.id.user_groups);
         context=this;
         userId=getIntent().getStringExtra("userId");
         Log.i(tag, "userId is"+userId);
         final Context ctx = this;
 
         UserViewHelper gettopicValue=new UserViewHelper(this);
-        String surl = Config.SERVER_URL+"user/user/5997ee75e4b031b734205da9";
+        String surl = Config.SERVER_URL+"user/user/"+userId;
         System.out.println("url for group topic view list"+surl);
         try {
             String output=gettopicValue.new UserViewTask(surl).execute().get();
             System.out.println("the output from Topic"+output);
             setValuesToTextFields(output);
         }catch (Exception e){}
+
+        FloatingActionButton userUpDate = (FloatingActionButton) findViewById(R.id.fabuser);
         userUpDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,25 +102,45 @@ public class UserView extends CardViewActivity {
 
 
     }
-    public void setFileToDownload(View view){
+    public void userContacts(View view){
+        Intent topicUp = new Intent(this, UserContactList.class);
+        topicUp.putExtra("userId",""+userId);
+        startActivity(topicUp);
 
-        UserGroupsHelper userGroupsHelper= new UserGroupsHelper(this);
-        String surl = Config.SERVER_URL+"user/groups/5997ee75e4b031b734205da9";
-        System.out.println("url for group topic view list"+surl);
-        try {
-            String output=userGroupsHelper.new UserViewTask(surl).execute().get();
-            System.out.println("the output from Topic"+output);
-            setValuesTogroupTextFields(output);
-        }catch (Exception e){}
 
+    }
+    public void userGroups(View view){
+        Intent topicUp = new Intent(this, UserContactList.class);
+        topicUp.putExtra("userId",""+userId);
+        startActivity(topicUp);
+
+
+    }
+    public void userPadipooja(View view){
+        Intent topicUp = new Intent(this, UserContactList.class);
+        topicUp.putExtra("userId",""+userId);
+        startActivity(topicUp);
+
+    }
+    public void userInvite(View view) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, registerDTO.getFirstName()+" is invite to ayyappaApp");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+    public void userFeedBack(View view) {
+        Intent userFeed = new Intent(this, FeedBackForm.class);
+        userFeed.putExtra("userId",""+userId);
+        startActivity(userFeed);
     }
     public void setValuesToTextFields(String result) {
         System.out.println("json xxxx from User Results" + result);
         if (result != null) {
             Gson gson = new Gson();
-            RegisterDTO fromJsonn = gson.fromJson(result, RegisterDTO.class);
-            userName.setText(fromJsonn.getFirstName() + "  " + fromJsonn.getLastName());
-            userLocation.setText(fromJsonn.getCity() + ", " + fromJsonn.getArea());
+             registerDTO = gson.fromJson(result, RegisterDTO.class);
+            userName.setText(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
+            userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
 
 
         }

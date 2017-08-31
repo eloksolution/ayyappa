@@ -1,167 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical"
-    android:layout_marginLeft="0dp"
-    android:layout_marginTop="12dp"
-    android:layout_weight="2">
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:contentScrim="?attr/colorPrimary">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical" >
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginBottom="32dp"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
-                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/user_view"
-                    android:fitsSystemWindows="true"/>
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scrollableView"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:padding="10dp"
+            android:gravity="center" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageButton"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@null"
+                android:onClick="btnCat1"
+                android:src="@drawable/joined"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_below="@+id/imageButton"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="Join" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColor="@android:color/black"
-                    android:text="Suresh Babu"
-                    android:textStyle="bold"
-                    android:textSize="15dp"/>
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_weight="2">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center" >
 
-                    <ImageView
-                        android:id="@+id/fIcon"
-                        android:layout_width="15dp"
-                        android:gravity="center_vertical"
-                        android:layout_height="15dp"
-                        android:src="@drawable/locate"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="14dp"
-                        android:layout_marginTop="2dp"
-                        />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageButton2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@null"
+                android:onClick="btnCat1"
+                android:src="@drawable/group_user"
+            />
 
-                    <TextView
-                        android:id="@+id/user_location"
-                        android:layout_toRightOf="@+id/fIcon"
-                        android:layout_width="fill_parent"
-                        android:layout_height="40dp"
-                        android:text="Moulali, SecunderaBad,\n Telangana,India,500047"
-                        android:layout_marginLeft="20dp"
-                        android:textStyle="bold"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageButton2"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="Like" />
+        </RelativeLayout>
 
-                <LinearLayout
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center" >
 
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#FCF6EB"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageButton1"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@null"
+                android:onClick="btnCat1"
+                android:src="@drawable/event_user" />
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageButton1"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="update" />
+        </RelativeLayout>
+    </LinearLayout>
 
-                    <Button
-
-                        android:id="@+id/user_contacts"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="14dp"
-                        android:text="Contacts"
-                        android:textColor="#666"
-                        android:background="@drawable/round_corner"
-                        android:layout_weight="0.59" />
-
-
-
-                    <Button
-
-                        android:id="@+id/user_groups"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="14dp"
-                        android:text="Groups"
-                        android:background="@drawable/round_corner"
-                        android:textColor="#666"
-                        android:layout_weight="0.20" />
-
-
-                    <Button
-
-                        android:id="@+id/user_Padipooja"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:textColor="#666"
-                        android:layout_marginLeft="14dp"
-                        android:text="Padipooja"
-                        android:background="@drawable/round_corner"
-                        android:layout_weight="0.22" />
-
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#FCF6EB"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_members"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="vertical"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-
-    </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

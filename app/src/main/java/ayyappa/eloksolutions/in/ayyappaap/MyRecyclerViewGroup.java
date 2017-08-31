@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +22,7 @@ public class MyRecyclerViewGroup extends RecyclerView
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DataObjectGroup> mDataset;
     private static MyClickListener myClickListener;
+    TextView keyName;
 
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -30,8 +30,8 @@ public class MyRecyclerViewGroup extends RecyclerView
             .OnClickListener {
         TextView label;
        TextView label2;
-        ImageView imageView;
-        Button joinBtn;
+        ImageView imageView,joinBtn;
+
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
@@ -52,12 +52,11 @@ public class MyRecyclerViewGroup extends RecyclerView
                     view.getContext().startActivity(groupView);
                 }
             });
-            joinBtn = (Button) itemView.findViewById(R.id.joinbtn);
+            joinBtn = (ImageView) itemView.findViewById(R.id.joinbtn);
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    joinEvent(itemView);
 
                 }
             });
@@ -112,9 +111,8 @@ public class MyRecyclerViewGroup extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
        holder.label2.setText(mDataset.get(position).getmText2());
-        holder.imageView.setImageResource(mDataset.get(position).getImgResource());
     }
- 
+
     public void addItem(DataObjectGroup dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);

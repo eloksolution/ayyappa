@@ -26,8 +26,8 @@ private BottomBar bottomBar;
         context=this;
        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-       getSupportActionBar().setTitle("Group");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setTitle("Group List");
+
 
         //ImageView createGroup=(ImageView) findViewById(R.id.add);
 
@@ -78,7 +78,7 @@ private BottomBar bottomBar;
                     Intent i = new Intent(getBaseContext(), MapsActivity.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(getBaseContext(), UserView.class);
+                    Intent regiser=new Intent(getBaseContext(), OwnerView.class);
                     startActivity(regiser);
 
 

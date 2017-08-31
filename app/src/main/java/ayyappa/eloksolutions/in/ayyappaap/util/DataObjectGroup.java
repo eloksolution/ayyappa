@@ -4,20 +4,20 @@ public class DataObjectGroup {
     private String mText1;
     private String mText2;
     private String groupId;
-    private int imgResource;
+    private String imgResource;
 
-    public DataObjectGroup(String text1, String text2, int imgResource, String groupId) {
+    public DataObjectGroup(String text1, String text2, String imgResource, String groupId) {
         mText1 = text1;
         mText2 = text2;
         this.groupId = groupId;
         this.imgResource = imgResource;
     }
 
-    public int getImgResource() {
+    public String getImgResource() {
         return imgResource;
     }
 
-    public void setImgResource(int imgResource) {
+    public void setImgResource(String imgResource) {
         this.imgResource = imgResource;
     }
 

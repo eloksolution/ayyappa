@@ -2,13 +2,14 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,13 +35,10 @@ import ayyappa.eloksolutions.in.ayyappaap.util.DisObject;
 
 public class TopicView extends AppCompatActivity {
     ImageView TopicImage,discussionCreate;
-    TextView topicName, description, noOfJoins;
+    TextView topicName, description;
     EditText addDisscussion;
     RecyclerView rvPadi;
-    Button topicUpDate;
-
-    String topicId;
-
+    String topicId, usersId, firstName, lastName;
     Context context;
     int count;
     String tag="TopicView";
@@ -52,12 +50,19 @@ public class TopicView extends AppCompatActivity {
         topicName=(TextView) findViewById(R.id.topic_view_title);
         description=(TextView) findViewById(R.id.topic_view_desc);
         addDisscussion =(EditText) findViewById(R.id.add_discu);
-        topicUpDate =(Button) findViewById(R.id.but_topic_update);
         context=this;
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId is"+topicId);
         final Context ctx = this;
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabtopic);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent topicUp = new Intent(ctx, TopicUpdate.class);
+                topicUp.putExtra("topicId",""+topicId);
+                startActivity(topicUp);
+            }
+        });
         TopicViewHelper gettopicValue=new TopicViewHelper(this);
         String surl = Config.SERVER_URL+"topic/"+topicId;
         System.out.println("url for group topic view list"+surl);
@@ -66,14 +71,7 @@ public class TopicView extends AppCompatActivity {
             System.out.println("the output from Topic"+output);
             setValuesToTextFields(output);
         }catch (Exception e){}
-        topicUpDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent topicUp = new Intent(ctx, TopicUpdate.class);
-                topicUp.putExtra("topicId",""+topicId);
-                startActivity(topicUp);
-            }
-        });
+
 
         discussionCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +87,10 @@ public class TopicView extends AppCompatActivity {
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
-
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        usersId= preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
     }
 
     public void setValuesToTextFields(String result) {
@@ -142,16 +143,16 @@ public class TopicView extends AppCompatActivity {
         String gname= addDisscussion.getText().toString();
         discussionDTO.setComment(gname);
         discussionDTO.setTopicId(topicId);
-        discussionDTO.setOwnerId("596c75e0a4ff23ccc3e363e1");
-        discussionDTO.setOwnerName("suresh");
+        discussionDTO.setOwnerId(usersId);
+        discussionDTO.setOwnerName(firstName+lastName);
         return discussionDTO;
     }
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(topicId);
-        groupMembers.setUserId("596c75e0a4ff23ccc3e363e1");
-        groupMembers.setFirstname("Rajesh");
-        groupMembers.setLastName("rakesh");
+        groupMembers.setUserId(usersId);
+        groupMembers.setFirstname(firstName);
+        groupMembers.setLastName(lastName);
         return groupMembers;
     }
 

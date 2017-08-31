@@ -6,7 +6,9 @@
     <dimen name="fab_margin">8dp</dimen>
     <dimen name="small_view">1dp</dimen>
     <dimen name="fab_marginn">16dp</dimen>
-    <dimen name="padding_list_row">16dp</dimen>
+
+    <dimen name="padding_list_row">5dp</dimen>
+    <dimen name="padding_list_two">2dp</dimen>
     <dimen name="messages_padding_left">72dp</dimen>
     <dimen name="icon_width_height">40dp</dimen>
     <dimen name="msg_text_primary">16sp</dimen>

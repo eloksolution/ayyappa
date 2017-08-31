@@ -8,8 +8,8 @@ public class TopicDissDTO {
     String dissId;
     String comment;
     String sPostDate;
-    String userId;
     String userName;
+    String userId;
 
     public String getDissId() {
         return dissId;

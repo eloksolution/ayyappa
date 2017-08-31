@@ -125,6 +125,23 @@
             android:hint="City"
             android:inputType="textPostalAddress" />
     </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#b45705"
+        android:text=" Upload image"
+        android:onClick="setFileToUpload"
+        android:id="@+id/add_image"
+        android:textColor="#fff" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Storage Permission"
+        android:id="@+id/buttonRequestPermission"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 
     <Button
         android:layout_width="fill_parent"
@@ -134,6 +151,7 @@
         android:text="Register Here"
         android:id="@+id/butRegister"
         android:textColor="#fff" />
+
 
 </LinearLayout>
     </ScrollView>

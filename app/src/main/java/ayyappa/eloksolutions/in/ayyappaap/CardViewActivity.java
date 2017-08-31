@@ -92,7 +92,7 @@ public class CardViewActivity extends AppCompatActivity {
                     Intent i = new Intent(getBaseContext(),MapsActivity.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(getBaseContext(), UserView.class);
+                    Intent regiser=new Intent(getBaseContext(), OwnerView.class);
                     startActivity(regiser);
 
                 }
@@ -121,8 +121,8 @@ public class CardViewActivity extends AppCompatActivity {
 
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.imgDeeksha);
         final TextView tvDays=(TextView) findViewById(R.id.tvDays);
-        Log.i(TAG,"Deeksha Config.getUserId()"+Config.getUserId());
-        Log.i(TAG,"Deeksha Config.getUserName()"+Config.getFirstName());
+        Log.i(TAG,"Deeksha Config.getUserId()"+preferences.getString("userId", null));
+        Log.i(TAG,"Deeksha Config.getUserName()"+preferences.getString("lastName", null));
 
         if(deekshaStartDate!=null){
             Log.i(TAG,"Deeksha start date"+deekshaStartDate);
@@ -154,7 +154,7 @@ public class CardViewActivity extends AppCompatActivity {
 
         songPlayerSetup();
 
-        final ImageView createPadipooja=(ImageView) findViewById(R.id.imgCreatePadi);
+       /* final ImageView createPadipooja=(ImageView) findViewById(R.id.imgCreatePadi);
         createPadipooja.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +173,7 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(sendIntent);
             }
         });
-
+*/
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);

@@ -42,7 +42,6 @@ public class Registartion extends AppCompatActivity {
     EditText name, description, emailId, password, city, phoneNumber, lastName, area;
     ImageView gImage;
     Spinner gCatagery;
-
     UesrSession session;
     double latti,longi;
     private ProgressDialog progress;
@@ -66,6 +65,7 @@ public class Registartion extends AppCompatActivity {
         phoneNumber=(EditText) findViewById(R.id.etPhoneNumber);
         area=(EditText) findViewById(R.id.etLocation);
         city=(EditText) findViewById(R.id.etCity);
+
         createRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +76,7 @@ public class Registartion extends AppCompatActivity {
                 startActivity(main);
             }
         });
+
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();

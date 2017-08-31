@@ -10,7 +10,7 @@ public class DeekshaRules extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_deeksha_rules);
+        setContentView(R.layout.group_create);
 
     }
 

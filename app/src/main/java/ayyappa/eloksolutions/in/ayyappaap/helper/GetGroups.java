@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ayyappa.eloksolutions.in.ayyappaap.MyRecyclerViewGroup;
-import ayyappa.eloksolutions.in.ayyappaap.R;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectGroup;
@@ -63,7 +62,7 @@ public class GetGroups extends AsyncTask<String, Void, String> {
             List<GroupDTO> fromJson = gson.fromJson(result, type);
             ArrayList results = new ArrayList<DataObjectGroup>();
              for (GroupDTO group : fromJson) {
-                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), R.drawable.ayy1, group.getGroupid());
+                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid());
                 results.add(obj);
 
             }

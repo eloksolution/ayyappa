@@ -85,7 +85,7 @@
         <activity
             android:name=".UserView"
             android:label="User View"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UserUpdate"
             android:label="User Update"
@@ -122,6 +122,19 @@
             android:name=".GroupMembersList"
             android:label="Ayyappa App"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserContactList"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserGroupList"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OwnerView"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme" />
+
 
 
 

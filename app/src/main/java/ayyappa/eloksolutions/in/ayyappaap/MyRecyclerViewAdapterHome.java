@@ -90,7 +90,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_view, parent, false);
+                .inflate(R.layout.main_card, parent, false);
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
     }

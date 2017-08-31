@@ -2,7 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#FCF6EB"
+    android:background="@color/row_activated"
+    android:padding="1dp"
+
     android:layout_height="match_parent">
 <RelativeLayout
     android:layout_width="match_parent"
@@ -12,7 +14,6 @@
     android:layout_height="fill_parent"
     android:layout_below="@+id/tool_bar"
     android:tag="cards main container"
-    android:padding="10dp"
 
     android:orientation="vertical">
 
@@ -21,7 +22,6 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:padding="2dp"
             android:layout_margin="2dp"
             card_view:cardCornerRadius="2dp"
             card_view:contentPadding="2dp"
@@ -40,6 +40,10 @@
                     android:textSize="14dp"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
 
 
             <RelativeLayout
@@ -58,14 +62,17 @@
                     android:layout_marginTop="5dp"/>
             </RelativeLayout>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_view5"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
+            >
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -86,13 +93,17 @@
                     android:textSize="14dp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_view10"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
+            >
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -120,6 +131,11 @@
 
 
         </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
+
     <android.support.v7.widget.CardView
         android:id="@+id/card_view11"
         android:layout_width="match_parent"
@@ -127,7 +143,7 @@
         android:layout_below="@+id/card_view10"
 
         card_view:cardCornerRadius="2dp"
-        card_view:cardUseCompatPadding="true">
+        >
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -155,6 +171,10 @@
 
 
     </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
 
 
     <RelativeLayout
@@ -175,15 +195,17 @@
 
 
     </RelativeLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
 
 
     <android.support.v7.widget.CardView
             android:id="@+id/card_view6"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-
-            card_view:cardUseCompatPadding="true">
+            android:layout_height="50dp">
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -205,6 +227,10 @@
 
 </RelativeLayout>
         </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_row"
+        android:background="@color/view" />
 
     </LinearLayout>
     <include

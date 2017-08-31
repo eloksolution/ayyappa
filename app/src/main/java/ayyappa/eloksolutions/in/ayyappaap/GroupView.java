@@ -2,6 +2,7 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,13 +48,15 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 public class GroupView extends AppCompatActivity {
     ImageView groupImage,topicCrate;
-    TextView groupName, description;
+    TextView groupName, description, noOfJoins,likescount;
     EditText addTopic;
     RecyclerView groupTopics;
-    Button groupJoin, noOfJoins,groupShare, groupUpdate,groupLeav;
-    String groupId, userId;
+    ImageView groupJoin, groupShare, groupUpdate,like;
+    String groupId, userId,firstName,lastName;
+    int likescounts;
     File fileToDownload ;
     AmazonS3 s3;
+
     TransferUtility transferUtility;
     Context context;
     int count;
@@ -67,16 +69,23 @@ public class GroupView extends AppCompatActivity {
         setContentView(R.layout.group_view);
         context=this;
          groupId=getIntent().getStringExtra("groupId");
-        userId=getIntent().getStringExtra("userId");
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+       userId= preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
         Log.i(tag, "groupId is"+groupId);
+        Log.i(tag, "preferences.getString userId is"+groupId+","+firstName+""+lastName);
         groupName = (TextView) findViewById(R.id.group_view_title);
-        groupJoin =(Button) findViewById(R.id.group_join);
+        groupJoin =(ImageView) findViewById(R.id.group_join);
         description = (TextView) findViewById(R.id.group_view_desc);
         addTopic = (EditText) findViewById(R.id.add_topic);
          topicCrate =(ImageView) findViewById(R.id.but_topic);
        groupImage =(ImageView) findViewById(R.id.group_image_view);
-        groupUpdate=(Button) findViewById(R.id.group_update);
-        noOfJoins =(Button) findViewById(R.id.group_like);
+        groupUpdate=(ImageView) findViewById(R.id.group_update);
+        noOfJoins =(TextView) findViewById(R.id.joinedcount);
+        like=(ImageView) findViewById(R.id.group_likes);
+        likescount=(TextView) findViewById(R.id.like_count);
+
         try {
 
         File outdirectory=this.getCacheDir();
@@ -86,7 +95,6 @@ public class GroupView extends AppCompatActivity {
             e.printStackTrace();
         }
         credentialsProvider();
-
 
 
         // callback method to call the setTransferUtility method
@@ -117,8 +125,9 @@ public class GroupView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                groupJoin.setVisibility(View.GONE);
-                joinEvent();
+
+    groupJoin.setVisibility(View.GONE);
+    joinEvent();
 
             }
         });
@@ -285,15 +294,16 @@ public class GroupView extends AppCompatActivity {
         String gdesc= description.getText().toString();
         topicDto.setDescription(gdesc);
        topicDto.setGroupId(groupId);
-        topicDto.setOwner("suresh");
+
+        topicDto.setOwner(firstName);
         return topicDto;
     }
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
-        groupMembers.setUserId("596c75afa4ff23ccc3e363e0");
-        groupMembers.setFirstname("suresh");
-        groupMembers.setLastName("ramesh");
+        groupMembers.setUserId(userId);
+        groupMembers.setFirstname(firstName);
+        groupMembers.setLastName(lastName);
         return groupMembers;
     }
     private void joinEvent() {

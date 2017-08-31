@@ -51,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent i = new Intent(getBaseContext(), MapsActivity.class);
                     startActivity(i);
                 } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(getBaseContext(), UserView.class);
+                    Intent regiser=new Intent(getBaseContext(), OwnerView.class);
                     startActivity(regiser);
 
 

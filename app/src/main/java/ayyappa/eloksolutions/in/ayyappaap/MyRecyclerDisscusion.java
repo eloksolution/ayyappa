@@ -44,7 +44,7 @@ public class MyRecyclerDisscusion extends RecyclerView
                     DisObject dataObject=mDataset.get(getAdapterPosition());
                     Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
                     Intent topicView=new Intent(view.getContext(), UserView.class);
-                    topicView.putExtra("userId",dataObject.getUserId());
+                    topicView.putExtra("userId",dataObject.getUserName());
                     Log.i(LOG_TAG, "topicId is imag eclick :"+dataObject.getUserId());
                     view.getContext().startActivity(topicView);
                 }
@@ -53,7 +53,7 @@ public class MyRecyclerDisscusion extends RecyclerView
 
         @Override
         public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
+
 
         }
 
@@ -61,7 +61,6 @@ public class MyRecyclerDisscusion extends RecyclerView
     }
 
     public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
     }
 
     public MyRecyclerDisscusion(ArrayList<DisObject> myDataset) {
@@ -80,7 +79,7 @@ public class MyRecyclerDisscusion extends RecyclerView
  
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getUserName());
+        holder.label.setText(mDataset.get(position).getUserId());
         holder.label3.setText(mDataset.get(position).getComment());
        holder.label2.setText(mDataset.get(position).getsPostDate());
         holder.imageView.setImageResource(mDataset.get(position).getImgResource());

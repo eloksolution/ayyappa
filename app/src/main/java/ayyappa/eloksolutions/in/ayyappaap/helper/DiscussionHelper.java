@@ -54,7 +54,7 @@ public class DiscussionHelper {
                 jsonObject.accumulate("ownerId", discussionDto.getOwnerId());
                 jsonObject.accumulate("ownerName", discussionDto.getOwnerName());
                 json = jsonObject.toString();
-                System.out.println("Json is" + json);
+                System.out.println("Json discussion helper is" + json);
 
             }
             catch (Exception e) {
