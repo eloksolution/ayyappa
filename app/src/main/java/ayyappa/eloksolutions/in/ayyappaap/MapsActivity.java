@@ -2,18 +2,19 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private BottomBar bottomBar;
@@ -25,37 +26,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(3);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(@IdRes int tabId) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_home1:
+                        Intent intent1 = new Intent(MapsActivity.this, CardViewActivity.class);
+                        startActivity(intent1);
+                        break;
 
-                if (tabId == R.id.tab_calls) {
+                    case R.id.ic_groups:
+                        Intent intent3 = new Intent(MapsActivity.this, GroupList.class);
+                        startActivity(intent3);
+                        break;
 
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(MapsActivity.this, PadiPoojaFull.class);
+                        startActivity(intent2);
+                        break;
 
+                    case R.id.ic_center_focus:
 
-                } else if (tabId == R.id.tab_groups) {
+                        break;
 
-                    Intent i = new Intent(getBaseContext(), GroupList.class);
-                    startActivity(i);
-                } else if (tabId == R.id.tab_chats) {
-                    Intent i = new Intent(getBaseContext(), PadiPoojaFull.class);
-                    startActivity(i);
-
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(MapsActivity.this, OwnerView.class);
+                        startActivity(intent4);
+                        break;
                 }
-                else if (tabId == R.id.tab_home) {
-
-                    Intent i = new Intent(getBaseContext(), MapsActivity.class);
-                    startActivity(i);
-                } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(getBaseContext(), OwnerView.class);
-                    startActivity(regiser);
 
 
-                }
+                return false;
             }
         });
 

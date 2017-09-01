@@ -23,6 +23,7 @@ public class MyRecyclerViewGroup extends RecyclerView
     private ArrayList<DataObjectGroup> mDataset;
     private static MyClickListener myClickListener;
     TextView keyName;
+    String groupId, userId, firstName, lastName;
 
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -31,7 +32,6 @@ public class MyRecyclerViewGroup extends RecyclerView
         TextView label;
        TextView label2;
         ImageView imageView,joinBtn;
-
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
@@ -52,11 +52,14 @@ public class MyRecyclerViewGroup extends RecyclerView
                     view.getContext().startActivity(groupView);
                 }
             });
+
             joinBtn = (ImageView) itemView.findViewById(R.id.joinbtn);
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    DataObjectGroup dataObject=mDataset.get(getAdapterPosition());
+                  groupId =dataObject.getGroupId();
+                   joinEvent(itemView);
 
                 }
             });
@@ -79,13 +82,18 @@ public class MyRecyclerViewGroup extends RecyclerView
            String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
 
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
+
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
-        groupMembers.setGroupId("");
+        groupMembers.setGroupId(groupId);
         groupMembers.setUserId(Config.getUserId());
         groupMembers.setFirstname(Config.getFirstName());
+        Log.i(LOG_TAG,"Config.getUserId()"+groupId);
         groupMembers.setLastName(Config.getLastName());
         return groupMembers;
     }

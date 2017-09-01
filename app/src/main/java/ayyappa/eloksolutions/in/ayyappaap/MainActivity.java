@@ -2,53 +2,89 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
-    private TextView textView;
-    private BottomBar bottomBar;
+    private SectionsPageAdapter mSectionsPageAdapter;
+
+    private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = (TextView) findViewById(R.id.textView);
 
-        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_assignment);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_autorenew);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_file);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(@IdRes int tabId) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_home1:
 
-                if (tabId == R.id.tab_calls) {
+                        break;
 
+                    case R.id.ic_groups:
+                        Intent intent1 = new Intent(MainActivity.this, GroupList.class);
+                        startActivity(intent1);
+                        break;
 
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(MainActivity.this, PadiPoojaFull.class);
+                        startActivity(intent2);
+                        break;
 
-                } else if (tabId == R.id.tab_groups) {
+                    case R.id.ic_center_focus:
+                        Intent intent3 = new Intent(MainActivity.this, MapsActivity.class);
+                        startActivity(intent3);
+                        break;
 
-                    Intent i = new Intent(MainActivity.this, CreateGroup.class);
-                    startActivity(i);
-                } else if (tabId == R.id.tab_chats) {
-                    Intent i = new Intent(MainActivity.this, CreatePadiPooja.class);
-                    startActivity(i);
-
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(MainActivity.this, OwnerView.class);
+                        startActivity(intent4);
+                        break;
                 }
-             else if (tabId == R.id.tab_home) {
-
-                Intent i = new Intent(MainActivity.this, PadiPoojaFull.class);
-                startActivity(i);
-            } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(MainActivity.this, PadiPoojaFull.class);
-                    startActivity(regiser);
 
 
-                }
+                return false;
             }
         });
+
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new Tab1Fragment());
+        adapter.addFragment(new Tab2Fragment());
+        adapter.addFragment(new Tab3Fragment());
+        viewPager.setAdapter(adapter);
+    }
+
 }

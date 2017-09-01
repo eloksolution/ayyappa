@@ -7,8 +7,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +21,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -38,7 +36,10 @@ import ayyappa.eloksolutions.in.ayyappaap.util.DataObject;
 
 
 public class CardViewActivity extends AppCompatActivity {
-    private BottomBar bottomBar;
+
+    private SectionsPageAdapter mSectionsPageAdapter;
+
+    private ViewPager mViewPager;
 
     ListView lv;
     Context context;
@@ -72,30 +73,45 @@ public class CardViewActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_action_name);
         // Enabling Up / Back navigation
         actionBar.show();*/
-        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+
+        // Set up the ViewPager with the sections adapter.
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(@IdRes int tabId) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_home1:
 
-                if (tabId == R.id.tab_calls) {
+                        break;
 
-                } else if (tabId == R.id.tab_groups) {
+                    case R.id.ic_groups:
+                        Intent intent1 = new Intent(CardViewActivity.this, GroupList.class);
+                        startActivity(intent1);
+                        break;
 
-                    Intent i = new Intent(getBaseContext(), GroupList.class);
-                    startActivity(i);
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(CardViewActivity.this, PadiPoojaFull.class);
+                        startActivity(intent2);
+                        break;
 
-                } else if (tabId == R.id.tab_chats) {
-                    Intent i = new Intent(getBaseContext(), PadiPoojaFull.class);
-                    startActivity(i);
+                    case R.id.ic_center_focus:
+                        Intent intent3 = new Intent(CardViewActivity.this, MapsActivity.class);
+                        startActivity(intent3);
+                        break;
+
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(CardViewActivity.this, OwnerView.class);
+                        startActivity(intent4);
+                        break;
                 }
-                else if (tabId == R.id.tab_home) {
-                    Intent i = new Intent(getBaseContext(),MapsActivity.class);
-                    startActivity(i);
-                } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(getBaseContext(), OwnerView.class);
-                    startActivity(regiser);
 
-                }
+
+                return false;
             }
         });
         context=this;

@@ -8,6 +8,7 @@ public class  Config {
    String DISPLAY_MESSAGE_ACTION ="info.activities.services.myarea.DISPLAY_MESSAGE";
     String EXTRA_MESSAGE = "message";
     public  static String APP_PREFERENCES="ayyappa";
+
     public  static String USER_KEY="User_ID";
     public  static String userId;
     public  static String firstName;

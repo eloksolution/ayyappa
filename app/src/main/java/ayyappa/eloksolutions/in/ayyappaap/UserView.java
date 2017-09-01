@@ -3,16 +3,18 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.concurrent.ExecutionException;
 
@@ -47,7 +49,7 @@ public class UserView extends CardViewActivity {
         TextView groups=(TextView) findViewById(R.id.user_groups);
         context=this;
         userId=getIntent().getStringExtra("userId");
-        Log.i(tag, "userId is"+userId);
+        Log.i(tag, "userId is getStringExtra(\"userId\")"+userId);
         final Context ctx = this;
 
         UserViewHelper gettopicValue=new UserViewHelper(this);
@@ -69,37 +71,44 @@ public class UserView extends CardViewActivity {
             }
         });
 
-        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(@IdRes int tabId) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_home1:
+                        Intent intent1 = new Intent(UserView.this, CardViewActivity.class);
+                        startActivity(intent1);
+                        break;
 
-                if (tabId == R.id.tab_calls) {
+                    case R.id.ic_groups:
 
+                        break;
 
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(UserView.this, PadiPoojaFull.class);
+                        startActivity(intent2);
+                        break;
 
-                } else if (tabId == R.id.tab_groups) {
+                    case R.id.ic_center_focus:
+                        Intent intent3 = new Intent(UserView.this, MapsActivity.class);
+                        startActivity(intent3);
+                        break;
 
-                    Intent i = new Intent(getBaseContext(), GroupList.class);
-                    startActivity(i);
-                } else if (tabId == R.id.tab_chats) {
-                    Intent i = new Intent(getBaseContext(), PadiPoojaFull.class);
-                    startActivity(i);
-
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(UserView.this, OwnerView.class);
+                        startActivity(intent4);
+                        break;
                 }
-                else if (tabId == R.id.tab_home) {
-
-                    Intent i = new Intent(getBaseContext(), MapsActivity.class);
-                    startActivity(i);
-                } else if (tabId == R.id.tab_profile) {
-                    Intent regiser=new Intent(getBaseContext(), UserView.class);
-                    startActivity(regiser);
 
 
-                }
+                return false;
             }
         });
-
 
     }
     public void userContacts(View view){
@@ -192,7 +201,6 @@ public class UserView extends CardViewActivity {
 
     private boolean checkValidation() {
         boolean ret = true;
-
 
         return ret;
     }
