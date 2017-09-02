@@ -25,7 +25,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label, label2, count, time;
+        TextView label, label2, count, time,location;
         ImageView imageView;
         Button joinBtn;
  
@@ -35,6 +35,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             label2 = (TextView) itemView.findViewById(R.id.textView2);
             count  =(TextView) itemView.findViewById(R.id.badge_notification);
             time=(TextView) itemView.findViewById(R.id.date_time);
+            location=(TextView) itemView.findViewById(R.id.location);
             Log.i(LOG_TAG, "Adding Listener");
 
             itemView.setOnClickListener(this);
@@ -100,6 +101,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
         holder.time.setText(mDataset.get(position).getDate());
+        holder.location.setText(mDataset.get(position).getLocation());
 
         Log.i(LOG_TAG, "Adding description :"+mDataset.get(position).getmText2());
         holder.imageView.setImageResource(mDataset.get(position).getImgResource());

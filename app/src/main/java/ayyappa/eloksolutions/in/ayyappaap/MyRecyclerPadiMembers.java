@@ -43,7 +43,7 @@ public class MyRecyclerPadiMembers extends RecyclerView
                     Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
                     Intent topicView=new Intent(view.getContext(), UserView.class);
                     topicView.putExtra("userId",dataObject.getUserId());
-                    Log.i(LOG_TAG, "topicId is imag eclick :"+dataObject.getUserId());
+                    Log.i(LOG_TAG, "userid padipooja is imag eclick :"+dataObject.getUserId());
                     view.getContext().startActivity(topicView);
                 }
             });

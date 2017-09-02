@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +59,8 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     ImageView edit,delete;
     ImageView padiImage;
     ImageButton btnInvite;
-    Button leavebtn,upDate, joinbtn;
+    ImageView upDate, joinbtn;
+    Button leavebtn;
     CardView card_view;
     String padiPoojaId,REG_TOKEN,ownerId, memId, name,sharesms,eventnamesms;
     String tag="PadiPoojaView";
@@ -97,7 +99,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         location = (TextView)findViewById(R.id.location);
         description = (TextView)findViewById(R.id.description);
         padiImage=(ImageView) findViewById(R.id.padi_image_view);
-        upDate=(Button) findViewById(R.id.update);
+        upDate=(ImageView) findViewById(R.id.update);
         no_of_mem = (TextView)findViewById(R.id.joins_view);
       //  tvname = (TextView)findViewById(R.id.hostmember);
         card_view = (CardView)findViewById(R.id.card_view);
@@ -109,9 +111,20 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         // delete = (ImageView)findViewById(R.id.delete);
       //  show = (ImageButton) findViewById(R.id.show);
 //        btnInvite.setOnClickListener(this);
-        joinbtn=(Button) findViewById(R.id.joinbtn);
-        joinbtn.setOnClickListener(this);
+        joinbtn=(ImageView) findViewById(R.id.joiinbtn);
         upDate.setOnClickListener(this);
+        joinbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                joinbtn.setBackgroundColor(Color.BLACK);
+                joinEvent();
+                }
+
+
+        });
+
+
         preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
 
         // hide = (ImageButton) findViewById(R.id.hide);
@@ -186,6 +199,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
         });
     }
+
     public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
 
         // Create an S3 client
@@ -267,8 +281,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         }
         if (v == joinbtn) {
 
-            joinbtn.setVisibility(View.GONE);
-            joinEvent();
+
 
         }
         if (v == leavebtn) {
@@ -411,11 +424,15 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     }
 
     private EventMembers buildDTOObject() {
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        String userId=preferences.getString("userId",null);
+        String firstName=preferences.getString("firstName",null);
+        String lastName=preferences.getString("lastName",null);
         EventMembers eventMembers = new EventMembers();
         eventMembers.setPadiId(padiPoojaId);
-        eventMembers.setUserId("596c75afa4ff23ccc3e363e0");
-        eventMembers.setFirstName("suresh");
-        eventMembers.setLastName("Babu");
+        eventMembers.setUserId(userId);
+        eventMembers.setFirstName(firstName);
+        eventMembers.setLastName(lastName);
         eventMembers.setPadiName(eventnamesms);
 
         return eventMembers;

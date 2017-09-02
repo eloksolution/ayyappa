@@ -93,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         super.onResume();
 
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
     }
     @Override
     protected void onPause() {

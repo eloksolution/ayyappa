@@ -82,58 +82,58 @@ public class Registartion extends AppCompatActivity {
         getLocation();
     }
 
-     void getLocation() {
-         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                 (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
-         } else {
-             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-             if (location != null) {
-                 latti = location.getLatitude();
-                  longi = location.getLongitude();
+            if (location != null) {
+                latti = location.getLatitude();
+                longi = location.getLongitude();
 
-                 ((TextView) findViewById(R.id.longitude)).
-                         setText("Current Location is :" + latti + "," + longi);
-                 Geocoder gc= new Geocoder(this, Locale.getDefault());
-                 // TextView addr = (TextView) main.findViewById(R.id.editText2);
-                 String result="x03";
-                 try {
-                     List<Address> addressList = gc.getFromLocation(latti,
-                             longi, 1);
+                ((TextView) findViewById(R.id.longitude)).
+                        setText("Current Location is :" + latti + "," + longi);
+                Geocoder gc= new Geocoder(this, Locale.getDefault());
+                // TextView addr = (TextView) main.findViewById(R.id.editText2);
+                String result="x03";
+                try {
+                    List<Address> addressList = gc.getFromLocation(latti,
+                            longi, 1);
 
-                     if (addressList != null && addressList.size() > 0) {
-                         Address address = addressList.get(0);
-                         StringBuilder sb = new StringBuilder();
-                         for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                             sb.append(address.getAddressLine(i)).append("\n");
-                         }
-                         sb.append(address.getLocality()).append("\n");
-                         sb.append(address.getPostalCode()).append("\n");
-                         sb.append(address.getCountryName());
-                         result = sb.toString();
-                         area.setText(result);
+                    if (addressList != null && addressList.size() > 0) {
+                        Address address = addressList.get(0);
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                            sb.append(address.getAddressLine(i)).append("\n");
+                        }
+                        sb.append(address.getLocality()).append("\n");
+                        sb.append(address.getPostalCode()).append("\n");
+                        sb.append(address.getCountryName());
+                        result = sb.toString();
+                        area.setText(result);
 
-                     }else {
-                         ((TextView) findViewById(R.id.textView)).
-                                 setText("Unable to find current location . Try again later");
-                     }
+                    }else {
+                        ((TextView) findViewById(R.id.textView)).
+                                setText("Unable to find current location . Try again later");
+                    }
 
 
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                 }
-                 // addr.setText("Address is"+result);
-             }else{
-                 //  text.setText("Unabletofind");
-                 System.out.println("Unable");
-             }
-             }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // addr.setText("Address is"+result);
+            }else{
+                //  text.setText("Unabletofind");
+                System.out.println("Unable");
+            }
+        }
 
-         }
+    }
 
 
     private String saveEventToServer() {
@@ -159,7 +159,7 @@ public class Registartion extends AppCompatActivity {
         return null;
     }
     private RegisterDTO buildDTOObject() {
-     RegisterDTO registerDto=new RegisterDTO();
+        RegisterDTO registerDto=new RegisterDTO();
 
         String rname= name.getText().toString();
         registerDto.setFirstName(rname);
@@ -207,7 +207,7 @@ public class Registartion extends AppCompatActivity {
 
 
 
-        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
