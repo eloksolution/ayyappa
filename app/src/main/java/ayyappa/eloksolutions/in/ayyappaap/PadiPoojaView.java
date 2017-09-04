@@ -147,9 +147,11 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             String output=eventViewHelper.new Eventview(surl).execute().get();
             System.out.println("the output from PadiPooja"+output);
             setValuesToTextFields(output);
-            System.out.println("groupDTO.getImagePath()"+eventDTO.getImagePath());
-            setFileToDownload("padipooja/P_671_1504026686082");
-        }catch (Exception e){}
+            System.out.println("eventDTO.getImagePath()"+eventDTO.getImagePath());
+            setFileToDownload(eventDTO.getImagePath());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
         rvPadi.setHasFixedSize(true);

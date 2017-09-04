@@ -2,47 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_feedback"
-
-        app:showAsAction="always"
-        android:icon="@drawable/ic_feedback"
-        android:title="Feedback"/>
-    <item
-        android:id="@+id/action_home"
-
-        app:showAsAction="always"
-        android:icon="@drawable/home1"
-        android:title="Home">
-    </item>
-    <item
-        android:id="@+id/action_rules"
-
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/rules"
-        android:title="Deksha rules">
-    </item>
-    <item
-        android:id="@+id/contactus"
-
-        app:showAsAction="ifRoom"
-
-        android:title="Contact us">
-    </item>
-    <item
-        android:id="@+id/group"
-
-        app:showAsAction="ifRoom"
-
-        android:title="group">
-    </item>
-    <item
-        android:id="@+id/group_list"
-
-        app:showAsAction="ifRoom"
-
-        android:title="Group List">
-    </item>
 
 
 </menu>

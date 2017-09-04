@@ -53,7 +53,7 @@ public class CreatePadiPoojaHelper {
                 jsonObject.accumulate("time", eventDTO.getTime());
                 jsonObject.accumulate("memId", eventDTO.getMemId());
                 jsonObject.accumulate("name", eventDTO.getOwnerName());
-               // jsonObject.accumulate("imagePath", eventDTO.getImagePath());
+                jsonObject.accumulate("imgPath", eventDTO.getImagePath());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
             } catch (Exception e) {

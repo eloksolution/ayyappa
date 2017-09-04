@@ -13,6 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.roughike.bottombar.BottomBar;
 
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
@@ -25,6 +31,8 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.GetEvents;
 public class PadiPoojaFull extends CardViewActivity {
     Context context;
     private BottomBar bottomBar;
+    AmazonS3 s3;
+    TransferUtility transferUtility;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +45,7 @@ public class PadiPoojaFull extends CardViewActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"padipooja/getpoojas";
-        GetEvents getEvents=new GetEvents(context,url,rvPadi);
+        GetEvents getEvents=new GetEvents(context,url,rvPadi,s3,transferUtility);
         getEvents.execute();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_padi);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,5 +94,29 @@ public class PadiPoojaFull extends CardViewActivity {
             }
         });
     }
+    public void credentialsProvider(){
 
+        // Initialize the Amazon Cognito credentials provider
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
+                Regions.AP_NORTHEAST_1 // Region
+        );
+
+        setAmazonS3Client(credentialsProvider);
+    }
+
+    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
+
+        // Create an S3 client
+        s3 = new AmazonS3Client(credentialsProvider);
+
+        // Set the region of your S3 bucket
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+    }
+
+    public void setTransferUtility(){
+        transferUtility = new TransferUtility(s3, getApplicationContext());
+    }
 }

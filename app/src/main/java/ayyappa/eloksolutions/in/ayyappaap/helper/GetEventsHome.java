@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ayyappa.eloksolutions.in.ayyappaap.MyRecyclerViewAdapterHome;
-import ayyappa.eloksolutions.in.ayyappaap.R;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.EventDTO;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
@@ -26,11 +27,15 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvPadi;
+    AmazonS3 s3;
+    TransferUtility transferUtility;
 
-    public GetEventsHome(Context mcontext, String surl, RecyclerView rvPadi) {
+    public GetEventsHome(Context mcontext, String surl, RecyclerView rvPadi, AmazonS3 s3, TransferUtility transferUtility) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvPadi=rvPadi;
+        this.s3=s3;
+        this.transferUtility=transferUtility;
     }
         @Override
         protected void onPreExecute() {
@@ -66,10 +71,10 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                     int memberSize=0;
                     if(padiMembers !=null)
                         memberSize=padiMembers.size();
-                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), R.drawable.ayy1,event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation());
+                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation());
                     results.add(obj);
                 }
-                MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results);
+                MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results,mcontext,s3,transferUtility);
                 rvPadi.setAdapter(mAdapter);
             }
         }

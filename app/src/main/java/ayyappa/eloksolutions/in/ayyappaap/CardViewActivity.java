@@ -3,9 +3,7 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,14 +12,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,9 +38,6 @@ import ayyappa.eloksolutions.in.ayyappaap.util.DataObject;
 
 
 public class CardViewActivity extends AppCompatActivity {
-
-
-
 
     ListView lv;
     Context context;
@@ -57,7 +57,8 @@ public class CardViewActivity extends AppCompatActivity {
     public static int [] moviesImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
     public static String [] moviesNames={"Ayyappa Swamy Janma Rahasyam Telugu Movie 2014","Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan","Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith","Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas","Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji","Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
     public static String [] moviesid={"vxpEMuM1eBc","hRtuGEQmm1E","4wjuDG7WXY8","FTBLd2zz8IU","o4vv3PN45Eo","TfT8w5v8KSY"};
-
+    AmazonS3 s3;
+    TransferUtility transferUtility;
     RecyclerView mRecyclerView;
     private static String LOG_TAG = "CardViewActivity";
 
@@ -65,15 +66,7 @@ public class CardViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view);
-       /* ActionBar actionBar = getSupportActionBar();
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_action_name);
-        // Enabling Up / Back navigation
-        actionBar.show();*/
-
         // Set up the ViewPager with the sections adapter.
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -116,22 +109,10 @@ public class CardViewActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         String deekshaStartDate=preferences.getString("startDate",null);
         String deekshaEndDate=preferences.getString("endDate",null);
+        credentialsProvider();
+        // callback method to call the setTransferUtility method
+        setTransferUtility();
 
-       /* final ScrollView scrollView=(ScrollView) findViewById(R.id.scrollView);
-        scrollView.smoothScrollTo(0, 0);
-        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
-            @Override
-            public void onGlobalLayout() {
-                scrollView.fullScroll(View.FOCUS_UP);
-            }
-        });*/
-
-    /*    lv=(ListView) findViewById(R.id.lvSongs);
-        lv.setAdapter(new CustomAdapter(context, songNames, moviesImages));
-
-        lv=(ListView) findViewById(R.id.lvMovies);
-        lv.setAdapter(new CustomAdapter(context, moviesNames, moviesImages));
-    */
 
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.imgDeeksha);
         final TextView tvDays=(TextView) findViewById(R.id.tvDays);
@@ -166,34 +147,15 @@ public class CardViewActivity extends AppCompatActivity {
 
         }
 
-        songPlayerSetup();
 
-       /* final ImageView createPadipooja=(ImageView) findViewById(R.id.imgCreatePadi);
-        createPadipooja.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, CreatePadiPooja.class));
-            }
-        });
 
-        final ImageView imgInvite=(ImageView) findViewById(R.id.imgInvite);
-        imgInvite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "You are invited to experience Ayyappa Swamy app.");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-            }
-        });
-*/
+
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"padipooja/gettoppoojas";
-        GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi);
+        GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi,s3, transferUtility);
         getEvents.execute();
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups_home);
@@ -201,17 +163,10 @@ public class CardViewActivity extends AppCompatActivity {
         LinearLayoutManager groups = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(groups);
         String gurl= Config.SERVER_URL+"group/getfirstgroups";
-        GetGroups getGroups=new GetGroups(context,gurl,rvGroups);
+        GetGroups getGroups=new GetGroups(context,gurl,rvGroups, s3, transferUtility);
         System.out.println("url for group list"+gurl);
         getGroups.execute();
-        final ImageView ivFull=(ImageView) findViewById(R.id.ivFull);
-        ivFull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            //    Intent songsIntent = new Intent(context,SongsActivity.class);
-               // startActivity(songsIntent);
-            }
-        });
+
         final ImageView moviFull=(ImageView) findViewById(R.id.PadiFull);
         moviFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,91 +191,38 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
+
+    }
+    public void credentialsProvider(){
+
+        // Initialize the Amazon Cognito credentials provider
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
+                Regions.AP_NORTHEAST_1 // Region
+        );
+
+        setAmazonS3Client(credentialsProvider);
     }
 
+    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
+
+        // Create an S3 client
+        s3 = new AmazonS3Client(credentialsProvider);
+
+        // Set the region of your S3 bucket
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+    }
+
+    public void setTransferUtility(){
+        transferUtility = new TransferUtility(s3, getApplicationContext());
+    }
 
     public int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 
-    private void songPlayerSetup() {
-        MediaPlayer.OnCompletionListener mediaListener = getOnCompletionListener();
-        mediaPlayer = MediaPlayer.create(this, R.raw.song1);
-        mediaPlayer.setOnCompletionListener(mediaListener);
-        long finalTime = mediaPlayer.getDuration();
-
-        final TextView tvSongName = (TextView) this.findViewById(R.id.tvSongName);
-
-        final ImageView play = (ImageView) findViewById(R.id.ibplay);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isPlayOrPause) {
-                    mediaPlayer.start();
-                    int timeElapsed = mediaPlayer.getCurrentPosition();
-                    Log.i(TAG, "Time elapsed " + timeElapsed);
-                    play.setImageResource(R.drawable.pause1);
-                    isPlayOrPause=false;
-                }else {
-                    mediaPlayer.pause();
-                    int timeElapsed = mediaPlayer.getCurrentPosition();
-                    Log.i(TAG, "Time elapsed " + timeElapsed);
-                    play.setImageResource(R.drawable.play);
-                    isPlayOrPause=true;
-                }
-            }
-        });
-
-        ImageView next = (ImageView) findViewById(R.id.ibnext);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    mediaPlayer.release();
-                    currentTrack++;
-                    currentTrack=currentTrack%(songs.length);
-                    Log.i(TAG,"CURRENT Track "+currentTrack);
-                    setupMediaPlayer(tvSongName,songs[currentTrack],songNames[currentTrack]);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
-
-        ImageView prev = (ImageView) findViewById(R.id.ibprev);
-        prev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    mediaPlayer.release();;
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    currentTrack--;
-                    if(currentTrack<0)currentTrack=songs.length-1;
-                    currentTrack=currentTrack%(songs.length);
-                    Log.i(TAG,"CURRENT Track "+currentTrack);
-                    mediaPlayer.setDataSource(context, Uri.parse("android.resource://"+ context.getPackageName() + "/raw/"+songs[currentTrack]));
-                    tvSongName.setText(songNames[currentTrack]);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
-
-    private void setupMediaPlayer(TextView tvSongName,int songResourceId,String songName) throws IOException {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setDataSource(context, Uri.parse("android.resource://"+ context.getPackageName() + "/raw/"+songResourceId));
-        tvSongName.setText(songName);
-        mediaPlayer.prepare();
-        mediaPlayer.start();
-    }
 
 
     @Override
@@ -339,49 +241,4 @@ public class CardViewActivity extends AppCompatActivity {
         return results;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_items, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-            case R.id.action_feedback:
-                startActivity(new Intent(this, FeedBackForm.class));
-                return true;
-            case R.id.action_home:
-                startActivity(new Intent(this, CardViewActivity.class));
-               // startActivity(new Intent(this, CarousalActivity.class));
-                return true;
-            case R.id.action_rules:
-                startActivity(new Intent(this, DeekshaRules.class));
-                return true;
-            case R.id.contactus:
-                startActivity(new Intent(this, ContactUs.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @NonNull
-    private MediaPlayer.OnCompletionListener getOnCompletionListener() {
-
-        return new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer arg0) {
-                arg0.release();
-                currentTrack++;
-                currentTrack=currentTrack%(songs.length);
-                Log.i(TAG,"CURRENT Track "+currentTrack);
-                arg0 = MediaPlayer.create(getApplicationContext(), songs[currentTrack]);
-                arg0.setOnCompletionListener(this);
-                arg0.start();
-            }
-        };
-    }
 }

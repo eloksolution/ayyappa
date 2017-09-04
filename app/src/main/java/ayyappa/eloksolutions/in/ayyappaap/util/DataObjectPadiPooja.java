@@ -4,27 +4,28 @@ public class DataObjectPadiPooja {
     private String mText1;
     private String mText2;
     private String padipoojaId;
-    private int imgResource;
-    private int padiMembers;
+    private String imgResource;
+    private int memberSize;
     private String date;
     private String location;
-    public DataObjectPadiPooja(String text1, String text2, int imgResource, String padipoojaId, int padiMembers, String date, String location) {
+    public DataObjectPadiPooja(String text1, String text2, String imgResource, String padipoojaId, int memberSize, String date, String location) {
         mText1 = text1;
         mText2 = text2;
         this.padipoojaId = padipoojaId;
         this.imgResource = imgResource;
-        this.padiMembers= padiMembers;
+        this.memberSize= memberSize;
         this.date=date;
         this.location=location;
 
 
     }
 
-    public int getImgResource() {
+
+    public String getImgResource() {
         return imgResource;
     }
 
-    public void setImgResource(int imgResource) {
+    public void setImgResource(String imgResource) {
         this.imgResource = imgResource;
     }
 
@@ -52,12 +53,12 @@ public class DataObjectPadiPooja {
         this.padipoojaId = padipoojaId;
     }
 
-    public int getPadiMembers() {
-        return padiMembers;
+    public int getMemberSize() {
+        return memberSize;
     }
 
-    public void setPadiMembers(int padiMembers) {
-        this.padiMembers = padiMembers;
+    public void setMemberSize(int memberSize) {
+        this.memberSize = memberSize;
     }
 
     public String getDate() {
@@ -83,7 +84,7 @@ public class DataObjectPadiPooja {
                 ", mText2='" + mText2 + '\'' +
                 ", padipoojaId='" + padipoojaId + '\'' +
                 ", imgResource=" + imgResource +
-                ", padiMembers=" + padiMembers +
+                ", memberSize=" + memberSize +
                 ",location=" +location+
                 '}';
     }

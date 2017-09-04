@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,6 +18,7 @@ import java.util.List;
 import ayyappa.eloksolutions.in.ayyappaap.MyRecyclerViewGroup;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
+import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectGroup;
 
 
@@ -28,11 +31,15 @@ public class GetGroups extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
+    AmazonS3 s3;
+    TransferUtility transferUtility;
 
-    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups) {
+    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups, AmazonS3 s3, TransferUtility transferUtility) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvGroups=rvGroups;
+        this.s3=s3;
+        this.transferUtility=transferUtility;
     }
     @Override
     protected void onPreExecute() {
@@ -60,13 +67,19 @@ public class GetGroups extends AsyncTask<String, Void, String> {
             Gson gson = new Gson();
             Type type = new TypeToken<List<GroupDTO>>() { }.getType();
             List<GroupDTO> fromJson = gson.fromJson(result, type);
-            ArrayList results = new ArrayList<DataObjectGroup>();
+            ArrayList<DataObjectGroup> results = new ArrayList<DataObjectGroup>();
              for (GroupDTO group : fromJson) {
-                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid());
+                 List<RegisterDTO> groupMembers=group.getGroupMembers();
+                 int memberSize=0;
+                 if(groupMembers !=null)
+                     memberSize=groupMembers.size();
+                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize);
                 results.add(obj);
+           }
+            for(DataObjectGroup dog:results){
 
             }
-            MyRecyclerViewGroup mAdapter = new MyRecyclerViewGroup(results);
+            MyRecyclerViewGroup mAdapter = new MyRecyclerViewGroup(results,mcontext,s3,transferUtility);
             rvGroups.setAdapter(mAdapter);
         }
     }

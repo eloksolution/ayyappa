@@ -24,7 +24,7 @@ public class EventDTO {
 	private String city;
 	private String state;
 	private String country;
-	private String imagePath;
+	private String imgPath;
 	private String memId;
 
 
@@ -202,11 +202,11 @@ public class EventDTO {
 	}
 
 	public String getImagePath() {
-		return imagePath;
+		return imgPath;
 	}
 
 	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+		this.imgPath = imagePath;
 	}
 
 	@Override

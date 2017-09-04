@@ -166,26 +166,9 @@ public class GroupView extends AppCompatActivity {
 
 
     }
+
     public void setFileToDownload(String imageKey){
         if (Util.isEmpty(imageKey))return;
-       /* try {
-            S3Object s3Object=s3.getObject("elokayyappa",imageKey);
-            InputStream reader = s3Object.getObjectContent();
-            FileOutputStream fos=(new FileOutputStream(fileToDownload));
-            byte[] buffer=new byte[4096];
-            int read=0;
-            while ((read=reader.read(buffer))!=-1) {
-                fos.write(buffer,0,read);
-            }
-            fos.flush();
-            fos.close();
-            reader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
-
         transferObserver = transferUtility.download(
                 "elokayyappa",     // The bucket to download from *//*
                 imageKey,    // The key for the object to download *//*

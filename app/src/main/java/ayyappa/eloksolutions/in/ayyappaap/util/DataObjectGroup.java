@@ -5,12 +5,22 @@ public class DataObjectGroup {
     private String mText2;
     private String groupId;
     private String imgResource;
+    int memberSize;
 
-    public DataObjectGroup(String text1, String text2, String imgResource, String groupId) {
+    public DataObjectGroup(String text1, String text2, String imgResource, String groupId, int memberSize) {
         mText1 = text1;
         mText2 = text2;
         this.groupId = groupId;
         this.imgResource = imgResource;
+        this.memberSize=memberSize;
+    }
+
+    public int getMemberSize() {
+        return memberSize;
+    }
+
+    public void setMemberSize(int memberSize) {
+        this.memberSize = memberSize;
     }
 
     public String getImgResource() {

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/padding_list_row"
+   >
 
-<ImageView
+<de.hdodenhof.circleimageview.CircleImageView
     android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="14dp"
@@ -56,14 +58,18 @@
         android:layout_below="@+id/group_desc"
         android:layout_alignLeft="@+id/group_desc"
         android:layout_alignStart="@+id/group_desc" />
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:id="@+id/joinbtn"
+        android:layout_below="@+id/group_desc"
         android:layout_alignParentRight="true"
+        android:text="Join"
         android:maxLength="20"
+        android:paddingLeft="@dimen/padding_list_row"
         android:ellipsize="end"
-        android:src="@drawable/joined"
+        style="@style/Widget.Button.Simple"
+
         />
 
 </RelativeLayout>

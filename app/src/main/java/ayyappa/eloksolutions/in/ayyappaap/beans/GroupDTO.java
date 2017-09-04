@@ -1,5 +1,7 @@
 package ayyappa.eloksolutions.in.ayyappaap.beans;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,16 @@ public class GroupDTO {
     String type;
     String imagePath;
     String groupCatagory;
+    Bitmap bitmap;
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
     List<RegisterDTO> groupMembers=new ArrayList<RegisterDTO>();
 
     public String getName() {
@@ -113,4 +125,6 @@ public class GroupDTO {
                 ", groupCatagory='" + groupCatagory + '\'' +
                 '}';
     }
+
+
 }

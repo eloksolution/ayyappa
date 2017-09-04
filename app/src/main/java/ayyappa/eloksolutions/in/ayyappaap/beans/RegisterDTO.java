@@ -14,8 +14,10 @@ public class RegisterDTO {
     String city;
     String state;
     String password;
+    String imgPath;
     double longi;
     double lati;
+
 
     public double getLongi() {
         return longi;
@@ -98,6 +100,14 @@ public class RegisterDTO {
 
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -120,6 +130,7 @@ public class RegisterDTO {
                 ", password='" + password + '\'' +
                 ", longi=" + longi +
                 ", lati=" + lati +
+                ", imgPath=" + imgPath +
                 '}';
     }
 }

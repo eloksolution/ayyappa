@@ -323,7 +323,7 @@
             android:id="@+id/butCreateHere"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Create Here"
+            android:text="Create Group"
             android:background="@drawable/myrect"
             android:elevation="2dp"
             android:padding="2dp"

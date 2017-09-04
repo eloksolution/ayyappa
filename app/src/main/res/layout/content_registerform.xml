@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+       >
 
 
         <android.support.design.widget.TextInputLayout
@@ -25,6 +25,11 @@
                 android:hint="First Name"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_list_two"
+            android:background="@color/view" />
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/last_name"
             android:layout_width="fill_parent"
@@ -39,6 +44,10 @@
                 android:hint="Last Name"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/email_address"
@@ -54,6 +63,11 @@
                 android:hint="Email Address"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/password_addres"
             android:layout_width="fill_parent"
@@ -68,6 +82,10 @@
                 android:hint="Password"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/password"
@@ -83,6 +101,13 @@
                 android:hint="PhoneNumber"
                 android:inputType="phone" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/location"
             android:layout_width="fill_parent"
@@ -97,6 +122,18 @@
                 android:hint="Location"
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/pic_location"
+        android:layout_alignRight="@+id/location"
+        android:src="@drawable/locate"/>
+</RelativeLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/city"
             android:layout_width="fill_parent"
@@ -111,6 +148,12 @@
                 android:hint="City"
                 android:inputType="textPostalAddress" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/longitudecd"
             android:layout_width="fill_parent"
@@ -125,14 +168,33 @@
                 android:hint="City"
                 android:inputType="textPostalAddress" />
         </android.support.design.widget.TextInputLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="User Image"
+            android:onClick="setFileToUpload"
+            android:textColor="#fff" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonRequestPermission"
+            android:layout_marginTop="16dp"
+            android:text="Request permissions"
+            android:onClick="setFileToUpload"
+            android:textColor="#fff" />
+
 
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="#b45705"
-            android:text="Register Here"
+            android:text="Create Acount"
             android:id="@+id/butRegister"
             android:textColor="#fff" />
 

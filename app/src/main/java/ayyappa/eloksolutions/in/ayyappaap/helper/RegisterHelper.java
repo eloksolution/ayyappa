@@ -61,6 +61,7 @@ public class RegisterHelper {
                 jsonObject.accumulate("password",registerDto.getPassword());
                 jsonObject.accumulate("lon",registerDto.getLongi());
                 jsonObject.accumulate("lat",registerDto.getLati());
+                jsonObject.accumulate("imgPath", registerDto.getImgPath());
 
                 //  jsonObject.accumulate("loc",registerDto.getLati());
                 json = jsonObject.toString();

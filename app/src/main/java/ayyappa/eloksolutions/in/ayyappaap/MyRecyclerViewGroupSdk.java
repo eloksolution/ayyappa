@@ -53,15 +53,7 @@ public class MyRecyclerViewGroupSdk extends RecyclerView
                     view.getContext().startActivity(groupView);
                 }
             });
-            joinBtn = (Button) itemView.findViewById(R.id.joinbtn);
-            joinBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                    joinEvent(itemView);
-
-                }
-            });
         }
 
         @Override

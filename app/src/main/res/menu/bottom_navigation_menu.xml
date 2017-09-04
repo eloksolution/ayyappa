@@ -16,7 +16,7 @@
         <item
             android:id="@+id/ic_books"
             android:icon="@drawable/icon_event"
-            android:title="Books"
+            android:title="Padipooja"
             />
         <item
             android:id="@+id/ic_center_focus"
