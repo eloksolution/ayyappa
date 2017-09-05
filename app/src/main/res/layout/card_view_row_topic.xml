@@ -2,44 +2,158 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_list_row"
+    android:background="@color/view"
+    >
 
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_margin="2dp"
-        card_view:cardCornerRadius="2dp"
-        card_view:contentPadding="2dp">
+        android:layout_height="wrap_content"
+        >
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <ImageView
-                android:id="@+id/topic_view_click"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="left"
-                android:src="@drawable/ayy1" />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/ayy"
+                android:id="@+id/padi_image_list"
+                android:paddingBottom="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/topic_view_click"
-                android:layout_toRightOf="@+id/topic_view_click"
-                android:layout_toEndOf="@+id/topic_view_click"
-                android:textStyle="bold"
-                android:text="@string/app_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Devil May Cry"
+                android:textSize="18sp"
+                android:id="@+id/group_title"
+                android:paddingLeft="4dp"
+                android:paddingRight="5dp"
+                android:layout_alignTop="@+id/padi_image_list"
+                android:layout_toRightOf="@+id/padi_image_list"
+                android:layout_toEndOf="@+id/padi_image_list" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Small Text"
+                android:lines="1"
+                android:ellipsize="end"
+                android:paddingLeft="4dp"
+                android:paddingRight="5dp"
+                android:textSize="18sp"
+                android:id="@+id/group_desc"
+                android:layout_below="@+id/group_title"
+                android:layout_alignLeft="@+id/group_title"
+                android:layout_alignStart="@+id/group_title"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+                android:text="Plateform : PS3, XBOX 360"
+                android:id="@+id/textView"
+                android:paddingLeft="4dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="12sp"
+                android:layout_below="@+id/group_desc"
+                android:layout_alignLeft="@+id/group_desc"
+                android:layout_alignStart="@+id/group_desc" />
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/topic_view_click"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
                 />
 
-
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
 
+    </android.support.v7.widget.CardView>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_list_two"
+        android:background="@color/view" />
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view1"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/fab_margin"
+   >
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/dis_aad"
+        android:src="@drawable/pen"
+        android:ellipsize="end"
+        />
+
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+        android:text="Add Disscussion"
+        android:id="@+id/dis_add"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:layout_toRightOf="@+id/dis_aad"
+
+        />
+</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/dis_share"
+        android:paddingLeft="@dimen/fab_margin"
+        android:src="@drawable/share"
+        android:ellipsize="end"
+        />
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+        android:text="Share"
+        android:id="@+id/dis_shares"
+        android:paddingLeft="14dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:layout_toRightOf="@+id/dis_share"
+
+         />
+</RelativeLayout>
+
+</LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

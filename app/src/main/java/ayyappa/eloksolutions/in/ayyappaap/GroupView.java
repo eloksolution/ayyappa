@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,9 +55,10 @@ public class GroupView extends AppCompatActivity {
     ImageView groupJoin, groupShare, groupUpdate,like;
     String groupId, userId,firstName,lastName;
     int likescounts;
+    public static int joinedStatus;
     File fileToDownload ;
     AmazonS3 s3;
-
+    Button joinButton;
     TransferUtility transferUtility;
     Context context;
     int count;
@@ -85,6 +87,9 @@ public class GroupView extends AppCompatActivity {
         noOfJoins =(TextView) findViewById(R.id.joinedcount);
         like=(ImageView) findViewById(R.id.group_likes);
         likescount=(TextView) findViewById(R.id.like_count);
+        joinButton=(Button) findViewById(R.id.joinbtn);
+        groupShare=(ImageView) findViewById(R.id.group_share);
+
 
         try {
 
@@ -110,7 +115,7 @@ public class GroupView extends AppCompatActivity {
             }
         });
 
-        noOfJoins.setOnClickListener(new View.OnClickListener() {
+        groupJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -121,16 +126,36 @@ public class GroupView extends AppCompatActivity {
             }
         });
 
-        groupJoin.setOnClickListener(new View.OnClickListener() {
+        joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-    groupJoin.setVisibility(View.GONE);
-    joinEvent();
+     joinButton.setVisibility(View.GONE);
+     joinEvent();
 
             }
         });
+
+        groupShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent= new Intent();
+                    String sAux ="\n"+groupName+" @MELZOL\n for more Groups \n";
+                    //String title= groupName.replaceAll(" ","_")+"@MELZOL";
+                    String msg=sAux+"https://wdq3a.app.goo.gl/?link=https://melzol.in/1/"+groupId+"&apn=in.melzol" +
+                            "&st="+groupName+"&si=";
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT,msg);
+                    intent.setType("text/plain");
+                    startActivity(Intent.createChooser(intent,"Share this Group"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
+
+            }
+        });
+
         groupUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

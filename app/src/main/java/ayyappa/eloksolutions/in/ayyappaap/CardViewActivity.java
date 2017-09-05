@@ -46,7 +46,7 @@ public class CardViewActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     String TAG="AudioPlayer";
     int currentTrack = 0;
-    private int [] songs ={R.raw.song1,R.raw.song2,R.raw.song3};
+
     boolean isPlayOrPause=true;
 
     public static int [] contactImages ={R.drawable.chat_icon,R.drawable.chat_icon,R.drawable.chat_icon};
