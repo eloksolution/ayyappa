@@ -359,6 +359,9 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
 
     private EventDTO buildDTOObject() {
       SharedPreferences  preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
+       String userId=preference.getString("userId",null);
+        String firstName=preference.getString("firstName",null);
+        String lastName=preference.getString("lastName",null);
 
         EventDTO eventDTO = new EventDTO();
         String eventname = event_name.getText().toString();
@@ -372,10 +375,10 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         eventDTO.setLocation(loc);
         String desc = description.getText().toString();
         eventDTO.setDescription(desc);
-        eventDTO.setOwner(preference.getString("userId",null));
+        eventDTO.setOwner(userId);
         eventDTO.setImagePath(keyName);
         Log.i(TAG,"Key name of the  images"+keyName);
-        eventDTO.setOwnerName("suresh");
+        eventDTO.setOwnerName(firstName+lastName);
         return eventDTO;
     }
     private boolean checkValidation() {

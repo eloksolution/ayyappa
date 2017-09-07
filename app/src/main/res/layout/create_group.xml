@@ -233,9 +233,7 @@
         android:background="@color/view" />
 
     </LinearLayout>
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/toolbar" />
+
 
 </RelativeLayout>
     </ScrollView>

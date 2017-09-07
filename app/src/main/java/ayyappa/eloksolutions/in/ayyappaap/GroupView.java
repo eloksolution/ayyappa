@@ -59,10 +59,10 @@ public class GroupView extends AppCompatActivity {
     File fileToDownload ;
     AmazonS3 s3;
     Button joinButton;
-    TransferUtility transferUtility;
+
     Context context;
     int count;
-    String tag="GroupView";
+    String tag="GroupView";TransferUtility transferUtility;
     GroupDTO groupDTO;
     TransferObserver transferObserver;
     @Override
@@ -301,8 +301,7 @@ public class GroupView extends AppCompatActivity {
         topicDto.setTopic(gname);
         String gdesc= description.getText().toString();
         topicDto.setDescription(gdesc);
-       topicDto.setGroupId(groupId);
-
+        topicDto.setGroupId(groupId);
         topicDto.setOwner(firstName);
         return topicDto;
     }
@@ -323,18 +322,19 @@ public class GroupView extends AppCompatActivity {
             String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
             addingMember(joinmem);
-        }catch (Exception e){}
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+        }
     }
 
     private void addingMember(String result) throws JSONException {
         JSONObject jsonObject;
         jsonObject = new JSONObject(result);
-
         groupJoin.setVisibility(View.GONE);
-
         count=count+1;
        // noOfJoins.setText(count + " members are going");
-
 
     }
     private boolean checkValidation() {

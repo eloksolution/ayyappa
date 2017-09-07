@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +25,7 @@ import com.roughike.bottombar.BottomBar;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.GetGroups;
 
-public class GroupList extends CardViewActivity {
+public class GroupList extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
    TransferUtility transferUtility;
@@ -40,8 +41,6 @@ public class GroupList extends CardViewActivity {
        getSupportActionBar().setTitle("Group List");
 
     credentialsProvider();
-
-
     // callback method to call the setTransferUtility method
     setTransferUtility();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);

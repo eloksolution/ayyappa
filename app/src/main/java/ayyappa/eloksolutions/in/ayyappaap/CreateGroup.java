@@ -16,7 +16,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,10 +67,7 @@ public class CreateGroup extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Create Group");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         String[] catageries = new String[]{"Select Group catagory","Padipooja","Pilgrimage","AyyappaSwami Temples","Ayyappa Stories","Bhakthi News"};
         gCatagery = (Spinner) findViewById(R.id.gcatagery);
@@ -112,9 +108,11 @@ public class CreateGroup extends MainActivity {
                 } catch (ActivityNotFoundException e) {
                 }
 
-
             }
+
         }); */
+
+
         buttonRequestPermission = (Button) findViewById(R.id.buttonRequestPermission);
 
         buttonRequestPermission.setOnClickListener(new View.OnClickListener() {

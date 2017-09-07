@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,7 +52,6 @@ public class CardViewActivity extends AppCompatActivity {
 
     public static int [] contactImages ={R.drawable.chat_icon,R.drawable.chat_icon,R.drawable.chat_icon};
     public static String [] contactNames={"Contact1","Contact2","Contact 3"};
-
     public static int [] songImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
     public static String [] songNames={"Maladharanam Niyamala Toranam","Harivarasanam Viswamohanam","Baghavan Saranam","Ayyappa4","Ayyappa5","Ayyappa6"};
     public static int [] moviesImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
@@ -77,7 +77,6 @@ public class CardViewActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.ic_home1:
-
                         break;
 
                     case R.id.ic_groups:
@@ -91,7 +90,7 @@ public class CardViewActivity extends AppCompatActivity {
                         break;
 
                     case R.id.ic_center_focus:
-                        Intent intent3 = new Intent(CardViewActivity.this, MapsActivity.class);
+                        Intent intent3 = new Intent(CardViewActivity.this, MapView.class);
                         startActivity(intent3);
                         break;
 
@@ -112,7 +111,6 @@ public class CardViewActivity extends AppCompatActivity {
         credentialsProvider();
         // callback method to call the setTransferUtility method
         setTransferUtility();
-
 
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.imgDeeksha);
         final TextView tvDays=(TextView) findViewById(R.id.tvDays);
@@ -137,7 +135,7 @@ public class CardViewActivity extends AppCompatActivity {
             imgDeeksha.setVisibility(View.GONE);
             tvDays.setText(diff+"th Day of "+noOfDays+" days");
         }else{
-            tvDays.setText("");
+            tvDays.setText("Start Deeksha");
             imgDeeksha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -146,8 +144,14 @@ public class CardViewActivity extends AppCompatActivity {
             });
 
         }
-
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent groupCreate= new Intent(CardViewActivity.this, CreateTopic.class);
+                startActivity(groupCreate);
+            }
+        });
 
 
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
@@ -157,6 +161,7 @@ public class CardViewActivity extends AppCompatActivity {
         String url= Config.SERVER_URL+"padipooja/gettoppoojas";
         GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi,s3, transferUtility);
         getEvents.execute();
+
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups_home);
         rvGroups.setHasFixedSize(true);

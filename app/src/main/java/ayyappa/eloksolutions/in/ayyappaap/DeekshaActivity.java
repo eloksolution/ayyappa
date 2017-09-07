@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.DeekshaUserTask;
@@ -29,7 +29,7 @@ import ayyappa.eloksolutions.in.ayyappaap.config.Config;
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.shedule);
-        ImageView shedule=(ImageView) findViewById(R.id.button);
+        Button shedule=(Button) findViewById(R.id.button);
         final TextView edate=(TextView) findViewById(R.id.txtdate);
         final TextView tdate=(TextView) findViewById(R.id.fdate);
         final TextView desc=(TextView) findViewById(R.id.description);
@@ -47,14 +47,14 @@ import ayyappa.eloksolutions.in.ayyappaap.config.Config;
                 new DeekshaUserTask(ctx,enddate,txdate,descrip,memId).execute();
                 Intent shesuleDeeksha = new Intent(ctx, CardViewActivity.class);
                 startActivity(shesuleDeeksha);
-
             }
         });
-            fdate = (TextView) findViewById(R.id.fdate);
+
+        fdate = (TextView) findViewById(R.id.fdate);
             fdate.setText("" + DateFormat.format(" dd-MM-yyyy", System.currentTimeMillis()));
         txtdate = (TextView) findViewById(R.id.txtdate);
-        txtdate.setText("" + DateFormat.format(" dd-MM-yyyy", System.currentTimeMillis()));
-            description = (EditText) findViewById(R.id.description);
+           txtdate.setText("" + DateFormat.format(" dd-MM-yyyy", System.currentTimeMillis()));
+        description = (EditText) findViewById(R.id.description);
 
         fdate.setOnClickListener(this);
         txtdate.setOnClickListener(this);

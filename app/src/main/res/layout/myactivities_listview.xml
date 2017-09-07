@@ -109,12 +109,12 @@
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent" android:layout_height="wrap_content">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="14dp"
-                    android:src="@drawable/join_contact"
+                    android:src="@drawable/defaultprofile"
                     android:id="@+id/contact_user_image_list"
                     android:paddingBottom="10dp"
                     android:layout_alignParentTop="true"
@@ -161,7 +161,7 @@
 
               >
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="12dp"
@@ -213,7 +213,7 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 >
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="12dp"
@@ -263,7 +263,7 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 >
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="12dp"
@@ -302,12 +302,12 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 >
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="14dp"
-                    android:src="@drawable/ic_feedback"
+                    android:src="@drawable/chat_icon"
                     android:id="@+id/feedback"
                     android:paddingBottom="10dp"
                     android:layout_alignParentTop="true"

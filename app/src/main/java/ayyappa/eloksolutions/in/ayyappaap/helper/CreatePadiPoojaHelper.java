@@ -55,7 +55,7 @@ public class CreatePadiPoojaHelper {
                 jsonObject.accumulate("name", eventDTO.getOwnerName());
                 jsonObject.accumulate("imgPath", eventDTO.getImagePath());
                 json = jsonObject.toString();
-                System.out.println("Json is" + json);
+                System.out.println("padipooja Json is" + eventDTO.getImagePath());
             } catch (Exception e) {
                 e.printStackTrace();
             }

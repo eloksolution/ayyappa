@@ -3,8 +3,9 @@
     xmlns:uses-permissionandroid="http://schemas.android.com/apk/res-auto"
     package="ayyappa.eloksolutions.in.ayyappaap">
     <uses-permission android:name="android.permission.INTERNET" />
-
-
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -35,13 +36,19 @@
         <activity
             android:name=".CreateGroup"
             android:label="createGroup"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".GroupList"
             android:label="GroupList"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ToppicGroupList"
+            android:label="GroupList"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".GroupView"
             android:label="GroupView"
@@ -52,9 +59,23 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
+                <data
+                    android:host="melzol.in"
+                    android:scheme="https"
+                    android:pathPattern=".*"/>
 
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CreateTopic"
+            android:label="GroupList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MapView"
+            android:label="GroupList"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
         <activity
             android:name=".FlexibleActivity"
             android:label="GroupList"
