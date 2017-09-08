@@ -234,7 +234,7 @@ public class OwnerView extends AppCompatActivity {
     public void userInvite(View view) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, registerDTO.getFirstName()+" is invite to ayyappaApp"+"www.eloksolutions.com");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, registerDTO.getFirstName()+" is invite to ayyappaApp"+" www.eloksolutions.com");
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }

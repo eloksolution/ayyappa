@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Devil May Cry"
+        android:text="Ayyappa App"
         android:textSize="18sp"
         android:id="@+id/group_title"
         android:paddingLeft="4dp"

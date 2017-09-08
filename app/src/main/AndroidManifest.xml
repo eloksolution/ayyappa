@@ -11,8 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <action android:name="android.intent.action.SEND" />
-    <data android:mimeType="text/plain" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ayyappa_logo"
@@ -31,12 +30,17 @@
         <activity
             android:name=".MainActivity"
             android:label="AyyappaApp"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+
+            </activity>
 
         <activity
             android:name=".CreateGroup"
             android:label="createGroup"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+
+
+            </activity>
 
         <activity
             android:name=".GroupList"
@@ -57,6 +61,8 @@
             <intent-filter>
 
                 <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
                 <data
@@ -69,7 +75,25 @@
         <activity
             android:name=".CreateTopic"
             android:label="GroupList"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+                <data android:scheme="https" android:host="www.eloksoutions.in" />
+                <data android:scheme="app"  />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            </activity>
         <activity
             android:name=".MapView"
             android:label="GroupList"
