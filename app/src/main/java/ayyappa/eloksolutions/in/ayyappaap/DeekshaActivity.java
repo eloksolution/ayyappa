@@ -41,6 +41,13 @@ import ayyappa.eloksolutions.in.ayyappaap.config.Config;
         shedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPreferences = ctx.getSharedPreferences(Config.APP_PREFERENCES, ctx.MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString("startDate", tdate.getText().toString());
+                edit.putString("endDate", edate.getText().toString());
+                edit.commit();
+                Log.i(Tag,"Start date is"+sharedPreferences.getString("startDate",null));
+
                 String enddate=edate.getText().toString();
                 String txdate=tdate.getText().toString();
                 String descrip=desc.getText().toString();

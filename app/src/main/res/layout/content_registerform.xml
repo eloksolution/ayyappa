@@ -178,7 +178,8 @@
             android:layout_marginTop="16dp"
             android:text="User Image"
             android:onClick="setFileToUpload"
-            android:textColor="#fff" />
+            android:background="@drawable/simple_button"
+            android:textColor="@color/black" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -186,7 +187,8 @@
             android:layout_marginTop="16dp"
             android:text="Request permissions"
             android:onClick="setFileToUpload"
-            android:textColor="#fff" />
+            android:background="@drawable/simple_button"
+            android:textColor="@color/black" />
 
 
 
@@ -196,7 +198,8 @@
             android:layout_marginTop="16dp"
             android:text="Create Acount"
             android:id="@+id/butRegister"
-            android:textColor="#fff" />
+            android:background="@drawable/simple_button"
+            android:textColor="@color/black" />
 
 
     </LinearLayout>
