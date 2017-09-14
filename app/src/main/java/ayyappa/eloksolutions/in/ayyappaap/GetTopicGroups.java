@@ -31,6 +31,7 @@ public class GetTopicGroups extends AsyncTask<String, Void, String> {
     RecyclerView rvGroups;
     AmazonS3 s3;
     TransferUtility transferUtility;
+    String Tag="topic list";
 
     public GetTopicGroups(Context mcontext, String surl, RecyclerView rvGroups, AmazonS3 s3, TransferUtility transferUtility) {
         this.mcontext = mcontext;
@@ -42,6 +43,7 @@ public class GetTopicGroups extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
         progress = new ProgressDialog(mcontext);
         progress.setMessage("Loading...");
         progress.show();

@@ -3,8 +3,6 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +23,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -59,10 +58,12 @@ public class GroupView extends AppCompatActivity {
     File fileToDownload ;
     AmazonS3 s3;
     Button joinButton;
+    Glide glide;
 
     Context context;
     int count;
-    String tag="GroupView";TransferUtility transferUtility;
+    String tag="GroupView";
+    TransferUtility transferUtility;
     GroupDTO groupDTO;
     TransferObserver transferObserver;
     @Override
@@ -126,22 +127,23 @@ public class GroupView extends AppCompatActivity {
             }
         });
 
-        joinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-     joinButton.setVisibility(View.GONE);
-     joinEvent();
+                joinButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-            }
-        });
+                        joinButton.setVisibility(View.GONE);
+                        joinEvent();
+
+                    }
+                });
 
         groupShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     Intent intent= new Intent();
-                    String sAux ="\n"+groupName+" @MELZOL\n for more Groups \n";
+                    String sAux ="\n"+groupName+" @Ayyappa\n for more Groups \n";
                     //String title= groupName.replaceAll(" ","_")+"@MELZOL";
                     String msg=sAux+"https://wdq3a.app.goo.gl/?link=https://melzol.in/1/"+groupId+"&apn=in.melzol" +
                             "&st="+groupName+"&si=";
@@ -150,7 +152,7 @@ public class GroupView extends AppCompatActivity {
                     intent.setType("text/plain");
                     startActivity(Intent.createChooser(intent,"Share this Group"));
                 } catch(Exception e) {
-                    //e.toString();
+                    e.toString();
                 }
 
             }
@@ -183,7 +185,6 @@ public class GroupView extends AppCompatActivity {
             setValuesToTextFields(output);
             System.out.println("groupDTO.getImagePath()"+groupDTO.getImagePath());
             setFileToDownload(groupDTO.getImagePath());
-
 
         }catch (Exception e){
             e.printStackTrace();
@@ -224,8 +225,11 @@ public class GroupView extends AppCompatActivity {
                 Log.i("File down load status", state+"");
                 Log.i("File down load id", id+"");
                 if("COMPLETED".equals(state.toString())){
-                    Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
-                    groupImage.setImageBitmap(bit);
+                  //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
+                  // groupImage.setImageBitmap(bit);
+
+                    glide.with(context).load(fileToDownload.getAbsolutePath()).into(groupImage);
+
                 }
             }
 
@@ -311,7 +315,9 @@ public class GroupView extends AppCompatActivity {
         groupMembers.setUserId(userId);
         groupMembers.setFirstname(firstName);
         groupMembers.setLastName(lastName);
+        Log.i(tag,"group joined time"+groupMembers);
         return groupMembers;
+
     }
     private void joinEvent() {
         GroupViewHelper groupJoinHelper = new GroupViewHelper(this);
@@ -334,7 +340,7 @@ public class GroupView extends AppCompatActivity {
         jsonObject = new JSONObject(result);
         groupJoin.setVisibility(View.GONE);
         count=count+1;
-       // noOfJoins.setText(count + " members are going");
+       //noOfJoins.setText(count + " members are going");
 
     }
     private boolean checkValidation() {

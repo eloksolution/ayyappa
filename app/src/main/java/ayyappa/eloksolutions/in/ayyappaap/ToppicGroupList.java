@@ -22,7 +22,7 @@ import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 
 public class ToppicGroupList extends AppCompatActivity {
 
-    Context context;
+    Context mcontext;
     AmazonS3 s3;
     TransferUtility transferUtility;
 
@@ -43,10 +43,10 @@ public class ToppicGroupList extends AppCompatActivity {
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
-        String url= Config.SERVER_URL+"user/groups/"+userId;
+        String surl= Config.SERVER_URL+"user/groups/59ad6e65e4b0f45b68f60617";
         System.out.println("userId :: "+userId+"firstName :: "+firstName+"lastName :: "+lastName);
-        GetTopicGroups getGroups=new GetTopicGroups(context, url,rvGroups,s3,transferUtility);
-        System.out.println("url for group list"+url+userId);
+        GetTopicGroups getGroups=new GetTopicGroups(mcontext, surl,rvGroups,s3,transferUtility);
+        System.out.println("url for group list"+surl);
         getGroups.execute();
 
         credentialsProvider();

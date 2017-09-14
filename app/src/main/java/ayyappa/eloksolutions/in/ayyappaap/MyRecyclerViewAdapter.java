@@ -2,8 +2,6 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +16,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +34,8 @@ public class MyRecyclerViewAdapter extends RecyclerView
     private AmazonS3 s3;
     TransferUtility transferUtility;
     Context mcontext;
+    Glide glide;
+    String Tag;
  
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -125,6 +126,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public void setFileToDownload(String imageKey, File fileToDownload, ImageView imageView){
         TransferObserver transferObserver=null;
         if (Util.isEmpty(imageKey))return;
+
         transferObserver = transferUtility.download(
                 "elokayyappa",     // The bucket to download from *//*
                 imageKey,    // The key for the object to download *//*
@@ -145,8 +147,16 @@ public class MyRecyclerViewAdapter extends RecyclerView
                 Log.i("File down load id", id+"");
                 if("COMPLETED".equals(state.toString())){
                     try{
-                        Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
-                        imageView.setImageBitmap(bit);
+                      /* Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
+                       Log.i(Tag, "beforebitmap"+bit.getWidth() + "-" + bit.getHeight());
+
+
+
+                        Bitmap afterBitmap = ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
+                        Log.i(Tag, "afterbitmap"+afterBitmap.getWidth() + "-" + afterBitmap.getHeight());
+                        imageView.setImageBitmap(afterBitmap);*/
+                        glide.with(mcontext).load(fileToDownload.getAbsolutePath()).into(imageView);
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }

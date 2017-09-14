@@ -51,9 +51,7 @@ public class GroupUpdate extends AppCompatActivity {
         name=(EditText) findViewById(R.id.gname);
         description=(EditText) findViewById(R.id.gdescription);
         gCatagery=(Spinner) findViewById(R.id.gcatagery);
-
          createGroup=(Button) findViewById(R.id.butgcreate);
-
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         final Context ctx = this;
 
@@ -87,7 +85,9 @@ public class GroupUpdate extends AppCompatActivity {
             String output=getGroupsValue.new GroupUpdateTask(surl).execute().get();
             System.out.println("the output from Group"+output);
             setValuesToTextFields(output);
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
     public void setValuesToTextFields(String result) {

@@ -3,6 +3,7 @@ package ayyappa.eloksolutions.in.ayyappaap.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.io.File;
 import java.util.Random;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
@@ -54,5 +55,9 @@ public class Util{
 
     public static boolean isEmpty(String str){
         return str==null||str.trim().length()==0;
+    }
+    public static boolean isFull(File file){
+        return file==null;
+
     }
 }

@@ -1,6 +1,7 @@
 package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +22,7 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.GroupMemberObject;
 public class GroupMembersList extends AppCompatActivity implements View.OnClickListener {
     Context context;
     RecyclerView rvPadi;
-    String groupId;
+    String groupId,userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class GroupMembersList extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
        getSupportActionBar().setTitle("Group Members");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        userId=preferences.getString("userId",null);
 
         //ImageView createGroup=(ImageView) findViewById(R.id.add);
 
@@ -46,7 +49,7 @@ public class GroupMembersList extends AppCompatActivity implements View.OnClickL
         }); */
 
         GroupMemberHelper getGroupsValue=new GroupMemberHelper(this);
-        String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/598839b6e4b0ca1af7a13b";
+        String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/"+userId;
         System.out.println("url for group list"+surl);
         try {
             String output=getGroupsValue.new GroupViewTask(surl).execute().get();

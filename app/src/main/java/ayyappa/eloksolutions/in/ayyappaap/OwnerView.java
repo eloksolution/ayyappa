@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -34,8 +33,8 @@ import java.io.File;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.OwnerViewHelper;
+import ayyappa.eloksolutions.in.ayyappaap.util.ImageUtils;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
-
 
 /**
  * Created by welcome on 6/30/2017.
@@ -80,7 +79,9 @@ public class OwnerView extends AppCompatActivity {
             setValuesToTextFields(output);
             System.out.println("registerDTO.getImgPath()"+registerDTO.getImgPath());
             setFileToDownload(registerDTO.getImgPath());
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         FloatingActionButton userUpDate = (FloatingActionButton) findViewById(R.id.fabuser);
         userUpDate.setOnClickListener(new View.OnClickListener() {
@@ -175,10 +176,10 @@ public class OwnerView extends AppCompatActivity {
 
             @Override
             public void onStateChanged(int id, TransferState state) {
-                Log.i("File down load status", state+"");
                 Log.i("File down load id", id+"");
+                Log.i("File down load status", state+"");
                 if("COMPLETED".equals(state.toString())){
-                    Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
+                    Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
                     userImage.setImageBitmap(bit);
                 }
             }

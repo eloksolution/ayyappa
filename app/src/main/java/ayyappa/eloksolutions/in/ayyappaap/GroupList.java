@@ -51,6 +51,7 @@ public class GroupList extends AppCompatActivity {
                 startActivity(groupCreate);
             }
         });
+        
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);

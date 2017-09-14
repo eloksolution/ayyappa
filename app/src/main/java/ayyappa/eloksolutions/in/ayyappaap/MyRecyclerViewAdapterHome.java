@@ -2,8 +2,6 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +16,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
     private Context mcontext;
     private static MyClickListener myClickListener;
     private AmazonS3 s3;
+    Glide glide;
 
     TransferUtility transferUtility;
 
@@ -171,8 +171,9 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
                 Log.i("File down load id", id+"");
                 if("COMPLETED".equals(state.toString())){
                     try{
-                        Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
-                        imageView.setImageBitmap(bit);
+                      //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
+                        //imageView.setImageBitmap(bit);
+                        glide.with(mcontext).load(fileToDownload.getAbsolutePath()).into(imageView);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
