@@ -21,6 +21,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
+import com.sun.xml.internal.txw2.Document;
 
 @Repository("topicDAO")
 public class TopicDAO {
@@ -38,7 +39,6 @@ public class TopicDAO {
 		System.out.println("Topics is "+dbTopic);
 		collection.insert(dbTopic);
 		ObjectId id = (ObjectId)dbTopic.get( "_id" );
-		
 		DBObject dbUserTopic= toDBUserTopic(topic,id.toString());
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "TOPICS", dbUserTopic ) );
@@ -46,6 +46,10 @@ public class TopicDAO {
 		match.put( "_id",new ObjectId(topic.getOwner()) );
 		WriteResult rs=collection.update(match,update);
 		System.out.println("result is "+rs.getError());
+		//Groups
+		BasicDBObject match1 = new BasicDBObject();
+		match.put( "_id",new ObjectId(topic.getGroupId()) );
+		WriteResult rs1=collection.update(match1,update);
 		return id.toString();
 	}
 	private DBObject toDBUserTopic(Topic topic, String topicId) {
@@ -64,7 +68,7 @@ public class TopicDAO {
 		System.out.println("Updating topic "+topicId+" discussion "+diss);
 		DBObject dbDiscussions= toDBDissObject(diss);
 		BasicDBObject update = new BasicDBObject();
-		update.put( "$push", new BasicDBObject( "discussions", dbDiscussions ) );
+		update.put( "$push", new BasicDBObject( "DISCUSSIONS", dbDiscussions ) );
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(topicId) );
 		WriteResult rs=collection.update(match,update);
@@ -83,9 +87,11 @@ public class TopicDAO {
 	    return new BasicDBObject("TOPIC", topic.getTopic())
 	                     .append("OWNER", topic.getOwner())
 	                     .append("GROUPID", topic.getGroupId())
-	                      .append("CREATEDATE", new Date())
+						 .append("CREATEDATE", new Date())
 	                     .append("DESCRIPTION", topic.getDescription());
 	}
+	
+	
 
 	public List<Topic> getTopics() {
 		DBCursor  cursor = collection.find();
@@ -113,7 +119,7 @@ public class TopicDAO {
 			Date d=dbo.getDate("POSTDATE");
 			if(d!=null){
 				discussion.setPostDate(d);
-				discussion.setsPostDate((String)(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(discussion.getPostDate())));
+				discussion.setsPostDate((String)(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(discussion.getPostDate())));
 			}
 			discussion.setUserId(dbo.getString("OWNERNAME"));
 			discussion.setUserName(dbo.getString("OWNER"));
@@ -136,7 +142,25 @@ public class TopicDAO {
 		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+topicId));
 		return collection.find(query);
 	}
-	
+
+	public List<Topic> getGroupTopics(String groupId) {
+		DBCursor  cursor = findObject(groupId);
+        List<Topic> topics=new ArrayList<>();
+        while (cursor.hasNext()) { 
+           DBObject topic = cursor.next();
+           ObjectId objid=(ObjectId)topic.get("_id");
+           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("TOPIC"),(String)topic.get("DESCRIPTION"),(String)topic.get("GROUPID"),(String)topic.get("OWNER"),objid.getTime());
+		   System.out.println("DESCRIPTION "+topic.get("DESCRIPTION"));
+		   List<Discussion> diss=getDiscussions(topic);
+		   topicDB.setDiscussions(diss);
+           topics.add(topicDB);
+        }
+        return topics;
+	}
+	private DBCursor findObject(String groupId) {
+		BasicDBObject query=new BasicDBObject("GROUPID",groupId);
+		return collection.find(query);
+	}
 
 	
 }

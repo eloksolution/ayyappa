@@ -1,9 +1,9 @@
 package in.eloksolutions.ayyappa.controller;
 
-import in.eloksolutions.ayyappa.model.Group;
 import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.service.PadipoojaService;
-import in.eloksolutions.ayyappa.vo.GroupVO;
+import in.eloksolutions.ayyappa.util.Util;
+import in.eloksolutions.ayyappa.vo.DeekshaVO;
 import in.eloksolutions.ayyappa.vo.PadiMember;
 import in.eloksolutions.ayyappa.vo.PadipoojaVo;
 
@@ -24,19 +24,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PadiPoojaController {
 	@Autowired
 	PadipoojaService padipoojaService;
+	
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addPadipooja(@RequestBody Padipooja padipooja){
 		System.out.println("Request is coming "+padipooja);
-		padipoojaService.addPadipooja(padipooja);
-		return "success";
+		return padipoojaService.addPadipooja(padipooja);
 	}
+	
 		
 	@ResponseBody
 	@RequestMapping(value = "/getpoojas", method = RequestMethod.GET)
 	public List getPadipooja( HttpServletRequest request){
 		System.out.println("Request padipooja xxxx is coming "+request);
 		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja();
+		System.out.println("Colection is coming "+padipoojaCol);
+		return padipoojaCol;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/gettoppoojas", method = RequestMethod.GET)
+	public List getTopPadipooja( HttpServletRequest request){
+		System.out.println("Request padipooja xxxx is coming "+request);
+		List<Padipooja> padipoojaCol = padipoojaService.getTopPadipooja();
 		System.out.println("Colection is coming "+padipoojaCol);
 		return padipoojaCol;
 	}

@@ -9,6 +9,8 @@ public class TopicVO {
 	String createDate;
 	String owner;
 	String noOfMembers;
+	String imgPath;
+	
 	public String getGroupId() {
 		return groupId;
 	}
@@ -50,6 +52,12 @@ public class TopicVO {
 	}
 	public void setNoOfMembers(String noOfMembers) {
 		this.noOfMembers = noOfMembers;
+	}
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	@Override
 	public String toString() {

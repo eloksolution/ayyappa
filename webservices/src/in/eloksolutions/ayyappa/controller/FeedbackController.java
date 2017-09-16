@@ -2,7 +2,6 @@ package in.eloksolutions.ayyappa.controller;
 
 import in.eloksolutions.ayyappa.model.Feedback;
 import in.eloksolutions.ayyappa.service.FeedbackService;
-import in.eloksolutions.ayyappa.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

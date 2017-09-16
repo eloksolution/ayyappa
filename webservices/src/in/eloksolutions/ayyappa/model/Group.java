@@ -19,18 +19,16 @@ public class Group {
 	public Group(){
 		
 	}
-	public Group(  String groupId,String name, String description, String owner
-			) {
+	public Group(  String groupId,String name, String description, String owner,String imagePath) {
 		super();
 		this.groupId = groupId;
 		this.name = name;
 		this.description = description;
 		this.owner = owner;
-		
 		//this.createDate = createDate;
 		//this.numberOfMembers = numberOfMembers;
 		//this.type = type;
-		//this.imagePath = imagePath;
+		this.imagePath = imagePath;
 	}
 	
 	public List<User> getGroupMembers() {

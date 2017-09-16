@@ -25,8 +25,8 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
 
-@Repository("padipoojaDao")
-public class PadipojaDAO {
+@Repository("deekshaDAO")
+public class DeekshaDAO {
 	MongoClient mongoClient;
 	DBCollection collection;
 	
@@ -75,13 +75,6 @@ public class PadipojaDAO {
 	
 	public List<Padipooja> getPadipooja() {
 		DBCursor cursor = collection.find().sort(new  BasicDBObject("createDate", -1));
-		List<Padipooja> padipooja = getPadiPoojasDB(cursor);
-		return padipooja;
-	}
-	
-	public List<Padipooja> getUserPadiPoojas(String userId) {
-		BasicDBObject query = new BasicDBObject("memId", userId);
-		DBCursor cursor = collection.find(query).sort(new  BasicDBObject("createDate", -1));
 		List<Padipooja> padipooja = getPadiPoojasDB(cursor);
 		return padipooja;
 	}
@@ -209,6 +202,39 @@ public class PadipojaDAO {
         .append("firstName", firstName)
         .append("lastName", lastName)
         .append("joinDate", new Date());
+	}
+
+	public String addDeeksha(DeekshaVO deekshaVO) throws Exception{
+		DBObject dbPadiUser=toDBDeekshaObj(deekshaVO);
+		collection.insert(dbPadiUser);
+		return 	dbPadiUser.get("_id").toString();
+	}
+	private DBObject toDBDeekshaObj(DeekshaVO deekshaVO) throws Exception {
+		 return new BasicDBObject("USERID", deekshaVO.getUserId())
+       .append("STARTDATE", new SimpleDateFormat("dd/MM/yyyy").parse(deekshaVO.getStartDate()))
+       .append("ENDDATE", new SimpleDateFormat("dd/MM/yyyy").parse(deekshaVO.getEndDate()))
+       .append("DESCRIPTION", deekshaVO.getDescription())
+       .append("createDate", new Date());
+		 
+	}
+
+	public DeekshaVO getDeeksha(String userId) {
+		DBCursor cursor = getDeekshaCursor(userId);
+		DeekshaVO deeksha = null;
+		if (cursor.hasNext()) {
+			DBObject padiPooja = cursor.next();
+			deeksha = new DeekshaVO((String) padiPooja.get("USERID"),(String) padiPooja.get("STARTDATE")
+					,(String) padiPooja.get("ENDDATE")
+					,(String) padiPooja.get("DESCRIPTION"));
+	           
+		}
+		cursor.close();
+		return deeksha;
+	}
+
+	private DBCursor getDeekshaCursor(String userId) {
+		BasicDBObject query = new BasicDBObject("USERID", userId);
+		return collection.find(query);
 	}
 }
 	

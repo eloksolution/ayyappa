@@ -17,18 +17,23 @@ public class GroupService {
 	@Autowired
 	UserDAO userDAO;
 	
-	public void addGroup(Group group){
+	public String addGroup(Group group){
 		String groupId=groupDAO.addGroup(group);
 		GroupMember gm=new GroupMember(groupId,group.getOwner(),group.getName());
 		userDAO.addUserGroup(gm);
+		return groupId;
 	}
 
 	public List<Group> getGroups() {
 		return groupDAO.getGroups();
 	}
+	
+	public List<Group> getTopGroups() {
+		return groupDAO.getTopGroups();
+	}
 
 	public Group searchById(String groupid,String userId) {
-		return groupDAO.searchById(groupid);
+		return groupDAO.searchById(groupid,userId);
 	}
 	public String join(GroupMember groupMem ) {
 		return groupDAO.join(groupMem);
@@ -36,5 +41,9 @@ public class GroupService {
 
 	public String update(Group group) {
 		return groupDAO.update(group);
+	}
+
+	public List<Group> getUserGroups(String userId) {
+		return groupDAO.getUserGroups(userId);
 	}
 }

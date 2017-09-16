@@ -8,14 +8,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableTransactionManagement
+
 @ComponentScan({ "in.eloksolutions.ayyappa.config" })
 @PropertySource(value = { "classpath:application.properties" })
 public class MongoConfigaration {
@@ -24,24 +23,22 @@ public class MongoConfigaration {
     private Environment environment;
     private static DB db;
     
-    
     @Bean
     public MongoClient getMongoClient() {
     	try {
-    		MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-    		db = mongoClient.getDB("ayyappaDb");
+    		MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://root:ankO960yHLxt@52.15.94.159:27017"));
+    		//MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+    		//db.authenticate("root", "ankO960yHLxt".toCharArray());
+    		db = mongoClient.getDB("ayyappaDB");
 			return mongoClient;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		return null;
      }
-
-
 	public static DB getDb() {
 		return db;
 	}
-
 
 	public void setDb(DB db) {
 		this.db = db;

@@ -2,8 +2,12 @@ package in.eloksolutions.ayyappa.service;
 
 import java.util.List;
 
+import in.eloksolutions.ayyappa.dao.DeekshaDAO;
+import in.eloksolutions.ayyappa.dao.PadipojaDAO;
 import in.eloksolutions.ayyappa.dao.UserDAO;
+import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.model.User;
+import in.eloksolutions.ayyappa.vo.DeekshaVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +16,12 @@ import org.springframework.stereotype.Repository;
 public class UserService {
 	@Autowired
 	UserDAO userDAO;
+	
+	@Autowired
+	DeekshaDAO deekshaDAO;
+	
+	@Autowired
+	PadipojaDAO padipojaDAO;
 	
 	public String addUser(User user){
 		return userDAO.addUser(user);
@@ -38,11 +48,22 @@ public class UserService {
 		return userDAO.getUserWithTopics(userid);
 	}
 
-	public User getPadis(String userid) {
-		return userDAO.getUserWithPaids(userid);
+	public List<Padipooja> getPadis(String userid) {
+		return padipojaDAO.getUserPadiPoojas(userid);
 	}
 	public List<User> findNearMe(String userid) {
 		return userDAO.findNearMe(userid);
+	}
+	public String addDeeksha(DeekshaVO deekshaVO) {
+		try {
+			return deekshaDAO.addDeeksha(deekshaVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error while Saving Deeksha, Please contact System Admin";
+		}
+	}
+	public DeekshaVO getDeeksha(String userId) {
+		return deekshaDAO.getDeeksha(userId);
 	}
 	
 }

@@ -22,7 +22,7 @@ public class TopicService {
 		topicDAO.updateTopic(topic);
 	}
 
-	public List<Topic> getTopic() {
+	public List<Topic> getTopics() {
 		return topicDAO.getTopics();
 	}
 
@@ -32,6 +32,10 @@ public class TopicService {
 
 	public void addDiscussion(String topicId,Discussion diss){
 		 topicDAO.addDiscussion(topicId, diss);
+	}
+
+	public List<Topic> getGroupTopics(String groupId) {
+		return topicDAO.getGroupTopics(groupId);
 	}
 
 	

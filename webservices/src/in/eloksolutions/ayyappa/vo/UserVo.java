@@ -13,7 +13,14 @@ public class UserVo {
 	private String createDate;
 	private String lat;
 	private String lon;
+	private String imgPath;
 	
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
 	public String getLat() {
 		return lat;
 	}

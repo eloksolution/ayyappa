@@ -68,20 +68,31 @@ public class GroupDAO {
 	}
 	
 	public List<Group> getGroups(){
-        DBCursor  cursor = collection.find();
-        List<Group> groups=new ArrayList<>();
+        DBCursor  cursor = collection.find().sort(new BasicDBObject("createDate", -1));
+        List<Group> groups = getGroupsDB(cursor);
+        return groups;
+	}
+
+	public List<Group> getTopGroups(){
+        DBCursor  cursor = collection.find().sort(new BasicDBObject("createDate", -1)).limit(5);
+        List<Group> groups = getGroupsDB(cursor);
+        return groups;
+	}
+
+	private List<Group> getGroupsDB(DBCursor cursor) {
+		List<Group> groups=new ArrayList<>();
         while (cursor.hasNext()) { 
            DBObject group = cursor.next();
         	ObjectId mobjid=(ObjectId)group.get("_id");
 			System.out.println("id is  "+mobjid);
-			Group dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"));
+			Group dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"));
 			List<User> groupMember=getGroupMembers(group);
 			if(!Util.isListEmpty(groupMember))
 				dbgroup.setGroupMembers(groupMember);
            groups.add(dbgroup);
         }
         cursor.close();
-        return groups;
+		return groups;
 	}
 
 	public Group searchById(String groupid,String userId) {
@@ -109,13 +120,33 @@ public class GroupDAO {
 	           DBObject group = cursor.next();
 	           ObjectId mobjid=(ObjectId)group.get("_id");
 	           System.out.println("description "+group.get("description"));
-	           dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"));
+	           dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"));
 	           List<User> groupMembers=getGroupMembers(group);
 	           dbgroup.setGroupMembers(groupMembers);
 	        }
 	        cursor.close();
 	        return dbgroup;
 
+	}
+	
+	public List<Group> getUserGroups(String userId) {
+		BasicDBObject query = new BasicDBObject("userId", userId);
+		System.out.println("query issiihhkkh is  " + query);
+		DBCursor cursor = collection.find(query);
+		ArrayList<Group> groups=new ArrayList<Group>();
+		while (cursor.hasNext()) {
+			DBObject group = cursor.next();
+			ObjectId mobjid = (ObjectId) group.get("_id");
+			System.out.println("description " + group.get("description"));
+			Group dbgroup = new Group((String) mobjid.toString(),
+					(String) group.get("name"),
+					(String) group.get("description"),
+					(String) group.get("owner"),
+					(String) group.get("imagePath"));
+			groups.add(dbgroup);
+		}
+		cursor.close();
+		return groups;
 	}
 	
 	private List<User> getGroupMembers(DBObject group) {

@@ -1,7 +1,6 @@
 package in.eloksolutions.ayyappa.service;
 
 import in.eloksolutions.ayyappa.dao.FeedbackDAO;
-import in.eloksolutions.ayyappa.dao.UserDAO;
 import in.eloksolutions.ayyappa.model.Feedback;
 
 import org.springframework.beans.factory.annotation.Autowired;

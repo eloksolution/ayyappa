@@ -52,6 +52,7 @@ public class UserDAO {
 	                     .append("AREA", user.getArea())
 	                     .append("CITY", user.getCity())
 	                     .append("STATE", user.getState())
+	                     .append("IMGPATH", user.getImgPath())
 	                     .append("LOC", toDBLoc(user.getLoc().getLon(),user.getLoc().getLat()))
 	    				 .append("CREATEDATE", new Date());
 	   
@@ -67,23 +68,27 @@ public class UserDAO {
 		 return new BasicDBObject("type","Point")
        .append("coordinates", loc);
 	}
-	public List<User> getUsers(){
-        DBCursor  cursor = collection.find();
-        List<User> users=new ArrayList<>();
-        while (cursor.hasNext()) { 
-           DBObject user = cursor.next();
-        	ObjectId mobjid=(ObjectId)user.get("_id");
-			System.out.println("id is  "+mobjid);
-           users.add(new User((String)mobjid.toString(),(String)user.get("FIRSTNAME"),(String)user.get("LASTNAME"),(String)user.get("MOBILE")
-        		   ,(String)user.get("EMAIL")
-        		   ,(String)user.get("AREA")
-        		    ,(String)user.get("CITY")
-        		    ,(String)user.get("STATE")
-        		     ,(String)user.get("LAT")
-        		      ,(String)user.get("LON")));
-        }
-        cursor.close();
-        return users;
+
+	public List<User> getUsers() {
+		DBCursor cursor = collection.find();
+		List<User> users = new ArrayList<>();
+		while (cursor.hasNext()) {
+			DBObject user = cursor.next();
+			ObjectId mobjid = (ObjectId) user.get("_id");
+			User dbuser = new User((String) mobjid.toString(),
+					(String) user.get("FIRSTNAME"),
+					(String) user.get("LASTNAME"), (String) user.get("MOBILE"),
+					(String) user.get("EMAIL"), (String) user.get("AREA"),
+					(String) user.get("CITY"), (String) user.get("STATE"), (String) user.get("IMGPATH"));
+			DBObject dbo = (DBObject) user.get("LOC");
+			BasicDBList locs = (BasicDBList) dbo.get("coordinates");
+			if (locs != null) {
+				dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
+			}
+			users.add(dbuser);
+		}
+		cursor.close();
+		return users;
 	}
 
 	public User searchById(String userid) {
@@ -162,23 +167,22 @@ public class UserDAO {
 
 	private DBCursor getDBUser(String userid) {
 		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+userid));
-		System.out.println("query issiihhkkh is  "+query);
 		return collection.find(query);
 	}
 
 	private User getUser(DBObject user) {
 		ObjectId mobjid=(ObjectId)user.get("_id");
-		   System.out.println("description "+user.get("description"));
 		   User dbuser=new User((String)mobjid.toString(),(String)user.get("FIRSTNAME"),(String)user.get("LASTNAME"),(String)user.get("MOBILE")
 				   ,(String)user.get("EMAIL")
 				   ,(String)user.get("AREA")
 				    ,(String)user.get("CITY")
-				   ,(String)user.get("STATE"));
+				   ,(String)user.get("STATE")
+				   ,(String)user.get("IMGPATH"));
 		   DBObject dbo=(DBObject) user.get("LOC");
 		   BasicDBList locs = (BasicDBList) dbo.get("coordinates");
-		   System.out.println("LOCATION 2222"+locs.get(0));
-		   System.out.println("LOCATION 22221111"+locs.get(1));
-		   dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
+		   if(locs!=null){
+			   dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
+		   }
 		return dbuser;
 	}
 	
@@ -188,6 +192,7 @@ public class UserDAO {
 		DBObject user = dbUserCursor.next();
 		   DBObject dbo=(DBObject) user.get("LOC");
 		   BasicDBList locs = (BasicDBList) dbo.get("coordinates");
+		   if(locs==null)return null;
 		return new LocationVO(userid, (Double)locs.get(0), (Double)locs.get(1));
 	}
 	private List<GroupMember> getGroups(DBObject user) {

@@ -1,7 +1,6 @@
 package in.eloksolutions.ayyappa.model;
 
-import in.eloksolutions.ayyappa.vo.PadiMember;
-
+import java.util.Date;
 import java.util.List;
 
 public class Padipooja {
@@ -14,6 +13,7 @@ public class Padipooja {
 	String memId;
 	String name;
 	String isMember;
+	String imgPath;
 
 	List<User> padiMembers;
 	
@@ -21,7 +21,7 @@ public class Padipooja {
 		
 	}
 	public Padipooja(String padipoojaId, String eventName, String location, String description, String date, String time, String memId
-			,String name){
+			,String name,String imgPath){
 		super();
 		this.padipoojaId=padipoojaId;
 		this.eventName=eventName;
@@ -31,7 +31,9 @@ public class Padipooja {
 		this.time=time;
 		this.memId=memId;
 		this.name=name;
+		this.imgPath=imgPath;
 	}
+	
 	
 	public String getPadipoojaId() {
 		return padipoojaId;
@@ -97,6 +99,12 @@ public class Padipooja {
 	}
 	public void setIsMember(String isMember) {
 		this.isMember = isMember;
+	}
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	@Override
 	public String toString() {

@@ -36,7 +36,7 @@ public class GroupController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updateGroup(@RequestBody GroupVO groupVO){
 		System.out.println("Request is coming groupVO "+groupVO);
-		Group group=new Group(groupVO.getGroupId(),groupVO.getName(),groupVO.getDescription(),groupVO.getOwner());
+		Group group=new Group(groupVO.getGroupId(),groupVO.getName(),groupVO.getDescription(),groupVO.getOwner(),groupVO.getImagePath());
 		 groupService.update(group);
 		 System.out.println("Updating  is coming groupVO "+group);
 		 return "success";
@@ -52,12 +52,28 @@ public class GroupController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/getfirstgroups", method = RequestMethod.GET)
+	public List<Group> getFirstGroups( HttpServletRequest request){
+		System.out.println("Request xxxx is coming "+request);
+		List<Group> groupcollection = groupService.getTopGroups();
+		System.out.println("Colection is coming "+groupcollection);
+		return groupcollection;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/getgroup/{groupid}/{userid}")
 	public Group getGroupById(@PathVariable("groupid") String groupid,@PathVariable("userid") String userId, HttpServletRequest request) {
 		System.out.println("Fetching all members with X00001 memberEdit " + groupid);
 		Group  groupedit = groupService.searchById(groupid,userId);
 		System.out.println("Fetching all Group details " + groupedit);
 		return groupedit;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getGroups/{userid}")
+	public List<Group> getUserGroups(@PathVariable("userid") String userId, HttpServletRequest request) {
+		System.out.println("Fetching all members with X00001 memberEdit " + userId);
+		return groupService.getUserGroups(userId);
 	}
 	
 	@ResponseBody

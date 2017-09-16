@@ -1,5 +1,6 @@
 package in.eloksolutions.ayyappa.model;
 
+import in.eloksolutions.ayyappa.util.Util;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 import in.eloksolutions.ayyappa.vo.UserConnectionVO;
 import in.eloksolutions.ayyappa.vo.UserPadis;
@@ -18,6 +19,7 @@ public class User {
 	private String state;
 	private String password;
 	private String createDate;
+	private String imgPath;
 	private LatLong loc;
 	private List<GroupMember> groups;
 	private List<UserTopics> userTopics;
@@ -28,7 +30,7 @@ public class User {
 		
 	}
 	public User(String userId, String firstName, String lastName,
-			String mobile, String email, String area, String city, String state) {
+			String mobile, String email, String area, String city, String state, String imgPath) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -38,9 +40,10 @@ public class User {
 		this.area = area;
 		this.city = city;
 		this.state = state;
+		this.imgPath=imgPath;
 	}
 	public User(String userId, String firstName, String lastName,
-			String mobile, String email, String area, String city, String state,String lat,String lon) {
+			String mobile, String email, String area, String city, String state,String lat,String lon,String imgPath) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -50,7 +53,9 @@ public class User {
 		this.area = area;
 		this.city = city;
 		this.state = state;
-		this.loc=new LatLong(lat, lon);
+		this.imgPath=imgPath;
+		if(!Util.isEmpty(lat) && !Util.isEmpty(lon))
+			this.loc=new LatLong(lat, lon);
 	}
 	public String getFirstName() {
 		return firstName;
@@ -146,6 +151,12 @@ public class User {
 	
 	public void setLoc(String lat,String lon) {
 		this.loc = new LatLong(lat,lon);
+	}
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	@Override
 	public int hashCode() {

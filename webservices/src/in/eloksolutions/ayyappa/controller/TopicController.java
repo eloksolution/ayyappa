@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mongodb.DBObject;
-
 
 
 @RestController
@@ -55,9 +53,16 @@ public class TopicController {
 	@RequestMapping(value = "/getTopics", method = RequestMethod.GET)
 	public List<Topic> gettopic( HttpServletRequest request){
 		System.out.println("Request xxxx is coming "+request);
-		List<Topic> topiccollection = topicService.getTopic();
+		List<Topic> topiccollection = topicService.getTopics();
 		System.out.println("Colection is coming "+topiccollection);
 		return topiccollection;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getGroupTopics/{groupId}", method = RequestMethod.GET)
+	public List<Topic> getGroupTopics(@PathVariable("groupId") String groupId, HttpServletRequest request){
+		System.out.println("Request xxxx is coming "+request);
+		return topicService.getGroupTopics(groupId);
 	}
 	
 	@ResponseBody

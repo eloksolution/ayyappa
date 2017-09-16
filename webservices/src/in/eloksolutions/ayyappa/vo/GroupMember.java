@@ -6,6 +6,8 @@ public class GroupMember {
 	private String firstName;
 	private String lastName;
 	private String groupName;
+	private String imgPath;
+	
 	public GroupMember(){
 		
 	}
@@ -60,6 +62,14 @@ public class GroupMember {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+
 	@Override
 	public String toString() {
 		return "GroupMember [groupId=" + groupId + ", userId=" + userId

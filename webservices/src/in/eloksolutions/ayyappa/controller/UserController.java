@@ -1,8 +1,11 @@
 package in.eloksolutions.ayyappa.controller;
 
 
+import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.service.UserService;
+import in.eloksolutions.ayyappa.util.Util;
+import in.eloksolutions.ayyappa.vo.DeekshaVO;
 import in.eloksolutions.ayyappa.vo.UserVo;
 
 import java.util.List;
@@ -32,7 +35,7 @@ public class UserController {
 	}
 
 	private User getUser(UserVo userVo) {
-		return new User(userVo.getUserId(),userVo.getFirstName(),userVo.getLastName(),userVo.getMobile(),userVo.getEmail(),userVo.getArea(),userVo.getCity(),userVo.getState(),userVo.getLat(),userVo.getLon());
+		return new User(userVo.getUserId(),userVo.getFirstName(),userVo.getLastName(),userVo.getMobile(),userVo.getEmail(),userVo.getArea(),userVo.getCity(),userVo.getState(),userVo.getLat(),userVo.getLon(),userVo.getImgPath());
 	}
 
 	@ResponseBody
@@ -57,7 +60,7 @@ public class UserController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updateUser(@RequestBody UserVo userVo){
 		System.out.println("Request is coming groupVO "+userVo);
-		User user=new User(userVo.getUserId(),userVo.getFirstName(),userVo.getLastName(),userVo.getMobile(),userVo.getEmail(),userVo.getArea(),userVo.getCity(),userVo.getState());
+		User user=new User(userVo.getUserId(),userVo.getFirstName(),userVo.getLastName(),userVo.getMobile(),userVo.getEmail(),userVo.getArea(),userVo.getCity(),userVo.getState(),userVo.getImgPath());
 		 userService.update(user);
 		 return "success";
 	}
@@ -83,7 +86,7 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/padis/{userid}")
-	public User getPadis(@PathVariable("userid") String userid, HttpServletRequest request) {
+	public List<Padipooja> getPadis(@PathVariable("userid") String userid, HttpServletRequest request) {
 		return userService.getPadis(userid);
 	}
 	
@@ -93,5 +96,32 @@ public class UserController {
 		return userService.findNearMe(userid);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/addDeeksha", method = RequestMethod.POST)
+	public String addDeeksha(@RequestBody DeekshaVO deekshaVO){
+		System.out.println("Request is coming "+deekshaVO);
+		if(!Util.isValidDate(deekshaVO.getStartDate())){
+			return "Please provide valid start date DD/MM/YYYY";
+		}
+		if(!Util.isValidDate(deekshaVO.getEndDate())){
+			return "Please provide valid end date DD/MM/YYYY";
+		}
+		String id=null;
+		try {
+			 id= userService.addDeeksha(deekshaVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error while saving Deeksha";
+		}
+		return id;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getDeeksha{userid}", method = RequestMethod.GET)
+	public DeekshaVO getDeeksha(@PathVariable("userid") String userId, HttpServletRequest request){
+		System.out.println("Request padipooja xxxx is coming "+request);
+		return userService.getDeeksha(userId);
+	}
+
 	
 }

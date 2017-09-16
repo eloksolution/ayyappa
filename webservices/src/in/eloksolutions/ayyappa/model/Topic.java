@@ -10,6 +10,7 @@ public class Topic {
 	String description;
 	Date createDate;
 	String owner;
+	String imgPath;
 	
 	List<Discussion> discussions;
 	public Topic(String id, String topic, String description, String groupId,
@@ -78,6 +79,12 @@ public class Topic {
 	}
 	public void setDiscussions(List<Discussion> discussions) {
 		this.discussions = discussions;
+	}
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	@Override
 	public String toString() {
