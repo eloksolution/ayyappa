@@ -46,4 +46,8 @@ public class GroupService {
 	public List<Group> getUserGroups(String userId) {
 		return groupDAO.getUserGroups(userId);
 	}
+
+	public List<Group> getJoinedGroups(String userId) {
+		return groupDAO.getJoinedGroups(userId);
+	}
 }

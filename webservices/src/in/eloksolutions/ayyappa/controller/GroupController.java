@@ -77,6 +77,13 @@ public class GroupController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/joined/{userid}")
+	public List<Group> getJoinedGroups(@PathVariable("userid") String userId, HttpServletRequest request) {
+		System.out.println("Fetching all members with X00001 memberEdit " + userId);
+		return groupService.getJoinedGroups(userId);
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join( @RequestBody GroupMember groupMem){
 		System.out.println("Request xxxx is groupMem  "+groupMem);

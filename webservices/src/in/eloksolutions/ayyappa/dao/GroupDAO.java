@@ -130,7 +130,7 @@ public class GroupDAO {
 	}
 	
 	public List<Group> getUserGroups(String userId) {
-		BasicDBObject query = new BasicDBObject("userId", userId);
+		BasicDBObject query = new BasicDBObject("owner", userId);
 		System.out.println("query issiihhkkh is  " + query);
 		DBCursor cursor = collection.find(query);
 		ArrayList<Group> groups=new ArrayList<Group>();
@@ -205,6 +205,26 @@ public class GroupDAO {
 		    dbGroup
 		);
 		return wr.getError();
+	}
+
+	public List<Group> getJoinedGroups(String userId) {
+		BasicDBObject query = new BasicDBObject("members.userId", userId);
+		System.out.println("query issiihhkkh is  " + query);
+		DBCursor cursor = collection.find(query);
+		ArrayList<Group> groups=new ArrayList<Group>();
+		while (cursor.hasNext()) {
+			DBObject group = cursor.next();
+			ObjectId mobjid = (ObjectId) group.get("_id");
+			System.out.println("description " + group.get("description"));
+			Group dbgroup = new Group((String) mobjid.toString(),
+					(String) group.get("name"),
+					(String) group.get("description"),
+					(String) group.get("owner"),
+					(String) group.get("imagePath"));
+			groups.add(dbgroup);
+		}
+		cursor.close();
+		return groups;
 	}
 	
 	
