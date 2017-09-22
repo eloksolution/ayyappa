@@ -70,7 +70,7 @@ public class MyRecyclerPadiMembers extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_row_topic, parent, false);
+                .inflate(R.layout.user_list, parent, false);
  
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;

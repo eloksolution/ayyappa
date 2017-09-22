@@ -5,6 +5,7 @@ public class DataObjectGroup {
     private String mText2;
     private String groupId;
     private String imgResource;
+    private  String addTopic;
     int memberSize;
 
     public DataObjectGroup(String text1, String text2, String imgResource, String groupId, int memberSize) {
@@ -13,6 +14,7 @@ public class DataObjectGroup {
         this.groupId = groupId;
         this.imgResource = imgResource;
         this.memberSize=memberSize;
+
     }
 
     public int getMemberSize() {
@@ -55,13 +57,23 @@ public class DataObjectGroup {
         this.groupId = groupId;
     }
 
+    public String getAddTopic() {
+        return addTopic;
+    }
+
+    public void setAddTopic(String addTopic) {
+        this.addTopic = addTopic;
+    }
+
     @Override
     public String toString() {
-        return "DataObject{" +
+        return "DataObjectGroup{" +
                 "mText1='" + mText1 + '\'' +
                 ", mText2='" + mText2 + '\'' +
                 ", groupId='" + groupId + '\'' +
-                ", imgResource=" + imgResource +
+                ", imgResource='" + imgResource + '\'' +
+                ", addTopic='" + addTopic + '\'' +
+                ", memberSize=" + memberSize +
                 '}';
     }
 }

@@ -3,7 +3,6 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -25,6 +24,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
 
@@ -33,7 +33,6 @@ import java.io.File;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.OwnerViewHelper;
-import ayyappa.eloksolutions.in.ayyappaap.util.ImageUtils;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 /**
@@ -55,6 +54,7 @@ public class OwnerView extends AppCompatActivity {
     Context context;
     TextView contacts;
     String tag="TopicView";
+    Glide glide;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,8 +179,10 @@ public class OwnerView extends AppCompatActivity {
                 Log.i("File down load id", id+"");
                 Log.i("File down load status", state+"");
                 if("COMPLETED".equals(state.toString())){
-                    Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-                    userImage.setImageBitmap(bit);
+                  //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
+                   // userImage.setImageBitmap(bit);
+                    glide.with(context).load(fileToDownload.getAbsolutePath()).into(userImage);
+
                 }
             }
 
@@ -220,14 +222,14 @@ public class OwnerView extends AppCompatActivity {
 
     }
     public void userGroups(View view){
-        Intent topicUp = new Intent(this, UserContactList.class);
+        Intent topicUp = new Intent(this, UserGroups.class);
         topicUp.putExtra("userId",""+userId);
         startActivity(topicUp);
 
 
     }
     public void userPadipooja(View view){
-        Intent topicUp = new Intent(this, UserContactList.class);
+        Intent topicUp = new Intent(this, UserPadiPoojas.class);
         topicUp.putExtra("userId",""+userId);
         startActivity(topicUp);
 

@@ -54,7 +54,7 @@ public class TopicHelper {
                 jsonObject.accumulate("topic", topicDto.getTopic());
                 jsonObject.accumulate("description", topicDto.getDescription());
                 json = jsonObject.toString();
-                System.out.println("Json is" + json);
+                System.out.println("Json topic share is" + json);
 
             }
             catch (Exception e) {

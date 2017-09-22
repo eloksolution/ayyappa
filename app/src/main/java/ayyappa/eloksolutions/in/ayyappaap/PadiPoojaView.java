@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +29,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -47,7 +46,6 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.EventMembers;
 import ayyappa.eloksolutions.in.ayyappaap.helper.EventViewHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.PadiObject;
 import ayyappa.eloksolutions.in.ayyappaap.util.Constants;
-import ayyappa.eloksolutions.in.ayyappaap.util.ImageUtils;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 
@@ -76,6 +74,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     TransferUtility transferUtility;
     TransferObserver transferObserver;
     SharedPreferences preference;
+    Glide glide;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         memId = preferences.getString("memId", null);
         name = preferences.getString("name", null);
         System.out.println("result from eventview" + 19);
-        ctx=getApplicationContext();
+        ctx=this;
 
         Intent createpadipoojaintent=getIntent();
         padiPoojaId=createpadipoojaintent.getStringExtra("padiPoojaId");
@@ -175,7 +174,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     }
     public void transferObserverListener(TransferObserver transferObserver){
 
-        Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
+        //Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
         transferObserver.setTransferListener(new TransferListener(){
 
             @Override
@@ -183,8 +182,10 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                 Log.i("File down load status ", state+"");
                 Log.i("File down load id", id+"");
                 if("COMPLETED".equals(state.toString())){
-                    Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
-                    padiImage.setImageBitmap(bit);
+                  //  Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
+                  //  padiImage.setImageBitmap(bit);
+                    glide.with(ctx).load(fileToDownload.getAbsolutePath()).into(padiImage);
+
                 }
             }
 

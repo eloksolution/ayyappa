@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupMembers;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
@@ -28,8 +27,8 @@ import ayyappa.eloksolutions.in.ayyappaap.helper.GroupJoinHelper;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectGroup;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
-public class MyRecyclerViewGroup extends RecyclerView
-        .Adapter<MyRecyclerViewGroup
+public class MyRecyclerViewTopicGroup extends RecyclerView
+        .Adapter<MyRecyclerViewTopicGroup
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DataObjectGroup> mDataset;
@@ -38,21 +37,15 @@ public class MyRecyclerViewGroup extends RecyclerView
     TextView keyName;
     String groupId, userId, firstName, lastName;
     private AmazonS3 s3;
-    private List<DataObjectGroup> itemList;
     Glide glide;
     TransferUtility transferUtility;
 
-    public MyRecyclerViewGroup(ArrayList<DataObjectGroup> myDataset, Context context, AmazonS3 s3, TransferUtility transferUtility) {
+    public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset, Context context, AmazonS3 s3, TransferUtility transferUtility) {
         mDataset = myDataset;
         this.context = context;
         this.s3 = s3;
         this.transferUtility = transferUtility;
     }
-    public MyRecyclerViewGroup(Context context, List<DataObjectGroup> itemList) {
-        this.itemList = itemList;
-        this.context = context;
-    }
-
 
     public class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
@@ -105,8 +98,10 @@ public class MyRecyclerViewGroup extends RecyclerView
             });
         }
 
+
         @Override
         public void onClick(View v) {
+
 
         }
     }
@@ -140,6 +135,9 @@ public class MyRecyclerViewGroup extends RecyclerView
 
     public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
+    }
+    public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset) {
+        mDataset = myDataset;
     }
 
 

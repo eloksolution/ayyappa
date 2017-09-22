@@ -15,8 +15,6 @@ public class FlexibleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myactivities_listview);
 
-
-
     }
 
     }

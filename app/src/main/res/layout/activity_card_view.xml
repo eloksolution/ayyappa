@@ -136,6 +136,8 @@
                     android:id="@+id/rvPadi_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:divider="@color/row_activated"
+                    android:paddingBottom="@dimen/fab_marginn"
                     android:scrollbars="horizontal"/>
                 <ImageView
                     android:layout_width="wrap_content"
@@ -191,7 +193,8 @@
                 android:id="@+id/rv_groups_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical"
+                android:divider="@color/row_activated"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"

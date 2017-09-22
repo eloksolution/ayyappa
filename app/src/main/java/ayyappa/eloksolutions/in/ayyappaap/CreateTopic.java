@@ -3,12 +3,15 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +22,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.leocardz.link.preview.library.LinkPreviewCallback;
 import com.leocardz.link.preview.library.SourceContent;
 import com.leocardz.link.preview.library.TextCrawler;
+
+import java.util.Date;
+
+import ayyappa.eloksolutions.in.ayyappaap.config.Config;
+import ayyappa.eloksolutions.in.ayyappaap.helper.GetShareGroups;
+
 
 /**
  * Created by welcome on 9/6/2017.
@@ -34,12 +49,17 @@ public class CreateTopic extends AppCompatActivity {
     String tag = "Create Topic";
     private TextCrawler textCrawler;
     EditText description,editTextTitlePost, editTextDescriptionPost;
+    Context mcontext;
+    AmazonS3 s3;
+    TransferUtility transferUtility;
+    String addTopic;
 
     private ViewGroup dropPreview;
     private String currentTitle = "", currentUrl, currentCannonicalUrl,
             currentDescription;
     private Bitmap[] currentImageSet;
     private int currentItem = 0;
+    String userId,username;
     private Bitmap currentImage;
 
     @Override
@@ -53,6 +73,9 @@ public class CreateTopic extends AppCompatActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+        addTopic=description.getText().toString();
+        SharedPreferences sharedPreferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        userId=sharedPreferences.getString("userId", null);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent); // Handle text being sent
@@ -67,6 +90,19 @@ public class CreateTopic extends AppCompatActivity {
             // Handle other intents, such as being started from the home screen
 
         }
+        mcontext=this;
+
+        credentialsProvider();
+        // callback method to call the setTransferUtility method
+        setTransferUtility();
+        RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
+        rvGroups.setHasFixedSize(true);
+        LinearLayoutManager lmPadi = new LinearLayoutManager(this);
+        rvGroups.setLayoutManager(lmPadi);
+        String surl= Config.SERVER_URL+"/group/joined/"+userId;
+        GetShareGroups getGroups=new GetShareGroups(mcontext,surl,rvGroups,s3,transferUtility,addTopic);
+        System.out.println("url for group list"+surl);
+        getGroups.execute();
 
 
         post.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +110,7 @@ public class CreateTopic extends AppCompatActivity {
 
             public void onClick(View view) {
                 if ((description.getText().toString() != null && !description.getText().toString().isEmpty())) {
-                    Intent post = new Intent(CreateTopic.this, GroupList.class);
+                    Intent post = new Intent(CreateTopic.this, UserGroupsJoined.class);
                     post.putExtra("topicName", description.getText().toString());
                     startActivity(post);
                 } else {
@@ -90,6 +126,7 @@ public class CreateTopic extends AppCompatActivity {
             // Update UI to reflect text being shared
             description.setText(sharedText);
             Log.i(tag, "Shared Text is" + sharedText);
+
             try {
                 if (sharedText.contains("http://") || sharedText.contains("https://")) {
                     System.out.println(" in if it contains http...");
@@ -100,9 +137,7 @@ public class CreateTopic extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     void handleSendImage(Intent intent) {
@@ -265,9 +300,6 @@ public class CreateTopic extends AppCompatActivity {
     private void uploadImage(Uri resultUri) {
         System.out.println("In image uploading method...");
 
-
-
-
     }
     private void showHideImage(View image, View parent, boolean show) {
         if (show) {
@@ -282,6 +314,43 @@ public class CreateTopic extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT, 3f));
         }
     }
+
+    public void credentialsProvider(){
+
+        // Initialize the Amazon Cognito credentials provider
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
+                Regions.AP_NORTHEAST_1 // Region
+        );
+
+        setAmazonS3Client(credentialsProvider);
+    }
+
+    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
+
+        // Create an S3 client
+        s3 = new AmazonS3Client(credentialsProvider);
+
+        // Set the region of your S3 bucket
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+    }
+
+    public void setTransferUtility(){
+        transferUtility = new TransferUtility(s3, getApplicationContext());
+    }
+
+    public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+
 
 
 

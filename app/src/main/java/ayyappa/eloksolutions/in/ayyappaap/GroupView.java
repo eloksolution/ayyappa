@@ -128,15 +128,19 @@ public class GroupView extends AppCompatActivity {
         });
 
 
-                joinButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            joinButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                        joinButton.setVisibility(View.GONE);
-                        joinEvent();
 
-                    }
-                });
+                    joinButton.setVisibility(View.GONE);
+
+                    joinEvent();
+
+                }
+            });
+        
+
 
         groupShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +181,7 @@ public class GroupView extends AppCompatActivity {
 
 
         GroupViewHelper getGroupsValue=new GroupViewHelper(this);
-        String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/598839b6e4b0ca1af7a13b";
+        String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/"+userId;
         System.out.println("url for group list"+surl);
         try {
             String output=getGroupsValue.new GroupViewTask(surl).execute().get();

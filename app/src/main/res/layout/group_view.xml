@@ -138,8 +138,8 @@
 
                             <ImageView
                                 android:id="@+id/group_join"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:onClick="group_join"
                                 android:src="@drawable/joined"
                                 />
@@ -166,8 +166,8 @@
 
                             <ImageView
                                 android:id="@+id/group_likes"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:src="@drawable/like"
                                 />
 
@@ -193,8 +193,8 @@
 
                             <ImageView
                                 android:id="@+id/group_update"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:onClick="group_update"
                                 android:src="@drawable/update1" />
 
@@ -220,8 +220,8 @@
 
                             <ImageView
                                 android:id="@+id/group_share"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:onClick="group_share"
                                 android:src="@drawable/share" />
 

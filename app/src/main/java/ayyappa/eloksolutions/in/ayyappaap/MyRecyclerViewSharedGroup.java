@@ -20,16 +20,18 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupMembers;
+import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.GroupJoinHelper;
+import ayyappa.eloksolutions.in.ayyappaap.helper.TopicHelper;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectGroup;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
-public class MyRecyclerViewGroup extends RecyclerView
-        .Adapter<MyRecyclerViewGroup
+public class MyRecyclerViewSharedGroup extends RecyclerView
+        .Adapter<MyRecyclerViewSharedGroup
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DataObjectGroup> mDataset;
@@ -38,26 +40,23 @@ public class MyRecyclerViewGroup extends RecyclerView
     TextView keyName;
     String groupId, userId, firstName, lastName;
     private AmazonS3 s3;
-    private List<DataObjectGroup> itemList;
     Glide glide;
     TransferUtility transferUtility;
+    String addTopic;
 
-    public MyRecyclerViewGroup(ArrayList<DataObjectGroup> myDataset, Context context, AmazonS3 s3, TransferUtility transferUtility) {
+    public MyRecyclerViewSharedGroup(ArrayList<DataObjectGroup> myDataset, Context context, AmazonS3 s3, TransferUtility transferUtility) {
         mDataset = myDataset;
         this.context = context;
         this.s3 = s3;
         this.transferUtility = transferUtility;
-    }
-    public MyRecyclerViewGroup(Context context, List<DataObjectGroup> itemList) {
-        this.itemList = itemList;
-        this.context = context;
-    }
 
+
+    }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView label;
-        TextView label2,label3;
+        TextView label2, label3;
 
 
         public ImageView getImageView() {
@@ -75,7 +74,7 @@ public class MyRecyclerViewGroup extends RecyclerView
             super(itemView);
             label = (TextView) itemView.findViewById(R.id.group_title);
             label2 = (TextView) itemView.findViewById(R.id.group_desc);
-            label3=(TextView) itemView.findViewById(R.id.badge_notification);
+            label3 = (TextView) itemView.findViewById(R.id.badge_notification);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
 
@@ -99,18 +98,35 @@ public class MyRecyclerViewGroup extends RecyclerView
                 public void onClick(View view) {
                     DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
                     groupId = dataObject.getGroupId();
-                    joinEvent(itemView);
+                    Intent groupView = new Intent(view.getContext(), GroupView.class);
+                    groupView.putExtra("groupId", dataObject.getGroupId());
+                    view.getContext().startActivity(groupView);
+                    saveEventToServer(itemView);
 
                 }
             });
         }
 
+
         @Override
         public void onClick(View v) {
+
 
         }
     }
 
+
+
+
+
+    private TopicDTO buildDTOObject() {
+        TopicDTO topicDto= new TopicDTO();
+
+        topicDto.setTopic("http://www.templeadvisor.com/temples-in-india/hindu-temples/ayyappa-swamy-temple");
+        topicDto.setGroupId(groupId);
+        topicDto.setOwner(firstName);
+        return topicDto;
+    }
 
 
     private void joinEvent(View itemView) {
@@ -125,6 +141,28 @@ public class MyRecyclerViewGroup extends RecyclerView
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private String saveEventToServer(View itemView) {
+        TopicDTO topicDto=buildDTOObject();
+        if (checkValidation()) {
+            if (CheckInternet.checkInternetConenction(itemView.getContext())) {
+                TopicHelper createtopicpHelper = new TopicHelper(itemView.getContext());
+                String gurl = Config.SERVER_URL +"topic/add";
+                try {
+                    String gId= createtopicpHelper.new CreateTopic(topicDto, gurl).execute().get();
+                    return gId;
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                CheckInternet.showAlertDialog(itemView.getContext(), "No Internet Connection",
+                        "You don't have internet connection.");
+            }
+        }
+        return null;
     }
 
 
@@ -141,13 +179,16 @@ public class MyRecyclerViewGroup extends RecyclerView
     public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
+    public MyRecyclerViewSharedGroup(ArrayList<DataObjectGroup> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility, String addTopic) {
+        mDataset = myDataset;
+    }
 
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.group_list_view, parent, false);
+                .inflate(R.layout.group_share_view, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -240,5 +281,9 @@ public class MyRecyclerViewGroup extends RecyclerView
  
     public interface MyClickListener {
         public void onItemClick(int position, View v);
+    }
+    private boolean checkValidation() {
+        boolean ret = true;
+        return ret;
     }
 }

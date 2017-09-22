@@ -67,8 +67,6 @@ public class CreateGroup extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_group);
 
-
-
         String[] catageries = new String[]{"Select Group catagory","Padipooja","Pilgrimage","AyyappaSwami Temples","Ayyappa Stories","Bhakthi News"};
         gCatagery = (Spinner) findViewById(R.id.gcatagery);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

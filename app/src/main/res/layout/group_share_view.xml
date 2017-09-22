@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/padding_list_row"
+   >
+
+<de.hdodenhof.circleimageview.CircleImageView
+    android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ayy"
+        android:id="@+id/group_image_list"
+        android:paddingBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Devil May Cry"
+        android:textSize="18sp"
+        android:id="@+id/group_title"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:layout_alignTop="@+id/group_image_list"
+        android:layout_toRightOf="@+id/group_image_list"
+        android:layout_toEndOf="@+id/group_image_list" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:lines="1"
+        android:ellipsize="end"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:textSize="12sp"
+        android:id="@+id/group_desc"
+        android:layout_below="@+id/group_title"
+        android:layout_alignLeft="@+id/group_title"
+        android:layout_alignStart="@+id/group_title"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+        android:text="Plateform : PS3, XBOX 360"
+        android:id="@+id/badge_notification"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="12sp"
+        android:layout_below="@+id/group_desc"
+        android:layout_alignLeft="@+id/group_desc"
+        android:layout_alignStart="@+id/group_desc" />
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:id="@+id/joinbtn"
+        android:layout_below="@+id/group_desc"
+        android:layout_alignParentRight="true"
+        android:text="Post"
+        android:maxLength="20"
+        android:paddingLeft="@dimen/padding_list_row"
+        android:ellipsize="end"
+        style="@style/Widget.Button.Simple"
+
+        />
+
+</RelativeLayout>

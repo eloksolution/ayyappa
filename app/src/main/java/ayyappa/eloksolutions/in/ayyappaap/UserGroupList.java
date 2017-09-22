@@ -55,7 +55,7 @@ private BottomBar bottomBar;
         GetGroups getGroups=new GetGroups(context,url,rvGroups, s3, transferUtility);
         System.out.println("url for group list"+url);
         getGroups.execute();
-        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
