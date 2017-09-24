@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">Ayyappa App</string>
+    <string name="google_place_api">AIzaSyCDjVe3vsBBHqgnGqnBvtGJGGd_wmY5yXA</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="who_can"><center>WHO can do it?</center></string>
+    <string name="deeksha_rules">Males: Any one can do it.
+Females: Below age 10 and above 50 can observe deeksha</string>
+
+    <string name="when">when?</string>
+    <string name="deeksha_rules1">It is usually observed during the Mandalam
+        (which usually falls between Nov 2nd week and Sankranthi).
+        Mandalam starts on first day of Kartika Masam (as per Kerala Calendar)</string>
+
+    <string name="where">where?</string>
+    <string name="deeksha_rules2">Mala Dharana can be done in any temple.
+        It is usually done by Guruswami (who had been to Sabrimala 18 times) or the priest at the
+        temple.Deeksha will be ended after returning home from Sabarimala.
+        Mala should not be removed in Pamba or Sannidham.</string>
+
+    <string name="What_to_do">what to do?</string>
+    <string name="deeksha_rules3">• Take bath in early morning and evening with cold water.
+         (Clarify usage of Soap and Shampoo from your guru Swamy).\n\n
+        • Daily visit temple.\n\n
+        • Take bath in early morning and evening with cold water.\n\n
+        • Do the pooja twice a day, morning (before sun rise) and evening (after sunset).\n\n
+        • Do your regular daily pooja followed by Ashotharam (108 namas) to Ganesh,Subramanyam, Durga and Ayyappan.\n\n
+        • Chant Hairivarasanam only after evening Pooja.\n\n
+        • No need for cooked Prasadam every day. Fruits as Naivedyam for Ayyappan are OK.\n\n
+        • Take bath as soon you come home in the evening from work.\n
+        • Wear only Black Dress.\n\n
+        • You should never take the mala out.\n\n
+        • Use fresh clothes every day. So, have two pairs of black dress and wash them every day.\n\n
+        • No Breakfast.\n\n
+        • Lunch: Should take fresh cooked food before noon. No left overs from previous day.\n\n
+        • Dinner: Should take light food like, upma, idli.\n\n
+        • No onion,garlic, egg or meat products.\n\n
+        • Outside food should be completely avoided.\n\n
+        • If anyone calls you for Annadanam you should not refuse the invitation.\n\n
+          Make sure they should have prepared the meal after taking bath etc.\n\n
+        • When you or your spouse is preparing meal, make sure you clean the stove before cooking.\n\n
+
+</string>
+
+
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="refresh_token">Get Fresh Token</string>
+    <string name="desc_google_icon">Google Logo</string>
+    <string name="title_text">Google Sign-In\nQuickstart</string>
+    <string name="signed_out">Signed out</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="loading">Loading…</string>
+      <string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
+        news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
+        InstanceID token to logcat.</string>
+    <string name="subscribe_to_news">Subscribe To News</string>
+    <string name="log_token">Log Token</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="msg_subscribed">Subscribed to news topic</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="default_notification_channel_name" translatable="true">News</string>
+</resources>

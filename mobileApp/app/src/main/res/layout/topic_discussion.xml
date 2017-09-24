@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:background="#FCF6EB"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:orientation="horizontal">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/add_discu"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@drawable/edit_round_corner"
+        android:textColorHint="@android:color/black"
+        android:hint="Add a discussion"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/but_diss"
+        android:layout_height="50dp"
+        android:layout_weight="5"
+        android:padding="4dp"
+        android:src="@android:drawable/ic_menu_send" />
+</LinearLayout>

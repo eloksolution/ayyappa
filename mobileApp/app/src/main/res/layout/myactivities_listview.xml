@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginLeft="0dp"
+    android:layout_marginTop="12dp"
+    android:layout_weight="2">
+    <FrameLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBar">
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    app:contentScrim="?attr/colorPrimary">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginBottom="32dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            android:paddingTop="30dp"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+            <ImageView
+                android:id="@+id/user_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user_view"
+                android:fitsSystemWindows="true"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollableView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/black"
+                android:text="Suresh Babu"
+                android:textStyle="bold"
+                android:textSize="15dp"/>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="2">
+
+            <ImageView
+                android:id="@+id/fIcon"
+                android:layout_width="15dp"
+                android:gravity="center_vertical"
+                android:layout_height="15dp"
+                android:src="@drawable/locate"
+                android:layout_marginLeft="5dp"
+                android:textSize="14dp"
+                android:layout_marginTop="2dp"
+                />
+
+            <TextView
+                android:id="@+id/user_location"
+                android:layout_toRightOf="@+id/fIcon"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Moulali, SecunderaBad,\n Telangana,India,500047"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_view"
+                android:layout_below="@+id/dsate"
+                android:background="@color/view" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/defaultprofile"
+                    android:id="@+id/contact_user_image_list"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Contacts"
+                    android:textSize="20sp"
+                    android:id="@+id/user_contacts"
+                    android:onClick="userContacts"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="5dp"
+                    android:layout_alignTop="@+id/contact_user_image_list"
+                    android:layout_toRightOf="@+id/contact_user_image_list"
+                    android:layout_toEndOf="@+id/contact_user_image_list"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/contacts_count"
+                    android:maxLength="20"
+                    android:text="3"
+                    android:textSize="20sp"
+                    android:ellipsize="end"
+                    android:layout_alignParentRight="true"
+                    />
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_view"
+                android:layout_below="@+id/dsate"
+                android:background="@color/view" />
+            <RelativeLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+
+              >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/group_user"
+                    android:id="@+id/padi_image_list"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Groups"
+                    android:textSize="20sp"
+                    android:id="@+id/user_groups"
+                    android:paddingLeft="4dp"
+                    android:onClick="userGroups"
+                    android:paddingRight="5dp"
+                    android:layout_alignTop="@+id/padi_image_list"
+                    android:layout_toRightOf="@+id/padi_image_list"
+                    android:layout_toEndOf="@+id/padi_image_list" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/padi_count"
+                    android:layout_alignParentRight="true"
+                    android:maxLength="20"
+                    android:text="3"
+                    android:ellipsize="end"
+                    android:textSize="20sp"
+                    android:src="@drawable/joined"
+                    />
+
+
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_view"
+                android:layout_below="@+id/dsate"
+                android:background="@color/view" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/event_user"
+                    android:id="@+id/padi_user_image_list"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="padipooja"
+                    android:textSize="20sp"
+                    android:id="@+id/padi_groups"
+                    android:onClick="userPadipooja"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="5dp"
+                    android:layout_alignTop="@+id/padi_user_image_list"
+                    android:layout_toRightOf="@+id/padi_user_image_list"
+                    android:layout_toEndOf="@+id/padi_user_image_list" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/padipooja_count"
+                    android:layout_alignParentRight="true"
+                    android:maxLength="20"
+                    android:text="3"
+                    android:ellipsize="end"
+                    android:textSize="20sp"
+
+                    />
+
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_view"
+                android:layout_below="@+id/dsate"
+                android:background="@color/view" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/join_contact"
+                    android:id="@+id/invitefriends"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Invite Friends"
+                    android:textSize="20sp"
+                    android:id="@+id/invitefriends_user"
+                    android:paddingLeft="4dp"
+                    android:onClick="userInvite"
+                    android:paddingRight="5dp"
+                    android:layout_alignTop="@+id/invitefriends"
+                    android:layout_toRightOf="@+id/invitefriends"
+                    android:layout_toEndOf="@+id/invitefriends" />
+
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_view"
+                android:layout_below="@+id/dsate"
+                android:background="@color/view" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/chat_icon"
+                    android:id="@+id/feedback"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Feed Back"
+                    android:textSize="20sp"
+                    android:id="@+id/feedback_user"
+                    android:onClick="userFeedBack"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="5dp"
+                    android:layout_alignTop="@+id/feedback"
+                    android:layout_toRightOf="@+id/feedback"
+                    android:layout_toEndOf="@+id/feedback" />
+
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_view"
+                android:layout_below="@+id/dsate"
+                android:background="@color/view" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_menu_edit" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/bottomBar"
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.widget.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/bottomNavView_Bar"
+            android:background="@drawable/white_grey_border_top"
+            app:menu="@menu/bottom_navigation_menu">
+
+
+        </android.support.design.widget.BottomNavigationView>
+    </RelativeLayout>
+
+
+</RelativeLayout>

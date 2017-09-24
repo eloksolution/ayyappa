@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uses-permissionandroid="http://schemas.android.com/apk/res-auto"
+    package="ayyappa.eloksolutions.in.ayyappaap">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".SpalshScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="AyyappaApp"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".CreateGroup"
+            android:label="createGroup"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".GroupList"
+            android:label="GroupList"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ToppicGroupList"
+            android:label="GroupList"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GroupView"
+            android:label="GroupView"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".CreateTopic"
+            android:label="AyyappaApp"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MapView"
+            android:label="GroupList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FlexibleActivity"
+            android:label="GroupList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreatePadiPooja"
+            android:label="padiPooja"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PadiPoojaFull"
+            android:label="padipooja"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Registartion"
+            android:label="Registration"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PadiPoojaView"
+            android:label="PadiPooja View"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TopicView"
+            android:label="Topic View"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GroupUpdate"
+            android:label="GroupUpdate"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PadiPoojaUpdate"
+            android:label="PadiPooja Update"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TopicUpdate"
+            android:label="Topic Update"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserView"
+            android:label="User View"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserUpdate"
+            android:label="User Update"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CardViewActivity"
+            android:label="AyyappaApp"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeekshaActivity"
+            android:label="AyyappaApp"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeekshaRules"
+            android:label="AyyappaApp"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Movis"
+            android:label="Movies"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".FeedBackForm"
+            android:label="FeedBackForm"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PadiViewExample"
+            android:label="Padi View Example"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".WebActivity"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".GroupMembersList"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserContactList"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserGroupList"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OwnerView"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MapsActivity"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserGroups"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserGroupsJoined"
+            android:label="Ayyappa App"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserPadiPoojas"
+            android:label="User padiPoojas"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.SignInActivity"></activity>
+        <activity android:name=".messaging.MessagingActivity"></activity>
+        <service
+            android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".messaging.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_place_api" />
+
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+        <service
+            android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>
