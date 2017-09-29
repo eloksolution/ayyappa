@@ -176,6 +176,7 @@
             android:label="User padiPoojas"
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.SignInActivity"></activity>
+        <activity android:name=".activity.LoginActivity"></activity>
         <activity android:name=".messaging.MessagingActivity"></activity>
         <service
             android:name=".MyFirebaseMessagingService">

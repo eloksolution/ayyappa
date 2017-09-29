@@ -2,6 +2,7 @@ package ayyappa.eloksolutions.in.ayyappaap.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,7 +11,10 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
+import ayyappa.eloksolutions.in.ayyappaap.MainActivity;
+import ayyappa.eloksolutions.in.ayyappaap.Registartion;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
+import ayyappa.eloksolutions.in.ayyappaap.activity.LoginActivity;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
@@ -19,9 +23,14 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
  */
 
 public class RegisterHelper {
-    private Context mcontext;
-    public RegisterHelper(Context mcontext) {
+    private Registartion mcontext;
+    private LoginActivity loginActivity;
+    public RegisterHelper(Registartion mcontext) {
         this.mcontext = mcontext;
+    }
+
+    public RegisterHelper(LoginActivity mcontext) {
+        this.loginActivity = mcontext;
     }
     String tag="GroupHelper";
 
@@ -40,7 +49,11 @@ public class RegisterHelper {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progress = new ProgressDialog(mcontext);
+            if(loginActivity!=null){
+                progress = new ProgressDialog(loginActivity);
+            }else {
+                progress = new ProgressDialog(mcontext);
+            }
             progress.setMessage("Loading...");
             progress.show();
         }
@@ -51,22 +64,31 @@ public class RegisterHelper {
                 System.out.println("Connection to url ................." + gurl);
                 url = new URL(gurl);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("firstName", registerDto.getFirstName());
-                jsonObject.accumulate("lastName", registerDto.getLastName());
-                jsonObject.accumulate("mobile", registerDto.getMobile());
+                if(!Util.isEmpty(registerDto.getFirstName()))
+                    jsonObject.accumulate("firstName", registerDto.getFirstName());
+                if(!Util.isEmpty(registerDto.getLastName()))
+                    jsonObject.accumulate("lastName", registerDto.getLastName());
+                if(!Util.isEmpty(registerDto.getMobile()))
+                    jsonObject.accumulate("mobile", registerDto.getMobile());
+                if(!Util.isEmpty(registerDto.getEmail()))
                 jsonObject.accumulate("email", registerDto.getEmail());
+                if(!Util.isEmpty(registerDto.getArea()))
                 jsonObject.accumulate("area", registerDto.getArea());
+                if(!Util.isEmpty(registerDto.getCity()))
                 jsonObject.accumulate("city", registerDto.getCity());
+                if(!Util.isEmpty(registerDto.getState()))
                 jsonObject.accumulate("state", registerDto.getState());
+                if(!Util.isEmpty(registerDto.getPassword()))
                 jsonObject.accumulate("password",registerDto.getPassword());
+                if(registerDto.getLongi()>0)
                 jsonObject.accumulate("lon",registerDto.getLongi());
+                if(registerDto.getLati()>0)
                 jsonObject.accumulate("lat",registerDto.getLati());
+                if(!Util.isEmpty(registerDto.getImgPath()))
                 jsonObject.accumulate("imgPath", registerDto.getImgPath());
-
                 //  jsonObject.accumulate("loc",registerDto.getLati());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
-
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -77,16 +99,20 @@ public class RegisterHelper {
             return result;
         }
         protected void onPostExecute(String result) {
+            progress.dismiss();
+            Log.i(tag, "User id  " +result);
             if (result!=null&&!result.startsWith("ERROR")) {
                 registerDto.setUserId(result);
-                Util.setPreferances(mcontext, registerDto);
-                Log.i(tag, "result is registerDto " +registerDto);
+                if(loginActivity!=null){
+                    loginActivity.updateUI(true,registerDto);
+                    return;
+                }
+
+                mcontext.redirectToHome(registerDto);
             }else{
                 Toast.makeText(mcontext, "Not able to Registered", Toast.LENGTH_LONG).show();
             }
             Log.i(tag, "result is  " +result);
-            progress.dismiss();
         }
-
     }
 }

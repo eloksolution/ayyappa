@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -59,19 +61,11 @@ public class GroupJoinHelper {
             return RestServices.POST(url, json);
         }
         protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Intent groupView=new Intent(mcontextt, GroupView.class);
-            groupView.putExtra("groupId",groupMembers.getGroupId());
-            mcontextt.startActivity(groupView);
             System.out.println("From Join Event" + result);
+            super.onPostExecute(result);
             progress.dismiss();
 
         }
     }
-
-
-
-
-
-    }
+}
 

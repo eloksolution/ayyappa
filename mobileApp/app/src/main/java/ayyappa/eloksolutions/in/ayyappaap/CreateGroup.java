@@ -16,6 +16,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -49,7 +51,7 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
  * Created by welcome on 6/27/2017.
  */
 
-public class CreateGroup extends MainActivity {
+public class CreateGroup extends AppCompatActivity {
     EditText name, description;
     ImageView gImage, imgView;
     Spinner gCatagery;
@@ -347,10 +349,10 @@ public class CreateGroup extends MainActivity {
         transferObserverListener(transferObserver);
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(CreateGroup.this)) {
-                GroupHelper createGroupHelper = new GroupHelper(CreateGroup.this);
+                GroupHelper createGroupHelper = new GroupHelper(this);
                 String gurl = Config.SERVER_URL+"group/add";
                 try {
-                    String gId= createGroupHelper.new CreateGroup(groupDto, gurl).execute().get();
+                    String gId= createGroupHelper.new CreateGroupTask(groupDto, gurl).execute().get();
                     return gId;
 
                 } catch (InterruptedException e) {
@@ -410,5 +412,12 @@ public class CreateGroup extends MainActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-   
+
+    public void callbackCreateGroup(String groupId){
+        Intent groupView = new Intent(this, GroupList.class);
+        startActivity(groupView);
+        FirebaseMessaging.getInstance().subscribeToTopic(groupId);
+        Log.i(TAG,"Subscribed to group "+groupId);
+    }
+
 }

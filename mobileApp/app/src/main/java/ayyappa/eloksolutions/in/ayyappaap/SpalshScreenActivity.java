@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import ayyappa.eloksolutions.in.ayyappaap.activity.LoginActivity;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 
 /**
@@ -64,18 +65,14 @@ public class SpalshScreenActivity extends AppCompatActivity {
             public void run() {
                 if(id!=null && id.length()>0){
                     System.out.println("id in splash XXXX");
-
                     mainIntent = new Intent(SpalshScreenActivity.this, CardViewActivity.class);
+                }else {
+                    mainIntent = new Intent(SpalshScreenActivity.this, LoginActivity.class);
                 }
-                else {
-                    mainIntent = new Intent(SpalshScreenActivity.this, Registartion.class);
-                }
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                SpalshScreenActivity.this.startActivity(mainIntent);
-                SpalshScreenActivity.this.finish();
-                // close this activity
-                finish();
+
+               startActivity(mainIntent);
+               finish();
+
             }
         }, SPLASH_TIME_OUT);
     }

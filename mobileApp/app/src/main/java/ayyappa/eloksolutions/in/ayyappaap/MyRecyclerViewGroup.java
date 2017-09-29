@@ -17,6 +17,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -127,6 +128,13 @@ public class MyRecyclerViewGroup extends RecyclerView
         }
     }
 
+    public void callbackJoinGroup(String groupId){
+        Intent groupView=new Intent(context, GroupView.class);
+        groupView.putExtra("groupId",groupId);
+        context.startActivity(groupView);
+        FirebaseMessaging.getInstance().subscribeToTopic(groupId);
+        System.out.println("Joining group id" +groupId);
+    }
 
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
