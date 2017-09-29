@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        android:layout_marginLeft="80dp"
+        />
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/activity_image"
+            />
+
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/join_now"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:textColor="@color/from"
+                    android:id="@+id/title_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="WONDERLA AMUSMED Park -43 Wides"/>
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:textColor="@color/radio1"
+                    android:id="@+id/title_people"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="103 Members"/>
+
+                <TextView
+                    android:textColor="@color/radio1"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:id="@+id/title_area"
+                    android:textSize="14sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Group description comes here...."/>
+
+            </LinearLayout>
+
+            <Button
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:background="@drawable/simple_button"
+                android:id="@+id/join_now"
+                android:scaleType="fitXY"
+                android:layout_width="50dp"
+                android:text="Join"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

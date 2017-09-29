@@ -71,7 +71,7 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                     int memberSize=0;
                     if(padiMembers !=null)
                         memberSize=padiMembers.size();
-                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation());
+                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation(),event.getMonth(),event.getDay(),event.getWeek());
                     results.add(obj);
                 }
                 MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results,mcontext,s3,transferUtility);

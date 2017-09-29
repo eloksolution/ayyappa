@@ -86,7 +86,12 @@ public class EventViewHelper {
         }
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            System.out.println("From Join Event" + result);
+
+            System.out.println("From Join Event result" + result);
+          //  String padiPoojaId=result;
+          //  Intent padiView = new Intent(mcontext, PadiPoojaView.class);
+          //  padiView.putExtra("padiPoojaId", padiPoojaId);
+          //  mcontext.startActivity(padiView);
             progress.dismiss();
         }
     }

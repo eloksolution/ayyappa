@@ -9,15 +9,30 @@ public class TopicObject {
     private String topicId;
     private String topic;
     private String description;
-    private int imgResource;
+    private String imgResource;
+    private String imgPath;
+    private String owner;
+    private String name;
+    private String createDate;
 
-    public TopicObject(String groupId, String topicId, int imgResource, String topic, String description) {
+    public TopicObject(String groupId, String topicId,  String topic,String description,  String owner,String name,String imgResource,String createDate) {
         this.groupId = groupId;
         this.topicId = topicId;
         this.topic = topic;
         this.description=description;
         this.imgResource=imgResource;
+        this.owner=owner;
+        this.name=name;
+        this.createDate=createDate;
 
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     public String getGroupId() {
@@ -52,12 +67,36 @@ public class TopicObject {
         this.description = description;
     }
 
-    public int getImgResource() {
+    public String getImgResource() {
         return imgResource;
     }
 
-    public void setImgResource(int imgResource) {
+    public void setImgResource(String imgResource) {
         this.imgResource = imgResource;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 
     @Override
@@ -67,7 +106,11 @@ public class TopicObject {
                 ", topicId='" + topicId + '\'' +
                 ", topic='" + topic + '\'' +
                 ", description='" + description + '\'' +
-                ", imgResource=" + imgResource +
+                ", imgResource='" + imgResource + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", owner='" + owner + '\'' +
+                ", name='" + name + '\'' +
+                ", createDate='" + createDate + '\'' +
                 '}';
     }
 }

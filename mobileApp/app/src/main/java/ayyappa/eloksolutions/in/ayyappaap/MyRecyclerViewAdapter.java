@@ -40,26 +40,26 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label, label2, count, time,location;
+        TextView label, date, count, month,week;
         ImageView imageView;
         Button joinBtn;
  
         public DataObjectHolder(View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.textView);
-            label2 = (TextView) itemView.findViewById(R.id.textView2);
-            count  =(TextView) itemView.findViewById(R.id.badge_notification);
-            time=(TextView) itemView.findViewById(R.id.date_time);
-            location=(TextView) itemView.findViewById(R.id.location);
+            label = (TextView) itemView.findViewById(R.id.topic);
+            date = (TextView) itemView.findViewById(R.id.date);
+            count  =(TextView) itemView.findViewById(R.id.people_join);
+            month=(TextView) itemView.findViewById(R.id.month);
+            week=(TextView) itemView.findViewById(R.id.day);
             Log.i(LOG_TAG, "Adding Listener");
 
             itemView.setOnClickListener(this);
-            imageView = (ImageView) itemView.findViewById(R.id.imgPlay);
+            imageView = (ImageView) itemView.findViewById(R.id.event_image);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i(LOG_TAG, "postion"+getAdapterPosition()+ "postion value"+mDataset.get(getAdapterPosition()));
-                    Log.i(LOG_TAG, "Adding Listener "+label.getText()+"description"+label2.getText());
+                    Log.i(LOG_TAG, "Adding Listener "+label.getText()+"description"+date.getText());
                     DataObjectPadiPooja dataObject=mDataset.get(getAdapterPosition());
                     Log.i(LOG_TAG, "data object is Listener"+dataObject);
                     Intent padiPoojaView=new Intent(view.getContext(), PadiPoojaView.class);
@@ -80,7 +80,6 @@ public class MyRecyclerViewAdapter extends RecyclerView
     }
 
     public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
     }
 
     public MyRecyclerViewAdapter(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility) {
@@ -94,7 +93,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_row, parent, false);
+                .inflate(R.layout.padi_recycler, parent, false);
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
     }
@@ -102,11 +101,11 @@ public class MyRecyclerViewAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
-        holder.label2.setText(mDataset.get(position).getmText2());
-        holder.time.setText(mDataset.get(position).getDate());
-        holder.location.setText(mDataset.get(position).getLocation());
+        holder.date.setText(mDataset.get(position).getDay());
+        holder.month.setText(mDataset.get(position).getMonth());
+       holder.week.setText(mDataset.get(position).getWeek());
         getBitMap(mDataset.get(position).getImgResource(), holder.imageView);
-        Log.i(LOG_TAG, "Adding description :"+mDataset.get(position).getmText2());
+        Log.i(LOG_TAG, "Adding mDataset.get(position).getWeek() :"+mDataset.get(position).getWeek());
        // holder.imageView.setImageBitmap(mDataset.get(position).getImgResource());
         if (mDataset.get(position).getMemberSize()!=0) {
             holder.count.setText(mDataset.get(position).getMemberSize() + " are Joined");

@@ -1,17 +1,26 @@
 package ayyappa.eloksolutions.in.ayyappaap;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -48,20 +57,26 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 public class GroupView extends AppCompatActivity {
     ImageView groupImage,topicCrate;
-    TextView groupName, description, noOfJoins,likescount;
+    TextView groupName, description, noOfJoins,likescount,groupUpdate,groupShare,findMore;
     EditText addTopic;
     RecyclerView groupTopics;
-    ImageView groupJoin, groupShare, groupUpdate,like;
+    private boolean clicked = false;
+    ImageView groupJoin,like;
     String groupId, userId,firstName,lastName;
     int likescounts;
+    FloatingActionButton fab;
     public static int joinedStatus;
     File fileToDownload ;
+    boolean attimage=false;
     AmazonS3 s3;
     Button joinButton;
+    Toolbar toolbar;
     Glide glide;
-
+    CollapsingToolbarLayout collapsingToolbar;
     Context context;
+    public static String joinStatus="Y";
     int count;
+    ImageView image;
     String tag="GroupView";
     TransferUtility transferUtility;
     GroupDTO groupDTO;
@@ -71,6 +86,7 @@ public class GroupView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_view);
         context=this;
+
          groupId=getIntent().getStringExtra("groupId");
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
        userId= preferences.getString("userId",null);
@@ -78,18 +94,25 @@ public class GroupView extends AppCompatActivity {
         lastName=preferences.getString("lastName",null);
         Log.i(tag, "groupId is"+groupId);
         Log.i(tag, "preferences.getString userId is"+groupId+","+firstName+""+lastName);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Group View");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         groupName = (TextView) findViewById(R.id.group_view_title);
-        groupJoin =(ImageView) findViewById(R.id.group_join);
+      //  groupJoin =(ImageView) findViewById(R.id.group_join);
         description = (TextView) findViewById(R.id.group_view_desc);
         addTopic = (EditText) findViewById(R.id.add_topic);
          topicCrate =(ImageView) findViewById(R.id.but_topic);
        groupImage =(ImageView) findViewById(R.id.group_image_view);
-        groupUpdate=(ImageView) findViewById(R.id.group_update);
+        groupUpdate=(TextView) findViewById(R.id.group_update);
         noOfJoins =(TextView) findViewById(R.id.joinedcount);
-        like=(ImageView) findViewById(R.id.group_likes);
-        likescount=(TextView) findViewById(R.id.like_count);
-        joinButton=(Button) findViewById(R.id.joinbtn);
-        groupShare=(ImageView) findViewById(R.id.group_share);
+        joinButton=(Button) findViewById(R.id.group_join);
+        groupShare=(TextView) findViewById(R.id.share_text);
+        findMore=(TextView) findViewById(R.id.findmore);
+         fab = (FloatingActionButton) findViewById(R.id.fabgroup);
+        CoordinatorLayout group_view_layout = (CoordinatorLayout) findViewById(R.id.group_view_layout);
 
 
         try {
@@ -106,7 +129,7 @@ public class GroupView extends AppCompatActivity {
         // callback method to call the setTransferUtility method
         setTransferUtility();
         final Context ctx = this;
-        topicCrate.setOnClickListener(new View.OnClickListener() {
+/*        topicCrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String createGroupHelper=saveEventToServer();
@@ -114,9 +137,18 @@ public class GroupView extends AppCompatActivity {
                 groupView.putExtra("groupId", ""+groupId);
                 startActivity(groupView);
             }
+        }); */
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent topicCreate=new Intent(GroupView.this,CreateGroupTopic.class);
+                topicCreate.putExtra("groupId", groupId);
+                startActivity(topicCreate);
+            }
         });
 
-        groupJoin.setOnClickListener(new View.OnClickListener() {
+
+        noOfJoins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -128,17 +160,22 @@ public class GroupView extends AppCompatActivity {
         });
 
 
-            joinButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
+        findMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                    joinButton.setVisibility(View.GONE);
-
-                    joinEvent();
-
+                if(clicked) {
+                    findMore.setText("Find More ");
+                    description.setMaxLines(2);
+                    clicked = false;
+                } else {
+                    findMore.setText("Show Less ");
+                    description.setMaxLines(Integer.MAX_VALUE);
+                    clicked = true;
                 }
-            });
+            }
+        });
         
 
 
@@ -162,6 +199,8 @@ public class GroupView extends AppCompatActivity {
             }
         });
 
+
+
         groupUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,7 +215,7 @@ public class GroupView extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"topic/getGroupTopics/"+groupId;
-        GetTopics getTopics=new GetTopics(context,url,rvPadi);
+        GetTopics getTopics=new GetTopics(context,url,rvPadi,s3,transferUtility);
         getTopics.execute();
 
 
@@ -193,6 +232,26 @@ public class GroupView extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println("groupDTO.getOwner()"+groupDTO.getOwner()+"  UserId"+userId);
+
+        try {
+
+            if(groupDTO.getOwner().equals(userId) || groupDTO.getIsMember().equals(joinStatus) ){
+                System.out.println("groupDTO.getIsMember()"+groupDTO.getIsMember());
+                joinButton.setVisibility(View.GONE);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                joinEvent();
+                joinButton.setVisibility(View.GONE);
+
+            }
+        });
 
 
     }
@@ -273,14 +332,16 @@ public class GroupView extends AppCompatActivity {
              groupDTO = gson.fromJson(result, GroupDTO.class);
             groupName.setText(groupDTO.getName());
             description.setText(groupDTO.getDescription());
+            toolbar.setTitle(groupDTO.getName());
             if(groupDTO.getGroupMembers()!=null) {
-                noOfJoins.setText(groupDTO.getGroupMembers().size() + "  joins");
+                noOfJoins.setText(groupDTO.getGroupMembers().size() + "");
                 System.out.println("json xxxx from groupDTO.getGroupMembers().size()" + groupDTO.getGroupMembers().size());
 
             }
 
         }
     }
+
     private String saveEventToServer() {
         TopicDTO topicDto=buildDTOObject();
         if (checkValidation()) {
@@ -337,6 +398,38 @@ public class GroupView extends AppCompatActivity {
             e.printStackTrace();
 
         }
+    }
+    private void createTopicDialog() {
+
+        final Dialog dialog = new Dialog(GroupView.this);
+        // Include dialog.xml file
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.topic_create);
+        Window window = dialog.getWindow();
+        // window.setGravity(Gravity.BOTTOM | Gravity.LEFT |Gravity.END);
+        WindowManager.LayoutParams param = window.getAttributes();
+        param.gravity = Gravity.FILL;
+        param.width = WindowManager.LayoutParams.MATCH_PARENT;
+        param.height = WindowManager.LayoutParams.MATCH_PARENT;
+        dialog.setCanceledOnTouchOutside(true);
+
+        image = (ImageView) dialog.findViewById(R.id.forum_image);
+        final EditText links = (EditText) dialog.findViewById(R.id.post_text);
+        TextView post = (TextView) dialog.findViewById(R.id.post);
+        TextView topic_text = (TextView) dialog.findViewById(R.id.topic_text);
+        LinearLayout photo_card = (LinearLayout) dialog.findViewById(R.id.photo_card);
+
+        photo_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attimage = true;
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+
+            }
+        });
     }
 
     private void addingMember(String result) throws JSONException {

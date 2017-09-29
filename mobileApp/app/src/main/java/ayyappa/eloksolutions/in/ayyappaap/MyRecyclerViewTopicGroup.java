@@ -66,13 +66,13 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.group_title);
-            label2 = (TextView) itemView.findViewById(R.id.group_desc);
-            label3=(TextView) itemView.findViewById(R.id.badge_notification);
+            label = (TextView) itemView.findViewById(R.id.title_1);
+            label2 = (TextView) itemView.findViewById(R.id.title_area);
+            label3=(TextView) itemView.findViewById(R.id.title_people);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
 
-            imageView = (ImageView) itemView.findViewById(R.id.group_image_list);
+            imageView = (ImageView) itemView.findViewById(R.id.activity_image);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,7 +86,8 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
                 }
             });
 
-            joinBtn = (Button) itemView.findViewById(R.id.joinbtn);
+
+            joinBtn = (Button) itemView.findViewById(R.id.join_now);
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -145,7 +146,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.group_list_view, parent, false);
+                .inflate(R.layout.groups_lists_home, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;

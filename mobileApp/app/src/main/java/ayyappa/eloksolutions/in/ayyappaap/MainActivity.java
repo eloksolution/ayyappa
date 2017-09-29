@@ -6,11 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import ayyappa.eloksolutions.in.ayyappaap.activity.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -30,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
-        Log.i("MainActivity","in the main");
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -50,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.ic_center_focus:
-                        Log.i("MainActivity","in the SignInActivity ");
-                        Intent intent3 = new Intent(MainActivity.this, SignInActivity.class);
+                        Intent intent3 = new Intent(MainActivity.this, MapsActivity.class);
                         startActivity(intent3);
                         break;
 

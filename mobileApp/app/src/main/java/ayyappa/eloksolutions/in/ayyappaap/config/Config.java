@@ -13,6 +13,9 @@ public class  Config {
     public  static String userId;
     public  static String firstName;
     public  static String lastName;
+   public static String s3ImageUrl=" http://elokayyappa.s3-website-us-east-1.amazonaws.com/";
+    public static String BUCKET_NAME = "elokayyappa";
+
     public static String getUserId() {
         return userId;
     }

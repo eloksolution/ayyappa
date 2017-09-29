@@ -51,8 +51,10 @@ public class TopicHelper {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.accumulate("groupId", topicDto.getGroupId());
                 jsonObject.accumulate("owner", topicDto.getOwner());
+                jsonObject.accumulate("name",topicDto.getOwnerName());
                 jsonObject.accumulate("topic", topicDto.getTopic());
                 jsonObject.accumulate("description", topicDto.getDescription());
+                jsonObject.accumulate("imgPath", topicDto.getImgPath());
                 json = jsonObject.toString();
                 System.out.println("Json topic share is" + json);
 

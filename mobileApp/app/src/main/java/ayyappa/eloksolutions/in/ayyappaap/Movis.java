@@ -51,11 +51,13 @@ public class Movis extends AppCompatActivity {
                     case 2:
                         String uri2 = "https://www.youtube.com/watch?v=4wjuDG7WXY8";
                         Intent intent2 = new Intent(Movis.this,WebActivity.class);
+                        intent2.putExtra("uri",uri2);
                         startActivity(intent2);
                         break;
                     case 3:
                         String uri3 = "https://www.youtube.com/watch?v=FTBLd2zz8IU";
                         Intent intent3 = new Intent(Movis.this,WebActivity.class);
+                        intent3.putExtra("uri",uri3);
                         startActivity(intent3);
                         break;
                     case 4:

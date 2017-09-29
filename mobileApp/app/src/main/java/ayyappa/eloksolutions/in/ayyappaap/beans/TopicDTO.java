@@ -15,6 +15,9 @@ public class TopicDTO {
     String discussion;
     String createDate;
     String owner;
+    String imgPath;
+    String name;
+    String ownerName;
     int noOfMembers;
 List<TopicDissDTO> discussions = new ArrayList<TopicDissDTO>();
 
@@ -90,6 +93,30 @@ List<TopicDissDTO> discussions = new ArrayList<TopicDissDTO>();
         this.noOfMembers = noOfMembers;
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
     @Override
     public String toString() {
         return "TopicDTO{" +
@@ -101,6 +128,9 @@ List<TopicDissDTO> discussions = new ArrayList<TopicDissDTO>();
                 ", createDate='" + createDate + '\'' +
                 ", owner='" + owner + '\'' +
                 ", noOfMembers=" + noOfMembers +
+                ", imgPath=" + imgPath +
+                ", name=" + name +
+                ", ownerName=" + ownerName +
                 '}';
     }
 }
