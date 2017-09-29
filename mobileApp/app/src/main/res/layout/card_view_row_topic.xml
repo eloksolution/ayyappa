@@ -33,10 +33,10 @@
                 android:layout_alignParentStart="true" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Devil May Cry"
+                android:text="owner"
                 android:textSize="18sp"
                 android:id="@+id/group_title"
                 android:paddingLeft="4dp"
@@ -63,7 +63,7 @@
                 android:layout_alignParentEnd="true" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
                 android:text="Plateform : PS3, XBOX 360"

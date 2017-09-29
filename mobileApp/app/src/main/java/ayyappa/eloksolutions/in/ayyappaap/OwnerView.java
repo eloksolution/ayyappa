@@ -42,19 +42,20 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 public class OwnerView extends AppCompatActivity {
     ImageView userImage,discussionCreate;
     TextView userName, userLocation;
-    RegisterDTO registerDTO;
+    Context context;
     String userId;
     private BottomBar bottomBar;
 
     int count;
     File fileToDownload ;
     AmazonS3 s3;
+    RegisterDTO registerDTO;
     TransferUtility transferUtility;
     TransferObserver transferObserver;
-    Context context;
+    Glide glide;
     TextView contacts;
     String tag="TopicView";
-    Glide glide;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,9 +102,6 @@ public class OwnerView extends AppCompatActivity {
             e.printStackTrace();
         }
         credentialsProvider();
-
-
-        // callback method to call the setTransferUtility method
         setTransferUtility();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
@@ -148,17 +146,6 @@ public class OwnerView extends AppCompatActivity {
     }
 
 
-    public void setFileToDownload(String imageKey){
-        if (Util.isEmpty(imageKey))return;
-        transferObserver = transferUtility.download(
-                "elokayyappa",     // The bucket to download from *//*
-                imageKey,    // The key for the object to download *//*
-                fileToDownload        // The file to download the object to *//*
-        );
-
-        transferObserverListener(transferObserver);
-
-    }
     public void credentialsProvider(){
 
         // Initialize the Amazon Cognito credentials provider
@@ -172,15 +159,16 @@ public class OwnerView extends AppCompatActivity {
     }
     public void transferObserverListener(TransferObserver transferObserver){
 
+        //Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
         transferObserver.setTransferListener(new TransferListener(){
 
             @Override
             public void onStateChanged(int id, TransferState state) {
+                Log.i("File down load status ", state+"");
                 Log.i("File down load id", id+"");
-                Log.i("File down load status", state+"");
                 if("COMPLETED".equals(state.toString())){
-                  //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-                   // userImage.setImageBitmap(bit);
+                    //  Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
+                    //  padiImage.setImageBitmap(bit);
                     glide.with(context).load(fileToDownload.getAbsolutePath()).into(userImage);
 
                 }
@@ -210,10 +198,24 @@ public class OwnerView extends AppCompatActivity {
         s3.setRegion(Region.getRegion(Regions.US_EAST_1));
 
     }
+
     public void setTransferUtility(){
 
         transferUtility = new TransferUtility(s3, getApplicationContext());
     }
+    public void setFileToDownload(String imageKey){
+        if (Util.isEmpty(imageKey))return;
+
+        transferObserver = transferUtility.download(
+                "elokayyappa",     // The bucket to download from *//*
+                imageKey,    // The key for the object to download *//*
+                fileToDownload        // The file to download the object to *//*
+        );
+
+        transferObserverListener(transferObserver);
+
+    }
+
     public void userContacts(View view){
         Intent topicUp = new Intent(this, UserContactList.class);
         topicUp.putExtra("userId",""+userId);

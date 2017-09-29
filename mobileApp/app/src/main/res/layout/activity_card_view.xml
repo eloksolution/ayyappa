@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -19,8 +21,14 @@
     android:padding="5dp"
     android:id="@+id/scrollView"
     android:background="@color/row_activated"
-    android:fillViewport="false"
     tools:context=".MainActivity">
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:sl="http://schemas.android.com/tools"
+        android:id="@+id/group_view_layout"
+        >
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,15 +45,11 @@
            android:background="@drawable/cardstyle"
             xmlns:app="http://schemas.android.com/apk/res-auto">
             <LinearLayout
-
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:layout_margin="5dp"
                 android:orientation="vertical"
-                android:weightSum="1">
-
-
+                android:weightSum="2">
 
                 <LinearLayout
                     android:id="@+id/heading_layout"
@@ -66,25 +70,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/small_view"
                     android:background="@color/view" />
-            <ImageView
-                android:id="@+id/imgDeeksha"
-                android:gravity="center"
-                android:src="@drawable/banner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
-                />
-                <TextView
-                    android:id="@+id/tvDays"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:text="18 day"
-                    android:textSize="20dp"
+                <ImageView
+                    android:src="@drawable/banner"
+                    android:id="@+id/event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
                     />
-
+                <include android:id="@+id/news_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/padi_recycler_home"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -132,6 +128,31 @@
                     android:layout_height="@dimen/small_view"
                     android:background="@color/view" />
 
+                    <LinearLayout
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="right"
+
+                        android:layout_gravity="center"
+                        android:weightSum="3"
+                        android:layout_margin="8dp">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:paddingRight="10dp"
+                            android:id="@+id/PadiFull"
+                            android:layout_gravity="center"
+                            android:src="@drawable/add"/>
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="right|center"
+                            android:src="@drawable/fullscreenicon"/>
+                    </LinearLayout>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvPadi_home"
                     android:layout_width="match_parent"
@@ -139,14 +160,6 @@
                     android:divider="@color/row_activated"
                     android:paddingBottom="@dimen/fab_marginn"
                     android:scrollbars="horizontal"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:id="@+id/PadiFull"
-                    android:layout_below="@+id/rvPadi"
-                    android:layout_alignParentRight="true"
-
-                    android:src="@drawable/full_screen"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -188,6 +201,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/small_view"
                 android:background="@color/view" />
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:weightSum="3"
+                android:layout_margin="8dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/contactFull"
+                    android:layout_gravity="center"
+                    android:src="@drawable/add"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:layout_gravity="right|center"
+                    android:src="@drawable/fullscreenicon"/>
+            </LinearLayout>
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_groups_home"
@@ -195,13 +232,6 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 android:divider="@color/row_activated"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:id="@+id/contactFull"
-                android:layout_below="@+id/rvContacts"
-                android:gravity="right"
-                android:src="@drawable/full_screen"/>
 
         </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -219,7 +249,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:orientation="vertical"
             android:layout_height="wrap_content"
             >
@@ -242,22 +272,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/small_view"
                 android:background="@color/view" />
-
-            <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:id="@+id/ivFull11"
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:gravity="right"
-                android:src="@drawable/full_screen"
-                android:layout_below="@+id/tvMovies"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_gravity="center"
+                android:weightSum="3"
+                android:layout_margin="8dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/movie_full"
+                    android:layout_gravity="right|center"
+                    android:src="@drawable/fullscreenicon"/>
+            </LinearLayout>
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <GridView
+                    android:id="@+id/gridview"
+                    android:layout_below="@+id/card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:verticalSpacing="5dp"
+                    android:horizontalSpacing="5dp"
+                    android:stretchMode="columnWidth"
+                    android:numColumns="1"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 </android.support.v7.widget.CardView>
@@ -265,11 +311,78 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/fab_margin"
             android:background="@color/view" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv8"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:id="@+id/heading_layout7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/tv_songs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Songs"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_heading" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/small_view"
+                    android:background="@color/view" />
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_gravity="center"
+                    android:weightSum="3"
+                    android:layout_margin="8dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:id="@+id/songs_view"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/fullscreenicon"/>
+                </LinearLayout>
+                <RelativeLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <GridView
+                        android:id="@+id/gridview_one"
+                        android:layout_below="@+id/card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:verticalSpacing="5dp"
+                        android:horizontalSpacing="5dp"
+                        android:stretchMode="columnWidth"
+                        android:numColumns="1"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
 
     </LinearLayout>
-
+    </android.support.design.widget.CoordinatorLayout>
 </ScrollView>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabgroup"

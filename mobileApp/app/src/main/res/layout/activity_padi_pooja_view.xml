@@ -1,408 +1,371 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scroll">
-    <LinearLayout
-        android:layout_width="wrap_content"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:sl="http://schemas.android.com/tools"
+    android:id="@+id/group_view_layout"
+    >
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_collapseMode="parallax"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <RelativeLayout android:id="@+id/ListPoi"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            xmlns:android="http://schemas.android.com/apk/res/android">
-
-            <ImageView
+            <ayyappa.eloksolutions.in.ayyappaap.adapter.ImageAspectRatio
                 android:id="@+id/padi_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_alignParentTop="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ayy1" />
-
-    </RelativeLayout>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv2"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
-            <RelativeLayout
-                android:id="@+id/relative2"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:padding="@dimen/padding_list_two"
+                app:layout_collapseMode="parallax" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/nested_scrollview"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+        <LinearLayout
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E0E0E0"
+            android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view1"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/white"
+                android:layout_marginBottom="10dp"
                 >
-            <TextView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:focusableInTouchMode="true"
+                            android:id="@+id/why_exp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_marginRight="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:id="@+id/event_name"
+                                android:layout_width="wrap_content"
+                                android:textSize="22sp"
+                                android:textColor="@color/from"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_marginRight="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:id="@+id/description"
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/from"
+                                android:layout_marginTop="10dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:id="@+id/findmore"
+                                android:layout_width="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="@color/from"
+                                android:layout_marginTop="5dp"
+                                android:layout_height="wrap_content"
+                                android:text="Find More "/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:background="@color/white"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+
+                            android:weightSum="3"
+                            android:layout_margin="8dp">
+
+                        <TextView
+                            android:id="@+id/join"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:layout_gravity="center"
+                            android:layout_margin="20dp"
+                            android:text="Are you Going?"
+                            android:textSize="16sp"
+                            android:textColor="@color/from"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:paddingRight="10dp"
+                            android:foregroundGravity="left" />
+
+                            <LinearLayout
+                                android:background="@color/white"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="right"
+                                android:layout_gravity="center"
+                                android:weightSum="3"
+                                android:layout_margin="8dp">
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:paddingRight="10dp"
+                                android:layout_gravity="center"
+                                android:id="@+id/join_event"
+                                android:src="@drawable/yes"/>
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:paddingLeft="10dp"
+                                android:layout_gravity="right|center"
+                                android:src="@drawable/no"/>
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        <LinearLayout
+                            android:background="@color/message"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:layout_margin="20dp">
+                            <LinearLayout
+                                android:id="@+id/joined_layout"
+                                android:background="@color/white"
+                                android:padding="10dp"
+                                android:gravity="center"
+                                android:layout_width="0dp"
+                                android:layout_height="70dp"
+                                android:orientation="vertical"
+                                android:layout_weight=".9">
+                                <TextView
+                                    android:layout_marginBottom="-4dp"
+                                    android:id="@+id/joinedcount"
+                                    android:textAlignment="center"
+                                    android:gravity="bottom"
+                                    android:textSize="22sp"
+                                    android:text="0"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="23dp"
+                                    />
+                                <TextView
+                                    android:id="@+id/joined_count_text"
+                                    android:paddingTop="3dp"
+                                    android:textSize="16sp"
+                                    android:text="Joined"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_width="2dp"
+                                android:layout_height="70dp"
+                                android:background="@color/message" />
+                            <LinearLayout
+                                android:id="@+id/share_layout"
+                                android:background="@color/white"
+                                android:padding="10dp"
+                                android:gravity="center"
+                                android:layout_width="0dp"
+                                android:layout_height="70dp"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+                                <ImageView
+                                    android:layout_width="23dp"
+                                    android:layout_height="23dp"
+                                    android:src="@drawable/share"/>
+                                <TextView
+                                    android:id="@+id/share_text"
+                                    android:paddingTop="3dp"
+                                    android:textSize="16sp"
+                                    android:text="Share"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
+                            <View
+                                android:layout_gravity="center"
+                                android:layout_width="1dp"
+                                android:layout_height="70dp"
+                                android:background="@color/message" />
+
+                            <LinearLayout
+                                android:id="@+id/event_layout"
+                                android:layout_marginLeft="2dp"
+                                android:background="@color/white"
+                                android:padding="10dp"
+                                android:gravity="center"
+                                android:layout_width="0dp"
+                                android:minHeight="70dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1.1">
+                                <ImageView
+                                    android:tint="@color/black"
+                                    android:layout_width="23dp"
+                                    android:layout_height="23dp"
+                                    android:src="@drawable/update1"/>
+                                <TextView
+                                    android:id="@+id/group_update"
+                                    android:paddingTop="3dp"
+                                    android:textSize="16sp"
+                                    android:text="update"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view2"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:paddingLeft="4dp"
-                android:paddingRight="5dp"
-                android:id="@+id/event_name"
-                android:text="Event Name"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Small Text"
-                android:lines="1"
-                android:ellipsize="end"
-                android:paddingLeft="@dimen/fab_marginn"
-                android:textSize="12sp"
-                android:layout_below="@+id/event_name"
-                />
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fab_margin"
-            android:background="@color/view" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv9"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            app:cardElevation="0dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/fab_margin">
-                <Button
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:textColor="@color/black"
-                    android:background="@drawable/simple_button"
-                    android:textSize="@dimen/text_heading"
-                    android:text="Join" />
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fab_margin"
-            android:background="@color/view" />
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv8"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            app:cardElevation="0dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                card_view:cardBackgroundColor="@color/white"
+                android:layout_marginBottom="10dp"
+                >
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:gravity="center_vertical" >
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/fab_marginn"
-                        android:gravity="center" >
-
-                        <ImageView
-                            android:id="@+id/joiinbtn"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:onClick="padiJoin"
-                            android:src="@drawable/joined"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/joiinbtn"
-                            android:layout_centerInParent="true"
-                            android:id="@+id/joinedcount"
-                            android:clickable="false"
-                            android:text="Join" />
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="@dimen/padding_list_two"
-                        android:layout_height="wrap_content"
-                        android:background="@color/view" />
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/fab_marginn"
-                        android:gravity="center" >
-
-                        <ImageView
-                            android:id="@+id/group_likes"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/like"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:id="@+id/like_count"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/group_likes"
-                            android:layout_centerInParent="true"
-                            android:clickable="false"
-                            android:text="Like" />
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="@dimen/padding_list_two"
-                        android:layout_height="wrap_content"
-                        android:background="@color/view" />
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/fab_marginn"
-                        android:gravity="center" >
-
-                        <ImageView
-                            android:id="@+id/update"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:onClick="group_update"
-                            android:src="@drawable/update1" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/update"
-                            android:layout_centerInParent="true"
-                            android:clickable="false"
-                            android:text="update" />
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="@dimen/padding_list_two"
-                        android:layout_height="wrap_content"
-                        android:background="@color/view" />
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/fab_marginn"
-                        android:gravity="center" >
-
-                        <ImageView
-                            android:id="@+id/group_share"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:onClick="group_share"
-                            android:src="@drawable/share" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/group_share"
-                            android:layout_centerInParent="true"
-                            android:clickable="false"
-                            android:text="Share" />
-                    </RelativeLayout>
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/fab_margin"
-            android:background="@color/view" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv1"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            app:cardElevation="0dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:paddingBottom="20dp"
-                android:orientation="vertical">
-        <RelativeLayout
-            android:id="@+id/relative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:paddingBottom="20dp"
-            android:layout_below="@+id/event_name"
-            xmlns:android="http://schemas.android.com/apk/res/android">
-
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_date"
-
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="20dp"
-                android:id="@+id/event_date"
-                android:text="12-12-2016"
-                android:layout_toRightOf="@+id/img"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/event_timee"
-                android:text="12:00pm"
-                android:layout_toRightOf="@+id/event_date"
-                android:paddingRight="15sp"
-              />
-            </RelativeLayout>>
-                <View
+                    android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/small_view"
-                    android:background="@color/view" />
-        <RelativeLayout
-            android:id="@+id/relative1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="40dp"
-            android:layout_margin="5dp"
-            android:layout_below="@+id/relative"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="19dp">
-            <ImageView
-                android:id="@+id/locimg"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:text="icon"
-                android:src="@drawable/ic_locate"
-                android:textSize="14dp"/>
-
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:layout_toRightOf="@+id/locimg"
-                android:hint="location"
-                android:textSize="15sp"/>
-
-        </RelativeLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/small_view"
-                    android:background="@color/view" />
-
-                <RelativeLayout
-                    android:id="@+id/relative3"
-                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_below="@+id/relative2">
+                    android:weightSum="3"
+                    android:gravity="left|center"
+                    android:layout_margin="20dp">
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:gravity="left|center"
+                    android:layout_margin="20dp">
+
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_date"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20dp"
+                    android:id="@+id/event_date"
+                    android:text="12-12-2016"
+                    android:layout_toRightOf="@+id/img"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/event_timee"
+                    android:text="12:00pm"
+                    android:layout_toRightOf="@+id/event_date"
+                    android:paddingRight="15sp"
+                    />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:gravity="left|center"
+                    android:layout_margin="20dp">
+
+
                     <ImageView
-                        android:id="@+id/swamies"
+                        android:id="@+id/locimg"
                         android:layout_width="50dp"
                         android:layout_height="30dp"
                         android:text="icon"
-                        android:src="@drawable/user_view"
+                        android:src="@drawable/ic_locate"
                         android:textSize="14dp"/>
 
-
                     <TextView
-                        android:id="@+id/joins_view"
+                        android:id="@+id/location"
                         android:layout_width="fill_parent"
-                        android:layout_height="30dp"
-                        android:background="@null"
-                        android:layout_toRightOf="@+id/swamies"
-                        android:text="description"
-                        android:textSize="20sp"/>
+                        android:layout_height="wrap_content"
+                        android:hint="25-1/1, Anand Bagh Main Road\nAnandbagh, Moula Ali\nSecunderabad, \n Telangana 500047"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+        </LinearLayout>
 
-                </RelativeLayout>
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/fab_margin"
-            android:background="@color/view" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv3"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            app:cardElevation="0dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
-
-        <LinearLayout
-
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_margin="5dp"
-            android:paddingBottom="20dp"
-            android:orientation="vertical"
-            android:weightSum="1">
-
+            </android.support.v7.widget.CardView>
 
 
             <LinearLayout
-            android:id="@+id/heading_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-                android:gravity="center"
-            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_heading"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Joined members"
-                android:textStyle="bold"
-                android:textSize="20sp" />
-                </LinearLayout>
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/small_view"
-                android:background="@color/view" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_members"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"/>
-
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+            </LinearLayout>
         </LinearLayout>
-        </android.support.v7.widget.CardView>
+
+    </android.support.v4.widget.NestedScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabgroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_menu_edit" />
 
 
-    </LinearLayout>
-
-</ScrollView>
+</android.support.design.widget.CoordinatorLayout>

@@ -42,17 +42,16 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
     private AmazonS3 s3;
     Glide glide;
     TransferUtility transferUtility;
-    String addTopic;
+    public  CreateTopic createTopic;
 
-    public MyRecyclerViewSharedGroup(ArrayList<DataObjectGroup> myDataset, Context context, AmazonS3 s3, TransferUtility transferUtility) {
+
+    public MyRecyclerViewSharedGroup(ArrayList<DataObjectGroup> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility, CreateTopic createTopic) {
         mDataset = myDataset;
         this.context = context;
         this.s3 = s3;
         this.transferUtility = transferUtility;
-
-
+        this.createTopic=createTopic;
     }
-
     public class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView label;
@@ -114,21 +113,6 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
 
         }
     }
-
-
-
-
-
-    private TopicDTO buildDTOObject() {
-        TopicDTO topicDto= new TopicDTO();
-
-        topicDto.setTopic("http://www.templeadvisor.com/temples-in-india/hindu-temples/ayyappa-swamy-temple");
-        topicDto.setGroupId(groupId);
-        topicDto.setOwner(firstName);
-        return topicDto;
-    }
-
-
     private void joinEvent(View itemView) {
         GroupJoinHelper groupJoinHelper = new GroupJoinHelper(itemView.getContext());
         GroupMembers groupJoins = memBuildDTOObject();
@@ -143,13 +127,16 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
         }
     }
     private String saveEventToServer(View itemView) {
-        TopicDTO topicDto=buildDTOObject();
+
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(itemView.getContext())) {
                 TopicHelper createtopicpHelper = new TopicHelper(itemView.getContext());
                 String gurl = Config.SERVER_URL +"topic/add";
                 try {
-                    String gId= createtopicpHelper.new CreateTopic(topicDto, gurl).execute().get();
+                    TopicDTO topicDTO=createTopic.getTopicDTO();
+                    topicDTO.setGroupId(groupId);
+                    System.out.println("topicDTO "+topicDTO);
+                    String gId= createtopicpHelper.new CreateTopic(topicDTO, gurl).execute().get();
                     return gId;
 
                 } catch (InterruptedException e) {
@@ -179,9 +166,7 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
     public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public MyRecyclerViewSharedGroup(ArrayList<DataObjectGroup> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility, String addTopic) {
-        mDataset = myDataset;
-    }
+
 
 
     @Override

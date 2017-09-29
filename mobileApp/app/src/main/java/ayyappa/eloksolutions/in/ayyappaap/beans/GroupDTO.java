@@ -19,7 +19,9 @@ public class GroupDTO {
     String type;
     String imagePath;
     String groupCatagory;
+    String isMember;
     Bitmap bitmap;
+    String ownerName;
 
     public Bitmap getBitmap() {
         return bitmap;
@@ -111,6 +113,30 @@ public class GroupDTO {
         this.groupMembers = groupMembers;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getIsMember() {
+        return isMember;
+    }
+
+    public void setIsMember(String isMember) {
+        this.isMember = isMember;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
     @Override
     public String toString() {
         return "GroupDto{" +
@@ -123,6 +149,8 @@ public class GroupDTO {
                 ", type='" + type + '\'' +
                 ", imagePath='" + imagePath + '\'' +
                 ", groupCatagory='" + groupCatagory + '\'' +
+                ", isMember='" + isMember + '\'' +
+                ", ownerName='" + ownerName + '\'' +
                 '}';
     }
 

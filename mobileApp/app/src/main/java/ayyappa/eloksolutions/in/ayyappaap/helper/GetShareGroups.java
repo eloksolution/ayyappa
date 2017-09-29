@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import ayyappa.eloksolutions.in.ayyappaap.CreateTopic;
 import ayyappa.eloksolutions.in.ayyappaap.MyRecyclerViewSharedGroup;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
@@ -29,18 +30,19 @@ import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectGroup;
 public class GetShareGroups extends AsyncTask<String, Void, String> {
     private Context mcontext;
     private ProgressDialog progress;
-    String surl,addTopic;
+    String surl;
+    CreateTopic createTopic;
     RecyclerView rvGroups;
     AmazonS3 s3;
     TransferUtility transferUtility;
 
-    public GetShareGroups(Context mcontext, String surl, RecyclerView rvGroups, AmazonS3 s3, TransferUtility transferUtility, String addTopic) {
+    public GetShareGroups(Context mcontext, String surl, RecyclerView rvGroups, AmazonS3 s3, TransferUtility transferUtility, CreateTopic createTopic) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvGroups=rvGroups;
         this.s3=s3;
         this.transferUtility=transferUtility;
-        this.addTopic=addTopic;
+        this.createTopic=createTopic;
 
     }
     @Override
@@ -81,8 +83,8 @@ public class GetShareGroups extends AsyncTask<String, Void, String> {
             for(DataObjectGroup dog:results){
 
             }
-            MyRecyclerViewSharedGroup mAdapter = new MyRecyclerViewSharedGroup(results,mcontext,s3,transferUtility,addTopic);
-            System.out.println("Get Groups Result addTopic is "+addTopic);
+            MyRecyclerViewSharedGroup mAdapter = new MyRecyclerViewSharedGroup(results,mcontext,s3,transferUtility,createTopic);
+
             rvGroups.setAdapter(mAdapter);
         }
     }

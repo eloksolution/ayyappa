@@ -49,7 +49,7 @@ public class GroupUpdateHelper {
             if (result!=null){
                 mcontext.setValuesToTextFields(result);
             }
-            System.out.println("event from eventview" + result);
+            System.out.println("Group Udate from GroupView" + result);
             progress.dismiss();
 
         }
@@ -81,13 +81,10 @@ public class GroupUpdateHelper {
                 jsonObject.accumulate("name", groupDTO.getName());
                 jsonObject.accumulate("description", groupDTO.getDescription());
                 jsonObject.accumulate("type", groupDTO.getType());
-                jsonObject.accumulate("owner", groupDTO.getOwner());
-                jsonObject.accumulate("createDate", groupDTO.getCreateDate());
-                jsonObject.accumulate("numberOfMembers", groupDTO.getNumberOfMembers());
                 jsonObject.accumulate("imagePath", groupDTO.getImagePath());
                 jsonObject.accumulate("catgory",groupDTO.getGroupCatagory());
                 json = jsonObject.toString();
-                System.out.println("json values"+json);
+                System.out.println("json At Group Updated Time values :: "+json);
             } catch (Exception e) {
             }
             return RestServices.POST(url, json);
@@ -95,7 +92,7 @@ public class GroupUpdateHelper {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            System.out.println("From Join Event" + result);
+            System.out.println("json At Group Updated Time values :" + result);
             progress.dismiss();
 
         }

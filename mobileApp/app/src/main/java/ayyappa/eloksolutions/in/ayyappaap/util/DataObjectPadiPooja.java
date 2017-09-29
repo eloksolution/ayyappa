@@ -8,7 +8,11 @@ public class DataObjectPadiPooja {
     private int memberSize;
     private String date;
     private String location;
-    public DataObjectPadiPooja(String text1, String text2, String imgResource, String padipoojaId, int memberSize, String date, String location) {
+    private  String day;
+    private String month;
+    private  String week;
+    private  String year;
+    public DataObjectPadiPooja(String text1, String text2, String imgResource, String padipoojaId, int memberSize, String date, String location,String month,String day,String week) {
         mText1 = text1;
         mText2 = text2;
         this.padipoojaId = padipoojaId;
@@ -16,6 +20,9 @@ public class DataObjectPadiPooja {
         this.memberSize= memberSize;
         this.date=date;
         this.location=location;
+        this.month=month;
+        this.day=day;
+        this.week=week;
 
 
     }
@@ -77,15 +84,52 @@ public class DataObjectPadiPooja {
         this.location = location;
     }
 
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getWeek() {
+        return week;
+    }
+
+    public void setWeek(String week) {
+        this.week = week;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
     @Override
     public String toString() {
-        return "DataObject{" +
+        return "DataObjectPadiPooja{" +
                 "mText1='" + mText1 + '\'' +
                 ", mText2='" + mText2 + '\'' +
                 ", padipoojaId='" + padipoojaId + '\'' +
-                ", imgResource=" + imgResource +
+                ", imgResource='" + imgResource + '\'' +
                 ", memberSize=" + memberSize +
-                ",location=" +location+
+                ", date='" + date + '\'' +
+                ", location='" + location + '\'' +
+                ", day='" + day + '\'' +
+                ", month='" + month + '\'' +
+                ", week='" + week + '\'' +
+                ", year='" + year + '\'' +
                 '}';
     }
 }

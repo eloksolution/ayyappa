@@ -98,7 +98,7 @@ public class Registartion extends AppCompatActivity {
 
                 Log.i(tag, "id is the sharepreferance"+name.getText().toString());
                 String createGroupHelper=saveEventToServer();
-                Intent main = new Intent(ctx, MainActivity.class);
+                Intent main = new Intent(ctx, CardViewActivity.class);
                 startActivity(main);
             }
         });

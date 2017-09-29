@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -53,12 +53,12 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
 
     ayyappa.eloksolutions.in.ayyappaap.ExpandableListView listview;
-    TextView description, event_name,eventdate,eventtime, location, no_of_mem, join_status, text1,tvname;
+    TextView description, upDate,event_name,eventdate,eventtime, location, no_of_mem, join_status, text1,share;
     ImageButton show, hide;
     ImageView edit,delete;
-    ImageView padiImage;
+    ImageView padiImage,join_event;
     ImageButton btnInvite;
-    ImageView upDate, joinbtn;
+
     Button leavebtn;
     CardView card_view;
     String padiPoojaId,REG_TOKEN,ownerId, memId, name,sharesms,eventnamesms;
@@ -74,7 +74,9 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     TransferUtility transferUtility;
     TransferObserver transferObserver;
     SharedPreferences preference;
+    TextView join;
     Glide glide;
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         name = preferences.getString("name", null);
         System.out.println("result from eventview" + 19);
         ctx=this;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         Intent createpadipoojaintent=getIntent();
         padiPoojaId=createpadipoojaintent.getStringExtra("padiPoojaId");
@@ -99,26 +102,23 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         location = (TextView)findViewById(R.id.location);
         description = (TextView)findViewById(R.id.description);
         padiImage=(ImageView) findViewById(R.id.padi_image_view);
-        upDate=(ImageView) findViewById(R.id.update);
-        no_of_mem = (TextView)findViewById(R.id.joins_view);
+        upDate=(TextView) findViewById(R.id.group_update);
+        join=(TextView) findViewById(R.id.join);
+        no_of_mem = (TextView)findViewById(R.id.joinedcount);
       //  tvname = (TextView)findViewById(R.id.hostmember);
         card_view = (CardView)findViewById(R.id.card_view);
         text1 = (TextView)findViewById(R.id.text1);
-        //join_status = (TextView)findViewById(R.id.join_status);
-        //  leavebtn = (Button) findViewById(R.id.leavebtn);
-      //  btnInvite = (ImageButton) findViewById(R.id.invitebtn);
-     //   edit = (ImageView)findViewById(R.id.edit);
-        // delete = (ImageView)findViewById(R.id.delete);
-      //  show = (ImageButton) findViewById(R.id.show);
-//        btnInvite.setOnClickListener(this);
-        joinbtn=(ImageView) findViewById(R.id.joiinbtn);
+        share=(TextView) findViewById(R.id.share_text);
+        join_event=(ImageView) findViewById(R.id.join_event);
+
         upDate.setOnClickListener(this);
-        joinbtn.setOnClickListener(new View.OnClickListener() {
+        join_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                joinbtn.setBackgroundColor(Color.BLACK);
+                join.setVisibility(View.GONE);
                 joinEvent();
+
                 }
 
 
@@ -153,11 +153,33 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
 
-        rvPadi = (RecyclerView) findViewById(R.id.rv_members);
+    rvPadi = (RecyclerView) findViewById(R.id.rv_members);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
 
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent= new Intent();
+                    String sAux ="\n"+event_name+" @Ayyappa\n for more events \n";
+                    //String title= groupName.replaceAll(" ","_")+"@MELZOL";
+                    String msg=sAux+"https://wdq3a.app.goo.gl/?link=https://melzol.in/1/"+padiPoojaId+"&apn=in.melzol" +
+                            "&st="+event_name+"&si=";
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT,msg);
+                    intent.setType("text/plain");
+                    startActivity(Intent.createChooser(intent,"Share this Group"));
+                } catch(Exception e) {
+                    e.toString();
+                }
+
+
+            }
+
+
+        });
 
     }
 
@@ -266,11 +288,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             show.setVisibility(View.VISIBLE);
             description.setMaxLines(2);
         }
-        if (v == joinbtn) {
 
-
-
-        }
         if (v == leavebtn) {
             leaveEvent();
         }
@@ -333,6 +351,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
              eventDTO = gson.fromJson(result, EventDTO.class);
             event_name.setText(eventDTO.getEventName());
             eventnamesms=eventDTO.getEventName();
+            toolbar.setTitle(eventDTO.getEventName());
             eventdate.setText(eventDTO.getDate());
             eventtime.setText(eventDTO.gettime());
             System.out.println("past from eventfromJson.gettime()" + eventDTO.gettime());
@@ -342,9 +361,9 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             System.out.println("past from event view" + eventDTO.getPast());
 
             if (eventDTO.getPadiMembers() != null)
-                no_of_mem.setText(eventDTO.getPadiMembers().size() + " members are going");
+                no_of_mem.setText(eventDTO.getPadiMembers().size() + "");
             else
-                no_of_mem.setText("No Members Joined Yet");
+                no_of_mem.setText("0");
             eventdate.setText(eventDTO.getdate()+"");
             location.setText(eventDTO.getLocation());
             description.setText(eventDTO.getDescription());
@@ -357,7 +376,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             String topic= Constants.EVENT_TOPIC+padiPoojaId;
             if (eventDTO.getMember()) {
                 btnInvite.setVisibility(View.VISIBLE);
-                joinbtn.setVisibility(View.GONE);
+
                 try {
                     Intent i= new Intent(ctx, RegistrationIntentService.class);
                     i.putExtra("TOPIC", topic);
@@ -396,7 +415,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         JSONObject jsonObject;
         jsonObject = new JSONObject(result);
         btnInvite.setVisibility(View.VISIBLE);
-        joinbtn.setVisibility(View.GONE);
+
         join_status.setText("You already Joined");
         count=count+1;
         no_of_mem.setText(count + " members are going");
@@ -431,7 +450,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("eventName", event_name.getText());
             System.out.println(event_name);
-            joinbtn.setVisibility(View.VISIBLE);
             leavebtn.setVisibility(View.GONE);
             card_view.setVisibility(View.GONE);
             join_status.setText("You have not joined this event");

@@ -26,6 +26,12 @@ public class EventDTO {
 	private String country;
 	private String imgPath;
 	private String memId;
+	private  String day;
+	private String month;
+	private  String week;
+	private  String year;
+	private  String isMember;
+
 
 
 	//list of members
@@ -209,6 +215,54 @@ public class EventDTO {
 		this.imgPath = imagePath;
 	}
 
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public String getWeek() {
+		return week;
+	}
+
+	public void setWeek(String week) {
+		this.week = week;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getIsMember() {
+		return isMember;
+	}
+
+	public void setIsMember(String isMember) {
+		this.isMember = isMember;
+	}
+
 	@Override
 	public String toString() {
 		return "EventDTO{" +
@@ -225,6 +279,7 @@ public class EventDTO {
 				", ownerName='" + ownerName + '\'' +
 				", isMember=" + member +
 				", isPast=" + past +
+				", isMember=" + isMember +
 
 				'}';
 	}

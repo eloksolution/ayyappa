@@ -69,9 +69,9 @@ public class GetEvents extends AsyncTask<String, Void, String> {
                 for (EventDTO event : fromJson) {
                     List<RegisterDTO> padiMembers=event.getPadiMembers();
                     int memberSize=0;
-                    if(padiMembers !=null)
+                    if(padiMembers != null)
                         memberSize=padiMembers.size();
-                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation());
+                    DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation(),event.getMonth(),event.getDay(),event.getWeek());
                     results.add(obj);
                 }
                 MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results,mcontext,s3,transferUtility);

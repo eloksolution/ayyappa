@@ -11,16 +11,6 @@
         android:verticalSpacing="5dp"
         android:horizontalSpacing="5dp"
         android:stretchMode="columnWidth"
-        android:numColumns="2"/>
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/add"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="44dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/add"/>
+        android:numColumns="1"/>
 
 </RelativeLayout>

@@ -66,5 +66,12 @@
         android:maxLength="20"
         android:ellipsize="end"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/null_value"
+       android:gravity="center"
+        />
+
 
 </RelativeLayout>

@@ -40,7 +40,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label, label2, count, time;
+        TextView label, label2, count, time,null_value;
         ImageView imageView;
         Button joinBtn;
 
@@ -50,6 +50,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
             label2 = (TextView) itemView.findViewById(R.id.group_desc);
             count  =(TextView) itemView.findViewById(R.id.badge_notification);
             time=(TextView) itemView.findViewById(R.id.dsate);
+            null_value=(TextView) itemView.findViewById(R.id.null_value);
 
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
@@ -102,20 +103,22 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
  
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getmText1());
-        holder.label2.setText(mDataset.get(position).getmText2());
-        holder.time.setText(mDataset.get(position).getDate());
 
-        Log.i(LOG_TAG, "Adding description :"+mDataset.get(position).getmText2());
-        getBitMap(mDataset.get(position).getImgResource(), holder.imageView);
+            holder.label.setText(mDataset.get(position).getmText1());
+            holder.label2.setText(mDataset.get(position).getmText2());
+            holder.time.setText(mDataset.get(position).getDate());
 
-        if (mDataset.get(position).getMemberSize()!=0) {
-            holder.count.setText(mDataset.get(position).getMemberSize() + "are Joined");
+            Log.i(LOG_TAG, "Adding description :" + mDataset.get(position).getmText2());
+            getBitMap(mDataset.get(position).getImgResource(), holder.imageView);
+
+            if (mDataset.get(position).getMemberSize() != 0) {
+                holder.count.setText(mDataset.get(position).getMemberSize() + "are Joined");
+            } else {
+                holder.count.setText("0 Joined");
+            }
         }
-        else {
-            holder.count.setText(  "0 Joined");
-        }
-    }
+
+
     private void getBitMap(String imgResource, ImageView imageView) {
         try {
             File outdirectory = mcontext.getCacheDir();

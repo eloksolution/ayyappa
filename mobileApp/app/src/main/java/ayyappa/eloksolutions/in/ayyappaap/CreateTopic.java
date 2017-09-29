@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,10 +35,14 @@ import com.leocardz.link.preview.library.LinkPreviewCallback;
 import com.leocardz.link.preview.library.SourceContent;
 import com.leocardz.link.preview.library.TextCrawler;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
+import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.helper.GetShareGroups;
+import ayyappa.eloksolutions.in.ayyappaap.helper.UploadS3;
+import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 
 /**
@@ -53,6 +58,8 @@ public class CreateTopic extends AppCompatActivity {
     AmazonS3 s3;
     TransferUtility transferUtility;
     String addTopic;
+    String imageName;
+    String imageKeyName;
 
     private ViewGroup dropPreview;
     private String currentTitle = "", currentUrl, currentCannonicalUrl,
@@ -71,11 +78,14 @@ public class CreateTopic extends AppCompatActivity {
         description.setTypeface(Typeface.DEFAULT);
           textCrawler = new TextCrawler();
         Intent intent = getIntent();
+        mcontext=this;
         String action = intent.getAction();
         String type = intent.getType();
         addTopic=description.getText().toString();
+        dropPreview = (ViewGroup) findViewById(R.id.drop_preview);
         SharedPreferences sharedPreferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId=sharedPreferences.getString("userId", null);
+        username=sharedPreferences.getString("firstName",null);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent); // Handle text being sent
@@ -100,7 +110,7 @@ public class CreateTopic extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         String surl= Config.SERVER_URL+"/group/joined/"+userId;
-        GetShareGroups getGroups=new GetShareGroups(mcontext,surl,rvGroups,s3,transferUtility,addTopic);
+          GetShareGroups getGroups=new GetShareGroups(mcontext,surl,rvGroups,s3,transferUtility,this);
         System.out.println("url for group list"+surl);
         getGroups.execute();
 
@@ -120,6 +130,17 @@ public class CreateTopic extends AppCompatActivity {
         });
     }
 
+    @NonNull
+    public TopicDTO getTopicDTO() {
+        TopicDTO topicDTO=new TopicDTO();
+        topicDTO.setTopic(currentTitle);
+        topicDTO.setDescription(currentUrl);
+        topicDTO.setImgPath(imageKeyName);
+        topicDTO.setOwner(userId);
+        topicDTO.setName(username);
+        return topicDTO;
+    }
+
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
@@ -128,7 +149,7 @@ public class CreateTopic extends AppCompatActivity {
             Log.i(tag, "Shared Text is" + sharedText);
 
             try {
-                if (sharedText.contains("http://") || sharedText.contains("https://")) {
+                if (sharedText.contains("http:") || sharedText.contains("https:")) {
                     System.out.println(" in if it contains http...");
                     Log.i(tag,"enter into to the text");
                     textCrawler.makePreview(callback, description.getText().toString());
@@ -266,6 +287,7 @@ public class CreateTopic extends AppCompatActivity {
             currentDescription = sourceContent.getDescription();
             currentUrl = sourceContent.getUrl();
             currentCannonicalUrl = sourceContent.getCannonicalUrl();
+            Log.i(tag,"url values when shred :: "+ currentTitle+currentDescription+currentUrl+currentCannonicalUrl);
 
 
         }
@@ -280,6 +302,7 @@ public class CreateTopic extends AppCompatActivity {
         if (editTextDescriptionPost != null)
             hideSoftKeyboard(editTextDescriptionPost);
     }
+
     private void hideSoftKeyboard(EditText editText) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager
@@ -290,15 +313,20 @@ public class CreateTopic extends AppCompatActivity {
     }
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         System.out.println("bitmap in converting uri methos is :"+inImage);
-        // String path = "";
-
-        //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        // inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
     private void uploadImage(Uri resultUri) {
         System.out.println("In image uploading method...");
+        String path = UploadS3.getPath(getApplicationContext(),resultUri);
+        System.out.println("In image uploading method...");
+        System.out.println("images paths is :"+path);
+
+       imageKeyName="topics/t_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
+        imageName = UploadS3.beginUpload(path, transferUtility,imageKeyName);
+        System.out.println("the result image name" + imageName);
 
     }
     private void showHideImage(View image, View parent, boolean show) {
