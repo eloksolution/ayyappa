@@ -35,7 +35,7 @@ public class TopicController {
 		System.out.println("Request is coming "+topic);
 		if(topic.getGroupId()==null || topic.getGroupId().trim().length()==0)
 			return "Topic should be associated with Group";
-		Topic mTopic=new Topic(topic.getTopic(), topic.getDescription(),topic.getOwner(), topic.getGroupId());
+		Topic mTopic=new Topic(topic.getTopic(), topic.getDescription(),topic.getOwner(), topic.getGroupId(),topic.getName(),topic.getImgPath());
 		topicService.addTopic(mTopic);
 		return "success";
 	}
@@ -44,7 +44,7 @@ public class TopicController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updateTopic(@RequestBody TopicVO reqTopic){
 		System.out.println("Request is coming "+reqTopic);
-		Topic topic=new Topic(reqTopic.getTopicId(),reqTopic.getTopic(),reqTopic.getDescription(),reqTopic.getGroupId(),reqTopic.getOwner(),new Date().getTime());
+		Topic topic=new Topic(reqTopic.getTopicId(),reqTopic.getTopic(),reqTopic.getDescription(),reqTopic.getGroupId(),reqTopic.getOwner(),new Date().getTime(),reqTopic.getName(),reqTopic.getImgPath());
 		topicService.updateTopic(topic);
 		return "success";
 	}

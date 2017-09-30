@@ -46,7 +46,7 @@ public class GroupDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(group.getOwner()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("result is "+rs.getError());
+		System.out.println("result is "+rs.getUpsertedId());
 		return id.toString();
 	}
 	private DBObject toDBUserGroup(Group group, String groupId) {
@@ -105,8 +105,9 @@ public class GroupDAO {
 		 return group;
 	}
 	private boolean isMemberInGroup(List<User> groupMembers, String userId) {
+		if(groupMembers==null && groupMembers.size()==0)return false;
 		for(User u:groupMembers){
-			if(u.getUserId().equalsIgnoreCase(userId))return true;
+			if(u.getUserId()!=null && u.getUserId().equalsIgnoreCase(userId))return true;
 		}
 		return false;
 	}
@@ -176,8 +177,8 @@ public class GroupDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(groupMem.getGroupId()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
-		return rs.getError();
+		System.out.println("Write result is "+rs.getUpsertedId());
+		return rs.getUpsertedId().toString();
 	}
 
 	public String leave(GroupMember groupMem ){
@@ -188,8 +189,8 @@ public class GroupDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(groupMem.getGroupId()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
-		return rs.getError();
+		System.out.println("Write result is "+rs.getUpsertedId());
+		return rs.getUpsertedId().toString();
 	}
 	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
 		 return new BasicDBObject("userId", userId)
@@ -200,11 +201,13 @@ public class GroupDAO {
 
 	public String update(Group group) {
 		DBObject dbGroup=toDBObject(group);
+		BasicDBObject newDocument = new BasicDBObject();
+		newDocument.append("$set", dbGroup);
 		WriteResult wr=collection.update(
 		    new BasicDBObject("_id", new ObjectId(group.getGroupId())),
-		    dbGroup
+		    newDocument
 		);
-		return wr.getError();
+		return wr.getUpsertedId().toString();
 	}
 
 	public List<Group> getJoinedGroups(String userId) {

@@ -8,6 +8,8 @@ public class UserConnectionVO {
 	String toFirstName;
 	String toLastName;
 	String connectDate;
+	String status;
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -50,4 +52,20 @@ public class UserConnectionVO {
 	public void setConnectDate(String connectDate) {
 		this.connectDate = connectDate;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	@Override
+	public String toString() {
+		return "UserConnectionVO [userId=" + userId + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", connectedToId="
+				+ connectedToId + ", toFirstName=" + toFirstName
+				+ ", toLastName=" + toLastName + ", connectDate=" + connectDate
+				+ ", status=" + status + "]";
+	}
+	
+	
 }

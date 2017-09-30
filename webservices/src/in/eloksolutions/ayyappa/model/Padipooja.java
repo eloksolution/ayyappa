@@ -1,6 +1,5 @@
 package in.eloksolutions.ayyappa.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class Padipooja {
@@ -9,6 +8,10 @@ public class Padipooja {
 	String location;
 	String description;
 	String date;
+	String day;
+	String month;
+	String week;
+	String year;
 	String time;
 	String memId;
 	String name;
@@ -105,6 +108,30 @@ public class Padipooja {
 	}
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
+	}
+	public String getDay() {
+		return day;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public String getWeek() {
+		return week;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setDay(String day) {
+		this.day = day;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public void setWeek(String week) {
+		this.week = week;
+	}
+	public void setYear(String year) {
+		this.year = year;
 	}
 	@Override
 	public String toString() {

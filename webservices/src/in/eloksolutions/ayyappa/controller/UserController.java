@@ -6,6 +6,7 @@ import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.service.UserService;
 import in.eloksolutions.ayyappa.util.Util;
 import in.eloksolutions.ayyappa.vo.DeekshaVO;
+import in.eloksolutions.ayyappa.vo.UserConnectionVO;
 import in.eloksolutions.ayyappa.vo.UserVo;
 
 import java.util.List;
@@ -67,14 +68,37 @@ public class UserController {
 	
 
 	@ResponseBody
-	@RequestMapping(value = "/connectioins/{userid}")
+	@RequestMapping(value = "/connections/{userid}")
 	public User getConnections(@PathVariable("userid") String userid, HttpServletRequest request) {
+		System.out.println("getConnections userid "+userid);
 		return userService.getConnections(userid);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/receivedConnections/{userid}")
+	public List<UserVo> receivedConnections(@PathVariable("userid") String userid, HttpServletRequest request) {
+		System.out.println("receivedConnections userid "+userid);
+		return userService.receivedConnections(userid);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/requestConnection")
+	public String requestConnection(@RequestBody UserConnectionVO user) {
+		System.out.println("requestConnection userid "+user);
+		return userService.requestConnection(user);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/connect")
+	public String connect(@RequestBody UserConnectionVO user) {
+		System.out.println("connect userid "+user);
+		return userService.connect(user);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/groups/{userid}")
 	public User getGroups(@PathVariable("userid") String userid, HttpServletRequest request) {
+		System.out.println("getGroups userid "+userid);
 		return userService.getGroups(userid);
 	}
 	
@@ -122,6 +146,4 @@ public class UserController {
 		System.out.println("Request padipooja xxxx is coming "+request);
 		return userService.getDeeksha(userId);
 	}
-
-	
 }

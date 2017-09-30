@@ -3,15 +3,17 @@ package in.eloksolutions.ayyappa.dao;
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
 import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.model.User;
-import in.eloksolutions.ayyappa.vo.DeekshaVO;
 import in.eloksolutions.ayyappa.vo.PadiMember;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class PadipojaDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(padipooja.getMemId()));
 		WriteResult rs=collection.update(match,update);
-		System.out.println("result is "+rs.getError());
+		System.out.println("result is "+rs.getUpsertedId());
 		return id.toString();
 	}
 	private DBObject toDBUserPadi(Padipooja padipooja, String padiID) {
@@ -94,15 +96,26 @@ public class PadipojaDAO {
 
 	private List<Padipooja> getPadiPoojasDB(DBCursor cursor) {
 		List<Padipooja> padipooja = new ArrayList<>();
+		GregorianCalendar cal=new GregorianCalendar();
 		while (cursor.hasNext()) {
 			DBObject padi = cursor.next();
 			ObjectId mobjid = (ObjectId) padi.get("_id");
 			System.out.println("name " + padi.get("eventName"));
-			padipooja.add(new Padipooja( mobjid.toString(), (String) padi
+			
+			Padipooja pooja=new Padipooja( mobjid.toString(), (String) padi
 					.get("eventName"), (String) padi.get("location"),
 					(String) padi.get("description"),
 					(String) padi.get("date"), (String) padi.get("time"),
-					(String) padi.get("memid"), (String) padi.get("name"), (String) padi.get("imgPath")));
+					(String) padi.get("memid"), (String) padi.get("name"), (String) padi.get("imgPath"));
+			Date date=(Date)padi.get("eventDate");
+			if(date!=null){
+				cal.setTime(date);
+				pooja.setDay(cal.get(Calendar.DAY_OF_MONTH)+"");
+				pooja.setMonth(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH ));
+				pooja.setYear(cal.get(Calendar.YEAR)+"");
+				pooja.setWeek(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH ));
+			}
+			padipooja.add(pooja);
 		}
 		return padipooja;
 	}
@@ -174,11 +187,13 @@ public class PadipojaDAO {
 	}
 	public String update(Padipooja uPadi) {
 		DBObject dbPadi=padiDBObject(uPadi);
+		BasicDBObject newDocument = new BasicDBObject();
+		newDocument.append("$set", dbPadi);
 		WriteResult wr=collection.update(
 		    new BasicDBObject("_id", new ObjectId(uPadi.getPadipoojaId())),
-		    dbPadi
+		    newDocument
 		);
-		return wr.getError();
+		return wr.getUpsertedId().toString();
 	}
 	public String join(PadiMember padiMember ){
 		System.out.println("Updating padiMember "+padiMember);
@@ -188,8 +203,8 @@ public class PadipojaDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(padiMember.getPadiId()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
-		return rs.getError();
+		System.out.println("Write result is "+rs.getUpsertedId());
+		return rs.getUpsertedId().toString();
 	}
 	
 	public String leave(PadiMember padiMember ){
@@ -200,8 +215,8 @@ public class PadipojaDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(padiMember.getPadiId()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
-		return rs.getError();
+		System.out.println("Write result is "+rs.getUpsertedId());
+		return rs.getUpsertedId().toString();
 	}
 	
 	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
@@ -210,6 +225,8 @@ public class PadipojaDAO {
         .append("lastName", lastName)
         .append("joinDate", new Date());
 	}
+
+	
 }
 	
 

@@ -8,6 +8,8 @@ import in.eloksolutions.ayyappa.dao.UserDAO;
 import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.vo.DeekshaVO;
+import in.eloksolutions.ayyappa.vo.UserConnectionVO;
+import in.eloksolutions.ayyappa.vo.UserVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -64,6 +66,15 @@ public class UserService {
 	}
 	public DeekshaVO getDeeksha(String userId) {
 		return deekshaDAO.getDeeksha(userId);
+	}
+	public String requestConnection(UserConnectionVO user) {
+		return userDAO.requestConnect(user);
+	}
+	public String connect(UserConnectionVO user) {
+		return userDAO.connect(user);
+	}
+	public List<UserVo> receivedConnections(String userid) {
+		return userDAO.getReceivedConnection(userid);
 	}
 	
 }

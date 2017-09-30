@@ -9,35 +9,44 @@ public class Topic {
 	String topic;
 	String description;
 	Date createDate;
+	String sCreateDate;
 	String owner;
+	String ownerName;
 	String imgPath;
 	
 	List<Discussion> discussions;
 	public Topic(String id, String topic, String description, String groupId,
-			String owner, long timestamp) {
+			String owner, long timestamp,String ownerName,String imgPath) {
 		topicId=id;
 		this.topic=topic;
 		this.description=description;
 		this.owner=owner;
 		this.groupId=groupId;
 		createDate=new Date(timestamp);
+		this.ownerName=ownerName;
+		this.imgPath=imgPath;
 	}
-	public Topic(String topic,String description,String owner,
-			String groupId) {
-		this.topic=topic;
-		this.description=description;
-		this.owner=owner;
-		this.groupId=groupId;
-	
-	}
-	public Topic(String id, String topic, String description,
-			String owner, String groupId) {
+	public Topic(String id, String topic, String description, String groupId,
+			String owner, String createDate,String ownerName,String imgPath) {
 		topicId=id;
 		this.topic=topic;
 		this.description=description;
 		this.owner=owner;
 		this.groupId=groupId;
+		sCreateDate=createDate;
+		this.ownerName=ownerName;
+		this.imgPath=imgPath;
 	}
+	public Topic(String topic,String description,String owner,
+			String groupId,String ownerName,String imgPath) {
+		this.topic=topic;
+		this.description=description;
+		this.owner=owner;
+		this.groupId=groupId;
+		this.ownerName=ownerName;
+		this.imgPath=imgPath;
+	}
+	
 	public String getGroupId() {
 		return groupId;
 	}
@@ -86,13 +95,21 @@ public class Topic {
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
 	}
+	public String getOwnerName() {
+		return ownerName;
+	}
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
 	@Override
 	public String toString() {
 		return "Topic [groupId=" + groupId + ", topicId=" + topicId
 				+ ", topic=" + topic + ", description=" + description
-				+ ", createDate=" + createDate + ", owner=" + owner
-				+ ", discussions="+ discussions + "]";
+				+ ", createDate=" + createDate + ", sCreateDate=" + sCreateDate
+				+ ", owner=" + owner + ", ownerName=" + ownerName
+				+ ", imgPath=" + imgPath + ", discussions=" + discussions + "]";
 	}
 	
+		
 	
 }

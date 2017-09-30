@@ -10,6 +10,7 @@ public class TopicVO {
 	String owner;
 	String noOfMembers;
 	String imgPath;
+	String name;
 	
 	public String getGroupId() {
 		return groupId;
@@ -59,12 +60,20 @@ public class TopicVO {
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	@Override
 	public String toString() {
 		return "TopicVO [groupId=" + groupId + ", topicId=" + topicId
 				+ ", topic=" + topic + ", description=" + description
 				+ ", createDate=" + createDate + ", owner=" + owner
-				+ ", noOfMembers=" + noOfMembers + "]";
+				+ ", noOfMembers=" + noOfMembers + ", imgPath=" + imgPath
+				+ ", name=" + name + "]";
 	}
+	
 	
 }

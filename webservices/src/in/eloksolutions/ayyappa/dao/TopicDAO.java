@@ -21,7 +21,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
-import com.sun.xml.internal.txw2.Document;
 
 @Repository("topicDAO")
 public class TopicDAO {
@@ -45,7 +44,7 @@ public class TopicDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(topic.getOwner()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("result is "+rs.getError());
+		System.out.println("result is "+rs.getUpsertedId());
 		//Groups
 		BasicDBObject match1 = new BasicDBObject();
 		match.put( "_id",new ObjectId(topic.getGroupId()) );
@@ -72,7 +71,7 @@ public class TopicDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(topicId) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
+		System.out.println("Write result is "+rs.getUpsertedId());
 	}
 	
 	public static final DBObject toDBDissObject(Discussion topic) {
@@ -88,6 +87,8 @@ public class TopicDAO {
 	                     .append("OWNER", topic.getOwner())
 	                     .append("GROUPID", topic.getGroupId())
 						 .append("CREATEDATE", new Date())
+						  .append("OWNERNAME", topic.getOwnerName())
+						    .append("IMGPATH", topic.getImgPath())
 	                     .append("DESCRIPTION", topic.getDescription());
 	}
 	
@@ -99,7 +100,7 @@ public class TopicDAO {
         while (cursor.hasNext()) { 
            DBObject topic = cursor.next();
            ObjectId objid=(ObjectId)topic.get("_id");
-           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("TOPIC"),(String)topic.get("DESCRIPTION"),(String)topic.get("GROUPID"),(String)topic.get("OWNER"),objid.getTime());
+           Topic topicDB=buildTopic(topic, objid);
 		   System.out.println("DESCRIPTION "+topic.get("DESCRIPTION"));
 		   List<Discussion> diss=getDiscussions(topic);
 		   topicDB.setDiscussions(diss);
@@ -132,8 +133,7 @@ public class TopicDAO {
 		DBCursor cursor=getDBTopicCursor(topicId);
 		DBObject topic = cursor.next();
 	    ObjectId mobjid=(ObjectId)topic.get("_id");
-	    Topic dbtop= new Topic((String)mobjid.toString(),(String) topic.get("TOPIC"), (String)topic.get("DESCRIPTION"), (String)topic.get("GROUPID"),
-		    		   (String)topic.get("OWNER"),mobjid.getTime() );
+	    Topic dbtop= buildTopic(topic, mobjid);
 	    List<Discussion> diss=getDiscussions(topic);
 	    dbtop.setDiscussions(diss);
 		return dbtop;
@@ -149,13 +149,21 @@ public class TopicDAO {
         while (cursor.hasNext()) { 
            DBObject topic = cursor.next();
            ObjectId objid=(ObjectId)topic.get("_id");
-           Topic topicDB=new Topic((String)objid.toString(),(String)topic.get("TOPIC"),(String)topic.get("DESCRIPTION"),(String)topic.get("GROUPID"),(String)topic.get("OWNER"),objid.getTime());
+           Topic topicDB=buildTopic(topic, objid);
 		   System.out.println("DESCRIPTION "+topic.get("DESCRIPTION"));
 		   List<Discussion> diss=getDiscussions(topic);
 		   topicDB.setDiscussions(diss);
            topics.add(topicDB);
         }
         return topics;
+	}
+
+	private Topic buildTopic(DBObject topic, ObjectId objid) {
+		Date createDate=(Date)topic.get("CREATEDATE");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/YYYY");
+		String sDate=sdf.format(createDate);
+		Topic topicVo=new Topic((String)objid.toString(),(String)topic.get("TOPIC"),(String)topic.get("DESCRIPTION"),(String)topic.get("GROUPID"),(String)topic.get("OWNER"),sDate,(String)topic.get("OWNERNAME"),(String)topic.get("IMGPATH"));
+		return topicVo;
 	}
 	private DBCursor findObject(String groupId) {
 		BasicDBObject query=new BasicDBObject("GROUPID",groupId);

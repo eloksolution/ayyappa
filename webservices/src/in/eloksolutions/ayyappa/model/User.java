@@ -21,10 +21,12 @@ public class User {
 	private String createDate;
 	private String imgPath;
 	private LatLong loc;
+	private String tokenFCM;
 	private List<GroupMember> groups;
 	private List<UserTopics> userTopics;
 	private List<UserConnectionVO> userConnections;
 	private List<UserPadis> userPadis;
+	
 	
 	public User(){
 		
@@ -158,6 +160,12 @@ public class User {
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
 	}
+	public String getTokenFCM() {
+		return tokenFCM;
+	}
+	public void setTokenFCM(String tokenFCM) {
+		this.tokenFCM = tokenFCM;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -210,4 +218,16 @@ public class User {
 		}
 		
 	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", mobile=" + mobile + ", email="
+				+ email + ", area=" + area + ", city=" + city + ", state="
+				+ state + ", password=" + password + ", createDate="
+				+ createDate + ", imgPath=" + imgPath + ", loc=" + loc
+				+ ", groups=" + groups + ", userTopics=" + userTopics
+				+ ", userConnections=" + userConnections + ", userPadis="
+				+ userPadis + "]";
+	}
+	
 }

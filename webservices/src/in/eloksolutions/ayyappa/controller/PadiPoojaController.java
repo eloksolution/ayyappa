@@ -2,8 +2,6 @@ package in.eloksolutions.ayyappa.controller;
 
 import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.service.PadipoojaService;
-import in.eloksolutions.ayyappa.util.Util;
-import in.eloksolutions.ayyappa.vo.DeekshaVO;
 import in.eloksolutions.ayyappa.vo.PadiMember;
 import in.eloksolutions.ayyappa.vo.PadipoojaVo;
 
@@ -38,6 +36,15 @@ public class PadiPoojaController {
 	public List getPadipooja( HttpServletRequest request){
 		System.out.println("Request padipooja xxxx is coming "+request);
 		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja();
+		System.out.println("Colection is coming "+padipoojaCol);
+		return padipoojaCol;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getpoojas/{userid}", method = RequestMethod.GET)
+	public List getUserPadipooja( HttpServletRequest request,@PathVariable("userid") String userId){
+		System.out.println("Request padipooja xxxx is coming "+request);
+		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja(userId);
 		System.out.println("Colection is coming "+padipoojaCol);
 		return padipoojaCol;
 	}
@@ -80,9 +87,8 @@ public class PadiPoojaController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updatePadipooja(@RequestBody PadipoojaVo padiVO){
 		System.out.println("Request is coming padiVO "+padiVO);
-		/*Padipooja uPadi=new Padipooja(padiVO.getPadipoojaId(),padiVO.getEventName(),padiVO.getLocation(),padiVO.getDescription(),padiVO.getDate(),padiVO.getTime(),padiVO.getMemId(),padiVO.getEventName());
-		 padipoojaService.update(uPadi);*/
-		// System.out.println("Updating  is coming groupVO "+uPadi);
+		Padipooja uPadi=new Padipooja(padiVO.getPadipoojaId(),padiVO.getEventName(),padiVO.getLocation(),padiVO.getDescription(),padiVO.getDate(),padiVO.getTime(),padiVO.getMemId(),padiVO.getEventName(),padiVO.getImgPath());
+		 padipoojaService.update(uPadi);
 		 return "success";
 	}
 }

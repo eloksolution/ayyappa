@@ -14,6 +14,7 @@ public class UserVo {
 	private String lat;
 	private String lon;
 	private String imgPath;
+	private String status;
 	
 	public String getImgPath() {
 		return imgPath;
@@ -92,6 +93,21 @@ public class UserVo {
 	}
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	@Override
+	public String toString() {
+		return "UserVo [userId=" + userId + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", mobile=" + mobile + ", email="
+				+ email + ", area=" + area + ", city=" + city + ", state="
+				+ state + ", password=" + password + ", createDate="
+				+ createDate + ", lat=" + lat + ", lon=" + lon + ", imgPath="
+				+ imgPath + "]";
 	}
 	
 	

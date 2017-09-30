@@ -1,7 +1,5 @@
 package in.eloksolutions.ayyappa.config;
 
-import java.net.UnknownHostException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,16 +23,11 @@ public class MongoConfigaration {
     
     @Bean
     public MongoClient getMongoClient() {
-    	try {
     		MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://root:ankO960yHLxt@52.15.94.159:27017"));
     		//MongoClient mongoClient=new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
     		//db.authenticate("root", "ankO960yHLxt".toCharArray());
     		db = mongoClient.getDB("ayyappaDB");
 			return mongoClient;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return null;
      }
 	public static DB getDb() {
 		return db;

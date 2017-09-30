@@ -42,5 +42,9 @@ public class PadipoojaService {
 		return padipoojaDao.leave(padiMember);
 	}
 
+	public List<Padipooja> getPadipooja(String userId) {
+		return padipoojaDao.getUserPadiPoojas(userId);
+	}
+
 	
 }

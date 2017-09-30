@@ -47,7 +47,7 @@ public class DeekshaDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(padipooja.getMemId()));
 		WriteResult rs=collection.update(match,update);
-		System.out.println("result is "+rs.getError());
+		System.out.println("result is "+rs.getUpsertedId());
 		return id.toString();
 	}
 	private DBObject toDBUserPadi(Padipooja padipooja, String padiID) {
@@ -171,7 +171,7 @@ public class DeekshaDAO {
 		    new BasicDBObject("_id", new ObjectId(uPadi.getPadipoojaId())),
 		    dbPadi
 		);
-		return wr.getError();
+		return wr.getUpsertedId().toString();
 	}
 	public String join(PadiMember padiMember ){
 		System.out.println("Updating padiMember "+padiMember);
@@ -181,8 +181,8 @@ public class DeekshaDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(padiMember.getPadiId()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
-		return rs.getError();
+		System.out.println("Write result is "+rs.getUpsertedId());
+		return rs.getUpsertedId().toString();
 	}
 	
 	public String leave(PadiMember padiMember ){
@@ -193,8 +193,8 @@ public class DeekshaDAO {
 		BasicDBObject match = new BasicDBObject();
 		match.put( "_id",new ObjectId(padiMember.getPadiId()) );
 		WriteResult rs=collection.update(match,update);
-		System.out.println("Write result is "+rs.getLastError());
-		return rs.getError();
+		System.out.println("Write result is "+rs.getUpsertedId());
+		return rs.getUpsertedId().toString();
 	}
 	
 	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
