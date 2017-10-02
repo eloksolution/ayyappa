@@ -35,7 +35,9 @@ import com.leocardz.link.preview.library.LinkPreviewCallback;
 import com.leocardz.link.preview.library.SourceContent;
 import com.leocardz.link.preview.library.TextCrawler;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Date;
 
 import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
@@ -168,7 +170,7 @@ public class CreateTopic extends AppCompatActivity {
         }
     }
 
-    private LinkPreviewCallback callback = new LinkPreviewCallback() {
+    public LinkPreviewCallback callback = new LinkPreviewCallback() {
         /**
          * This view is used to be updated or added in the layout after getting
          * the result
@@ -261,10 +263,13 @@ public class CreateTopic extends AppCompatActivity {
                             if (loadedBitmap != null) {
                                 currentImage = loadedBitmap;
                                 System.out.println("current image is :"+currentImage);
-                                Uri uri = getImageUri(CreateTopic.this,currentImage);
-                                System.out.println("bitmap afer calling the method is uri is  :"+uri);
-                                uploadImage(uri);
+                                //Uri uri = getImageUri(CreateTopic.this,currentImage);
+                             String   imageKeyName="tmp_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
+                                String fileName=persistImage(loadedBitmap, imageKeyName);
+  System.out.println("bitmap afer calling the method is uri is  :"+url);
+                                uploadImage(fileName);
                                 currentImageSet[0] = loadedBitmap;
+
                             }
                         }
                     });
@@ -313,21 +318,35 @@ public class CreateTopic extends AppCompatActivity {
     }
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         System.out.println("bitmap in converting uri methos is :"+inImage);
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+       // ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+         //inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-    private void uploadImage(Uri resultUri) {
-        System.out.println("In image uploading method...");
-        String path = UploadS3.getPath(getApplicationContext(),resultUri);
-        System.out.println("In image uploading method...");
-        System.out.println("images paths is :"+path);
+    private void uploadImage(String fileName) {
+        System.out.println("In image uploading method..."+fileName);
 
        imageKeyName="topics/t_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
-        imageName = UploadS3.beginUpload(path, transferUtility,imageKeyName);
+        imageName = UploadS3.beginUpload(fileName, transferUtility,imageKeyName);
         System.out.println("the result image name" + imageName);
 
+    }
+    private  String persistImage(Bitmap bitmap, String name) {
+        File filesDir = getApplicationContext().getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+        String fileName=null;
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            fileName=imageFile.getAbsolutePath();
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileName;
     }
     private void showHideImage(View image, View parent, boolean show) {
         if (show) {
@@ -377,10 +396,6 @@ public class CreateTopic extends AppCompatActivity {
         super.onResume();
 
     }
-
-
-
-
 
 }
 
