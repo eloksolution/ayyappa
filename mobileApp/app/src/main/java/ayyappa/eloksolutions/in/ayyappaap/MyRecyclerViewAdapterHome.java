@@ -11,18 +11,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.io.File;
 import java.util.ArrayList;
 
+import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectPadiPooja;
-import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 
 public class MyRecyclerViewAdapterHome extends RecyclerView
@@ -88,8 +85,8 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
     public MyRecyclerViewAdapterHome(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility) {
         mDataset = myDataset;
         this.mcontext=mcontext;
-        this.s3 = s3;
-        this.transferUtility = transferUtility;
+
+
     }
 
     @Override
@@ -107,9 +104,10 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
             holder.label.setText(mDataset.get(position).getmText1());
             holder.label2.setText(mDataset.get(position).getmText2());
             holder.time.setText(mDataset.get(position).getDate());
+        glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
-            Log.i(LOG_TAG, "Adding description :" + mDataset.get(position).getmText2());
-            getBitMap(mDataset.get(position).getImgResource(), holder.imageView);
+        Log.i(LOG_TAG, "Adding description :" + mDataset.get(position).getmText2());
+
 
             if (mDataset.get(position).getMemberSize() != 0) {
                 holder.count.setText(mDataset.get(position).getMemberSize() + "are Joined");
@@ -117,33 +115,6 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
                 holder.count.setText("0 Joined");
             }
         }
-
-
-    private void getBitMap(String imgResource, ImageView imageView) {
-        try {
-            File outdirectory = mcontext.getCacheDir();
-            File fileToDownload = File.createTempFile("GRO", "jpg", outdirectory);
-            setFileToDownload(imgResource, fileToDownload, imageView);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setFileToDownload(String imageKey, File fileToDownload, ImageView imageView) {
-        TransferObserver transferObserver=null;
-        if (Util.isEmpty(imageKey))return;
-        transferObserver = transferUtility.download(
-                "elokayyappa",     // The bucket to download from *//*
-                imageKey,    // The key for the object to download *//*
-                fileToDownload        // The file to download the object to *//*
-        );
-
-        transferObserverListener(transferObserver,imageView,fileToDownload);
-
-    }
-
-
-
     public void addItem(DataObjectPadiPooja dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);
@@ -164,40 +135,8 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
     }
 
 
-    public void transferObserverListener(TransferObserver transferObserver, final ImageView imageView,final File fileToDownload){
 
-        transferObserver.setTransferListener(new TransferListener(){
-
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                Log.i("File down load status", state+"");
-                Log.i("File down load id", id+"");
-                if("COMPLETED".equals(state.toString())){
-                    try{
-                      //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-                        //imageView.setImageBitmap(bit);
-                        glide.with(mcontext).load(fileToDownload.getAbsolutePath()).into(imageView);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                Log.e("percentage",percentage +"");
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                Log.e("error","error",ex);
-            }
-
-
-        });
     }
 
 
 
-}

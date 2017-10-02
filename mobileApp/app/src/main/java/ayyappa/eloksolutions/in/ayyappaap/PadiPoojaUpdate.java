@@ -102,12 +102,7 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                saveEventToServer();
-                Intent padiUpdat=new Intent(PadiPoojaUpdate.this, PadiPoojaView.class);
-                padiUpdat.putExtra("padiPoojaId",padiPoojaId);
-                startActivity(padiUpdat);
-
+                String createGroupHelper=saveEventToServer();
             }
         });
 
@@ -166,9 +161,6 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         mTimePicker = DateAndTimePicker.getTimePickerDialog(hour, minute, this, time);
         mTimePicker.show();
     }
-
-
-
 
     public void credentialsProvider(){
 
@@ -345,6 +337,13 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
+
+    public void callBackUpdateUI(String padiPoojaId){
+        Intent padiView=new Intent(this, PadiPoojaView.class);
+        padiView.putExtra("padipoojaId", padiPoojaId);
+        startActivity(padiView);
+
+    }
     private String saveEventToServer() {
 
         keyName="padipooja/P_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
@@ -361,8 +360,8 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
                 PadiUpdateHelper createEventHelper = new PadiUpdateHelper(PadiPoojaUpdate.this);
                 String surl = Config.SERVER_URL + "padipooja/update";
                 try {
-                    String eventid= createEventHelper.new GroupUpdateHere(eventDTO, surl).execute().get();
-                    return eventid;
+                    String gId= createEventHelper.new PadiUpdateHere(eventDTO, surl).execute().get();
+                    return gId;
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -408,7 +407,9 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         eventDTO.setOwner(memid);
         eventDTO.setOwnerName(name);
         eventDTO.setImagePath(keyName);
+        Log.i(tag,"event Dato at  padipooja"+eventDTO);
         return eventDTO;
+
     }
 
 

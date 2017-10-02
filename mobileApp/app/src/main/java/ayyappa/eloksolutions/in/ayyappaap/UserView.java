@@ -2,16 +2,14 @@ package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -23,16 +21,16 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
-import ayyappa.eloksolutions.in.ayyappaap.beans.DiscussionDTO;
 import ayyappa.eloksolutions.in.ayyappaap.beans.RegisterDTO;
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
-import ayyappa.eloksolutions.in.ayyappaap.helper.DiscussionHelper;
+import ayyappa.eloksolutions.in.ayyappaap.helper.SendTagHelper;
 import ayyappa.eloksolutions.in.ayyappaap.helper.UserViewHelper;
 import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
@@ -44,7 +42,7 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 public class UserView extends CardViewActivity {
     ImageView userImage,discussionCreate;
     TextView userName, userLocation;
-    String userId;
+    String userId,fromFirstName,fromUserId,fromLastName;
     private BottomBar bottomBar;
     Context context;
     int count;
@@ -55,15 +53,18 @@ public class UserView extends CardViewActivity {
     TransferObserver transferObserver;
     Glide glide;
     TextView contacts;
+    ImageView tagRequest;
     String tag="TopicView";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.myactivities_listview);
-        userName=(TextView) findViewById(R.id.user_name);
-        userLocation=(TextView) findViewById(R.id.user_location);
-        contacts=(TextView) findViewById(R.id.user_contacts);
+        setContentView(R.layout.profile_info);
+        userName=(TextView) findViewById(R.id.settings_username);
+        userLocation=(TextView) findViewById(R.id.address_value);
+        contacts=(TextView) findViewById(R.id.contacts_text);
         TextView groups=(TextView) findViewById(R.id.user_groups);
+        tagRequest=(ImageView) findViewById(R.id.tag_request_image);
+        userImage=(ImageView)findViewById(R.id.profile_img);
         context=this;
         userId=getIntent().getStringExtra("userId");
         Log.i(tag, "userId is getStringExtra(\"userId\")"+userId);
@@ -83,10 +84,10 @@ public class UserView extends CardViewActivity {
         String surl = Config.SERVER_URL+"user/user/"+userId;
         System.out.println("url for group topic view list"+surl);
         try {
-            String output=gettopicValue.new UserViewTask(surl).execute().get();
+            String output=gettopicValue.new UserViewTask(this,surl).execute().get();
             System.out.println("the output from Topic"+output);
-            setValuesToTextFields(output);
-            setFileToDownload("groups/G_302_1505918747142");
+           // setValuesToTextFields(output);
+           // setFileToDownload("groups/G_302_1505918747142");
         }catch (Exception e){}
 
         FloatingActionButton userUpDate = (FloatingActionButton) findViewById(R.id.fabuser);
@@ -98,8 +99,12 @@ public class UserView extends CardViewActivity {
                 startActivity(topicUp);
             }
         });
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
+        fromUserId=preferences.getString("userId",null);
+        fromFirstName=preferences.getString("firstName",null);
+        fromLastName=preferences.getString("lastName",null);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+       /* BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
@@ -136,7 +141,7 @@ public class UserView extends CardViewActivity {
 
                 return false;
             }
-        });
+        }); */
 
     }
     public void credentialsProvider(){
@@ -208,6 +213,35 @@ public class UserView extends CardViewActivity {
         transferObserverListener(transferObserver);
 
     }
+    public void SenTag(View view){
+        userSendTag();
+        Toast.makeText(this, "sended a request", Toast.LENGTH_LONG).show();
+    }
+    private String userSendTag() {
+
+        RegisterDTO userDTo = buildDTOObject();
+
+        if (checkValidation()) {
+            if (CheckInternet.checkInternetConenction(UserView.this)) {
+                SendTagHelper sendTag = new SendTagHelper(UserView.this);
+                String gurl = Config.SERVER_URL +"user/requestConnection";
+                try {
+                    String gId= sendTag.new SenTagTask(userDTo, gurl).execute().get();
+                    return gId;
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                CheckInternet.showAlertDialog(UserView.this, "No Internet Connection",
+                        "You don't have internet connection.");
+            }
+        }
+        return null;
+    }
+
     public void userContacts(View view){
         Intent topicUp = new Intent(this, UserContactList.class);
         topicUp.putExtra("userId",""+userId);
@@ -247,7 +281,17 @@ public class UserView extends CardViewActivity {
              registerDTO = gson.fromJson(result, RegisterDTO.class);
             userName.setText(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
-
+            if(registerDTO.getImgPath()!=null) {
+                if(registerDTO.getImgPath().contains("https")){
+                    glide.with(context).load(registerDTO.getImgPath()).into(userImage);
+                    Log.i(tag,"https image view");
+                }
+                else {
+                   // setFileToDownload(registerDTO.getImgPath());
+                    glide.with(context).load(Config.S3_URL+registerDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
+                    Log.i(tag,"set to file down load image view");
+                }
+            }
 
         }
     }
@@ -262,38 +306,17 @@ public class UserView extends CardViewActivity {
             }
         }
 
-    private String saveEventToServer() {
-        DiscussionDTO discussionDto=buildDTOObject();
-        if (checkValidation()) {
-            if (CheckInternet.checkInternetConenction(UserView.this)) {
-                DiscussionHelper createtopicpHelper = new DiscussionHelper(UserView.this);
-                String gurl = Config.SERVER_URL +"topic/addDiscussion";
-                try {
-                    String gId= createtopicpHelper.new CreateDiscussion(discussionDto, gurl).execute().get();
-                    return gId;
 
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                CheckInternet.showAlertDialog(UserView.this, "No Internet Connection",
-                        "You don't have internet connection.");
-            }
-        }
-        return null;
+    private RegisterDTO buildDTOObject() {
+        RegisterDTO newRegisterDTO= new RegisterDTO();
+        newRegisterDTO.setToUserId(registerDTO.getUserId());
+        newRegisterDTO.setToFirstName(registerDTO.getFirstName());
+        newRegisterDTO.setToLastName(registerDTO.getLastName());
+        newRegisterDTO.setUserId(fromUserId);
+        newRegisterDTO.setFirstName(fromFirstName);
+        newRegisterDTO.setLastName(fromLastName);
+        return newRegisterDTO;
     }
-    private DiscussionDTO buildDTOObject() {
-        DiscussionDTO discussionDTO= new DiscussionDTO();
-        String gname= userName.getText().toString();
-        discussionDTO.setComment(gname);
-        discussionDTO.setTopicId(userId);
-        discussionDTO.setOwnerId(Config.userId);
-        return discussionDTO;
-    }
-
 
 
     private boolean checkValidation() {

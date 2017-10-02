@@ -33,6 +33,8 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -227,7 +229,7 @@ public class GroupView extends AppCompatActivity {
             System.out.println("the output from Group"+output);
             setValuesToTextFields(output);
             System.out.println("groupDTO.getImagePath()"+groupDTO.getImagePath());
-            setFileToDownload(groupDTO.getImagePath());
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -291,7 +293,7 @@ public class GroupView extends AppCompatActivity {
                   //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
                   // groupImage.setImageBitmap(bit);
 
-                    glide.with(context).load(fileToDownload.getAbsolutePath()).into(groupImage);
+
 
                 }
             }
@@ -333,6 +335,7 @@ public class GroupView extends AppCompatActivity {
             groupName.setText(groupDTO.getName());
             description.setText(groupDTO.getDescription());
             toolbar.setTitle(groupDTO.getName());
+            glide.with(context).load(Config.S3_URL+groupDTO.getImagePath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(groupImage);
             if(groupDTO.getGroupMembers()!=null) {
                 noOfJoins.setText(groupDTO.getGroupMembers().size() + "");
                 System.out.println("json xxxx from groupDTO.getGroupMembers().size()" + groupDTO.getGroupMembers().size());
@@ -392,6 +395,7 @@ public class GroupView extends AppCompatActivity {
         try {
             String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
+            FirebaseMessaging.getInstance().subscribeToTopic(groupJoins.getGroupId());
             addingMember(joinmem);
         }catch (Exception e){
 

@@ -23,6 +23,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -104,7 +105,7 @@ public class TopicView extends AppCompatActivity {
             String output=gettopicValue.new TopicViewTask(surl).execute().get();
             System.out.println("the output from Topic"+output);
             setValuesToTextFields(output);
-            setFileToDownload("topics/t_705_1506432004673");
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -153,7 +154,6 @@ public class TopicView extends AppCompatActivity {
                 if("COMPLETED".equals(state.toString())){
                     //  Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
                     //  padiImage.setImageBitmap(bit);
-                    glide.with(context).load(fileToDownload.getAbsolutePath()).into(topicImage);
 
                 }
             }
@@ -208,6 +208,8 @@ public class TopicView extends AppCompatActivity {
             user_name.setText(topicDTO.getOwnerName());
          //   topicName.setText(fromJsonn.getTopic());
             description.setText(topicDTO.getDescription());
+            glide.with(context).load(Config.S3_URL+topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);
+
 
             System.out.println("object resul myrecycler results list view is " + topicDTO.getDiscussions());
             if (topicDTO.getDiscussions()!=null) {

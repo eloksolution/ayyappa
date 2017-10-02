@@ -16,7 +16,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +36,8 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -51,7 +51,7 @@ import ayyappa.eloksolutions.in.ayyappaap.util.Util;
  * Created by welcome on 6/27/2017.
  */
 
-public class CreateGroup extends AppCompatActivity {
+public class CreateGroup extends MainActivity {
     EditText name, description;
     ImageView gImage, imgView;
     Spinner gCatagery;
@@ -62,7 +62,7 @@ public class CreateGroup extends AppCompatActivity {
     private Button buttonRequestPermission;
     TransferUtility transferUtility;
     String TAG="Create Group";
-    String keyName;
+    String keyName,userId,userName;
     File fileToUpload;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,9 @@ public class CreateGroup extends AppCompatActivity {
         Button createGroup=(Button) findViewById(R.id.butgcreate);
         imgView=(ImageView) findViewById(R.id.img_view);
         Button imagePick=(Button) findViewById(R.id.group_image_add);
+        SharedPreferences preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
+        userId=preference.getString("userId",null);
+        userName=preference.getString("firstName",null)+ " " + preference.getString("lastName", null);
         final Context ctx = this;
 
         createGroup.setOnClickListener(new View.OnClickListener() {
@@ -89,47 +92,6 @@ public class CreateGroup extends AppCompatActivity {
             }
         });
 
-
-       /* imagePick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                // call android default gallery
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                // ******** code for crop image
-                intent.putExtra("crop", "true");
-                intent.putExtra("aspectX", 0);
-                intent.putExtra("aspectY", 0);
-                try {
-                    intent.putExtra("return-data", true);
-                    startActivityForResult(Intent.createChooser(intent,"Complete action using"),     PICK_FROM_GALLERY);
-
-                } catch (ActivityNotFoundException e) {
-                }
-
-            }
-
-        }); */
-
-
-        buttonRequestPermission = (Button) findViewById(R.id.buttonRequestPermission);
-
-        buttonRequestPermission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //First checking if the app is already having the permission
-                if(isReadStorageAllowed()){
-                    //If permission is already having then showing the toast
-                    Toast.makeText(CreateGroup.this,"You already have the permission",Toast.LENGTH_LONG).show();
-                    //Existing the method with return
-                    return;
-                }
-
-                //If the app has not the permission then asking for the permission
-                requestStoragePermission();
-            }
-        });
         // callback method to call credentialsProvider method.
         credentialsProvider();
 
@@ -211,14 +173,19 @@ public class CreateGroup extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             try {
+                CropImageView.CropShape cropShape = CropImageView.CropShape.RECTANGLE;
                 Uri uri = data.getData();
-                String path = getPath(getApplicationContext(), uri);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
-                Log.e(TAG, "File path is " + path);
-                fileToUpload = new File(path);
-
+                CropImage.activity(uri)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        // .setFixAspectRatio(true)
+                        .setCropShape(cropShape)
+                        // .setAspectRatio(4,2)
+                        .setMinCropResultSize(480,720)
+                        .setMaxCropResultSize(800,1200)
+                        .start(this);
 
                 System.out.println("the uri is" + uri);
 
@@ -226,6 +193,22 @@ public class CreateGroup extends AppCompatActivity {
                 Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
                         Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Unable to upload file from the given uri", e);
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                imgView.setVisibility(View.VISIBLE);
+                imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imgView.setImageURI(resultUri);
+                String path = getPath(getApplicationContext(), resultUri);
+                fileToUpload = new File(path);
+                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
+                Log.e(TAG, "File path is " + path);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
         }
     }
@@ -337,6 +320,7 @@ public class CreateGroup extends AppCompatActivity {
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
+
     private String saveEventToServer() {
         keyName="groups/G_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         GroupDTO groupDto=buildDTOObject();
@@ -349,10 +333,10 @@ public class CreateGroup extends AppCompatActivity {
         transferObserverListener(transferObserver);
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(CreateGroup.this)) {
-                GroupHelper createGroupHelper = new GroupHelper(this);
+                GroupHelper createGroupHelper = new GroupHelper(CreateGroup.this);
                 String gurl = Config.SERVER_URL+"group/add";
                 try {
-                    String gId= createGroupHelper.new CreateGroupTask(groupDto, gurl).execute().get();
+                    String gId= createGroupHelper.new CreateGroup(groupDto, gurl).execute().get();
                     return gId;
 
                 } catch (InterruptedException e) {
@@ -376,7 +360,8 @@ public class CreateGroup extends AppCompatActivity {
         groupDto.setDescription(gdesc);
         String groupCatagery = gCatagery.getSelectedItem().toString();
         groupDto.setGroupCatagory(groupCatagery);
-        groupDto.setOwner(preference.getString("userId",null));
+        groupDto.setOwner(userId);
+        groupDto.setOwnerName(userName);
         Log.i(TAG,"Config.getUserId()"+preference.getString("userId",null));
         groupDto.setImagePath(keyName);
         return groupDto;
@@ -412,12 +397,5 @@ public class CreateGroup extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    public void callbackCreateGroup(String groupId){
-        Intent groupView = new Intent(this, GroupList.class);
-        startActivity(groupView);
-        FirebaseMessaging.getInstance().subscribeToTopic(groupId);
-        Log.i(TAG,"Subscribed to group "+groupId);
-    }
-
+   
 }

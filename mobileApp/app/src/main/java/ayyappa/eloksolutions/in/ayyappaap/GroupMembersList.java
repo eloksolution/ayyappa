@@ -39,15 +39,6 @@ public class GroupMembersList extends AppCompatActivity implements View.OnClickL
 
         //ImageView createGroup=(ImageView) findViewById(R.id.add);
 
-      /*  final Context ctx = this;
-        createGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent groupView = new Intent(ctx, CreateGroup.class);
-                startActivity(groupView);
-            }
-        }); */
-
         GroupMemberHelper getGroupsValue=new GroupMemberHelper(this);
         String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/"+userId;
         System.out.println("url for group list"+surl);

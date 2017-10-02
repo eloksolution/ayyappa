@@ -17,6 +17,10 @@ public class RegisterDTO {
     String imgPath;
     double longi;
     double lati;
+    String toUserId;
+    String toFirstName;
+    String toLastName;
+
 
 
     public double getLongi() {
@@ -116,6 +120,30 @@ public class RegisterDTO {
         this.password = password;
     }
 
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
+    }
+
+    public String getToFirstName() {
+        return toFirstName;
+    }
+
+    public void setToFirstName(String toFirstName) {
+        this.toFirstName = toFirstName;
+    }
+
+    public String getToLastName() {
+        return toLastName;
+    }
+
+    public void setToLastName(String toLastName) {
+        this.toLastName = toLastName;
+    }
+
     @Override
     public String toString() {
         return "RegisterDTO{" +
@@ -128,9 +156,12 @@ public class RegisterDTO {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", password='" + password + '\'' +
+                ", imgPath='" + imgPath + '\'' +
                 ", longi=" + longi +
                 ", lati=" + lati +
-                ", imgPath=" + imgPath +
+                ", toUserId='" + toUserId + '\'' +
+                ", toFirstName='" + toFirstName + '\'' +
+                ", toLastName='" + toLastName + '\'' +
                 '}';
     }
 }

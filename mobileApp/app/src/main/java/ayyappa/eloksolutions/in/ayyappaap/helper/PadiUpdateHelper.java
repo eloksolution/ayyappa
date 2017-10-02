@@ -54,14 +54,14 @@ public class PadiUpdateHelper {
 
         }
     }
-    public class GroupUpdateHere extends AsyncTask<String, String, String> {
+    public class PadiUpdateHere extends AsyncTask<String, String, String> {
         // Call after onPreExecute method
         URL url;
         String surl;
         EventDTO eventDTO;
 
         private ProgressDialog progress;
-        public GroupUpdateHere(EventDTO eventDTO, String surl){
+        public PadiUpdateHere(EventDTO eventDTO, String surl){
             this.eventDTO = eventDTO;
             this.surl = surl;
         }
@@ -85,6 +85,7 @@ public class PadiUpdateHelper {
                 jsonObject.accumulate("time", eventDTO.getTime());
                 jsonObject.accumulate("memId", eventDTO.getMemId());
                 jsonObject.accumulate("name", eventDTO.getOwnerName());
+                jsonObject.accumulate("imgPath", eventDTO.getImagePath());
 
                 json = jsonObject.toString();
                 System.out.println("json padipooja Update values"+json);
@@ -97,7 +98,7 @@ public class PadiUpdateHelper {
 
             System.out.println("From Join Event" + result);
             progress.dismiss();
-
+            mcontext.callBackUpdateUI(eventDTO.getPadipoojaId());
         }
     }
 

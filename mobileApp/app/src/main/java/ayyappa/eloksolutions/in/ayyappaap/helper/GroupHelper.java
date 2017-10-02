@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONObject;
 
 import java.net.URL;
 
-import ayyappa.eloksolutions.in.ayyappaap.CreateGroup;
 import ayyappa.eloksolutions.in.ayyappaap.GroupList;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
@@ -20,20 +21,20 @@ import ayyappa.eloksolutions.in.ayyappaap.beans.GroupDTO;
  */
 
 public class GroupHelper {
-    private CreateGroup mcontext;
-    public GroupHelper(CreateGroup mcontext) {
+    private Context mcontext;
+    public GroupHelper(Context mcontext) {
         this.mcontext = mcontext;
     }
     String tag="GroupHelper";
 
-    public class CreateGroupTask extends AsyncTask<String, Void, String> {
+    public class CreateGroup extends AsyncTask<String, Void, String> {
         // Call after onPreExecute method
         URL url;
         GroupDTO groupDto;
         private ProgressDialog progress;
         String gurl;
 
-        public CreateGroupTask(GroupDTO groupDto, String gurl) {
+        public CreateGroup(GroupDTO groupDto, String gurl) {
             this.groupDto = groupDto;
             this.gurl = gurl;
         }
@@ -75,8 +76,14 @@ public class GroupHelper {
         protected void onPostExecute(String result) {
             Log.i(tag, "result is " +result);
             super.onPostExecute(result);
-            mcontext.callbackCreateGroup(result);
 
+            try {
+                FirebaseMessaging.getInstance().subscribeToTopic(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Intent groupView = new Intent(mcontext, GroupList.class);
+            mcontext.startActivity(groupView);
             Log.i(tag, "result groupId is " +result);
             progress.dismiss();
         }

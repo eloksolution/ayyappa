@@ -227,11 +227,19 @@ public class CardViewActivity extends AppCompatActivity {
         System.out.println("url for group list"+gurl);
         getGroups.execute();
 
-        final ImageView moviFull=(ImageView) findViewById(R.id.PadiFull);
-        moviFull.setOnClickListener(new View.OnClickListener() {
+        final ImageView padiFull=(ImageView) findViewById(R.id.PadiFull);
+        padiFull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent padipooj = new Intent(context,PadiPoojaFull.class);
+                startActivity(padipooj);
+            }
+        });
+        final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
+        padiCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent padipooj = new Intent(context,CreatePadiPooja.class);
                 startActivity(padipooj);
             }
         });
@@ -243,11 +251,19 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
-        final ImageView contactFull=(ImageView) findViewById(R.id.contactFull);
-        contactFull.setOnClickListener(new View.OnClickListener() {
+        final ImageView CreateGroup=(ImageView) findViewById(R.id.group_list);
+        CreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent songsIntent = new Intent(context,GroupList.class);
+                startActivity(songsIntent);
+            }
+        });
+        final ImageView GroupsFull=(ImageView) findViewById(R.id.create_group);
+        GroupsFull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent songsIntent = new Intent(context,CreateGroup.class);
                 startActivity(songsIntent);
             }
         });

@@ -95,10 +95,11 @@ public class Registartion extends AppCompatActivity {
         createRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestStoragePermission();
+
                 Log.i(tag, "id is the sharepreferance"+name.getText().toString());
                 String createGroupHelper=saveEventToServer();
-
+                Intent main = new Intent(ctx, CardViewActivity.class);
+                startActivity(main);
             }
         });
 
@@ -354,15 +355,13 @@ public class Registartion extends AppCompatActivity {
 
 
     private String saveEventToServer() {
-        keyName = "users/U_" + Util.getRandomNumbers() + "_" + System.currentTimeMillis();
-        RegisterDTO registerDto = buildDTOObject();
-        if (fileToUpload != null && fileToUpload.exists()){
-            TransferObserver transferObserver = transferUtility.upload(
-                    "elokayyappa",     /* The bucket to upload to */
-                    keyName,    /* The key for the uploaded object */
-                    fileToUpload       /* The file where the data to upload exists */
-            );
-        }
+        keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
+        RegisterDTO registerDto=buildDTOObject();
+        TransferObserver transferObserver = transferUtility.upload(
+                "elokayyappa",     /* The bucket to upload to */
+                keyName,    /* The key for the uploaded object */
+                fileToUpload       /* The file where the data to upload exists */
+        );
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(Registartion.this)) {
                 RegisterHelper createRegisterHelper = new RegisterHelper(Registartion.this);
@@ -384,16 +383,9 @@ public class Registartion extends AppCompatActivity {
         return null;
     }
 
-    public void redirectToHome(RegisterDTO registerDto){
-        Util.setPreferances(this, registerDto);
-        Log.i(tag, "result is registerDto " +registerDto);
-        Intent main = new Intent(this, CardViewActivity.class);
-        startActivity(main);
-    }
 
     private RegisterDTO buildDTOObject() {
         RegisterDTO registerDto=new RegisterDTO();
-
         String rname= name.getText().toString();
         registerDto.setFirstName(rname);
         String rlname= lastName.getText().toString();
@@ -438,8 +430,10 @@ public class Registartion extends AppCompatActivity {
 
         if (!Validation.hasText(lastName)) ret = false;
         return ret;
-    }
 
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -2,6 +2,7 @@ package ayyappa.eloksolutions.in.ayyappaap.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
+import ayyappa.eloksolutions.in.ayyappaap.GroupView;
 import ayyappa.eloksolutions.in.ayyappaap.RestServices;
 import ayyappa.eloksolutions.in.ayyappaap.beans.TopicDTO;
 
@@ -71,6 +73,9 @@ public class TopicHelper {
             super.onPostExecute(result);
             Log.i(tag, "result is " +result);
             progress.dismiss();
+            Intent groupView = new Intent(mcontext, GroupView.class);
+            groupView.putExtra("groupId", topicDto.getGroupId());
+            mcontext.startActivity(groupView);
         }
 
     }

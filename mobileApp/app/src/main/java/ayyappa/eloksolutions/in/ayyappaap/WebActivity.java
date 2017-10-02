@@ -3,12 +3,12 @@ package ayyappa.eloksolutions.in.ayyappaap;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-public class WebActivity extends ActionBarActivity {
+public class WebActivity extends AppCompatActivity {
     private WebView webView;
     private ProgressDialog progressDialog;
     public void onCreate(Bundle savedInstanceState) {

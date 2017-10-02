@@ -19,8 +19,6 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 
 import java.io.File;
-import java.sql.Timestamp;
-import java.util.Date;
 
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 
@@ -36,7 +34,7 @@ public class UploadS3 {
      * constructed using the given Context.
      *
      * @param context An Context instance.
-     * @return A default credential provider.
+     * @return A app credential provider.
      */
     public static CognitoCachingCredentialsProvider getCredProvider(Context context) {
         if (sCredProvider == null) {
@@ -53,7 +51,7 @@ public class UploadS3 {
      * Context.
      *
      * @param context An Context instance.
-     * @return A default S3 client.
+     * @return A app S3 client.
      */
     public static AmazonS3Client getS3Client(Context context) {
         if (sS3Client == null) {
@@ -78,37 +76,19 @@ public class UploadS3 {
     /*
 * Begins to upload the file specified by the file path.
 */
-    public static String beginUpload(String filePath,TransferUtility transferUtility,String memId) {
-        String imageName=null;
+    public static String beginUpload(String filePath,TransferUtility transferUtility,String keyName) {
         if (filePath == null) {
-           // Toast.makeText(this, "Could not find the filepath of the selected file", Toast.LENGTH_LONG).show();
             return null;
         }
         System.out.println("the image is "+filePath);
-        File file = new File(filePath);
         try {
-            String upldFile = file.getName();
-            upldFile = upldFile.substring(upldFile.lastIndexOf('.'),
-                    upldFile.length());
-            long timestamp = new Timestamp(new Date().getTime()).getTime();
-            if (upldFile == null || upldFile.isEmpty()) {
-                imageName=null;
-            } else {
-                imageName= memId+timestamp + upldFile;
-                System.out.println("the image is "+imageName);
-            }
-            return imageName;
-        } finally {
-            TransferObserver observer = transferUtility.upload(Config.BUCKET_NAME, imageName,file);
- /*
-  * Note that usually we set the transfer listener after initializing the
-  * transfer. However it isn't required in this sample app. The flow is
-  * click upload button -> start an activity for image selection
-  * startActivityForResult -> onActivityResult -> beginUpload -> onResume
-  * -> set listeners to in progress transfers.
-  */
+            File file = new File(filePath);
+            TransferObserver observer = transferUtility.upload(Config.BUCKET_NAME, keyName,file);
             observer.setTransferListener(new UploadListener());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return keyName;
     }
 
     public static String updateImage(String filePath,String imageName,TransferUtility transferUtility) {

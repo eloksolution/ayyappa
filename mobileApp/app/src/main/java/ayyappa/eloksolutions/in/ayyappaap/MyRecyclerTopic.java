@@ -10,18 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
 
-import java.io.File;
 import java.util.ArrayList;
 
+import ayyappa.eloksolutions.in.ayyappaap.config.Config;
 import ayyappa.eloksolutions.in.ayyappaap.util.TopicObject;
-import ayyappa.eloksolutions.in.ayyappaap.util.Util;
 
 public class MyRecyclerTopic extends RecyclerView
         .Adapter<MyRecyclerTopic
@@ -99,69 +95,10 @@ public class MyRecyclerTopic extends RecyclerView
         holder.label.setText(mDataset.get(position).getName());
        holder.label2.setText(mDataset.get(position).getCreateDate());
         holder.label3.setText(mDataset.get(position).getTopic());
-
-        getBitMap(mDataset.get(position).getImgResource(), holder.imageView);
-    }
-
-    private void getBitMap(String imgResource, ImageView imageView) {
-        try {
-            File outdirectory = mcontext.getCacheDir();
-            File fileToDownload = File.createTempFile("GRO", "jpg", outdirectory);
-            setFileToDownload(imgResource, fileToDownload, imageView);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setFileToDownload(String imageKey, File fileToDownload, ImageView imageView){
-        TransferObserver transferObserver=null;
-        imageKey= "groups/G_302_1505918747142";
-        if (Util.isEmpty(imageKey))return;
-
-        transferObserver = transferUtility.download(
-                "elokayyappa",     // The bucket to download from *//*
-               imageKey,    // The key for the object to download *//*
-                fileToDownload        // The file to download the object to *//*
-
-        );
-
-        transferObserverListener(transferObserver,imageView,fileToDownload);
+        glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).into(holder.imageView);
 
     }
-    public void transferObserverListener(TransferObserver transferObserver, final ImageView imageView,final File fileToDownload){
 
-        transferObserver.setTransferListener(new TransferListener(){
-
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                Log.i("File down load status", state+"");
-                Log.i("File down load id", id+"");
-                if("COMPLETED".equals(state.toString())){
-                    try{
-                        // Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-                        //imageView.setImageBitmap(bit);
-                        glide.with(mcontext).load(fileToDownload.getAbsolutePath()).into(imageView);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                Log.e("percentage",percentage +"");
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                Log.e("error","error",ex);
-            }
-
-
-        });
-    }
- 
     public void addItem(TopicObject dataObj, int index) {
         mDataset.add(index, dataObj);
         notifyItemInserted(index);

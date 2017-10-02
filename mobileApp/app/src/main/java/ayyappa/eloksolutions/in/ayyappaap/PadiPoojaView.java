@@ -30,6 +30,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -354,6 +355,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             toolbar.setTitle(eventDTO.getEventName());
             eventdate.setText(eventDTO.getDate());
             eventtime.setText(eventDTO.gettime());
+            glide.with(ctx).load(Config.S3_URL+eventDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(padiImage);
             System.out.println("past from eventfromJson.gettime()" + eventDTO.gettime());
 
 //           tvname.setText(fromJson.getOwnerName());

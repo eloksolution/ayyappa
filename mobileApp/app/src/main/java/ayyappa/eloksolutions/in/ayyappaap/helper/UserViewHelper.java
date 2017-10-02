@@ -23,9 +23,11 @@ public class UserViewHelper {
         // Call after onPreExecute method
         URL url;
         String surl;
+        UserView userView;
         private ProgressDialog progress;
-        public UserViewTask(String surl){
+        public UserViewTask(UserView userView, String surl){
             this.surl = surl;
+            this.userView=userView;
         }
         @Override
         protected void onPreExecute(){

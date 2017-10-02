@@ -97,9 +97,7 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
                 public void onClick(View view) {
                     DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
                     groupId = dataObject.getGroupId();
-                    Intent groupView = new Intent(view.getContext(), GroupView.class);
-                    groupView.putExtra("groupId", dataObject.getGroupId());
-                    view.getContext().startActivity(groupView);
+
                     saveEventToServer(itemView);
 
                 }

@@ -25,6 +25,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
 
@@ -79,7 +80,6 @@ public class OwnerView extends AppCompatActivity {
             System.out.println("the output from Topic"+output);
             setValuesToTextFields(output);
             System.out.println("registerDTO.getImgPath()"+registerDTO.getImgPath());
-            setFileToDownload(registerDTO.getImgPath());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -252,13 +252,24 @@ public class OwnerView extends AppCompatActivity {
         System.out.println("json xxxx from User Results" + result);
         if (result != null) {
             Gson gson = new Gson();
-             registerDTO = gson.fromJson(result, RegisterDTO.class);
+            registerDTO = gson.fromJson(result, RegisterDTO.class);
             userName.setText(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
+            if (registerDTO.getImgPath()!=null){
+                if(registerDTO.getImgPath().contains("http")){
+                    glide.with(context).load(registerDTO.getImgPath()).into(userImage);
+                }else {
+                    glide.with(context).load(Config.S3_URL+registerDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
+
+                }
+
+                }
+        }
+
 
 
         }
-    }
+
 
     private boolean checkValidation() {
         boolean ret = true;
