@@ -93,6 +93,10 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         ctx=this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        rvPadi = (RecyclerView) findViewById(R.id.rv_members);
+        rvPadi.setHasFixedSize(true);
+        LinearLayoutManager lmPadi = new LinearLayoutManager(this);
+        rvPadi.setLayoutManager(lmPadi);
         Intent createpadipoojaintent=getIntent();
         padiPoojaId=createpadipoojaintent.getStringExtra("padiPoojaId");
         Log.i(tag,"padiPoojaId"+padiPoojaId);
@@ -154,10 +158,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
 
-    rvPadi = (RecyclerView) findViewById(R.id.rv_members);
-        rvPadi.setHasFixedSize(true);
-        LinearLayoutManager lmPadi = new LinearLayoutManager(this);
-        rvPadi.setLayoutManager(lmPadi);
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override

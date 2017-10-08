@@ -176,8 +176,8 @@ public class CardViewActivity extends AppCompatActivity {
             Log.i(TAG,"Deeksha start date"+deekshaStartDate);
             int diff=0,noOfDays=0;
             try {
-                Date startDate=(new SimpleDateFormat("dd/MM/yyyy")).parse(deekshaStartDate);
-                Date endDate=(new SimpleDateFormat("dd/MM/yyyy")).parse(deekshaEndDate);
+                Date startDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaStartDate);
+                Date endDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaEndDate);
                 Calendar cal=Calendar.getInstance();
                 Date today=cal.getTime();
                 diff=daysBetween(startDate,today)+1;
@@ -216,7 +216,6 @@ public class CardViewActivity extends AppCompatActivity {
         String url= Config.SERVER_URL+"padipooja/gettoppoojas";
         GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi,s3, transferUtility);
         getEvents.execute();
-
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups_home);
         rvGroups.setHasFixedSize(true);

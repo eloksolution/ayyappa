@@ -76,6 +76,7 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                 }
                 MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results,mcontext,s3,transferUtility);
                 rvPadi.setAdapter(mAdapter);
+                rvPadi.setHasFixedSize(true);
             }
         }
 

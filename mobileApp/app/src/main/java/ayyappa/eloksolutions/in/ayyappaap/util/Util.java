@@ -40,8 +40,8 @@ public class Util{
         userDTO.setFirstName(sharedPreferences.getString("firstName", ""));
         userDTO.setLastName(sharedPreferences.getString("lastName", ""));
         userDTO.setUserId(sharedPreferences.getString("userId", ""));
-        userDTO.setLongi(sharedPreferences.getString("long", ""));
-        userDTO.setLati(sharedPreferences.getString("lat", ""));
+        userDTO.setLon(sharedPreferences.getString("long", ""));
+        userDTO.setLat(sharedPreferences.getString("lat", ""));
         userDTO.setArea(sharedPreferences.getString("loc", ""));
         return userDTO;
 

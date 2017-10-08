@@ -104,7 +104,11 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
             holder.label.setText(mDataset.get(position).getmText1());
             holder.label2.setText(mDataset.get(position).getmText2());
             holder.time.setText(mDataset.get(position).getDate());
-        glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        Log.i(LOG_TAG, "Adding image :" +mDataset.get(position).getImgResource());
+        if(mDataset.get(position).getImgResource()!=null)
+            glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        else
+            holder.imageView.setImageResource(R.drawable.defaulta);
 
         Log.i(LOG_TAG, "Adding description :" + mDataset.get(position).getmText2());
 
