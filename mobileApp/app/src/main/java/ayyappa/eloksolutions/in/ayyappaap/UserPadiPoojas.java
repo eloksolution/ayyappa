@@ -47,7 +47,7 @@ public class UserPadiPoojas extends CardViewActivity {
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         UserId=preferences.getString("userId", null);
         String url= Config.SERVER_URL+"user/padis/"+UserId;
-        GetEvents getEvents=new GetEvents(context,url,rvPadi,s3,transferUtility);
+        GetEvents getEvents=new GetEvents(context,url,rvPadi);
         getEvents.execute();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_padi);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -27,15 +27,12 @@ public class GetEvents extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvPadi;
-    AmazonS3 s3;
-    TransferUtility transferUtility;
 
-    public GetEvents(Context mcontext, String surl, RecyclerView rvPadi, AmazonS3 s3, TransferUtility transferUtility) {
+    public GetEvents(Context mcontext, String surl, RecyclerView rvPadi) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvPadi=rvPadi;
-        this.s3=s3;
-        this.transferUtility=transferUtility;
+
     }
         @Override
         protected void onPreExecute() {
@@ -74,7 +71,7 @@ public class GetEvents extends AsyncTask<String, Void, String> {
                     DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation(),event.getMonth(),event.getDay(),event.getWeek());
                     results.add(obj);
                 }
-                MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results,mcontext,s3,transferUtility);
+                MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results,mcontext);
                 rvPadi.setAdapter(mAdapter);
             }
         }

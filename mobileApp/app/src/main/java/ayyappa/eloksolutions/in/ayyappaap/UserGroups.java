@@ -55,7 +55,7 @@ public class UserGroups extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"/group/getGroups/"+userId;
-        GetGroups getGroups=new GetGroups(context,url,rvGroups,s3,transferUtility);
+        GetGroups getGroups=new GetGroups(context,url,rvGroups);
         System.out.println("url for group list"+url);
         getGroups.execute();
 

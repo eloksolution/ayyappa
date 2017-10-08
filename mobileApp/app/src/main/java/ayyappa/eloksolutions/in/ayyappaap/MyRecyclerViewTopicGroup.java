@@ -26,22 +26,18 @@ import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectGroup;
 public class MyRecyclerViewTopicGroup extends RecyclerView
         .Adapter<MyRecyclerViewTopicGroup
         .DataObjectHolder> {
-    private static String LOG_TAG = "MyRecyclerViewAdapter";
+    private static String LOG_TAG = "MyRecyclerViewTopicGroup";
     private ArrayList<DataObjectGroup> mDataset;
     private Context context;
     private static MyClickListener myClickListener;
     TextView keyName;
     String groupId, userId, firstName, lastName;
    static String joinStaus="Y";
-    private AmazonS3 s3;
     Glide glide;
-    TransferUtility transferUtility;
 
-    public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset, Context context, AmazonS3 s3, TransferUtility transferUtility) {
+    public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
-        this.s3 = s3;
-        this.transferUtility = transferUtility;
     }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder
@@ -98,7 +94,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
 
         @Override
         public void onClick(View v) {
-
+            Log.i(LOG_TAG, "Adding Listener onClick");
 
         }
     }
@@ -152,11 +148,13 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
-        glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
-
+        if(mDataset.get(position).getImgResource()!=null)
+            glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        else
+            holder.imageView.setImageResource(R.drawable.defaulta);
 
         if (mDataset.get(position).getMemberSize()!=0) {
-            holder.label3.setText(mDataset.get(position).getMemberSize() + "  are Joined");
+            holder.label3.setText(mDataset.get(position).getMemberSize() + " Joined");
         }
         else {
             holder.label3.setText(  "0 Joined");

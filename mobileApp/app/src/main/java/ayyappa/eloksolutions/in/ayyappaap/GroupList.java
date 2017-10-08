@@ -14,12 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.roughike.bottombar.BottomBar;
 
 import ayyappa.eloksolutions.in.ayyappaap.config.Config;
@@ -39,11 +35,7 @@ public class GroupList extends AppCompatActivity {
        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
        getSupportActionBar().setTitle("Group List");
-
-    credentialsProvider();
-    // callback method to call the setTransferUtility method
-    setTransferUtility();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
+      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +50,7 @@ public class GroupList extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"group/getgroups";
-        GetGroups getGroups=new GetGroups(context,url,rvGroups,s3,transferUtility);
+        GetGroups getGroups=new GetGroups(context,url,rvGroups);
         System.out.println("url for group list"+url);
         getGroups.execute();
 
@@ -95,39 +87,11 @@ public class GroupList extends AppCompatActivity {
                         startActivity(intent4);
                         break;
                 }
-
-
                 return false;
             }
         });
 
     }
-
-    public void credentialsProvider(){
-
-        // Initialize the Amazon Cognito credentials provider
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
-                Regions.AP_NORTHEAST_1 // Region
-        );
-
-        setAmazonS3Client(credentialsProvider);
-    }
-
-    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
-
-        // Create an S3 client
-        s3 = new AmazonS3Client(credentialsProvider);
-
-        // Set the region of your S3 bucket
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-
-    }
-
-    public void setTransferUtility(){
-      transferUtility = new TransferUtility(s3, getApplicationContext());
-    }
-    }
+}
 
 

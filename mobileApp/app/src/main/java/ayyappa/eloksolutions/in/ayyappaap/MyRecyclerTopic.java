@@ -26,9 +26,7 @@ public class MyRecyclerTopic extends RecyclerView
     private ArrayList<TopicObject> mDataset;
     private static MyClickListener myClickListener;
     private Context mcontext;
-    private AmazonS3 s3;
     Glide glide;
-    TransferUtility transferUtility;
 
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -73,11 +71,9 @@ public class MyRecyclerTopic extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerTopic(ArrayList<TopicObject> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility) {
+    public MyRecyclerTopic(ArrayList<TopicObject> myDataset, Context mcontext) {
         mDataset = myDataset;
         this.mcontext=mcontext;
-        this.s3=s3;
-        this.transferUtility=transferUtility;
     }
  
     @Override

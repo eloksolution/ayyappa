@@ -68,9 +68,7 @@ public class GroupView extends AppCompatActivity {
     int likescounts;
     FloatingActionButton fab;
     public static int joinedStatus;
-    File fileToDownload ;
     boolean attimage=false;
-    AmazonS3 s3;
     Button joinButton;
     Toolbar toolbar;
     Glide glide;
@@ -80,9 +78,7 @@ public class GroupView extends AppCompatActivity {
     int count;
     ImageView image;
     String tag="GroupView";
-    TransferUtility transferUtility;
     GroupDTO groupDTO;
-    TransferObserver transferObserver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,19 +113,6 @@ public class GroupView extends AppCompatActivity {
         CoordinatorLayout group_view_layout = (CoordinatorLayout) findViewById(R.id.group_view_layout);
 
 
-        try {
-
-        File outdirectory=this.getCacheDir();
-        fileToDownload=File.createTempFile("GRO","jpg",outdirectory);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        credentialsProvider();
-
-
-        // callback method to call the setTransferUtility method
-        setTransferUtility();
         final Context ctx = this;
 /*        topicCrate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,9 +200,8 @@ public class GroupView extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"topic/getGroupTopics/"+groupId;
-        GetTopics getTopics=new GetTopics(context,url,rvPadi,s3,transferUtility);
+        GetTopics getTopics=new GetTopics(context,url,rvPadi);
         getTopics.execute();
-
 
         GroupViewHelper getGroupsValue=new GroupViewHelper(this);
         String surl = Config.SERVER_URL+"group/getgroup/"+groupId+"/"+userId;
@@ -229,19 +211,15 @@ public class GroupView extends AppCompatActivity {
             System.out.println("the output from Group"+output);
             setValuesToTextFields(output);
             System.out.println("groupDTO.getImagePath()"+groupDTO.getImagePath());
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
         System.out.println("groupDTO.getOwner()"+groupDTO.getOwner()+"  UserId"+userId);
 
         try {
-
             if(groupDTO.getOwner().equals(userId) || groupDTO.getIsMember().equals(joinStatus) ){
                 System.out.println("groupDTO.getIsMember()"+groupDTO.getIsMember());
                 joinButton.setVisibility(View.GONE);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,80 +229,8 @@ public class GroupView extends AppCompatActivity {
             public void onClick(View view) {
                 joinEvent();
                 joinButton.setVisibility(View.GONE);
-
             }
         });
-
-
-    }
-
-    public void setFileToDownload(String imageKey){
-        if (Util.isEmpty(imageKey))return;
-        transferObserver = transferUtility.download(
-                "elokayyappa",     // The bucket to download from *//*
-                imageKey,    // The key for the object to download *//*
-                fileToDownload        // The file to download the object to *//*
-        );
-
-        transferObserverListener(transferObserver);
-
-    }
-
-    public void credentialsProvider(){
-
-        // Initialize the Amazon Cognito credentials provider
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
-                Regions.AP_NORTHEAST_1 // Region
-        );
-
-        setAmazonS3Client(credentialsProvider);
-    }
-    public void transferObserverListener(TransferObserver transferObserver){
-
-        transferObserver.setTransferListener(new TransferListener(){
-
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                Log.i("File down load status", state+"");
-                Log.i("File down load id", id+"");
-                if("COMPLETED".equals(state.toString())){
-                  //  Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-                  // groupImage.setImageBitmap(bit);
-
-
-
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                Log.e("percentage",percentage +"");
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                Log.e("error","error");
-            }
-
-
-        });
-    }
-    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
-
-        // Create an S3 client
-        s3 = new AmazonS3Client(credentialsProvider);
-
-        // Set the region of your S3 bucket
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-
-    }
-
-    public void setTransferUtility(){
-
-        transferUtility = new TransferUtility(s3, getApplicationContext());
     }
 
     public void setValuesToTextFields(String result) {
@@ -339,9 +245,7 @@ public class GroupView extends AppCompatActivity {
             if(groupDTO.getGroupMembers()!=null) {
                 noOfJoins.setText(groupDTO.getGroupMembers().size() + "");
                 System.out.println("json xxxx from groupDTO.getGroupMembers().size()" + groupDTO.getGroupMembers().size());
-
             }
-
         }
     }
 
@@ -390,7 +294,6 @@ public class GroupView extends AppCompatActivity {
     private void joinEvent() {
         GroupViewHelper groupJoinHelper = new GroupViewHelper(this);
         GroupMembers groupJoins = memBuildDTOObject();
-
         String surl = Config.SERVER_URL + "group/join";
         try {
             String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
@@ -398,9 +301,7 @@ public class GroupView extends AppCompatActivity {
             FirebaseMessaging.getInstance().subscribeToTopic(groupJoins.getGroupId());
             addingMember(joinmem);
         }catch (Exception e){
-
             e.printStackTrace();
-
         }
     }
     private void createTopicDialog() {
@@ -450,4 +351,3 @@ public class GroupView extends AppCompatActivity {
         return ret;
     }
     }
-

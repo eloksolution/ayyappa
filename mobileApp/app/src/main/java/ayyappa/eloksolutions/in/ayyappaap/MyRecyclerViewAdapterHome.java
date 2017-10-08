@@ -25,11 +25,10 @@ import ayyappa.eloksolutions.in.ayyappaap.util.DataObjectPadiPooja;
 public class MyRecyclerViewAdapterHome extends RecyclerView
         .Adapter<MyRecyclerViewAdapterHome
         .DataObjectHolder> {
-    private static String LOG_TAG = "MyRecyclerViewAdapter";
+    private static String LOG_TAG = "MyRecyclerViewAdapterHome";
     private ArrayList<DataObjectPadiPooja> mDataset;
     private Context mcontext;
     private static MyClickListener myClickListener;
-    private AmazonS3 s3;
     Glide glide;
 
     TransferUtility transferUtility;
@@ -82,11 +81,9 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapterHome(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility) {
+    public MyRecyclerViewAdapterHome(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext) {
         mDataset = myDataset;
         this.mcontext=mcontext;
-
-
     }
 
     @Override

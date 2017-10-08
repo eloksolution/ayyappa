@@ -28,11 +28,9 @@ public class MyRecyclerViewAdapter extends RecyclerView
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DataObjectPadiPooja> mDataset;
     private static MyClickListener myClickListener;
-    private AmazonS3 s3;
-    TransferUtility transferUtility;
     Context mcontext;
     Glide glide;
-    String Tag;
+    String Tag= "MyRecyclerViewAdapter";
  
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
@@ -70,7 +68,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
  
         @Override
         public void onClick(View v) {
-
+            Log.i(LOG_TAG, " Listener onClick");
         }
 
 
@@ -79,11 +77,9 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public void setOnItemClickListener(MyClickListener myClickListener) {
     }
 
-    public MyRecyclerViewAdapter(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility) {
+    public MyRecyclerViewAdapter(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext) {
         mDataset = myDataset;
         this.mcontext=mcontext;
-        this.transferUtility=transferUtility;
-        this.s3=s3;
     }
 
     @Override
@@ -101,7 +97,10 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.date.setText(mDataset.get(position).getDay());
         holder.month.setText(mDataset.get(position).getMonth());
        holder.week.setText(mDataset.get(position).getWeek());
-        glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        if(mDataset.get(position).getImgResource()!=null)
+            glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        else
+            holder.imageView.setImageResource(R.drawable.defaulta);
 
     }
 

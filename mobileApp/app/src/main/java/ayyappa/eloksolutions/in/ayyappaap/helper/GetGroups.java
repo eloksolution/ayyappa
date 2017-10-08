@@ -31,15 +31,11 @@ public class GetGroups extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
-    AmazonS3 s3;
-    TransferUtility transferUtility;
 
-    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups, AmazonS3 s3, TransferUtility transferUtility) {
+    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvGroups=rvGroups;
-        this.s3=s3;
-        this.transferUtility=transferUtility;
     }
     @Override
     protected void onPreExecute() {
@@ -76,11 +72,10 @@ public class GetGroups extends AsyncTask<String, Void, String> {
                  DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize);
                 results.add(obj);
            }
-            for(DataObjectGroup dog:results){
 
-            }
-            MyRecyclerViewTopicGroup mAdapter = new MyRecyclerViewTopicGroup(results,mcontext,s3,transferUtility);
+            MyRecyclerViewTopicGroup mAdapter = new MyRecyclerViewTopicGroup(results,mcontext);
             rvGroups.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
         }
     }
 

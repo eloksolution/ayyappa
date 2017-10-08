@@ -27,15 +27,11 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvPadi;
-    AmazonS3 s3;
-    TransferUtility transferUtility;
 
-    public GetEventsHome(Context mcontext, String surl, RecyclerView rvPadi, AmazonS3 s3, TransferUtility transferUtility) {
+    public GetEventsHome(Context mcontext, String surl, RecyclerView rvPadi) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvPadi=rvPadi;
-        this.s3=s3;
-        this.transferUtility=transferUtility;
     }
         @Override
         protected void onPreExecute() {
@@ -64,8 +60,6 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                 Type type = new TypeToken<List<EventDTO>>() { }.getType();
                 List<EventDTO> fromJson = gson.fromJson(result, type);
                 ArrayList results = new ArrayList<DataObjectPadiPooja>();
-                String events[]=new String[fromJson.size()];
-
                 for (EventDTO event : fromJson) {
                     List<RegisterDTO> padiMembers=event.getPadiMembers();
                     int memberSize=0;
@@ -74,10 +68,9 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                     DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation(),event.getMonth(),event.getDay(),event.getWeek());
                     results.add(obj);
                 }
-                MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results,mcontext,s3,transferUtility);
+                MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results,mcontext);
                 rvPadi.setAdapter(mAdapter);
                 rvPadi.setHasFixedSize(true);
             }
         }
-
 }
