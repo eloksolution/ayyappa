@@ -77,7 +77,7 @@
                     android:layout_height="200dp"
                     android:scaleType="fitXY"
                     />
-                <include android:id="@+id/news_title"
+                <include android:id="@+id/deeksha_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     layout="@layout/padi_recycler_home"/>
