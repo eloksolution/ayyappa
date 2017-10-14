@@ -17,6 +17,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -181,7 +182,12 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
-        getBitMap(mDataset.get(position).getImgResource(), holder.imageView);
+        if(mDataset.get(position).getImgResource()!=null){
+            glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        }else{
+            glide.with(context).load(R.drawable.dt).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+
+        }
         if (mDataset.get(position).getMemberSize()!=0) {
             holder.label3.setText(mDataset.get(position).getMemberSize() + "  are Joined");
         }

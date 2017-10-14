@@ -148,10 +148,12 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
-        if(mDataset.get(position).getImgResource()!=null)
-            glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
-        else
-            holder.imageView.setImageResource(R.drawable.defaulta);
+        if(mDataset.get(position).getImgResource()!=null){
+        glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+      }else{
+        glide.with(context).load(R.drawable.dt).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+
+    }
 
         if (mDataset.get(position).getMemberSize()!=0) {
             holder.label3.setText(mDataset.get(position).getMemberSize() + " Joined");

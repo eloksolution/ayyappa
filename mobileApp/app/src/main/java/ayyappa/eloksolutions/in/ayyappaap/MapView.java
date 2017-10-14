@@ -1,12 +1,16 @@
 package ayyappa.eloksolutions.in.ayyappaap;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -54,7 +58,44 @@ public class MapView extends AppCompatActivity implements LocationListener,OnMap
         setContentView(R.layout.activity_maps);
 
 
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_home1:
+                        Intent intent1 = new Intent(MapView.this, GroupList.class);
+                        startActivity(intent1);
+                        break;
 
+                    case R.id.ic_groups:
+                        Intent intent5 = new Intent(MapView.this, GroupList.class);
+                        startActivity(intent5);
+                        break;
+
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(MapView.this, PadiPoojaFull.class);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.ic_center_focus:
+
+                        break;
+
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(MapView.this, OwnerView.class);
+                        startActivity(intent4);
+                        break;
+                }
+
+
+                return false;
+            }
+        });
 
         latitude = getIntent().getDoubleExtra("latitude", 0.0d);
         longitude = getIntent().getDoubleExtra("longitude", 0.0d);

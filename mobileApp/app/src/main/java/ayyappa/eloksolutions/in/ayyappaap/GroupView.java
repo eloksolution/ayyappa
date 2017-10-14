@@ -217,9 +217,11 @@ public class GroupView extends AppCompatActivity {
         System.out.println("groupDTO.getOwner()"+groupDTO.getOwner()+"  UserId"+userId);
 
         try {
+
             if(groupDTO.getOwner().equals(userId) || groupDTO.getIsMember().equals(joinStatus) ){
                 System.out.println("groupDTO.getIsMember()"+groupDTO.getIsMember());
                 joinButton.setVisibility(View.GONE);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,6 +231,7 @@ public class GroupView extends AppCompatActivity {
             public void onClick(View view) {
                 joinEvent();
                 joinButton.setVisibility(View.GONE);
+
             }
         });
     }
@@ -245,7 +248,9 @@ public class GroupView extends AppCompatActivity {
             if(groupDTO.getGroupMembers()!=null) {
                 noOfJoins.setText(groupDTO.getGroupMembers().size() + "");
                 System.out.println("json xxxx from groupDTO.getGroupMembers().size()" + groupDTO.getGroupMembers().size());
+
             }
+
         }
     }
 
@@ -294,6 +299,7 @@ public class GroupView extends AppCompatActivity {
     private void joinEvent() {
         GroupViewHelper groupJoinHelper = new GroupViewHelper(this);
         GroupMembers groupJoins = memBuildDTOObject();
+
         String surl = Config.SERVER_URL + "group/join";
         try {
             String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
@@ -301,7 +307,9 @@ public class GroupView extends AppCompatActivity {
             FirebaseMessaging.getInstance().subscribeToTopic(groupJoins.getGroupId());
             addingMember(joinmem);
         }catch (Exception e){
+
             e.printStackTrace();
+
         }
     }
     private void createTopicDialog() {
@@ -351,3 +359,4 @@ public class GroupView extends AppCompatActivity {
         return ret;
     }
     }
+

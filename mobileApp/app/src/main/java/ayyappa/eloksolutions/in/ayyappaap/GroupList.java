@@ -87,6 +87,8 @@ public class GroupList extends AppCompatActivity {
                         startActivity(intent4);
                         break;
                 }
+
+
                 return false;
             }
         });

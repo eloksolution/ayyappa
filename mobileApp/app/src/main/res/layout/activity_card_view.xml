@@ -70,14 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/small_view"
                     android:background="@color/view" />
-                <ImageView
-                    android:src="@drawable/banner"
-                    android:id="@+id/event_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="fitXY"
-                    />
-                <include android:id="@+id/deeksha_layout"
+                <include android:id="@+id/news_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     layout="@layout/padi_recycler_home"/>
@@ -142,13 +135,14 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:paddingRight="10dp"
-                            android:id="@+id/PadiFull"
+                            android:id="@+id/padi_create"
                             android:layout_gravity="center"
                             android:src="@drawable/add"/>
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:paddingLeft="10dp"
+                            android:id="@+id/PadiFull"
                             android:layout_gravity="right|center"
                             android:src="@drawable/fullscreenicon"/>
                     </LinearLayout>
@@ -214,13 +208,14 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:paddingRight="10dp"
-                    android:id="@+id/contactFull"
+                    android:id="@+id/create_group"
                     android:layout_gravity="center"
                     android:src="@drawable/add"/>
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:paddingLeft="10dp"
+                    android:id="@+id/group_list"
                     android:layout_gravity="right|center"
                     android:src="@drawable/fullscreenicon"/>
             </LinearLayout>

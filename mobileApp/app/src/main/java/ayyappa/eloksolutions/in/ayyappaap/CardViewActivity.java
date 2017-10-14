@@ -21,6 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,12 +46,15 @@ public class CardViewActivity extends AppCompatActivity {
     ListView lv;
     Context context;
 
-    String TAG="CardViewActivity";
+    String TAG="AudioPlayer";
     GridView grid;
     ImageView add;
     public static int [] moviesImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
     public static String [] moviesNames={"Ayyappa Swamy Janma Rahasyam Telugu Movie 2014","Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan","Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith","Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas","Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji","Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
-     RecyclerView mRecyclerView;
+    public static String [] moviesid={"vxpEMuM1eBc","hRtuGEQmm1E","4wjuDG7WXY8","FTBLd2zz8IU","o4vv3PN45Eo","TfT8w5v8KSY"};
+    AmazonS3 s3;
+    TransferUtility transferUtility;
+    RecyclerView mRecyclerView;
     private static String LOG_TAG = "CardViewActivity";
     TextView topic;
 
@@ -64,14 +74,17 @@ public class CardViewActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.ic_home1:
                         break;
+
                     case R.id.ic_groups:
                         Intent intent1 = new Intent(CardViewActivity.this, GroupList.class);
                         startActivity(intent1);
                         break;
+
                     case R.id.ic_books:
                         Intent intent2 = new Intent(CardViewActivity.this, PadiPoojaFull.class);
                         startActivity(intent2);
                         break;
+
                     case R.id.ic_center_focus:
                         Intent intent3 = new Intent(CardViewActivity.this, MapView.class);
                         startActivity(intent3);
@@ -130,6 +143,8 @@ public class CardViewActivity extends AppCompatActivity {
 
         });
 
+
+
         context=this;
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         String deekshaStartDate=preferences.getString("startDate",null);
@@ -144,7 +159,10 @@ public class CardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
               Intent editde=new Intent(CardViewActivity.this, DeekshaActivity.class);
+
                 startActivity(editde);
+
+
             }
         });
         topic=(TextView) findViewById(R.id.topic);
@@ -153,16 +171,14 @@ public class CardViewActivity extends AppCompatActivity {
             Log.i(TAG,"Deeksha start date"+deekshaStartDate);
             int diff=0,noOfDays=0;
             try {
-
-                Date startDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaStartDate);
-                Date endDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaEndDate);
-
+                Date startDate=(new SimpleDateFormat("dd/MM/yyyy")).parse(deekshaStartDate);
+                Date endDate=(new SimpleDateFormat("dd/MM/yyyy")).parse(deekshaEndDate);
                 Calendar cal=Calendar.getInstance();
                 Date today=cal.getTime();
                 diff=daysBetween(startDate,today)+1;
                 noOfDays=daysBetween(startDate,endDate)+1;
                 Log.i(TAG,"Diff date is is "+diff);
-              final LinearLayout deekshaLayout= (LinearLayout)findViewById(R.id.deeksha_layout);
+              final LinearLayout deekshaLayout= (LinearLayout)findViewById(R.id.event_item);
                 final TextView lStartMonth=(TextView) deekshaLayout.findViewById(R.id.month);
                 final TextView lStartDate=(TextView) deekshaLayout.findViewById(R.id.date);
                 final TextView lStartWeek=(TextView) deekshaLayout.findViewById(R.id.day);
@@ -215,6 +231,7 @@ public class CardViewActivity extends AppCompatActivity {
         GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi);
         getEvents.execute();
 
+
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups_home);
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager groups = new LinearLayoutManager(this);
@@ -232,14 +249,14 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(padipooj);
             }
         });
-       /* final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
+        final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
         padiCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent padipooj = new Intent(context,CreatePadiPooja.class);
                 startActivity(padipooj);
             }
-        });*/
+        });
         final ImageView movieFull=(ImageView) findViewById(R.id.movie_full);
         movieFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,7 +265,7 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
-       /* final ImageView CreateGroup=(ImageView) findViewById(R.id.group_list);
+        final ImageView CreateGroup=(ImageView) findViewById(R.id.group_list);
         CreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -263,7 +280,7 @@ public class CardViewActivity extends AppCompatActivity {
                 Intent songsIntent = new Intent(context,CreateGroup.class);
                 startActivity(songsIntent);
             }
-        });*/
+        });
         final ImageView songsFull=(ImageView) findViewById(R.id.songs_view);
         songsFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,11 +351,40 @@ public class CardViewActivity extends AppCompatActivity {
             }
 
         });
+
+
+    }
+    public void credentialsProvider(){
+
+        // Initialize the Amazon Cognito credentials provider
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
+                Regions.AP_NORTHEAST_1 // Region
+        );
+
+        setAmazonS3Client(credentialsProvider);
+    }
+
+    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
+
+        // Create an S3 client
+        s3 = new AmazonS3Client(credentialsProvider);
+
+        // Set the region of your S3 bucket
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+    }
+
+    public void setTransferUtility(){
+        transferUtility = new TransferUtility(s3, getApplicationContext());
     }
 
     public int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
+
+
 
     @Override
     protected void onResume() {
@@ -348,6 +394,7 @@ public class CardViewActivity extends AppCompatActivity {
 
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
+
         for (int index = 0; index < moviesImages.length; index++) {
             DataObject obj = new DataObject(moviesNames[index],"Movie ",moviesImages[index]);
             results.add(index, obj);

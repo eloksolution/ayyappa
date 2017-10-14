@@ -1,4 +1,4 @@
-package ayyappa.eloksolutions.in.ayyappaap.activity;
+package ayyappa.eloksolutions.in.ayyappaap;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

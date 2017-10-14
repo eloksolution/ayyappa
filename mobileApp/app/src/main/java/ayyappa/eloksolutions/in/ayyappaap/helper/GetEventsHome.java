@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,10 +26,12 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
     String surl;
     RecyclerView rvPadi;
 
+
     public GetEventsHome(Context mcontext, String surl, RecyclerView rvPadi) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvPadi=rvPadi;
+
     }
         @Override
         protected void onPreExecute() {
@@ -60,6 +60,7 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                 Type type = new TypeToken<List<EventDTO>>() { }.getType();
                 List<EventDTO> fromJson = gson.fromJson(result, type);
                 ArrayList results = new ArrayList<DataObjectPadiPooja>();
+                String events[]=new String[fromJson.size()];
                 for (EventDTO event : fromJson) {
                     List<RegisterDTO> padiMembers=event.getPadiMembers();
                     int memberSize=0;
@@ -70,7 +71,7 @@ public class GetEventsHome extends AsyncTask<String, Void, String> {
                 }
                 MyRecyclerViewAdapterHome mAdapter = new MyRecyclerViewAdapterHome(results,mcontext);
                 rvPadi.setAdapter(mAdapter);
-                rvPadi.setHasFixedSize(true);
             }
         }
+
 }

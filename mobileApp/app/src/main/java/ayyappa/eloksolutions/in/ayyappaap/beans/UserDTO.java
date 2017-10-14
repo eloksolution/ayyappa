@@ -14,52 +14,23 @@ public class UserDTO {
     String city;
     String state;
     String password;
-    private LatLong loc;
-    private String lat;
-    private String lon;
-    public class LatLong{
-        String lat;
-        String lon;
-        public LatLong(){
+    String longi;
+    String lati;
 
-        }
-        public String getLat() {
-            return lat;
-        }
-
-        public String getLon() {
-            return lon;
-        }
-
-        public void setLat(String lat) {
-            this.lat = lat;
-        }
-
-        public void setLon(String lon) {
-            this.lon = lon;
-        }
-
-        public LatLong(String lat, String lon) {
-            super();
-            this.lat = lat;
-            this.lon = lon;
-        }
-
-    }
-    public String getLon() {
-        return lon;
+    public String getLongi() {
+        return longi;
     }
 
-    public void setLon(String lon) {
-        this.lon = lon;
+    public void setLongi(String longi) {
+        this.longi = longi;
     }
 
-    public String getLat() {
-        return lat;
+    public String getLati() {
+        return lati;
     }
 
-    public void setLat(String lati) {
-        this.lat = lati;
+    public void setLati(String lati) {
+        this.lati = lati;
     }
 
     public String getUserId() {
@@ -137,7 +108,7 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "RegisterDTO{" +
                 "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -147,9 +118,8 @@ public class UserDTO {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", password='" + password + '\'' +
-                ", loc=" + loc +
-                ", lat='" + lat + '\'' +
-                ", lon='" + lon + '\'' +
+                ", longi=" + longi +
+                ", lati=" + lati +
                 '}';
     }
 }

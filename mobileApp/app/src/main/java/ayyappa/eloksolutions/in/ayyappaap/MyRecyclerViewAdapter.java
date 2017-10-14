@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -79,7 +77,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     public MyRecyclerViewAdapter(ArrayList<DataObjectPadiPooja> myDataset, Context mcontext) {
         mDataset = myDataset;
-        this.mcontext=mcontext;
+        this.mcontext= mcontext;
     }
 
     @Override
@@ -97,11 +95,12 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.date.setText(mDataset.get(position).getDay());
         holder.month.setText(mDataset.get(position).getMonth());
        holder.week.setText(mDataset.get(position).getWeek());
-        if(mDataset.get(position).getImgResource()!=null)
-            glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
-        else
-            holder.imageView.setImageResource(R.drawable.defaulta);
+        if(mDataset.get(position).getImgResource()!=null){
+        glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+    }else{
+        glide.with(mcontext).load(R.drawable.dt).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
+    }
     }
 
     public void addItem(DataObjectPadiPooja dataObj, int index) {

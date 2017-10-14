@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,6 +25,7 @@ public class GetEvents extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvPadi;
+
 
     public GetEvents(Context mcontext, String surl, RecyclerView rvPadi) {
         this.mcontext = mcontext;

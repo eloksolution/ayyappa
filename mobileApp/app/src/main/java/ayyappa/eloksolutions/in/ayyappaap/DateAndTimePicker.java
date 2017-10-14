@@ -22,7 +22,7 @@ public class DateAndTimePicker {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        txt.setText(dayOfMonth + "-" + (monthOfYear+1) + "-" + year);
+                        txt.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
