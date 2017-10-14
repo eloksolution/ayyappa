@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- This could be your fragment container, or something -->
+    <FrameLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBar">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:id="@+id/scrollView"
+    android:background="@color/row_activated"
+    tools:context=".MainActivity">
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:sl="http://schemas.android.com/tools"
+        android:id="@+id/group_view_layout"
+        >
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+  android:orientation="vertical" >
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv1"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+           android:background="@drawable/cardstyle"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/heading_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deeksha"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_heading" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/small_view"
+                    android:background="@color/view" />
+                <ImageView
+                    android:src="@drawable/banner"
+                    android:id="@+id/event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
+                    />
+                <include android:id="@+id/deeksha_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/padi_recycler_home"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv4"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout
+
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <LinearLayout
+                    android:id="@+id/heading_layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvEvents"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Padi Puja Events"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_heading" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/small_view"
+                    android:background="@color/view" />
+
+                    <LinearLayout
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="right"
+
+                        android:layout_gravity="center"
+                        android:weightSum="3"
+                        android:layout_margin="8dp">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:paddingRight="10dp"
+                            android:id="@+id/PadiFull"
+                            android:layout_gravity="center"
+                            android:src="@drawable/add"/>
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="right|center"
+                            android:src="@drawable/fullscreenicon"/>
+                    </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvPadi_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/row_activated"
+                    android:paddingBottom="@dimen/fab_marginn"
+                    android:scrollbars="horizontal"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv5"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/heading_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvContacts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Groups"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_heading" />
+            </LinearLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/small_view"
+                android:background="@color/view" />
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:weightSum="3"
+                android:layout_margin="8dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/contactFull"
+                    android:layout_gravity="center"
+                    android:src="@drawable/add"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:layout_gravity="right|center"
+                    android:src="@drawable/fullscreenicon"/>
+            </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_groups_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:divider="@color/row_activated"/>
+
+        </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv6"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:id="@+id/heading_layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvMovies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Swamy Ayyappa Mahathyam Movies "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_heading" />
+            </LinearLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/small_view"
+                android:background="@color/view" />
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:weightSum="3"
+                android:layout_margin="8dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/movie_full"
+                    android:layout_gravity="right|center"
+                    android:src="@drawable/fullscreenicon"/>
+            </LinearLayout>
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <GridView
+                    android:id="@+id/gridview"
+                    android:layout_below="@+id/card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:verticalSpacing="5dp"
+                    android:horizontalSpacing="5dp"
+                    android:stretchMode="columnWidth"
+                    android:numColumns="1"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+</android.support.v7.widget.CardView>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv8"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:id="@+id/heading_layout7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_songs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Songs"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_heading" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/small_view"
+                    android:background="@color/view" />
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_gravity="center"
+                    android:weightSum="3"
+                    android:layout_margin="8dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:id="@+id/songs_view"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/fullscreenicon"/>
+                </LinearLayout>
+                <RelativeLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <GridView
+                        android:id="@+id/gridview_one"
+                        android:layout_below="@+id/card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:verticalSpacing="5dp"
+                        android:horizontalSpacing="5dp"
+                        android:stretchMode="columnWidth"
+                        android:numColumns="1"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</ScrollView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabgroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_menu_edit" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/bottomBar"
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.widget.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/bottomNavView_Bar"
+            android:background="@drawable/white_grey_border_top"
+            app:menu="@menu/bottom_navigation_menu">
+
+
+        </android.support.design.widget.BottomNavigationView>
+    </RelativeLayout>
+
+</RelativeLayout>

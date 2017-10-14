@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ayy"
+        android:id="@+id/padi_image_list"
+        android:paddingBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ayyappa App"
+        android:textSize="18sp"
+        android:id="@+id/group_title"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:layout_alignTop="@+id/padi_image_list"
+        android:layout_toRightOf="@+id/padi_image_list"
+        android:layout_toEndOf="@+id/padi_image_list" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:lines="1"
+        android:ellipsize="end"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:textSize="12sp"
+        android:id="@+id/group_desc"
+        android:layout_below="@+id/group_title"
+        android:layout_alignLeft="@+id/group_title"
+        android:layout_alignStart="@+id/group_title"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+        android:text="Plateform : PS3, XBOX 360"
+        android:id="@+id/badge_notification"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="12sp"
+        android:layout_below="@+id/group_desc"
+        android:layout_alignLeft="@+id/group_desc"
+        android:layout_alignStart="@+id/group_desc" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dsate"
+        android:layout_below="@+id/group_desc"
+        android:layout_alignParentRight="true"
+        android:maxLength="20"
+        android:ellipsize="end"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/null_value"
+       android:gravity="center"
+        />
+
+
+</RelativeLayout>

@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center" >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageButton"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@null"
+                android:onClick="btnCat1"
+                android:src="@drawable/join"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageButton"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="Join" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center" >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageButton2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@null"
+                android:onClick="btnCat1"
+                android:src="@drawable/group_user"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageButton2"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="Like" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center" >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageButton1"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@null"
+                android:onClick="btnCat1"
+                android:src="@drawable/event_user" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageButton1"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="update" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

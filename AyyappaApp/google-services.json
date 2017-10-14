@@ -1,0 +1,161 @@
+{
+  "project_info": {
+    "project_number": "375002205796",
+    "firebase_url": "https://ayyappa-6a719.firebaseio.com",
+    "project_id": "ayyappa-6a719",
+    "storage_bucket": "ayyappa-6a719.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375002205796:android:5af601628c98bf20",
+        "android_client_info": {
+          "package_name": "in.eloksolutions.ayyappa.ayyappapp.messaging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375002205796-c7qf49hoct7nva0vm07vvdce2ria7ltd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX1eY3MJ3-61evBxkhsF6KePWc1hUHGro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375002205796:android:6260c77d833340eb",
+        "android_client_info": {
+          "package_name": "in.eloksolutions.ayyappa.ayyappapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375002205796-c7qf49hoct7nva0vm07vvdce2ria7ltd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX1eY3MJ3-61evBxkhsF6KePWc1hUHGro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375002205796:android:da03c0bbb7094755",
+        "android_client_info": {
+          "package_name": "ayyappa.eloksolutions.in.ayyappaap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375002205796-67gq6ii7edmn1ijrsrte9mh2s8avidd3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ayyappa.eloksolutions.in.ayyappaap",
+            "certificate_hash": "309e868ac633a6f8ba73c9c6df780fead73fda4d"
+          }
+        },
+        {
+          "client_id": "375002205796-c7qf49hoct7nva0vm07vvdce2ria7ltd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX1eY3MJ3-61evBxkhsF6KePWc1hUHGro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375002205796-c7qf49hoct7nva0vm07vvdce2ria7ltd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375002205796:android:182f2f6b2258fafe",
+        "android_client_info": {
+          "package_name": "in.eloksolutions.ayyappaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375002205796-qcnnfgvnql4oev05t3gn9o23erdo2ee0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.eloksolutions.ayyappaapp",
+            "certificate_hash": "309e868ac633a6f8ba73c9c6df780fead73fda4d"
+          }
+        },
+        {
+          "client_id": "375002205796-c7qf49hoct7nva0vm07vvdce2ria7ltd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX1eY3MJ3-61evBxkhsF6KePWc1hUHGro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375002205796-c7qf49hoct7nva0vm07vvdce2ria7ltd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
