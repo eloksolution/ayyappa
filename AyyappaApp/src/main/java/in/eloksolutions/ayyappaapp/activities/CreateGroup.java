@@ -62,7 +62,6 @@ public class CreateGroup extends AppCompatActivity {
     Spinner gCatagery;
     private static int PICK_FROM_GALLERY;
     private int STORAGE_PERMISSION_CODE = 23;
-    File fileToDownload = new File("/storage/sdcard0/Pictures/MY");
     AmazonS3 s3;
     private Button buttonRequestPermission;
     TransferUtility transferUtility;
@@ -72,7 +71,7 @@ public class CreateGroup extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_group);
+        setContentView(R.layout.create_new_group);
 
         String[] catageries = new String[]{"Select Group catagory","Padipooja","Pilgrimage","AyyappaSwami Temples","Ayyappa Stories","Bhakthi News"};
         gCatagery = (Spinner) findViewById(R.id.gcatagery);
@@ -136,6 +135,7 @@ public class CreateGroup extends AppCompatActivity {
 
     public void setFileToUpload(View view){
 
+
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= 19) {
             // For Android versions of KitKat or later, we use a
@@ -153,15 +153,17 @@ public class CreateGroup extends AppCompatActivity {
 
     }
     private void requestStoragePermission(){
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                //If the user has denied the permission previously your code will come to this block
+                //Here you can explain why you need this permission
+                //Explain here why you need this permission
+            }
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
+            //And finally ask for the permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         }
-
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
     }
 
     private boolean isReadStorageAllowed() {
@@ -375,25 +377,18 @@ public class CreateGroup extends AppCompatActivity {
     private boolean checkValidation() {
         boolean ret = true;
         if (!Validation.hasText(description)) ret = false;
-
         if (!Validation.hasText(name)) ret = false;
         return ret;
-
-
-
         }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
-
         return true;
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
-
             case R.id.exit:
                 finish();
                 return true;

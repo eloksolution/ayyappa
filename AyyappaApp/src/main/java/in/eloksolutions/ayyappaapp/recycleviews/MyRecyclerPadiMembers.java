@@ -53,8 +53,7 @@ public class MyRecyclerPadiMembers extends RecyclerView
 
         @Override
         public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
-
+            Log.i(LOG_TAG, "Adding Listener onClick");
         }
 
 

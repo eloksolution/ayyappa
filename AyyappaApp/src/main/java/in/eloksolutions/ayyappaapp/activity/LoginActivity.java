@@ -1,12 +1,22 @@
 package in.eloksolutions.ayyappaapp.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -20,8 +30,12 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
 
+import java.util.List;
+import java.util.Locale;
+
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.activities.CardViewActivity;
+
 import in.eloksolutions.ayyappaapp.activities.Registartion;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
@@ -36,13 +50,18 @@ import in.eloksolutions.ayyappaapp.util.Util;
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
-
+    static final int REQUEST_LOCATION = 1;
+    private int STORAGE_PERMISSION_CODE = 23;
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-
+    double latti=17.3833342,longi=78.4009543;
+    private LocationManager locationManager;
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
-     @Override
+    private String city;
+    private String pinCode;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -52,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .requestProfile()
                 .build();
         // [END configure_signin]
-
+         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         // [START build_client]
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
@@ -136,6 +155,12 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+    @NonNull
+    @Override
+    public String getLocalClassName() {
+        return super.getLocalClassName();
+    }
+
     private RegisterDTO updateRegistrationOnServer(GoogleSignInAccount acct) {
             if (CheckInternet.checkInternetConenction(LoginActivity.this)) {
                 RegisterHelper createRegisterHelper = new RegisterHelper(LoginActivity.this);
@@ -153,13 +178,75 @@ public class LoginActivity extends AppCompatActivity implements
             }
         return null;
     }
-    // [END handleSignInResult]
 
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+    }
+    private boolean isLocatioinAllowed() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
+    // [END handleSignInResult]
+    void getLocation() {
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (!isLocatioinAllowed() && currentapiVersion >= android.os.Build.VERSION_CODES.M){
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                    (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            }
+        }
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                Geocoder gc= new Geocoder(this, Locale.getDefault());
+                // TextView addr = (TextView) main.findViewById(R.id.editText2);
+                String result="x03";
+                try {
+                    latti = location.getLatitude();
+                    longi = location.getLongitude();
+                    List<Address> addressList = gc.getFromLocation(location.getLatitude(),
+                            location.getLongitude(), 1);
+                    if (addressList != null && addressList.size() > 0) {
+                        Address address = addressList.get(0);
+                        city = address.getLocality();
+                        Log.i(TAG," CITY IS "+city);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                System.out.println("Unable");
+            }
+
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_LOCATION:
+                getLocation();
+                break;
+        }
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
     // [START signIn]
     private void signIn() {
         Log.i(TAG, "signIn:");
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        getLocation();
     }
     // [END signIn]
 
@@ -219,13 +306,14 @@ public class LoginActivity extends AppCompatActivity implements
             registerDto.setImgPath(photoURI.toString());
         }
         // String rcity=city.getText().toString();
-        //registerDto.setCity(rcity);
+        registerDto.setCity(city);
+
         //String are=area.getText().toString();
         //registerDto.setArea(are);
         //String pass=password.getText().toString();
         //registerDto.setPassword(pass);
-        //registerDto.setLongi(longi);
-        //registerDto.setLati(latti);
+        registerDto.setLongi(longi);
+        registerDto.setLati(latti);
        // registerDto.setImgPath(keyName);
         return registerDto;
     }

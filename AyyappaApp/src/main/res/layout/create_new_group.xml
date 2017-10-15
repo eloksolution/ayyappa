@@ -25,13 +25,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="100dp"
-                    android:id="@+id/user_image"
-                    android:layout_height="100dp"
-                    android:background="@drawable/dt"
-                    android:layout_marginTop="15dp"
-                    android:layout_gravity="center_horizontal"/>
 
                 <android.support.v7.widget.CardView
                     android:layout_marginTop="5dp"
@@ -41,23 +34,23 @@
                     android:layout_height="wrap_content"
                     >
 
-                <EditText
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:minHeight="45dp"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textSize="16sp"
-                    android:id="@+id/first_name"
-                    android:gravity="left|center"
-                    android:textColor="@android:color/black"
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:hint="First Name"
-                    android:maxLength="100"
-                    android:textCursorDrawable="@drawable/pen"
-                    />
+                    <EditText
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:minHeight="45dp"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:textSize="16sp"
+                        android:id="@+id/gname"
+                        android:gravity="left|center"
+                        android:textColor="@android:color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:hint="Enter Group Name"
+                        android:maxLength="100"
+                        android:textCursorDrawable="@drawable/pen"
+                        />
                 </android.support.v7.widget.CardView>
 
                 <LinearLayout
@@ -66,33 +59,33 @@
                     android:orientation="vertical"
                     android:id="@+id/events_data">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/contacts_no_card"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                   app:cardBackgroundColor="@color/background"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-                <EditText
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:textCursorDrawable="@drawable/pen"
-                    android:paddingLeft="20dp"
-                    android:textSize="16sp"
-                    android:id="@+id/last_name"
-                    android:gravity="left|center"
-                    android:textColor="@android:color/black"
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:hint="Last Name"
-                    android:inputType="text"
-                    android:maxLength="15"
-                    />
-                </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/contacts_no_card"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        app:cardBackgroundColor="@color/background"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                         <Spinner
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:textCursorDrawable="@drawable/pen"
+                            android:paddingLeft="20dp"
+                            android:textSize="16sp"
+                            android:id="@+id/gcatagery"
+                            android:gravity="left|center"
+                            android:textColor="@android:color/black"
+                             android:background="@drawable/txtbox_row_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:hint="Last Name"
+                            android:inputType="text"
+                            android:maxLength="15"
+                            />
+                    </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
                         android:id="@+id/emai_ad"
                         android:layout_marginTop="5dp"
@@ -109,13 +102,13 @@
                             android:textCursorDrawable="@drawable/pen"
                             android:paddingLeft="20dp"
                             android:textSize="16sp"
-                            android:id="@+id/email_address"
+                            android:id="@+id/gdescription"
                             android:gravity="left|center"
                             android:textColor="@android:color/black"
                             android:background="@color/white"
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:hint="Email Id"
+                            android:layout_height="150dp"
+                            android:hint="Description"
                             android:inputType="text"
                             android:maxLength="15"
                             />
@@ -129,50 +122,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         >
-                        <EditText
-                            android:paddingRight="20dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textCursorDrawable="@drawable/pen"
-                            android:paddingLeft="20dp"
-                            android:textSize="16sp"
-                            android:id="@+id/phone"
-                            android:gravity="left|center"
-                            android:textColor="@android:color/black"
+                        <Button
+                            android:id="@+id/add_image"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="18dp"
                             android:background="@color/white"
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:hint="Phone Number"
-                            android:inputType="phone"
-                            android:maxLength="15"
-                            />
-                    </android.support.v7.widget.CardView>
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/user_location"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        app:cardBackgroundColor="@color/background"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
-                        <EditText
-                            android:paddingRight="20dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textCursorDrawable="@drawable/pen"
-                            android:paddingLeft="20dp"
                             android:textSize="16sp"
-                            android:id="@+id/location"
-                            android:gravity="left|center"
-                            android:textColor="@android:color/black"
-                            android:background="@color/white"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:hint="Location"
-                            android:inputType="text"
-                            android:maxLength="15"
-                            />
+                            android:layout_height="wrap_content"
+                            android:onClick="setFileToUpload"
+                            android:text="Add Image"/>
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
                         android:id="@+id/user_city"
@@ -183,22 +144,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         >
-                        <EditText
-                            android:paddingRight="20dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textCursorDrawable="@drawable/pen"
-                            android:paddingLeft="20dp"
-                            android:textSize="16sp"
-                            android:id="@+id/city"
-                            android:gravity="left|center"
-                            android:textColor="@android:color/black"
+                        <ayyappa.eloksolutions.in.ayyappaap.adapter.ImageAspectRatio
                             android:background="@color/white"
+                            android:visibility="gone"
+                            android:id="@+id/img_view"
+                            android:layout_gravity="center"
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:hint="city"
-                            android:inputType="text"
-                            android:maxLength="15"
+                            android:layout_height="wrap_content"
                             />
                     </android.support.v7.widget.CardView>
 
@@ -208,7 +160,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/create"
+                    android:id="@+id/butgcreate"
                     android:layout_marginTop="6dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"

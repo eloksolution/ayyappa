@@ -84,10 +84,14 @@ public class CreateGroupTopic extends AppCompatActivity {
         postTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if ((topicName.getText().toString() != null && !topicName.getText().toString().isEmpty())) {
                 String createGroupHelper=saveEventToServer();
                 Intent groupView = new Intent(ctx, GroupView.class);
                 groupView.putExtra("groupId", ""+groupId);
                 startActivity(groupView);
+                }else {
+                    topicName.setError("Enter the Description");
+                }
 
             }
         });
@@ -328,6 +332,7 @@ public class CreateGroupTopic extends AppCompatActivity {
     private String saveEventToServer() {
         keyName="topics/t_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         TopicDTO topicDto=buildDTOObject();
+        if(fileToUpload !=null) {
         TransferObserver transferObserver = transferUtility.upload(
                 "elokayyappa",     /* The bucket to upload to */
                 keyName,    /* The key for the uploaded object */
@@ -335,6 +340,7 @@ public class CreateGroupTopic extends AppCompatActivity {
         );
 
         transferObserverListener(transferObserver);
+        }
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(CreateGroupTopic.this)) {
                 TopicHelper createtopicpHelper = new TopicHelper(CreateGroupTopic.this);

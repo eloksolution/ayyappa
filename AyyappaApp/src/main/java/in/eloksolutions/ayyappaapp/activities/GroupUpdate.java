@@ -64,7 +64,7 @@ public class GroupUpdate extends AppCompatActivity {
     private int STORAGE_PERMISSION_CODE = 23;
     File fileToDownload = new File("/storage/sdcard0/Pictures/MY");
     AmazonS3 s3;
-    private Button buttonRequestPermission;
+
     TransferUtility transferUtility;
     String TAG="Create Group";
     String keyName,userId,userName;

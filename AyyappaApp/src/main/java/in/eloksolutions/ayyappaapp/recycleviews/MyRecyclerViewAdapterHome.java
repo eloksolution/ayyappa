@@ -73,11 +73,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
         @Override
         public void onClick(View v) {
 
-
-
         }
-
-
     }
 
     public void setOnItemClickListener(MyClickListener myClickListener) {
@@ -108,7 +104,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
         if(mDataset.get(position).getImgResource()!=null)
             glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         else
-            holder.imageView.setImageResource(R.drawable.defaulta);
+            holder.imageView.setImageResource(R.drawable.dt);
 
         Log.i(LOG_TAG, "Adding description :" + mDataset.get(position).getmText2());
 

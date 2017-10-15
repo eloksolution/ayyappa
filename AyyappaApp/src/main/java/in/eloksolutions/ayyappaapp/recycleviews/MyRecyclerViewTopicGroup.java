@@ -151,7 +151,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         if(mDataset.get(position).getImgResource()!=null)
             glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         else
-            holder.imageView.setImageResource(R.drawable.defaulta);
+            holder.imageView.setImageResource(R.drawable.dt);
 
         if (mDataset.get(position).getMemberSize()!=0) {
             holder.label3.setText(mDataset.get(position).getMemberSize() + " Joined");

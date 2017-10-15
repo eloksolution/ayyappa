@@ -33,7 +33,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -41,6 +43,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -49,6 +52,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.activities.CardViewActivity;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.RegisterHelper;
@@ -63,9 +67,8 @@ import in.eloksolutions.ayyappaapp.util.Util;
 
 public class Registartion extends AppCompatActivity {
     EditText name, description, emailId, password, city, phoneNumber, lastName, area;
-    ImageView gImage;
+    ImageView image;
     Spinner gCatagery;
-
     double latti,longi;
     private ProgressDialog progress;
     String tag="Registarion";
@@ -82,19 +85,18 @@ public class Registartion extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_registerform);
+        setContentView(R.layout.user_login);
 
-        Button createRegister=(Button) findViewById(R.id.butRegister);
+        Button createRegister=(Button) findViewById(R.id.create);
 
         final Context ctx = this;
 
-        name=(EditText) findViewById(R.id.etName);
-        lastName=(EditText) findViewById(R.id.et_laName);
-        emailId=(EditText) findViewById(R.id.etEmailid);
-        password=(EditText) findViewById(R.id.et_password);
-        phoneNumber=(EditText) findViewById(R.id.etPhoneNumber);
-        area=(EditText) findViewById(R.id.etLocation);
-        city=(EditText) findViewById(R.id.etCity);
+        name=(EditText) findViewById(R.id.first_name);
+        lastName=(EditText) findViewById(R.id.last_name);
+        emailId=(EditText) findViewById(R.id.email_address);
+        phoneNumber=(EditText) findViewById(R.id.phone);
+        area=(EditText) findViewById(R.id.location);
+        city=(EditText) findViewById(R.id.city);
 
         createRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,21 +113,38 @@ public class Registartion extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
-        buttonRequestPermission = (Button) findViewById(R.id.buttonRequestPermission);
+        image = (ImageView) findViewById(R.id.user_image);
 
-        buttonRequestPermission.setOnClickListener(new View.OnClickListener() {
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //First checking if the app is already having the permission
                 if(isReadStorageAllowed()){
                     //If permission is already having then showing the toast
-                    Toast.makeText(Registartion.this,"You already have the permission",Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(Registartion.this,"You already have the permission",Toast.LENGTH_LONG).show();
                     //Existing the method with return
+                    Intent intent = new Intent();
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        // For Android versions of KitKat or later, we use a
+                        // different intent to ensure
+                        // we can get the file path from the returned intent URI
+                        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                    } else {
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                    }
+
+                    intent.setType("image/*");
+                    startActivityForResult(intent, 1);
                     return;
                 }
 
-                //If the app has not the permission then asking for the permission
-                requestStoragePermission();
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                    //If the app has not the permission then asking for the permission
+                    requestStoragePermission();
+                }
             }
         });
         credentialsProvider();
@@ -198,16 +217,22 @@ public class Registartion extends AppCompatActivity {
         //If permission is not granted returning false
         return false;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             try {
+                // CropImageView.CropShape cropShape = CropImageView.CropShape.RECTANGLE;
                 Uri uri = data.getData();
-                String path = getPath(getApplicationContext(), uri);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
-                Log.e(tag, "File path is " + path);
-                fileToUpload = new File(path);
-
+                CropImage.activity(uri)
+                        //     .setGuidelines(CropImageView.Guidelines.ON)
+                        // .setFixAspectRatio(true)
+                        //  .setCropShape(cropShape)
+                        // .setAspectRatio(4,2)
+                        .setMinCropResultSize(480,720)
+                        .setMaxCropResultSize(800,1200)
+                        .start(this);
 
                 System.out.println("the uri is" + uri);
 
@@ -217,8 +242,45 @@ public class Registartion extends AppCompatActivity {
                 Log.e(tag, "Unable to upload file from the given uri", e);
             }
         }
-    }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                image.setVisibility(View.VISIBLE);
+                //imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+                image.setImageURI(resultUri);
+                String path = getPath(getApplicationContext(), resultUri);
+                fileToUpload = new File(path);
+                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
+                Log.e(tag, "File path is " + path);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+    public void transferObserverListener(TransferObserver transferObserver){
+
+        transferObserver.setTransferListener(new TransferListener(){
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                Log.e("statechange", state+"");
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                int percentage = (int) (bytesCurrent/bytesTotal * 100);
+                Log.e("percentage",percentage +"");
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Log.e("error","error");
+            }
+
+        });
+    }
     public static String getPath(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -271,6 +333,7 @@ public class Registartion extends AppCompatActivity {
         }
         return null;
     }
+
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
@@ -287,6 +350,12 @@ public class Registartion extends AppCompatActivity {
         }
         return null;
     }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+    }
+
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
 
@@ -305,12 +374,15 @@ public class Registartion extends AppCompatActivity {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
     void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M){
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                    (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
+            }
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -318,8 +390,6 @@ public class Registartion extends AppCompatActivity {
                 latti = location.getLatitude();
                 longi = location.getLongitude();
 
-                ((TextView) findViewById(R.id.longitude)).
-                        setText("Current Location is :" + latti + "," + longi);
                 Geocoder gc= new Geocoder(this, Locale.getDefault());
                 // TextView addr = (TextView) main.findViewById(R.id.editText2);
                 String result="x03";
@@ -338,6 +408,7 @@ public class Registartion extends AppCompatActivity {
                         sb.append(address.getCountryName());
                         result = sb.toString();
                         area.setText(result);
+                        city.setText(address.getLocality());
 
                     }else {
                         ((TextView) findViewById(R.id.textView)).
@@ -366,6 +437,7 @@ public class Registartion extends AppCompatActivity {
                 keyName,    /* The key for the uploaded object */
                 fileToUpload       /* The file where the data to upload exists */
         );
+        transferObserverListener(transferObserver);
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(Registartion.this)) {
                 RegisterHelper createRegisterHelper = new RegisterHelper(Registartion.this);
@@ -402,8 +474,6 @@ public class Registartion extends AppCompatActivity {
         registerDto.setCity(rcity);
         String are=area.getText().toString();
         registerDto.setArea(are);
-        String pass=password.getText().toString();
-        registerDto.setPassword(pass);
         registerDto.setLongi(longi);
         registerDto.setLati(latti);
         registerDto.setImgPath(keyName);
