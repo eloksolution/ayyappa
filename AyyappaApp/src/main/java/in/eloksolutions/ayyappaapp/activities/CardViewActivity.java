@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,16 +18,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
@@ -43,12 +49,19 @@ public class CardViewActivity extends AppCompatActivity {
     ListView lv;
     Context context;
 
-    String TAG="CardViewActivity";
+    String TAG="AudioPlayer";
     GridView grid;
     ImageView add;
+    public static int [] contactImages ={R.drawable.chat_icon, R.drawable.chat_icon,R.drawable.chat_icon};
+    public static String [] contactNames={"Contact1","Contact2","Contact 3"};
+    public static int [] songImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
+    public static String [] songNames={"Maladharanam Niyamala Toranam","Harivarasanam Viswamohanam","Baghavan Saranam","Ayyappa4","Ayyappa5","Ayyappa6"};
     public static int [] moviesImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
     public static String [] moviesNames={"Ayyappa Swamy Janma Rahasyam Telugu Movie 2014","Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan","Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith","Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas","Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji","Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
-     RecyclerView mRecyclerView;
+    public static String [] moviesid={"vxpEMuM1eBc","hRtuGEQmm1E","4wjuDG7WXY8","FTBLd2zz8IU","o4vv3PN45Eo","TfT8w5v8KSY"};
+    AmazonS3 s3;
+    TransferUtility transferUtility;
+    RecyclerView mRecyclerView;
     private static String LOG_TAG = "CardViewActivity";
     TextView topic;
 
@@ -58,7 +71,7 @@ public class CardViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card_view);
         // Set up the ViewPager with the sections adapter.
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
-       BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
@@ -68,16 +81,18 @@ public class CardViewActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.ic_home1:
                         break;
+
                     case R.id.ic_groups:
                         Intent intent1 = new Intent(CardViewActivity.this, GroupList.class);
                         startActivity(intent1);
                         break;
+
                     case R.id.ic_books:
                         Intent intent2 = new Intent(CardViewActivity.this, PadiPoojaFull.class);
                         startActivity(intent2);
                         break;
+
                     case R.id.ic_center_focus:
-                        Log.i("MainActivity","in the Locatioin ");
                         Intent intent3 = new Intent(CardViewActivity.this, MapsMarkerActivity.class);
                         startActivity(intent3);
                         break;
@@ -135,10 +150,15 @@ public class CardViewActivity extends AppCompatActivity {
 
         });
 
+
+
         context=this;
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         String deekshaStartDate=preferences.getString("startDate",null);
         String deekshaEndDate=preferences.getString("endDate",null);
+        credentialsProvider();
+        // callback method to call the setTransferUtility method
+        setTransferUtility();
 
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.event_image);
         final TextView tvDays=(TextView) findViewById(R.id.topic);
@@ -149,7 +169,10 @@ public class CardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
               Intent editde=new Intent(CardViewActivity.this, DeekshaActivity.class);
+
                 startActivity(editde);
+
+
             }
         });
         topic=(TextView) findViewById(R.id.topic);
@@ -158,34 +181,13 @@ public class CardViewActivity extends AppCompatActivity {
             Log.i(TAG,"Deeksha start date"+deekshaStartDate);
             int diff=0,noOfDays=0;
             try {
-
-                Date startDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaStartDate);
-                Date endDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaEndDate);
-
+                Date startDate=(new SimpleDateFormat("dd/MM/yyyy")).parse(deekshaStartDate);
+                Date endDate=(new SimpleDateFormat("dd/MM/yyyy")).parse(deekshaEndDate);
                 Calendar cal=Calendar.getInstance();
                 Date today=cal.getTime();
                 diff=daysBetween(startDate,today)+1;
                 noOfDays=daysBetween(startDate,endDate)+1;
                 Log.i(TAG,"Diff date is is "+diff);
-              final LinearLayout deekshaLayout= (LinearLayout)findViewById(R.id.deeksha_layout);
-                final TextView lStartMonth=(TextView) deekshaLayout.findViewById(R.id.month);
-                final TextView lStartDate=(TextView) deekshaLayout.findViewById(R.id.date);
-                final TextView lStartWeek=(TextView) deekshaLayout.findViewById(R.id.day);
-                cal.setTime(startDate);
-                Log.i(TAG,"start date is"+deekshaStartDate+" date "+cal.get(Calendar.DAY_OF_MONTH));
-                 lStartMonth.setText(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH ));
-                lStartDate.setText(cal.get(Calendar.DAY_OF_MONTH)+"");
-                lStartWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH ));
-
-
-                final TextView lEndMonth=(TextView) deekshaLayout.findViewById(R.id.month_r);
-                final TextView lEndDate=(TextView) deekshaLayout.findViewById(R.id.date_r);
-                final TextView lEndWeek=(TextView) deekshaLayout.findViewById(R.id.day_r);
-                cal.setTime(endDate);
-                lEndMonth.setText(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH ));
-                lEndDate.setText(cal.get(Calendar.DAY_OF_MONTH)+"");
-                Log.i(TAG,"week d"+cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH ));
-                lEndWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH ));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -211,7 +213,6 @@ public class CardViewActivity extends AppCompatActivity {
             }
         });
 
-
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
@@ -228,7 +229,14 @@ public class CardViewActivity extends AppCompatActivity {
         GetGroups getGroups=new GetGroups(context,gurl,rvGroups);
         System.out.println("url for group list"+gurl);
         getGroups.execute();
-
+        final CardView noti=(CardView) findViewById(R.id.cv9);
+        noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent padipooj = new Intent(context,SwamiRequest.class);
+                startActivity(padipooj);
+            }
+        });
         final ImageView padiFull=(ImageView) findViewById(R.id.PadiFull);
         padiFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,14 +245,14 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(padipooj);
             }
         });
-       /* final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
+        final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
         padiCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent padipooj = new Intent(context,CreatePadiPooja.class);
                 startActivity(padipooj);
             }
-        });*/
+        });
         final ImageView movieFull=(ImageView) findViewById(R.id.movie_full);
         movieFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,7 +261,7 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
-       /* final ImageView CreateGroup=(ImageView) findViewById(R.id.group_list);
+        final ImageView CreateGroup=(ImageView) findViewById(R.id.group_list);
         CreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,7 +276,7 @@ public class CardViewActivity extends AppCompatActivity {
                 Intent songsIntent = new Intent(context,CreateGroup.class);
                 startActivity(songsIntent);
             }
-        });*/
+        });
         final ImageView songsFull=(ImageView) findViewById(R.id.songs_view);
         songsFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,11 +347,40 @@ public class CardViewActivity extends AppCompatActivity {
             }
 
         });
+
+
+    }
+    public void credentialsProvider(){
+
+        // Initialize the Amazon Cognito credentials provider
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
+                Regions.AP_NORTHEAST_1 // Region
+        );
+
+        setAmazonS3Client(credentialsProvider);
+    }
+
+    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
+
+        // Create an S3 client
+        s3 = new AmazonS3Client(credentialsProvider);
+
+        // Set the region of your S3 bucket
+        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+    }
+
+    public void setTransferUtility(){
+        transferUtility = new TransferUtility(s3, getApplicationContext());
     }
 
     public int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
+
+
 
     @Override
     protected void onResume() {
@@ -353,6 +390,7 @@ public class CardViewActivity extends AppCompatActivity {
 
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
+
         for (int index = 0; index < moviesImages.length; index++) {
             DataObject obj = new DataObject(moviesNames[index],"Movie ",moviesImages[index]);
             results.add(index, obj);

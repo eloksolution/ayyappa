@@ -151,22 +151,28 @@ public class GroupUpdate extends AppCompatActivity {
     }
 
     public void setFileToUpload(View view){
+        if(isReadStorageAllowed()) {
 
-        Intent intent = new Intent();
-        if (Build.VERSION.SDK_INT >= 19) {
-            // For Android versions of KitKat or later, we use a
-            // different intent to ensure
-            // we can get the file path from the returned intent URI
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        } else {
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT >= 19) {
+                // For Android versions of KitKat or later, we use a
+                // different intent to ensure
+                // we can get the file path from the returned intent URI
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            } else {
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+            }
+
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
+        }else{
+            requestStoragePermission();
         }
+        credentialsProvider();
 
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
-
+        setTransferUtility();
     }
     private void requestStoragePermission(){
 
@@ -346,13 +352,15 @@ public class GroupUpdate extends AppCompatActivity {
         keyName="groups/G_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         Log.i(tag,"keyname for update time "+keyName);
         GroupDTO groupDto=buildDTOObject();
-        TransferObserver transferObserver = transferUtility.upload(
-                "elokayyappa",     /* The bucket to upload to */
-                keyName,    /* The key for the uploaded object */
-                fileToUpload       /* The file where the data to upload exists */
-        );
+        if(fileToUpload!=null) {
+            TransferObserver transferObserver = transferUtility.upload(
+                    "elokayyappa",     /* The bucket to upload to */
+                    keyName,    /* The key for the uploaded object */
+                    fileToUpload       /* The file where the data to upload exists */
+            );
 
-        transferObserverListener(transferObserver);
+            transferObserverListener(transferObserver);
+        }
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(GroupUpdate.this)) {
                 GroupUpdateHelper createGroupHelper = new GroupUpdateHelper(GroupUpdate.this);

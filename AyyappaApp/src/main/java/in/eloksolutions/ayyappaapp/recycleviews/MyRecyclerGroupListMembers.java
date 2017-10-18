@@ -53,10 +53,14 @@ public class MyRecyclerGroupListMembers extends RecyclerView
 
         @Override
         public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
+            GroupMemberObject dataObject=mDataset.get(getAdapterPosition());
+            Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
+            Intent topicView=new Intent(v.getContext(), UserView.class);
+            topicView.putExtra("userId",dataObject.getUserId());
+            Log.i(LOG_TAG, "userId is imag eclick dataObject.getUserId() :"+dataObject.getUserId());
+            v.getContext().startActivity(topicView);
 
         }
-
 
     }
 

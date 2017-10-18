@@ -99,6 +99,7 @@ public class CreateGroupTopic extends AppCompatActivity {
         photo_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent();
                 if (Build.VERSION.SDK_INT >= 19) {
                     // For Android versions of KitKat or later, we use a
@@ -119,7 +120,7 @@ public class CreateGroupTopic extends AppCompatActivity {
 
 
         // callback method to call credentialsProvider method.
-        credentialsProvider();
+       // credentialsProvider();
 
         // callback method to call the setTransferUtility method
         setTransferUtility();

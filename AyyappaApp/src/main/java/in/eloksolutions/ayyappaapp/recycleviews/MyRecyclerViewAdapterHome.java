@@ -12,16 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.config.Config;
-import in.eloksolutions.ayyappaapp.util.DataObjectPadiPooja;
 import in.eloksolutions.ayyappaapp.activities.PadiPoojaView;
+import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.util.DataObjectPadiPooja;
 
 
@@ -72,7 +70,13 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
 
         @Override
         public void onClick(View v) {
-
+            Log.i(LOG_TAG, "postion"+getAdapterPosition()+ "postion value"+mDataset.get(getAdapterPosition()));
+            Log.i(LOG_TAG, "Adding Listener "+label.getText()+"description"+label2.getText());
+            DataObjectPadiPooja dataObject=mDataset.get(getAdapterPosition());
+            Log.i(LOG_TAG, "data object is Listener"+dataObject);
+            Intent padiPoojaView=new Intent(v.getContext(), PadiPoojaView.class);
+            padiPoojaView.putExtra("padiPoojaId",dataObject.getPadipoojaId());
+            v.getContext().startActivity(padiPoojaView);
         }
     }
 
@@ -104,7 +108,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
         if(mDataset.get(position).getImgResource()!=null)
             glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         else
-            holder.imageView.setImageResource(R.drawable.dt);
+            holder.imageView.setImageResource(R.drawable.defaulta);
 
         Log.i(LOG_TAG, "Adding description :" + mDataset.get(position).getmText2());
 

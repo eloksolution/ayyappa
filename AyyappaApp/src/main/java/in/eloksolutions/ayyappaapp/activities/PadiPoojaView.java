@@ -57,7 +57,6 @@ import in.eloksolutions.ayyappaapp.util.Util;
 
 public class PadiPoojaView extends AppCompatActivity implements View.OnClickListener {
 
-
    ExpandableListView listview;
     TextView description, upDate,event_name,eventdate,eventtime, location, no_of_mem, join_status, text1,share;
     ImageButton show, hide;

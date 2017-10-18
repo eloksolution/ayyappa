@@ -52,7 +52,6 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.activities.CardViewActivity;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.RegisterHelper;
@@ -69,6 +68,7 @@ public class Registartion extends AppCompatActivity {
     EditText name, description, emailId, password, city, phoneNumber, lastName, area;
     ImageView image;
     Spinner gCatagery;
+  //  UesrSession session;
     double latti,longi;
     private ProgressDialog progress;
     String tag="Registarion";
@@ -140,11 +140,8 @@ public class Registartion extends AppCompatActivity {
                     return;
                 }
 
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-                    //If the app has not the permission then asking for the permission
-                    requestStoragePermission();
-                }
+                //If the app has not the permission then asking for the permission
+                requestStoragePermission();
             }
         });
         credentialsProvider();
@@ -350,12 +347,6 @@ public class Registartion extends AppCompatActivity {
         }
         return null;
     }
-
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-    }
-
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
 
@@ -374,15 +365,12 @@ public class Registartion extends AppCompatActivity {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
     void getLocation() {
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.M){
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                    (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
-            }
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -432,12 +420,14 @@ public class Registartion extends AppCompatActivity {
     private String saveEventToServer() {
         keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         RegisterDTO registerDto=buildDTOObject();
-        TransferObserver transferObserver = transferUtility.upload(
-                "elokayyappa",     /* The bucket to upload to */
-                keyName,    /* The key for the uploaded object */
-                fileToUpload       /* The file where the data to upload exists */
-        );
-        transferObserverListener(transferObserver);
+        if(fileToUpload !=null) {
+            TransferObserver transferObserver = transferUtility.upload(
+                    "elokayyappa",     /* The bucket to upload to */
+                    keyName,    /* The key for the uploaded object */
+                    fileToUpload       /* The file where the data to upload exists */
+            );
+            transferObserverListener(transferObserver);
+        }
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(Registartion.this)) {
                 RegisterHelper createRegisterHelper = new RegisterHelper(Registartion.this);

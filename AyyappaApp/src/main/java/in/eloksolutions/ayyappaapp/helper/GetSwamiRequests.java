@@ -13,10 +13,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.beans.GroupDTO;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
-import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewTopicGroup;
-import in.eloksolutions.ayyappaapp.util.DataObjectGroup;
+import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewSwamiRequests;
+import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 
 
@@ -24,17 +25,18 @@ import in.eloksolutions.ayyappaapp.util.RestServices;
  * Created by welcome on 6/30/2017.
  */
 
-public class GetGroups extends AsyncTask<String, Void, String> {
+public class GetSwamiRequests extends AsyncTask<String, Void, String> {
     private Context mcontext;
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
 
-    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups) {
+    public GetSwamiRequests(Context mcontext, String surl, RecyclerView rvGroups) {
         this.mcontext = mcontext;
-        this.surl=surl;
-        this.rvGroups=rvGroups;
+        this.surl = surl;
+        this.rvGroups = rvGroups;
     }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -55,26 +57,22 @@ public class GetGroups extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-        System.out.println("Get Groups Result is "+result);
+        System.out.println("Get Groups Result is " + result);
         progress.dismiss();
-        if (result!=null && result.trim().length()>0) {
+        if (result != null && result.trim().length() > 0) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<GroupDTO>>() { }.getType();
-            List<GroupDTO> fromJson = gson.fromJson(result, type);
-            ArrayList<DataObjectGroup> results = new ArrayList<DataObjectGroup>();
-             for (GroupDTO group : fromJson) {
-                 List<RegisterDTO> groupMembers=group.getGroupMembers();
-                 int memberSize=0;
-                 if(groupMembers !=null)
-                     memberSize=groupMembers.size();
-                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize);
+            Type type = new TypeToken<List<GroupDTO>>() {
+            }.getType();
+            List<RegisterDTO> fromJson = gson.fromJson(result, type);
+            ArrayList<DataObjectRequests> results = new ArrayList<DataObjectRequests>();
+            for (RegisterDTO requests : fromJson) {
+                DataObjectRequests obj = new DataObjectRequests(requests.getUserId(), requests.getImgPath(), requests.getFirstName(), requests.getLastName(), R.drawable.yes,R.drawable.no);
                 results.add(obj);
-           }
-
-            MyRecyclerViewTopicGroup mAdapter = new MyRecyclerViewTopicGroup(results,mcontext);
-            rvGroups.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
+                MyRecyclerViewSwamiRequests mAdapter = new MyRecyclerViewSwamiRequests(results, mcontext);
+                rvGroups.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
         }
-    }
 
+    }
 }

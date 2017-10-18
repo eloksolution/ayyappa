@@ -31,7 +31,7 @@
                         android:layout_height="wrap_content"
                         >
                         <in.eloksolutions.ayyappaapp.adapter.ImageAspectRatio
-                            android:src="@drawable/dt"
+                            android:src="@drawable/defaulta"
                             android:id="@+id/forum_image"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

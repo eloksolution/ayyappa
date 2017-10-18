@@ -111,7 +111,12 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
         @Override
         public void onClick(View v) {
 
-
+            Log.i(LOG_TAG, "Adding Listener " + label.getText());
+            DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
+            Log.i(LOG_TAG, "data object is Listener" + dataObject);
+            Intent groupView = new Intent(v.getContext(), GroupView.class);
+            groupView.putExtra("groupId", dataObject.getGroupId());
+            v.getContext().startActivity(groupView);
         }
     }
     private void joinEvent(View itemView) {

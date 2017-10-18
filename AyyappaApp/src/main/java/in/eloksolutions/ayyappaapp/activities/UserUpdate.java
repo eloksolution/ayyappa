@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 
 import java.util.concurrent.ExecutionException;
@@ -31,26 +34,28 @@ public class UserUpdate extends AppCompatActivity {
     String userId;
     Context context;
     int count;
+    Glide glide;
+    ImageView image;
     String tag="TopicView";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_registerform);
-        name=(EditText) findViewById(R.id.etName);
-        lastName=(EditText) findViewById(R.id.et_laName);
-        emailId=(EditText) findViewById(R.id.etEmailid);
-        password=(EditText) findViewById(R.id.et_password);
-        phoneNumber=(EditText) findViewById(R.id.etPhoneNumber);
-        area=(EditText) findViewById(R.id.etLocation);
-        city=(EditText) findViewById(R.id.etCity);
-        userUpdate=(Button) findViewById(R.id.butRegister);
+        setContentView(R.layout.user_login);
+        name=(EditText) findViewById(R.id.first_name);
+        lastName=(EditText) findViewById(R.id.last_name);
+        emailId=(EditText) findViewById(R.id.email_address);
+        phoneNumber=(EditText) findViewById(R.id.phone);
+        area=(EditText) findViewById(R.id.location);
+        city=(EditText) findViewById(R.id.city);
+        image=(ImageView)findViewById(R.id.user_image);
+        userUpdate=(Button) findViewById(R.id.create);
         context=this;
         userId=getIntent().getStringExtra("userId");
         Log.i(tag, "topicId Update is"+userId);
         final Context ctx = this;
 
         UserUpdateHelper getUserValue=new UserUpdateHelper(this);
-        String surl = Config.SERVER_URL+"user/user/5997eeb6e4b031b734205daa";
+        String surl = Config.SERVER_URL+"user/user/"+userId;
         System.out.println("url for group topic view list"+surl);
         try {
             String output=getUserValue.new UserUpdateTask(surl).execute().get();
@@ -63,8 +68,6 @@ public class UserUpdate extends AppCompatActivity {
             public void onClick(View view) {
 
                saveEventToServer();
-
-
     }
 });
 
@@ -80,8 +83,12 @@ public class UserUpdate extends AppCompatActivity {
             lastName.setText(fromJsonn.getLastName());
             emailId.setText(fromJsonn.getEmail());
             phoneNumber.setText(fromJsonn.getMobile());
+            area.setText(fromJsonn.getArea());
+            city.setText(fromJsonn.getCity());
             userUpdate.setText("Update Here");
-
+            if (fromJsonn.getImgPath()!=null) {
+                glide.with(context).load(Config.S3_URL + fromJsonn.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(image);
+            }
 
             }
         }
@@ -124,8 +131,7 @@ public class UserUpdate extends AppCompatActivity {
         regTopicDTO.setCity(rcity);
         String are=area.getText().toString();
         regTopicDTO.setArea(are);
-        String pass=password.getText().toString();
-        regTopicDTO.setPassword(pass);
+
 
         return regTopicDTO;
     }

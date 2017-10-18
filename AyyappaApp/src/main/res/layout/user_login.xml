@@ -29,7 +29,7 @@
                     android:layout_width="100dp"
                     android:id="@+id/user_image"
                     android:layout_height="100dp"
-                    android:background="@drawable/dt"
+                    android:background="@drawable/defaulta"
                     android:layout_marginTop="15dp"
                     android:layout_gravity="center_horizontal"/>
 

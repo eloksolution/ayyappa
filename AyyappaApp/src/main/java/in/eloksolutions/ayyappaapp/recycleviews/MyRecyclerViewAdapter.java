@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -70,7 +68,14 @@ public class MyRecyclerViewAdapter extends RecyclerView
  
         @Override
         public void onClick(View v) {
-            Log.i(LOG_TAG, " Listener onClick");
+
+            Log.i(LOG_TAG, "postion"+getAdapterPosition()+ "postion value"+mDataset.get(getAdapterPosition()));
+            Log.i(LOG_TAG, "Adding Listener "+label.getText()+"description"+date.getText());
+            DataObjectPadiPooja dataObject=mDataset.get(getAdapterPosition());
+            Log.i(LOG_TAG, "data object is Listener"+dataObject);
+            Intent padiPoojaView=new Intent(v.getContext(), PadiPoojaView.class);
+            padiPoojaView.putExtra("padiPoojaId",dataObject.getPadipoojaId());
+            v.getContext().startActivity(padiPoojaView);
         }
 
 
@@ -102,7 +107,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         if(mDataset.get(position).getImgResource()!=null)
             glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         else
-            holder.imageView.setImageResource(R.drawable.dt);
+            holder.imageView.setImageResource(R.drawable.defaulta);
 
     }
 

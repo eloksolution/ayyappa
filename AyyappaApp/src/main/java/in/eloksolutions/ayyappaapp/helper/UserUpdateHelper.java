@@ -1,12 +1,14 @@
 package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
 import java.net.URL;
 
+import in.eloksolutions.ayyappaapp.activities.OwnerView;
 import in.eloksolutions.ayyappaapp.activities.UserUpdate;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 
@@ -104,6 +106,9 @@ public class UserUpdateHelper {
 
             System.out.println("From Join Event" + result);
             progress.dismiss();
+            Intent intent=new Intent(mcontext, OwnerView.class);
+            intent.putExtra("userId",registerDTO.getUserId());
+            mcontext.startActivity(intent);
 
         }
 

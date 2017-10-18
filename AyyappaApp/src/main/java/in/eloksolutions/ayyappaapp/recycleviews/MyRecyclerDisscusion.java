@@ -56,7 +56,13 @@ public class MyRecyclerDisscusion extends RecyclerView
         @Override
         public void onClick(View v) {
 
-
+            Log.i(LOG_TAG, "Adding Topic Listener "+label.getText());
+            DisObject dataObject=mDataset.get(getAdapterPosition());
+            Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
+            Intent topicView=new Intent(v.getContext(), UserView.class);
+            topicView.putExtra("userId",dataObject.getUserName());
+            Log.i(LOG_TAG, "topicId is imag eclick :"+dataObject.getUserId());
+            v.getContext().startActivity(topicView);
         }
 
 

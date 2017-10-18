@@ -21,21 +21,22 @@ import in.eloksolutions.ayyappaapp.activities.GroupView;
 import in.eloksolutions.ayyappaapp.beans.GroupMembers;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.GroupJoinHelper;
-import in.eloksolutions.ayyappaapp.util.DataObjectGroup;
+import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
 
-public class MyRecyclerViewTopicGroup extends RecyclerView
-        .Adapter<MyRecyclerViewTopicGroup
+public class MyRecyclerViewSwamiRequests extends RecyclerView
+        .Adapter<MyRecyclerViewSwamiRequests
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewTopicGroup";
-    private ArrayList<DataObjectGroup> mDataset;
+    private ArrayList<DataObjectRequests> mDataset;
     private Context context;
     private static MyClickListener myClickListener;
     TextView keyName;
     String groupId, userId, firstName, lastName;
    static String joinStaus="Y";
     Glide glide;
+    ImageView userImage;
 
-    public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset, Context context) {
+    public MyRecyclerViewSwamiRequests(ArrayList<DataObjectRequests> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
     }
@@ -43,68 +44,69 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView label;
-        TextView label2,label3;
 
-
-        public ImageView getImageView() {
-            return imageView;
+        public ImageView getAccept() {
+            return accept;
         }
 
-        public void setImageView(ImageView imageView) {
-            this.imageView = imageView;
+        public void setAccept(ImageView accept) {
+            this.accept = accept;
         }
 
-        ImageView imageView;
+        public ImageView getReject() {
+            return reject;
+        }
+
+        public void setReject(ImageView reject) {
+            this.reject = reject;
+        }
+
+        public ImageView getUserImage() {
+            return userImage;
+        }
+
+        public void setUserImage(ImageView userImage) {
+            this.userImage = userImage;
+        }
+
+        ImageView accept,reject,userImage;
         Button joinBtn;
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.title_1);
-            label2 = (TextView) itemView.findViewById(R.id.title_area);
-            label3=(TextView) itemView.findViewById(R.id.title_people);
+            label = (TextView) itemView.findViewById(R.id.user_name);
+
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
 
-            imageView = (ImageView) itemView.findViewById(R.id.activity_image);
+            accept = (ImageView) itemView.findViewById(R.id.accept);
+            reject = (ImageView) itemView.findViewById(R.id.reject);
+            userImage = (ImageView) itemView.findViewById(R.id.user_image);
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+            accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i(LOG_TAG, "Adding Listener " + label.getText());
-                    DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
+                    DataObjectRequests dataObject = mDataset.get(getAdapterPosition());
                     Log.i(LOG_TAG, "data object is Listener" + dataObject);
                     Intent groupView = new Intent(view.getContext(), GroupView.class);
-                    groupView.putExtra("groupId", dataObject.getGroupId());
+                    groupView.putExtra("groupId", dataObject.getUserId());
                     view.getContext().startActivity(groupView);
                 }
             });
-
-            joinBtn = (Button) itemView.findViewById(R.id.join_now);
-            joinBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
-                    groupId = dataObject.getGroupId();
-                    joinEvent(itemView);
-
-                }
-            });
         }
-
 
         @Override
         public void onClick(View v) {
             Log.i(LOG_TAG, "Adding Listener " + label.getText());
-            DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
+            DataObjectRequests dataObject = mDataset.get(getAdapterPosition());
             Log.i(LOG_TAG, "data object is Listener" + dataObject);
             Intent groupView = new Intent(v.getContext(), GroupView.class);
-            groupView.putExtra("groupId", dataObject.getGroupId());
+            groupView.putExtra("groupId", dataObject.getUserId());
             v.getContext().startActivity(groupView);
 
         }
     }
-
-
 
     private void joinEvent(View itemView) {
         GroupJoinHelper groupJoinHelper = new GroupJoinHelper(itemView.getContext());
@@ -120,7 +122,6 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         }
     }
 
-
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
@@ -134,7 +135,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset) {
+    public MyRecyclerViewSwamiRequests(ArrayList<DataObjectRequests> myDataset) {
         mDataset = myDataset;
     }
 
@@ -143,7 +144,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.groups_lists_home, parent, false);
+                .inflate(R.layout.profile_request, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -151,22 +152,17 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getmText1());
-        holder.label2.setText(mDataset.get(position).getmText2());
-        if(mDataset.get(position).getImgResource()!=null)
-            glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
-        else
-            holder.imageView.setImageResource(R.drawable.defaulta);
-
-        if (mDataset.get(position).getMemberSize()!=0) {
-            holder.label3.setText(mDataset.get(position).getMemberSize() + " Joined");
-        }
-        else {
-            holder.label3.setText(  "0 Joined");
+        holder.label.setText(mDataset.get(position).getFirstName() + " " + mDataset.get(position).getLastName());
+        holder.accept.setImageResource(mDataset.get(position).getYes());
+        holder.reject.setImageResource(mDataset.get(position).getNo());
+        if (mDataset.get(position).getImgPath() != null) {
+            glide.with(context).load(Config.S3_URL + mDataset.get(position).getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
+        }else{
+            glide.with(context).load(R.drawable.defaulta).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
         }
     }
 
-        public void addItem(DataObjectGroup dataObj, int index) {
+        public void addItem(DataObjectRequests dataObj, int index) {
             mDataset.add(index, dataObj);
         notifyItemInserted(index);
     }

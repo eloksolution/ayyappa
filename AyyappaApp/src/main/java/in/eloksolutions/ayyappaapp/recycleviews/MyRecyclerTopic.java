@@ -10,17 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.config.Config;
-
 import in.eloksolutions.ayyappaapp.activities.TopicView;
-
+import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.util.TopicObject;
 
 public class MyRecyclerTopic extends RecyclerView
@@ -65,7 +61,13 @@ public class MyRecyclerTopic extends RecyclerView
 
         @Override
         public void onClick(View v) {
-
+            Log.i(LOG_TAG, "Adding Topic Listener "+label.getText());
+            TopicObject dataObject=mDataset.get(getAdapterPosition());
+            Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
+            Intent topicView=new Intent(v.getContext(), TopicView.class);
+            topicView.putExtra("topicId",dataObject.getTopicId());
+            Log.i(LOG_TAG, "topicId is imag eclick :"+dataObject.getTopicId());
+            v.getContext().startActivity(topicView);
         }
 
 
