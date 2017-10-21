@@ -121,6 +121,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         join_event=(ImageView) findViewById(R.id.join_event);
 
         upDate.setOnClickListener(this);
+
         join_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -326,7 +327,9 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             String joinmem=eventViewHelper.new JoinEvent(eventMembers,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
             addingMember(joinmem);
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void deleteEvent() {

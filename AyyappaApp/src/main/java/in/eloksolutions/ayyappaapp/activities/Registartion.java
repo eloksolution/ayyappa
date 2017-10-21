@@ -150,6 +150,7 @@ public class Registartion extends AppCompatActivity {
     }
     public void credentialsProvider(){
 
+
         // Initialize the Amazon Cognito credentials provider
         CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplicationContext(),

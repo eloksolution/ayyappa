@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.recycleviews;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     String groupId, userId, firstName, lastName;
    static String joinStaus="Y";
     Glide glide;
-
+    Button joinBtn;
     public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
@@ -55,7 +56,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         }
 
         ImageView imageView;
-        Button joinBtn;
+
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
@@ -79,6 +80,8 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
                 }
             });
 
+
+
             joinBtn = (Button) itemView.findViewById(R.id.join_now);
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,6 +89,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
                     DataObjectGroup dataObject = mDataset.get(getAdapterPosition());
                     groupId = dataObject.getGroupId();
                     joinEvent(itemView);
+                    joinBtn.setVisibility(View.GONE);
 
                 }
             });
@@ -124,8 +128,12 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
-        groupMembers.setUserId(Config.getUserId());
-        groupMembers.setFirstname(Config.getFirstName());
+        SharedPreferences preferences=context.getSharedPreferences(Config.APP_PREFERENCES,Context.MODE_PRIVATE);
+        userId=preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
+        groupMembers.setUserId(userId);
+        groupMembers.setFirstname(firstName+lastName);
         Log.i(LOG_TAG, "Config.getUserId()" + groupId);
         groupMembers.setLastName(Config.getLastName());
         return groupMembers;
@@ -153,6 +161,15 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
+        try {
+            System.out.println("mDataset.get(position)"+mDataset.get(position).getIsMember());
+            if(joinStaus.equals(userId.equals(mDataset.get(position).getOwner()) || joinStaus.equals(mDataset.get(position).getIsMember()))){
+                System.out.println("mDataset.get(position)"+mDataset.get(position).getIsMember());
+                joinBtn.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(mDataset.get(position).getImgResource()!=null)
             glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         else

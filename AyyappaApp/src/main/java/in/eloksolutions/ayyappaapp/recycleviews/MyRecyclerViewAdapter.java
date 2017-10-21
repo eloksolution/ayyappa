@@ -35,7 +35,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label, date, count, month,week;
+        TextView label, date, count, month,week,peopleJoin;
         ImageView imageView;
         Button joinBtn;
  
@@ -46,6 +46,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             count  =(TextView) itemView.findViewById(R.id.people_join);
             month=(TextView) itemView.findViewById(R.id.month);
             week=(TextView) itemView.findViewById(R.id.day);
+            peopleJoin=(TextView) itemView.findViewById(R.id.people_join);
             Log.i(LOG_TAG, "Adding Listener");
 
             itemView.setOnClickListener(this);
@@ -104,6 +105,12 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.date.setText(mDataset.get(position).getDay());
         holder.month.setText(mDataset.get(position).getMonth());
        holder.week.setText(mDataset.get(position).getWeek());
+        Log.i(LOG_TAG, "data object is Listener mDataset.get(position).getMemberSize()"+mDataset.get(position).getMemberSize());
+        if(mDataset.get(position).getMemberSize()!=0) {
+            holder.peopleJoin.setText(mDataset.get(position).getMemberSize());
+        }else{
+            holder.peopleJoin.setText("0 joined");
+        }
         if(mDataset.get(position).getImgResource()!=null)
             glide.with(mcontext).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         else

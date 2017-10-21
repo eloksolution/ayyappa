@@ -103,7 +103,7 @@
                     android:layout_height="@dimen/small_view"
                     android:background="@color/view" />
                 <include android:id="@+id/news_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     layout="@layout/padi_recycler_home"/>
 

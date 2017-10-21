@@ -17,9 +17,6 @@ public class UserContactList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_list);
 
-
-
-
     }
 }
 

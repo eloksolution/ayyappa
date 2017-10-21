@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.AmazonS3;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -15,11 +13,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewAdapter;
-import in.eloksolutions.ayyappaapp.util.RestServices;
 import in.eloksolutions.ayyappaapp.beans.EventDTO;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
+import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewAdapter;
 import in.eloksolutions.ayyappaapp.util.DataObjectPadiPooja;
+import in.eloksolutions.ayyappaapp.util.RestServices;
 
 
 public class GetEvents extends AsyncTask<String, Void, String> {
@@ -65,9 +63,11 @@ public class GetEvents extends AsyncTask<String, Void, String> {
 
                 for (EventDTO event : fromJson) {
                     List<RegisterDTO> padiMembers=event.getPadiMembers();
+                    System.out.println("Get Events Result is "+padiMembers);
                     int memberSize=0;
                     if(padiMembers != null)
                         memberSize=padiMembers.size();
+                    System.out.println("Get Events Result is "+memberSize);
                     DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation(),event.getMonth(),event.getDay(),event.getWeek());
                     results.add(obj);
                 }

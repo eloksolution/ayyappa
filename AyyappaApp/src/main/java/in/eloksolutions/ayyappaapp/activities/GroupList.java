@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,6 +20,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.roughike.bottombar.BottomBar;
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.beans.TopicDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetGroups;
@@ -29,6 +31,7 @@ public class GroupList extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
    TransferUtility transferUtility;
+    String userId, firstName, lastName;
 
     private BottomBar bottomBar;
     @Override
@@ -47,8 +50,11 @@ public class GroupList extends AppCompatActivity {
                 startActivity(groupCreate);
             }
         });
-        
 
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
+        userId= preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
@@ -96,6 +102,14 @@ public class GroupList extends AppCompatActivity {
         });
 
     }
+    @NonNull
+    public TopicDTO getTopicDTO() {
+        TopicDTO topicDTO=new TopicDTO();
+        topicDTO.setOwner(userId);
+        topicDTO.setName(firstName+lastName);
+        return topicDTO;
+    }
+
 }
 
 

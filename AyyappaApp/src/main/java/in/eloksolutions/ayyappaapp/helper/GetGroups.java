@@ -67,7 +67,7 @@ public class GetGroups extends AsyncTask<String, Void, String> {
                  int memberSize=0;
                  if(groupMembers !=null)
                      memberSize=groupMembers.size();
-                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize);
+                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize,group.getOwner(),group.getIsMember());
                 results.add(obj);
            }
 

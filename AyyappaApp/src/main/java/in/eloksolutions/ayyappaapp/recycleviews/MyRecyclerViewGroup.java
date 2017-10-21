@@ -166,7 +166,7 @@ public class MyRecyclerViewGroup extends RecyclerView
         holder.label2.setText(mDataset.get(position).getmText2());
         glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         if (mDataset.get(position).getMemberSize()!=0) {
-            holder.label3.setText(mDataset.get(position).getMemberSize() + "  are Joined");
+            holder.label3.setText(mDataset.get(position).getMemberSize() + "Joined");
         }
         else {
             holder.label3.setText(  "0 Joined");

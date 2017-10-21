@@ -352,13 +352,14 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
 
         keyName="padipooja/P_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         EventDTO eventDTO = buildDTOObject();
-        TransferObserver transferObserver = transferUtility.upload(
-                "elokayyappa",     /* The bucket to upload to */
-                keyName,    /* The key for the uploaded object */
-                fileToUpload       /* The file where the data to upload exists */
-        );
-        transferObserverListener(transferObserver);
-
+        if(fileToUpload!=null) {
+            TransferObserver transferObserver = transferUtility.upload(
+                    "elokayyappa",     /* The bucket to upload to */
+                    keyName,    /* The key for the uploaded object */
+                    fileToUpload       /* The file where the data to upload exists */
+            );
+            transferObserverListener(transferObserver);
+        }
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(PadiPoojaUpdate.this)) {
                 PadiUpdateHelper createEventHelper = new PadiUpdateHelper(PadiPoojaUpdate.this);

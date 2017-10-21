@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 import java.net.URL;
 
 
+import in.eloksolutions.ayyappaapp.activities.GroupView;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 import in.eloksolutions.ayyappaapp.beans.GroupDTO;
 import in.eloksolutions.ayyappaapp.activities.GroupUpdate;
@@ -106,6 +108,9 @@ public class GroupUpdateHelper {
 
             System.out.println("json At Group Updated Time values :" + result);
             progress.dismiss();
+            Intent intent=new Intent(mcontext, GroupView.class);
+            intent.putExtra("groupId",groupDTO.getGroupid());
+            mcontext.startActivity(intent);
 
         }
     }

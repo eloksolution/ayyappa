@@ -23,15 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -40,7 +31,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import in.eloksolutions.ayyappaapp.R;
@@ -219,7 +209,7 @@ public class GroupView extends AppCompatActivity {
         System.out.println("groupDTO.getOwner()"+groupDTO.getOwner()+"  UserId"+userId);
 
         try {
-            if(groupDTO.getOwner().equals(userId) || groupDTO.getIsMember().equals(joinStatus) ){
+            if(userId.equals(groupDTO.getOwner()) || groupDTO.getIsMember().equals(joinStatus) ){
                 System.out.println("groupDTO.getIsMember()"+groupDTO.getIsMember());
                 joinButton.setVisibility(View.GONE);
             }

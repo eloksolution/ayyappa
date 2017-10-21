@@ -6,14 +6,18 @@ public class DataObjectGroup {
     private String groupId;
     private String imgResource;
     private  String addTopic;
+    private  String owner;
+    private String isMember;
     int memberSize;
 
-    public DataObjectGroup(String text1, String text2, String imgResource, String groupId, int memberSize) {
+    public DataObjectGroup(String text1, String text2, String imgResource, String groupId, int memberSize, String owner, String isMember) {
         mText1 = text1;
         mText2 = text2;
         this.groupId = groupId;
         this.imgResource = imgResource;
         this.memberSize=memberSize;
+        this.owner=owner;
+        this.isMember=isMember;
 
     }
 
@@ -65,6 +69,22 @@ public class DataObjectGroup {
         this.addTopic = addTopic;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getIsMember() {
+        return isMember;
+    }
+
+    public void setIsMember(String isMember) {
+        this.isMember = isMember;
+    }
+
     @Override
     public String toString() {
         return "DataObjectGroup{" +
@@ -73,6 +93,8 @@ public class DataObjectGroup {
                 ", groupId='" + groupId + '\'' +
                 ", imgResource='" + imgResource + '\'' +
                 ", addTopic='" + addTopic + '\'' +
+                ", owner='" + owner + '\'' +
+                ", isMember='" + isMember + '\'' +
                 ", memberSize=" + memberSize +
                 '}';
     }
