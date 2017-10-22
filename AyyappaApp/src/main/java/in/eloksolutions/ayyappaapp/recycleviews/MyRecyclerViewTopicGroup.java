@@ -39,6 +39,10 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     public MyRecyclerViewTopicGroup(ArrayList<DataObjectGroup> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
+        SharedPreferences preferences=context.getSharedPreferences(Config.APP_PREFERENCES,Context.MODE_PRIVATE);
+        userId=preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
     }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder
@@ -128,10 +132,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
-        SharedPreferences preferences=context.getSharedPreferences(Config.APP_PREFERENCES,Context.MODE_PRIVATE);
-        userId=preferences.getString("userId",null);
-        firstName=preferences.getString("firstName",null);
-        lastName=preferences.getString("lastName",null);
+
         groupMembers.setUserId(userId);
         groupMembers.setFirstname(firstName+lastName);
         Log.i(LOG_TAG, "Config.getUserId()" + groupId);
@@ -162,8 +163,8 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
         try {
-            System.out.println("mDataset.get(position)"+mDataset.get(position).getIsMember());
-            if(joinStaus.equals(userId.equals(mDataset.get(position).getOwner()) || joinStaus.equals(mDataset.get(position).getIsMember()))){
+            Log.i(LOG_TAG," data set obj "+mDataset.get(position)+" position "+position+" userId "+userId+ " joinStaus "+joinStaus);
+            if(userId.equals((mDataset.get(position).getOwner())) || joinStaus.equals(mDataset.get(position).getIsMember())){
                 System.out.println("mDataset.get(position)"+mDataset.get(position).getIsMember());
                 joinBtn.setVisibility(View.GONE);
             }

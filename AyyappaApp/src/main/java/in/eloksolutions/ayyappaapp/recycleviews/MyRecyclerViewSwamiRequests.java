@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.recycleviews;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,15 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.activities.GroupView;
+import in.eloksolutions.ayyappaapp.activities.SwamiRequest;
 import in.eloksolutions.ayyappaapp.beans.GroupMembers;
+import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
-import in.eloksolutions.ayyappaapp.helper.GroupJoinHelper;
+import in.eloksolutions.ayyappaapp.helper.SendAcceptTask;
 import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
 
 public class MyRecyclerViewSwamiRequests extends RecyclerView
@@ -28,7 +30,7 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewTopicGroup";
     private ArrayList<DataObjectRequests> mDataset;
-    private Context context;
+    private SwamiRequest context;
     private static MyClickListener myClickListener;
     TextView keyName;
     String groupId, userId, firstName, lastName;
@@ -36,7 +38,7 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
     Glide glide;
     ImageView userImage;
 
-    public MyRecyclerViewSwamiRequests(ArrayList<DataObjectRequests> myDataset, Context context) {
+    public MyRecyclerViewSwamiRequests(ArrayList<DataObjectRequests> myDataset, SwamiRequest context) {
         mDataset = myDataset;
         this.context = context;
     }
@@ -81,17 +83,20 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
 
             accept = (ImageView) itemView.findViewById(R.id.accept);
             reject = (ImageView) itemView.findViewById(R.id.reject);
-            userImage = (ImageView) itemView.findViewById(R.id.user_image);
-
+            userImage = (ImageView) itemView.findViewById(R.id.user_profile);
+            SharedPreferences preferences=context.getSharedPreferences(Config.APP_PREFERENCES,Context.MODE_PRIVATE);
+            userId=preferences.getString("userId",null);
+            firstName=preferences.getString("firstName",null);
+            lastName=preferences.getString("lastName",null);
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i(LOG_TAG, "Adding Listener " + label.getText());
                     DataObjectRequests dataObject = mDataset.get(getAdapterPosition());
+                    userSendTag(dataObject);
+
                     Log.i(LOG_TAG, "data object is Listener" + dataObject);
-                    Intent groupView = new Intent(view.getContext(), GroupView.class);
-                    groupView.putExtra("groupId", dataObject.getUserId());
-                    view.getContext().startActivity(groupView);
+
                 }
             });
         }
@@ -108,20 +113,36 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
         }
     }
 
-    private void joinEvent(View itemView) {
-        GroupJoinHelper groupJoinHelper = new GroupJoinHelper(itemView.getContext());
-        GroupMembers groupJoins = memBuildDTOObject();
 
-        String surl = Config.SERVER_URL + "group/join";
-        try {
-            String joinmem = groupJoinHelper.new JoinGroup(groupJoins, surl).execute().get();
-            System.out.println("the output from JoinEvent" + joinmem);
+    private String userSendTag(DataObjectRequests dataObject) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RegisterDTO userDTo = buildDTOObject(dataObject);
+
+
+            if (CheckInternet.checkInternetConenction(context)) {
+                String gurl = Config.SERVER_URL +"user/connect";
+                try {
+                   new SendAcceptTask(userDTo, gurl,context).execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                CheckInternet.showAlertDialog(context, "No Internet Connection",
+                        "You don't have internet connection.");
+            }
+
+        return null;
     }
-
+    private RegisterDTO buildDTOObject(DataObjectRequests dataObject) {
+        RegisterDTO newRegisterDTO= new RegisterDTO();
+        newRegisterDTO.setToUserId(dataObject.getUserId());
+        newRegisterDTO.setToFirstName(dataObject.getFirstName());
+        newRegisterDTO.setToLastName(dataObject.getLastName());
+        newRegisterDTO.setUserId(userId);
+        newRegisterDTO.setFirstName(firstName);
+        newRegisterDTO.setLastName(lastName);
+        return newRegisterDTO;
+    }
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
@@ -155,11 +176,7 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
         holder.label.setText(mDataset.get(position).getFirstName() + " " + mDataset.get(position).getLastName());
         holder.accept.setImageResource(mDataset.get(position).getYes());
         holder.reject.setImageResource(mDataset.get(position).getNo());
-        if (mDataset.get(position).getImgPath() != null) {
-            glide.with(context).load(Config.S3_URL + mDataset.get(position).getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
-        }else{
-            glide.with(context).load(R.drawable.defaulta).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
-        }
+
     }
 
         public void addItem(DataObjectRequests dataObj, int index) {
