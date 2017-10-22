@@ -21,15 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -37,7 +28,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,10 +42,10 @@ import in.eloksolutions.ayyappaapp.recycleviews.CustomAdapter;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerPadiMembers;
 import in.eloksolutions.ayyappaapp.services.RegistrationIntentService;
 import in.eloksolutions.ayyappaapp.util.Constants;
-import in.eloksolutions.ayyappaapp.util.Util;
 
 
 public class PadiPoojaView extends AppCompatActivity implements View.OnClickListener {
+
 
    ExpandableListView listview;
     TextView description, upDate,event_name,eventdate,eventtime, location, no_of_mem, join_status, text1,share;
@@ -73,11 +63,8 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     RelativeLayout   Relative1;
     Context ctx;
     RecyclerView rvPadi;
-    File fileToDownload ;
-    AmazonS3 s3;
+
     EventDTO eventDTO;
-    TransferUtility transferUtility;
-    TransferObserver transferObserver;
     SharedPreferences preference;
     TextView join;
     Glide glide;
@@ -121,7 +108,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         join_event=(ImageView) findViewById(R.id.join_event);
 
         upDate.setOnClickListener(this);
-
         join_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,20 +123,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
         preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        // hide = (ImageButton) findViewById(R.id.hide);
-       // hide.setOnClickListener(this);
-       // listview = (ayyappa.eloksolutions.in.ayyappaap.ExpandableListView) findViewById(R.id.listview);
-        try {
-
-            File outdirectory=this.getCacheDir();
-            fileToDownload=File.createTempFile("GRO","jpg",outdirectory);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        credentialsProvider();
-        setTransferUtility();
-
         EventViewHelper eventViewHelper = new EventViewHelper(this);
         String surl = Config.SERVER_URL + "padipooja/padipoojaEdit/"+padiPoojaId;
         try {
@@ -158,7 +130,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             System.out.println("the output from PadiPooja"+output);
             setValuesToTextFields(output);
             System.out.println("eventDTO.getImagePath()"+eventDTO.getImagePath());
-            setFileToDownload(eventDTO.getImagePath());
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -188,78 +160,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         });
 
     }
-
-    public void credentialsProvider(){
-
-        // Initialize the Amazon Cognito credentials provider
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
-                Regions.AP_NORTHEAST_1 // Region
-        );
-
-        setAmazonS3Client(credentialsProvider);
-    }
-    public void transferObserverListener(TransferObserver transferObserver){
-
-        //Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-        transferObserver.setTransferListener(new TransferListener(){
-
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                Log.i("File down load status ", state+"");
-                Log.i("File down load id", id+"");
-                if("COMPLETED".equals(state.toString())){
-                  //  Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
-                  //  padiImage.setImageBitmap(bit);
-                    glide.with(ctx).load(fileToDownload.getAbsolutePath()).into(padiImage);
-
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                Log.e("percentage",percentage +"");
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                Log.e("error","error");
-            }
-
-
-        });
-    }
-
-    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
-
-        // Create an S3 client
-        s3 = new AmazonS3Client(credentialsProvider);
-
-        // Set the region of your S3 bucket
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-
-    }
-
-    public void setTransferUtility(){
-
-        transferUtility = new TransferUtility(s3, getApplicationContext());
-    }
-    public void setFileToDownload(String imageKey){
-        if (Util.isEmpty(imageKey))return;
-
-        transferObserver = transferUtility.download(
-                "elokayyappa",     // The bucket to download from *//*
-                imageKey,    // The key for the object to download *//*
-                fileToDownload        // The file to download the object to *//*
-        );
-
-        transferObserverListener(transferObserver);
-
-    }
-
-
 
     @Override
     public void onClick(View v) {
@@ -327,9 +227,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             String joinmem=eventViewHelper.new JoinEvent(eventMembers,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
             addingMember(joinmem);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        }catch (Exception e){}
     }
 
     private void deleteEvent() {

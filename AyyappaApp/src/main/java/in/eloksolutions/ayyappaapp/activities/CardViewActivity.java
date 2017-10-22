@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -64,6 +63,7 @@ public class CardViewActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     private static String LOG_TAG = "CardViewActivity";
     TextView topic;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +156,7 @@ public class CardViewActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         String deekshaStartDate=preferences.getString("startDate",null);
         String deekshaEndDate=preferences.getString("endDate",null);
+        userId=preferences.getString("userId",null);
         credentialsProvider();
         // callback method to call the setTransferUtility method
         setTransferUtility();
@@ -217,7 +218,7 @@ public class CardViewActivity extends AppCompatActivity {
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
-        String url= Config.SERVER_URL+"padipooja/gettoppoojas";
+        String url= Config.SERVER_URL+"padipooja/gettoppoojas/"+userId;
         GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi);
         getEvents.execute();
 
@@ -229,7 +230,7 @@ public class CardViewActivity extends AppCompatActivity {
         GetGroups getGroups=new GetGroups(context,gurl,rvGroups);
         System.out.println("url for group list"+gurl);
         getGroups.execute();
-        final CardView noti=(CardView) findViewById(R.id.cv9);
+        final ImageView noti=(ImageView) findViewById(R.id.contacts_full);
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -277,6 +278,14 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
+        final ImageView contacts=(ImageView) findViewById(R.id.contacts_full);
+        GroupsFull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent songsIntent = new Intent(context,SwamiRequest.class);
+                startActivity(songsIntent);
+            }
+        });
         final ImageView songsFull=(ImageView) findViewById(R.id.songs_view);
         songsFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,58 +304,6 @@ public class CardViewActivity extends AppCompatActivity {
                 R.drawable.ayy
 
         };
-        ServicesGridView adapter1 = new ServicesGridView(CardViewActivity.this, services_one, Images_one);
-        grid=(GridView)findViewById(R.id.gridview_one);
-        grid.setAdapter(adapter1);
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //Toast.makeText(MainActivity.this, "You Clicked at " +array[+ position], Toast.LENGTH_SHORT).show();
-                switch (position) {
-                    case 0:
-                        String uri = "https://www.youtube.com/watch?v=vxpEMuM1eBc";
-                        Intent intent = new Intent(CardViewActivity.this,WebActivity.class);
-                        intent.putExtra("uri",uri);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        String uri1 = "https://www.youtube.com/watch?v=hRtuGEQmm1E";
-                        Intent intent1 = new Intent(CardViewActivity.this,WebActivity.class);
-                        intent1.putExtra("uri",uri1);
-                        startActivity(intent1);
-                        break;
-                    case 2:
-                        String uri2 = "https://www.youtube.com/watch?v=4wjuDG7WXY8";
-                        Intent intent2 = new Intent(CardViewActivity.this,WebActivity.class);
-                        intent2.putExtra("uri",uri2);
-                        startActivity(intent2);
-                        break;
-                    case 3:
-                        String uri3 = "https://www.youtube.com/watch?v=FTBLd2zz8IU";
-                        Intent intent3 = new Intent(CardViewActivity.this,WebActivity.class);
-                        intent3.putExtra("uri",uri3);
-                        startActivity(intent3);
-                        break;
-                    case 4:
-                        String uri4 = "https://www.youtube.com/watch?v=o4vv3PN45Eo";
-                        Intent intent4 = new Intent(CardViewActivity.this,WebActivity.class);
-                        intent4.putExtra("uri",uri4);
-                        startActivity(intent4);
-                        break;
-                    case 5:
-                        String uri5 = "https://www.youtube.com/watch?v=TfT8w5v8KSY";
-                        Intent intent5 = new Intent(CardViewActivity.this,WebActivity.class);
-                        intent5.putExtra("uri",uri5);
-                        startActivity(intent5);
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-
-        });
 
 
     }

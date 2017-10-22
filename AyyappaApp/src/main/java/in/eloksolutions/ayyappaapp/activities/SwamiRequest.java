@@ -52,8 +52,8 @@ public class SwamiRequest extends AppCompatActivity {
         rvGroups.setLayoutManager(lmPadi);
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
         userId=preferences.getString("userID",null);
-        String url= Config.SERVER_URL+"user/receivedConnections/59a40543e4b0a56ae1aeed7e";
-        GetSwamiRequests getGroups=new GetSwamiRequests(context,url,rvGroups);
+        String url= Config.SERVER_URL+"user/receivedConnections/"+userId;
+        GetSwamiRequests getGroups=new GetSwamiRequests(SwamiRequest.this,url,rvGroups);
         System.out.println("url for group list"+url);
         getGroups.execute();
 
@@ -94,6 +94,11 @@ public class SwamiRequest extends AppCompatActivity {
             }
         });
 
+    }
+    public void contacList( String userId) {
+       Intent groupView = new Intent(SwamiRequest.this, UserView.class);
+        groupView.putExtra("userId", userId);
+        startActivity(groupView);
     }
 }
 

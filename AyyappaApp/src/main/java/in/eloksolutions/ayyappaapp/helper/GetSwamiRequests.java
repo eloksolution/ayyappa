@@ -1,7 +1,6 @@
 package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.beans.GroupDTO;
+import in.eloksolutions.ayyappaapp.activities.SwamiRequest;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewSwamiRequests;
 import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
@@ -26,13 +25,13 @@ import in.eloksolutions.ayyappaapp.util.RestServices;
  */
 
 public class GetSwamiRequests extends AsyncTask<String, Void, String> {
-    private Context mcontext;
+    private SwamiRequest swamiRequest;
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
 
-    public GetSwamiRequests(Context mcontext, String surl, RecyclerView rvGroups) {
-        this.mcontext = mcontext;
+    public GetSwamiRequests(SwamiRequest swamiRequest, String surl, RecyclerView rvGroups) {
+        this.swamiRequest = swamiRequest;
         this.surl = surl;
         this.rvGroups = rvGroups;
     }
@@ -40,7 +39,7 @@ public class GetSwamiRequests extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progress = new ProgressDialog(mcontext);
+        progress = new ProgressDialog(swamiRequest);
         progress.setMessage("Loading...");
         progress.show();
     }
@@ -61,18 +60,17 @@ public class GetSwamiRequests extends AsyncTask<String, Void, String> {
         progress.dismiss();
         if (result != null && result.trim().length() > 0) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<GroupDTO>>() {
+            Type type = new TypeToken<List<RegisterDTO>>() {
             }.getType();
             List<RegisterDTO> fromJson = gson.fromJson(result, type);
             ArrayList<DataObjectRequests> results = new ArrayList<DataObjectRequests>();
             for (RegisterDTO requests : fromJson) {
-                DataObjectRequests obj = new DataObjectRequests(requests.getUserId(), requests.getImgPath(), requests.getFirstName(), requests.getLastName(), R.drawable.yes,R.drawable.no);
+                DataObjectRequests obj = new DataObjectRequests(requests.getUserId(), requests.getImgPath(), requests.getFirstName(), requests.getLastName(), R.drawable.yes, R.drawable.no);
                 results.add(obj);
-                MyRecyclerViewSwamiRequests mAdapter = new MyRecyclerViewSwamiRequests(results, mcontext);
-                rvGroups.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
             }
+            MyRecyclerViewSwamiRequests mAdapter = new MyRecyclerViewSwamiRequests(results, swamiRequest);
+            rvGroups.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
         }
-
     }
 }

@@ -6,7 +6,6 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -14,8 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -35,10 +32,6 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -104,21 +97,7 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        pin_my_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-        PlacePicker.IntentBuilder intentBuilder=new PlacePicker.IntentBuilder();
-        Intent intent;
-        try {
-            intent=intentBuilder.build(CreatePadiPooja.this);
-            startActivityForResult(intent, REQUEST_LOCATION );
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-            }
-        });
+
         credentialsProvider();
 
         // callback method to call the setTransferUtility method
@@ -233,21 +212,8 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
                 Exception error = result.getError();
             }
         }
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
-        } else {
-            if (requestCode == REQUEST_LOCATION) {
-                if (resultCode == RESULT_OK) {
-                    Place place = PlacePicker.getPlace(data, this);
-                    String address = String.format("place: %s", place.getAddress());
-                    addresss.setText(address);
-                }
-            }
-        }
     }
     public void transferObserverListener(TransferObserver transferObserver){
 
@@ -423,17 +389,9 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         if (!Validation.hasText(event_name)) ret = false;
         return ret;
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode) {
-            case 1:
-
-                break;
-        }
     }
-}
+
 
 
 

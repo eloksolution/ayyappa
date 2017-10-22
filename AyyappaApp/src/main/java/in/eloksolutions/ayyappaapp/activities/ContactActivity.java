@@ -16,7 +16,7 @@ import in.eloksolutions.ayyappaapp.helper.GetContacts;
 
 public class ContactActivity extends AppCompatActivity {
     Context context;
-    String memId,memName;
+    String userId,userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +41,15 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
 
-        memId = preferences.getString("memId", null);
-        memName= preferences.getString("memName", null);
+        userId = preferences.getString("userId", null);
+        userName= preferences.getString("firstName", null)+preferences.getString("firstName", null);
         context=this;
 
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvContacts);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
-        String url= Config.SERVER_URL+"get_contacts.php?memId="+memId;
+        String url= Config.SERVER_URL+"user/connections/"+userId;
         GetContacts getContacts=new GetContacts(context,url,rvPadi);
         getContacts.execute();
 

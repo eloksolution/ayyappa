@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.net.URL;
 
 import in.eloksolutions.ayyappaapp.util.RestServices;
@@ -46,24 +48,12 @@ public class GetContacts extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         System.out.println("Get Contact Result is "+result);
         progress.dismiss();
-        /*
+
         if (result!=null && result.trim().length()>0) {
             Gson gson = new Gson();
-           Type type = new TypeToken<List<MemberDTO>>() { }.getType();
-          List<MemberDTO> fromJson = gson.fromJson(result, type);
-            ArrayList results = new ArrayList<DataObject>();
-            String events[]=new String[fromJson.size()];
-            int i=0;
-            for (MemberDTO event : fromJson) {
-                events[i] = event.getMemName();
-                System.out.println("contact name "+events[i]);
-                DataObject obj = new DataObject(events[i],event.getMemId()+"" , R.drawable.chat_icon);
-                results.add(i, obj);
-                i++;
-            }
-            MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results);
-            rvPadi.setAdapter(mAdapter);
-        }*/
+
+
+        }
     }
 
 }

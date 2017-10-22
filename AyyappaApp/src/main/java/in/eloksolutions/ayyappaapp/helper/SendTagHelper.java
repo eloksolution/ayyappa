@@ -69,6 +69,8 @@ public class SendTagHelper {
         protected void onPostExecute(String result) {
             Log.i(tag, "result Response send Tag helper is ::  " +result);
             progress.dismiss();
+
+
         }
 
     }

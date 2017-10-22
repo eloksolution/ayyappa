@@ -79,9 +79,7 @@ public class GetTopicGroups extends AsyncTask<String, Void, String> {
                  DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize, group.getOwner(), group.getIsMember());
                 results.add(obj);
            }
-            for(DataObjectGroup dog:results){
 
-            }
             MyRecyclerViewGroup mAdapter = new MyRecyclerViewGroup(results,mcontext,s3,transferUtility);
             rvGroups.setAdapter(mAdapter);
         }
