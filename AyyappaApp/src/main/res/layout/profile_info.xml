@@ -27,6 +27,13 @@
                     android:layout_height="120.0dip"
                     android:src="@drawable/user_view"
                     android:layout_centerHorizontal="true" />
+                <ImageView
+                    android:id="@+id/profile_edit"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:src="@drawable/pen"
+                    android:layout_toStartOf="@+id/profile_img"
+                  />
 
 
                 <TextView
@@ -78,7 +85,7 @@
                         android:id="@+id/tag_request_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Send Swami Request"
+                        android:text="Tag"
                         android:layout_below="@+id/tag_request_image"
                         android:layout_centerInParent="true" />
                     <LinearLayout

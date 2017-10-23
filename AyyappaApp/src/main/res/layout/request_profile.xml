@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background">
+    <LinearLayout
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/listbg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/user_profile"
+                android:layout_gravity="center"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/user_view"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center|left"
+                android:paddingLeft="2dp"
+                android:button="@null"
+                android:id="@+id/name_not"
+                android:textColor="@color/from"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Suresh Babu "/>
+            <ImageView
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:button="@null"
+                android:id="@+id/accept"
+                android:src="@drawable/yes"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+               />
+            <ImageView
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:button="@null"
+                android:id="@+id/reject"
+                android:src="@drawable/no"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+               />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

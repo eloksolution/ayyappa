@@ -22,7 +22,7 @@
                 android:layout_height="70dp"
                 android:background="@null"
                 android:onClick="btnCat1"
-                android:src="@drawable/join"
+                android:src="@drawable/joined"
             />
 
             <TextView
