@@ -15,6 +15,7 @@ public class UserVo {
 	private String lon;
 	private String imgPath;
 	private String status;
+	private String fcmToken;
 	
 	public String getImgPath() {
 		return imgPath;
@@ -99,6 +100,12 @@ public class UserVo {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getFcmToken() {
+		return fcmToken;
+	}
+	public void setFcmToken(String fcmToken) {
+		this.fcmToken = fcmToken;
 	}
 	@Override
 	public String toString() {

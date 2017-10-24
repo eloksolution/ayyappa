@@ -85,7 +85,7 @@ public class GroupDAO {
            DBObject group = cursor.next();
         	ObjectId mobjid=(ObjectId)group.get("_id");
 			System.out.println("id is  "+mobjid);
-			Group dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"));
+			Group dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"),(Date)group.get("createDate"));
 			List<User> groupMember=getGroupMembers(group);
 			if(!Util.isListEmpty(groupMember))
 				dbgroup.setGroupMembers(groupMember);
@@ -121,7 +121,7 @@ public class GroupDAO {
 	           DBObject group = cursor.next();
 	           ObjectId mobjid=(ObjectId)group.get("_id");
 	           System.out.println("description "+group.get("description"));
-	           dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"));
+	           dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"),(Date)group.get("createDate"));
 	           List<User> groupMembers=getGroupMembers(group);
 	           dbgroup.setGroupMembers(groupMembers);
 	        }
@@ -143,7 +143,7 @@ public class GroupDAO {
 					(String) group.get("name"),
 					(String) group.get("description"),
 					(String) group.get("owner"),
-					(String) group.get("imagePath"));
+					(String) group.get("imagePath"),(Date)group.get("createDate"));
 			groups.add(dbgroup);
 		}
 		cursor.close();
@@ -223,7 +223,7 @@ public class GroupDAO {
 					(String) group.get("name"),
 					(String) group.get("description"),
 					(String) group.get("owner"),
-					(String) group.get("imagePath"));
+					(String) group.get("imagePath"),(Date)group.get("createDate"));
 			groups.add(dbgroup);
 		}
 		cursor.close();

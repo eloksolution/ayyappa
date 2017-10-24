@@ -75,26 +75,27 @@ public class PadipojaDAO {
 	                     .append("name", padipooja.getName());
 	}
 	
-	public List<Padipooja> getPadipooja() {
+
+	public List<Padipooja> getPadiPoojas(String userId) {
 		DBCursor cursor = collection.find().sort(new  BasicDBObject("createDate", -1));
-		List<Padipooja> padipooja = getPadiPoojasDB(cursor);
+		List<Padipooja> padipooja = getPadiPoojasDB(cursor,userId);
 		return padipooja;
 	}
 	
 	public List<Padipooja> getUserPadiPoojas(String userId) {
 		BasicDBObject query = new BasicDBObject("memId", userId);
 		DBCursor cursor = collection.find(query).sort(new  BasicDBObject("createDate", -1));
-		List<Padipooja> padipooja = getPadiPoojasDB(cursor);
+		List<Padipooja> padipooja = getPadiPoojasDB(cursor,userId);
 		return padipooja;
 	}
 	
-	public List<Padipooja> getTOPPadipooja() {
+	public List<Padipooja> getTOPPadipooja(String userId) {
 		DBCursor cursor = collection.find().sort(new  BasicDBObject("createDate", -1)).limit(5);
-		List<Padipooja> padipooja = getPadiPoojasDB(cursor);
+		List<Padipooja> padipooja = getPadiPoojasDB(cursor,userId);
 		return padipooja;
 	}
 
-	private List<Padipooja> getPadiPoojasDB(DBCursor cursor) {
+	private List<Padipooja> getPadiPoojasDB(DBCursor cursor, String userId) {
 		List<Padipooja> padipooja = new ArrayList<>();
 		GregorianCalendar cal=new GregorianCalendar();
 		while (cursor.hasNext()) {
@@ -115,11 +116,18 @@ public class PadipojaDAO {
 				pooja.setYear(cal.get(Calendar.YEAR)+"");
 				pooja.setWeek(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH ));
 			}
+			pooja.setIsMember((isMember(padi,userId))?"Y":"N");
+			pooja.setNoOfMembers(noOfMembers(padi)+"");
 			padipooja.add(pooja);
 		}
 		return padipooja;
 	}
-
+	private int noOfMembers(DBObject padi) {
+		BasicDBList dbMembers = (BasicDBList) padi.get("members");
+		if (dbMembers == null)
+			return 0;
+		return dbMembers.size();
+	}
 	public Padipooja searchById(String padipoojaid,String userId) {
 		Padipooja padipooja= searchById(padipoojaid);
 		List<User> members=padipooja.getPadiMembers();
@@ -133,6 +141,17 @@ public class PadipojaDAO {
 		return padipooja;
 	}
 	
+	private boolean isMember(DBObject padi, String userId) {
+		BasicDBList dbMembers = (BasicDBList) padi.get("members");
+		if (dbMembers == null)
+			return false;
+		for (Iterator<Object> it = dbMembers.iterator(); it.hasNext();) {
+			BasicDBObject dbo = (BasicDBObject) it.next();
+			if (userId.equalsIgnoreCase(dbo.getString("userId")))
+				return true;
+		}
+		return false;
+	}
 	private boolean isMember(List<User> members, String userId) {
 		for(User u:members){
 			if(u.getUserId().equals(userId))return true;

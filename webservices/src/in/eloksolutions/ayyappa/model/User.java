@@ -21,6 +21,8 @@ public class User {
 	private String createDate;
 	private String imgPath;
 	private LatLong loc;
+	private String lat;
+	private String lon;
 	private String tokenFCM;
 	private List<GroupMember> groups;
 	private List<UserTopics> userTopics;
@@ -217,6 +219,18 @@ public class User {
 			this.lon = lon;
 		}
 		
+	}
+	public String getLon() {
+		return lon;
+	}
+	public void setLon(String lon) {
+		this.lon = lon;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
 	}
 	@Override
 	public String toString() {

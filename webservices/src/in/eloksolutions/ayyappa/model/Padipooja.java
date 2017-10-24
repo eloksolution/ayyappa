@@ -17,6 +17,7 @@ public class Padipooja {
 	String name;
 	String isMember;
 	String imgPath;
+	String noOfMembers;
 
 	List<User> padiMembers;
 	
@@ -132,6 +133,12 @@ public class Padipooja {
 	}
 	public void setYear(String year) {
 		this.year = year;
+	}
+	public String getNoOfMembers() {
+		return noOfMembers;
+	}
+	public void setNoOfMembers(String noOfMembers) {
+		this.noOfMembers = noOfMembers;
 	}
 	@Override
 	public String toString() {

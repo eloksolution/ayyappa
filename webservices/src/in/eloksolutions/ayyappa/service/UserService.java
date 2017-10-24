@@ -76,5 +76,8 @@ public class UserService {
 	public List<UserVo> receivedConnections(String userid) {
 		return userDAO.getReceivedConnection(userid);
 	}
+	public String updateUserToken(UserVo userVo) {
+		return userDAO.updateUserToken(userVo.getUserId(),userVo.getFcmToken());
+	}
 	
 }

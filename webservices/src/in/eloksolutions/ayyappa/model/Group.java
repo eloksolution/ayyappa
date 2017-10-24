@@ -1,5 +1,6 @@
 package in.eloksolutions.ayyappa.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Group {
@@ -7,7 +8,7 @@ public class Group {
 	String name;
     String description;
 	String owner;
-	String createDate;
+	Date createDate;
 	int numberOfMembers;
 	String type;
 	String imagePath;
@@ -19,15 +20,24 @@ public class Group {
 	public Group(){
 		
 	}
+	public Group(  String groupId,String name, String description, String owner,String imagePath,Date createDate) {
+		super();
+		this.groupId = groupId;
+		this.name = name;
+		this.description = description;
+		this.owner = owner;
+		this.createDate = createDate;
+		//this.numberOfMembers = numberOfMembers;
+		//this.type = type;
+		this.imagePath = imagePath;
+	}
+	
 	public Group(  String groupId,String name, String description, String owner,String imagePath) {
 		super();
 		this.groupId = groupId;
 		this.name = name;
 		this.description = description;
 		this.owner = owner;
-		//this.createDate = createDate;
-		//this.numberOfMembers = numberOfMembers;
-		//this.type = type;
 		this.imagePath = imagePath;
 	}
 	
@@ -63,10 +73,10 @@ public class Group {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	public String getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 	public int getNumberOfMembers() {

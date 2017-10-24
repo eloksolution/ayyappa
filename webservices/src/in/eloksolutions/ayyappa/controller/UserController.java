@@ -66,19 +66,40 @@ public class UserController {
 		 return "success";
 	}
 	
-
+	@ResponseBody
+	@RequestMapping(value = "/updateUserToken", method = RequestMethod.POST)
+	public String updateUserToken(@RequestBody UserVo userVo){
+		System.out.println("Request is updateUserToken coming userid "+userVo);
+		 try {
+			userService.updateUserToken(userVo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 return "success";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/connections/{userid}")
 	public User getConnections(@PathVariable("userid") String userid, HttpServletRequest request) {
 		System.out.println("getConnections userid "+userid);
-		return userService.getConnections(userid);
+		try {
+			return userService.getConnections(userid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/receivedConnections/{userid}")
 	public List<UserVo> receivedConnections(@PathVariable("userid") String userid, HttpServletRequest request) {
 		System.out.println("receivedConnections userid "+userid);
-		return userService.receivedConnections(userid);
+		try {
+			return userService.receivedConnections(userid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@ResponseBody

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import in.eloksolutions.ayyappa.dao.TopicDAO;
+import in.eloksolutions.ayyappa.messaging.SendNotification;
 import in.eloksolutions.ayyappa.model.Discussion;
 import in.eloksolutions.ayyappa.model.Topic;
 
@@ -15,7 +16,9 @@ public class TopicService {
 	TopicDAO topicDAO;
 	
 	public void addTopic(Topic topic){
-		topicDAO.addTopic(topic);
+		String topicId=topicDAO.addTopic(topic);
+		SendNotification.sendMessageToGroup(topic.getGroupId(),topicId,topic.getTopic());
+		
 	}
 	
 	public void updateTopic(Topic topic){
@@ -32,6 +35,7 @@ public class TopicService {
 
 	public void addDiscussion(String topicId,Discussion diss){
 		 topicDAO.addDiscussion(topicId, diss);
+		 SendNotification.sendMessageToGroup(topicId,topicId,diss.getComment());
 	}
 
 	public List<Topic> getGroupTopics(String groupId) {

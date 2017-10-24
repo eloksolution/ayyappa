@@ -32,28 +32,19 @@ public class PadiPoojaController {
 	
 		
 	@ResponseBody
-	@RequestMapping(value = "/getpoojas", method = RequestMethod.GET)
-	public List getPadipooja( HttpServletRequest request){
-		System.out.println("Request padipooja xxxx is coming "+request);
-		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja();
-		System.out.println("Colection is coming "+padipoojaCol);
-		return padipoojaCol;
-	}
-	
-	@ResponseBody
 	@RequestMapping(value = "/getpoojas/{userid}", method = RequestMethod.GET)
 	public List getUserPadipooja( HttpServletRequest request,@PathVariable("userid") String userId){
-		System.out.println("Request padipooja xxxx is coming "+request);
+		System.out.println("Request padipooja xxxx is coming "+request+" userId "+userId);
 		List<Padipooja> padipoojaCol = padipoojaService.getPadipooja(userId);
 		System.out.println("Colection is coming "+padipoojaCol);
 		return padipoojaCol;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/gettoppoojas", method = RequestMethod.GET)
-	public List getTopPadipooja( HttpServletRequest request){
-		System.out.println("Request padipooja xxxx is coming "+request);
-		List<Padipooja> padipoojaCol = padipoojaService.getTopPadipooja();
+	@RequestMapping(value = "/gettoppoojas/{userid}", method = RequestMethod.GET)
+	public List getTopPadipooja( HttpServletRequest request,@PathVariable("userid") String userId){
+		System.out.println("Request padipooja xxxx is coming "+request+" userId "+userId);
+		List<Padipooja> padipoojaCol = padipoojaService.getTopPadipooja(userId);
 		System.out.println("Colection is coming "+padipoojaCol);
 		return padipoojaCol;
 	}

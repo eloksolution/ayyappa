@@ -19,12 +19,8 @@ public class PadipoojaService {
 		return padipoojaDao.addPadipooja(padipooja);
 	}
 
-	public List<Padipooja> getPadipooja() {
-		return padipoojaDao.getPadipooja();
-	}
-	
-	public List<Padipooja> getTopPadipooja() {
-		return padipoojaDao.getTOPPadipooja();
+	public List<Padipooja> getTopPadipooja(String userId) {
+		return padipoojaDao.getTOPPadipooja(userId);
 	}
 
 	public Padipooja searchById(String padipoojaid) {
@@ -43,7 +39,7 @@ public class PadipoojaService {
 	}
 
 	public List<Padipooja> getPadipooja(String userId) {
-		return padipoojaDao.getUserPadiPoojas(userId);
+		return padipoojaDao.getPadiPoojas(userId);
 	}
 
 	

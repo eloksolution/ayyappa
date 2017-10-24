@@ -208,9 +208,13 @@ public class UserDAO {
 				   ,(String)user.get("STATE")
 				   ,(String)user.get("IMGPATH"));
 		   DBObject dbo=(DBObject) user.get("LOC");
-		   BasicDBList locs = (BasicDBList) dbo.get("coordinates");
-		   if(locs!=null){
-			   dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
+		   if(dbo!=null){
+			   BasicDBList locs = (BasicDBList) dbo.get("coordinates");
+			   if(locs!=null){
+				   dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
+				   dbuser.setLon(locs.get(1).toString());
+				   dbuser.setLat(locs.get(0).toString());
+			   }
 		   }
 		return dbuser;
 	}
@@ -265,25 +269,26 @@ public class UserDAO {
 		return wr.getUpsertedId().toString();
 	}
 	
-	public String updateToken(User user) {
+	public String updateUserToken(String userId,String fcmToken) {
 		BasicDBObject newDocument = new BasicDBObject();
-		newDocument.append("$set", new BasicDBObject().append("TOKENFCM", user.getTokenFCM()));
-		WriteResult wr=collection.update(new BasicDBObject("_id", new ObjectId(user.getUserId())),newDocument);
+		newDocument.append("$set", new BasicDBObject().append("TOKENFCM", fcmToken));
+		WriteResult wr=collection.update(new BasicDBObject("_id", new ObjectId(userId)),newDocument);
 		return wr.getUpsertedId().toString();
 	}
 	
 	public String requestConnect(UserConnectionVO user) {
-		DBObject dbFromUsers= toDBUser(user);
+		DBObject dbToUsers= toDBUser(user);
 		BasicDBObject update = new BasicDBObject();
-		update.put( "$push", new BasicDBObject( "SENTCONNECTIONS", dbFromUsers ) );
+		update.put( "$push", new BasicDBObject( "SENTCONNECTIONS", dbToUsers ) );
 		BasicDBObject match = getIdObject(user.getUserId());
 		WriteResult rs=collection.update(match,update);
 		
-		DBObject dbToUsers= toDBFromUser(user);
-		dbToUsers.put( "$push", new BasicDBObject( "RECEIVEDCONNECTIONS", dbToUsers ) );
+		DBObject dbFromUsers= fromDBUser(user);
+		BasicDBObject update1 = new BasicDBObject();
+		update1.put( "$push", new BasicDBObject( "RECEIVEDCONNECTIONS", dbFromUsers ) );
 		BasicDBObject match1 = getIdObject(user.getConnectedToId());
-		WriteResult rs1=collection.update(match1,dbToUsers);
-		return rs.getUpsertedId().toString();
+		WriteResult rs1=collection.update(match1,update1);
+		return rs.isUpdateOfExisting()+"";
 	}
 	
 	public List<UserVo> getReceivedConnection(String userId){
@@ -292,12 +297,13 @@ public class UserDAO {
 		DBObject user = cur.next();
 		 BasicDBList users = (BasicDBList) user.get("RECEIVEDCONNECTIONS");
 		 ArrayList<UserVo> userReceivedList=new ArrayList<>();
+		 if(Util.isListEmpty(users))return userReceivedList;
 		 for(Object obj:users){
 			 DBObject bdb=(DBObject)obj;
 			 UserVo u=new UserVo();
-			 u.setUserId((String)bdb.get("FROMUSERID"));
-			 u.setFirstName((String)bdb.get("FROMFIRSTNAME"));
-			 u.setLastName((String)bdb.get("FROMLASTNAME"));
+			 u.setUserId((String)bdb.get("USERID"));
+			 u.setFirstName((String)bdb.get("FIRSTNAME"));
+			 u.setLastName((String)bdb.get("LASTNAME"));
 			 u.setStatus((String)bdb.get("STATUS"));
 			 userReceivedList.add(u);
 		 }
@@ -311,12 +317,13 @@ public class UserDAO {
 		DBObject user = cur.next();
 		 BasicDBList users = (BasicDBList) user.get("SENTCONNECTIONS");
 		 ArrayList<UserVo> userSentList=new ArrayList<>();
+		 if(Util.isListEmpty(users))return userSentList;
 		 for(Object obj:users){
 			 DBObject bdb=(DBObject)obj;
 			 UserVo u=new UserVo();
-			 u.setUserId((String)bdb.get("TOUSERID"));
-			 u.setFirstName((String)bdb.get("TOFIRSTNAME"));
-			 u.setLastName((String)bdb.get("TOLASTNAME"));
+			 u.setUserId((String)bdb.get("USERID"));
+			 u.setFirstName((String)bdb.get("FIRSTNAME"));
+			 u.setLastName((String)bdb.get("LASTNAME"));
 			 u.setStatus((String)bdb.get("STATUS"));
 			 userSentList.add(u);
 		 }
@@ -328,16 +335,15 @@ public class UserDAO {
 		DBObject dbUsers= toDBUser(user);
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "CONNECTIONS", dbUsers ) );
-		BasicDBObject match = getIdObject(user.getConnectedToId());
+		BasicDBObject match = getIdObject(user.getUserId());
 		WriteResult rs=collection.update(match,update);
 		
-		DBObject dbFromUsers= toDBFromUser(user);
+		DBObject dbFromUsers= fromDBUser(user);
 		BasicDBObject fromUpdate = new BasicDBObject();
 		fromUpdate.put( "$push", new BasicDBObject( "CONNECTIONS", dbFromUsers ) );
-		BasicDBObject fromMatch = getIdObject(user.getUserId());
+		BasicDBObject fromMatch = getIdObject(user.getConnectedToId());
 		rs=collection.update(fromMatch,dbFromUsers);
 		System.out.println("Write result is "+rs.getUpsertedId());
-		
 		changeConnectionStatus(user);
 		return rs.getUpsertedId().toString();
 	}
@@ -350,7 +356,7 @@ public class UserDAO {
 		andQuery.put("$and", obj);
 		BasicDBObject set = new BasicDBObject(
 			    "$set", 
-			    new BasicDBObject("SENTCONNECTIONS.STATUS", "Connected")
+			    new BasicDBObject("SENTCONNECTIONS.$.STATUS", "Connected")
 			);
 		WriteResult rs=collection.update(andQuery,set);
 		System.out.println("Updating connection status "+rs.getUpsertedId());
@@ -416,16 +422,16 @@ public class UserDAO {
 	
 	private static final DBObject toDBUser(UserConnectionVO userConnection) {
 	    return new BasicDBObject("CONNECTIONDATE", new Date())
-	    					.append("TOUSERID", userConnection.getConnectedToId())
-						 .append("TOFIRSTNAME", userConnection.getToFirstName())
+	    					.append("USERID", userConnection.getConnectedToId())
+						 .append("FIRSTNAME", userConnection.getToFirstName())
 						    .append("STATUS", "")
-					     .append("TOLASTNAME", userConnection.getToLastName());
+					     .append("LASTNAME", userConnection.getToLastName());
 	}
 	
-	private static final DBObject toDBFromUser(UserConnectionVO userConnection) {
-	    return new BasicDBObject("FROMFIRSTNAME", userConnection.getFirstName())
-	                     .append("FROMLASTNAME", userConnection.getLastName())
-	                      .append("FROMUSERID", userConnection.getLastName())
+	private static final DBObject fromDBUser(UserConnectionVO userConnection) {
+	    return new BasicDBObject("FIRSTNAME", userConnection.getFirstName())
+	                     .append("LASTNAME", userConnection.getLastName())
+	                      .append("USERID", userConnection.getUserId())
 	                        .append("STATUS", "")
 	                     .append("CONNECTIONDATE", new Date());
 	}
@@ -455,6 +461,6 @@ public class UserDAO {
 
 	private Object getCoordObj(double d, double e) {
 		return new BasicDBObject("type","Point" )
-								.append("coordinates", Arrays.asList(new Double[]{78.5369922, 17.4495948}));
+								.append("coordinates", Arrays.asList(new Double[]{d, e}));
 	}
 }

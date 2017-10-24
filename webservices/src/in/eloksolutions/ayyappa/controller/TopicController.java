@@ -4,6 +4,7 @@ package in.eloksolutions.ayyappa.controller;
 import in.eloksolutions.ayyappa.model.Discussion;
 import in.eloksolutions.ayyappa.model.Topic;
 import in.eloksolutions.ayyappa.service.TopicService;
+import in.eloksolutions.ayyappa.util.ErrorUtil;
 import in.eloksolutions.ayyappa.vo.DiscussionVO;
 import in.eloksolutions.ayyappa.vo.TopicVO;
 
@@ -35,17 +36,30 @@ public class TopicController {
 		System.out.println("Request is coming "+topic);
 		if(topic.getGroupId()==null || topic.getGroupId().trim().length()==0)
 			return "Topic should be associated with Group";
-		Topic mTopic=new Topic(topic.getTopic(), topic.getDescription(),topic.getOwner(), topic.getGroupId(),topic.getName(),topic.getImgPath());
-		topicService.addTopic(mTopic);
+		try {
+			Topic mTopic=new Topic(topic.getTopic(), topic.getDescription(),topic.getOwner(), topic.getGroupId(),topic.getName(),topic.getImgPath());
+			topicService.addTopic(mTopic);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ErrorUtil.getErrorMessage("addTopic");
+		}
 		return "success";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String updateTopic(@RequestBody TopicVO reqTopic){
-		System.out.println("Request is coming "+reqTopic);
-		Topic topic=new Topic(reqTopic.getTopicId(),reqTopic.getTopic(),reqTopic.getDescription(),reqTopic.getGroupId(),reqTopic.getOwner(),new Date().getTime(),reqTopic.getName(),reqTopic.getImgPath());
-		topicService.updateTopic(topic);
+	public String updateTopic(@RequestBody TopicVO reqTopic) {
+		System.out.println("Request is coming " + reqTopic);
+		try {
+			Topic topic = new Topic(reqTopic.getTopicId(), reqTopic.getTopic(),
+					reqTopic.getDescription(), reqTopic.getGroupId(),
+					reqTopic.getOwner(), new Date().getTime(),
+					reqTopic.getName(), reqTopic.getImgPath());
+			topicService.updateTopic(topic);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ErrorUtil.getErrorMessage("updateTopic");
+		}
 		return "success";
 	}
 
@@ -53,9 +67,15 @@ public class TopicController {
 	@RequestMapping(value = "/getTopics", method = RequestMethod.GET)
 	public List<Topic> gettopic( HttpServletRequest request){
 		System.out.println("Request xxxx is coming "+request);
-		List<Topic> topiccollection = topicService.getTopics();
-		System.out.println("Colection is coming "+topiccollection);
-		return topiccollection;
+		List<Topic> topiccollection;
+		try {
+			topiccollection = topicService.getTopics();
+			System.out.println("Colection is coming "+topiccollection);
+			return topiccollection;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@ResponseBody
