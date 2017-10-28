@@ -34,26 +34,26 @@ public class UserService {
 	public User searchById(String userid) {
 		return userDAO.searchById(userid);
 	}
-
+	
 	public String update(User user) {
 		return userDAO.update(user);
 	}
 
-	public User getConnections(String userid) {
+	public User getConnections(String userid) throws Exception {
 		return userDAO.getConnections(userid);
 	}
 
-	public User getGroups(String userid) {
+	public User getGroups(String userid) throws Exception{
 		return userDAO.getUserWithGroups(userid);
 	}
-	public User getTopics(String userid) {
+	public User getTopics(String userid) throws Exception {
 		return userDAO.getUserWithTopics(userid);
 	}
 
 	public List<Padipooja> getPadis(String userid) {
 		return padipojaDAO.getUserPadiPoojas(userid);
 	}
-	public List<User> findNearMe(String userid) {
+	public List<User> findNearMe(String userid) throws Exception {
 		return userDAO.findNearMe(userid);
 	}
 	public String addDeeksha(DeekshaVO deekshaVO) {
@@ -67,13 +67,13 @@ public class UserService {
 	public DeekshaVO getDeeksha(String userId) {
 		return deekshaDAO.getDeeksha(userId);
 	}
-	public String requestConnection(UserConnectionVO user) {
+	public String requestConnection(UserConnectionVO user) throws Exception {
 		return userDAO.requestConnect(user);
 	}
 	public String connect(UserConnectionVO user) {
 		return userDAO.connect(user);
 	}
-	public List<UserVo> receivedConnections(String userid) {
+	public List<UserVo> receivedConnections(String userid) throws Exception {
 		return userDAO.getReceivedConnection(userid);
 	}
 	public String updateUserToken(UserVo userVo) {

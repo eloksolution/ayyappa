@@ -3,6 +3,7 @@ package in.eloksolutions.ayyappa.service;
 import in.eloksolutions.ayyappa.dao.GroupDAO;
 import in.eloksolutions.ayyappa.dao.UserDAO;
 import in.eloksolutions.ayyappa.model.Group;
+import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.vo.GroupMember;
 
 import java.util.List;
@@ -18,9 +19,10 @@ public class GroupService {
 	UserDAO userDAO;
 	
 	public String addGroup(Group group){
-		String groupId=groupDAO.addGroup(group);
-		GroupMember gm=new GroupMember(groupId,group.getOwner(),group.getName());
-		userDAO.addUserGroup(gm);
+		User owner=userDAO.searchById(group.getOwner());
+		String groupId=groupDAO.addGroup(group,owner);
+		
+		userDAO.addUserGroup(group);
 		return groupId;
 	}
 
@@ -36,6 +38,7 @@ public class GroupService {
 		return groupDAO.searchById(groupid,userId);
 	}
 	public String join(GroupMember groupMem ) {
+		groupMem.setImgPath(userDAO.getImagePath(groupMem.getUserId()));
 		return groupDAO.join(groupMem);
 	}
 

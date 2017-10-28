@@ -6,18 +6,20 @@ public class PadiMember {
 	private String firstName;
 	private String lastName;
 	private String padiName;
+	private String imgPath;
 	
 	public PadiMember(){
 		
 	}
 
 	public PadiMember(String padiId, String userId, String firstName,
-			String lastName) {
+			String lastName,String imgPath) {
 		super();
 		this.padiId = padiId;
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.imgPath=imgPath;
 	}
 
 	public String getPadiId() {
@@ -60,10 +62,19 @@ public class PadiMember {
 		this.padiName = padiName;
 	}
 
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+
 	@Override
 	public String toString() {
 		return "PadiMember [padiId=" + padiId + ", userId=" + userId
 				+ ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", padiName=" + padiName + "]";
+				+ ", padiName=" + padiName + ", imgPath=" + imgPath + "]";
 	}
+
 }

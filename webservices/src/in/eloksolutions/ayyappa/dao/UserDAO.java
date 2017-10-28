@@ -1,6 +1,8 @@
 package in.eloksolutions.ayyappa.dao;
 
 import in.eloksolutions.ayyappa.config.MongoConfigaration;
+import in.eloksolutions.ayyappa.model.Group;
+import in.eloksolutions.ayyappa.model.Padipooja;
 import in.eloksolutions.ayyappa.model.User;
 import in.eloksolutions.ayyappa.util.Util;
 import in.eloksolutions.ayyappa.vo.GroupMember;
@@ -132,8 +134,23 @@ public class UserDAO {
 		cursor.close();
 		return dbuser;
 	}
-
-	public User getUserWithGroups(String userid) {
+	
+	public String  getImagePath( String userId) {
+		System.out.println("query setImagePath is userId " + userId);
+		String imgPath=null;
+		if(userId==null)return null;
+		BasicDBObject query = new BasicDBObject("_id",new ObjectId( userId));
+		DBCursor cursor = collection.find(query);
+		if (cursor.hasNext()) {
+			DBObject user = cursor.next();
+			imgPath=(String)user.get("IMGPATH");
+		}
+		cursor.close();
+		return imgPath;
+	}
+	
+	
+	public User getUserWithGroups(String userid) throws Exception {
 		DBCursor dbUserCursor = getDBUser(userid);
 		if (dbUserCursor == null)return null;
 		DBObject dbuser = dbUserCursor.next();
@@ -144,7 +161,7 @@ public class UserDAO {
 		return dbUserVO;
 	}
 
-	public User getUserWithTopics(String userid) {
+	public User getUserWithTopics(String userid) throws Exception {
 		DBCursor dbUserCursor = getDBUser(userid);
 		if (dbUserCursor == null)return null;
 		DBObject dbuser = dbUserCursor.next();
@@ -155,7 +172,7 @@ public class UserDAO {
 		return dbUserVO;
 	}
 	
-	public User getUserWithPaids(String userid) {
+	public User getUserWithPaids(String userid) throws Exception {
 		DBCursor dbUserCursor = getDBUser(userid);
 		if (dbUserCursor == null)return null;
 		DBObject dbuser = dbUserCursor.next();
@@ -175,6 +192,7 @@ public class UserDAO {
 			UserPadis  userPadis = new UserPadis();
 			userPadis.setPadoId(dbo.getString("PADIID"));
 			userPadis.setPadiName(dbo.getString("PADI"));
+			userPadis.setImgPath(dbo.getString("IMGPATH"));
 			padisDB.add(userPadis);
 		}
 		return padisDB;
@@ -194,8 +212,9 @@ public class UserDAO {
 		return topicsDB;
 	}
 
-	private DBCursor getDBUser(String userid) {
-		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+userid));
+	private DBCursor getDBUser(String userid) throws Exception{
+		if(userid==null) throw new Exception("User Id cannot be null");
+		BasicDBObject query=new BasicDBObject("_id",new ObjectId(userid));
 		return collection.find(query);
 	}
 
@@ -219,7 +238,7 @@ public class UserDAO {
 		return dbuser;
 	}
 	
-	private LocationVO getUserLocation(String userid) {
+	private LocationVO getUserLocation(String userid) throws Exception {
 		DBCursor dbUserCursor = getDBUser(userid);
 		if (dbUserCursor == null)return null;
 		DBObject user = dbUserCursor.next();
@@ -242,20 +261,37 @@ public class UserDAO {
 		return groupsDB;
 	}
 	
-	public void addUserGroup(GroupMember groupMember){
-		System.out.println("Updating groupMember "+groupMember);
-		DBObject dbGroup= toDBDissObject(groupMember);
+	public void addUserPadis(Padipooja padipooja){
+		System.out.println("Updating padipooja "+padipooja);
+		DBObject dbPadi= toDBPadiObject(padipooja);
+		BasicDBObject update = new BasicDBObject();
+		update.put( "$push", new BasicDBObject( "PADIS", dbPadi ) );
+		BasicDBObject match = new BasicDBObject();
+		match.put( "_id",new ObjectId(padipooja.getMemId()) );
+		WriteResult rs=collection.update(match,update);
+		System.out.println("Write result is "+rs.getUpsertedId());
+	}
+	private DBObject toDBPadiObject(Padipooja padipooja ) {
+		 return new BasicDBObject("PADIID", padipooja.getPadipoojaId())
+		 .append("IMGPATH", padipooja.getImgPath())
+       .append("PADI", padipooja.getEventName());
+	}
+	
+	public void addUserGroup(Group group){
+		System.out.println("Updating group "+group);
+		DBObject dbGroup= toDBDissObject(group);
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "GROUPS", dbGroup ) );
 		BasicDBObject match = new BasicDBObject();
-		match.put( "_id",new ObjectId(groupMember.getUserId()) );
+		match.put( "_id",new ObjectId(group.getOwner()) );
 		WriteResult rs=collection.update(match,update);
 		System.out.println("Write result is "+rs.getUpsertedId());
 	}
 	
-	private DBObject toDBDissObject(GroupMember groupMember) {
-		 return new BasicDBObject("GROUPID", groupMember.getGroupId())
-        .append("GROUPNAME", groupMember.getGroupName());
+	private DBObject toDBDissObject(Group group) {
+		 return new BasicDBObject("GROUPID", group.getGroupId())
+		 .append("IMGPATH", group.getImagePath())
+        .append("GROUPNAME", group.getName());
 	}
 
 	public String update(User user) {
@@ -276,7 +312,8 @@ public class UserDAO {
 		return wr.getUpsertedId().toString();
 	}
 	
-	public String requestConnect(UserConnectionVO user) {
+	public String requestConnect(UserConnectionVO user) throws Exception {
+		checkIfAlreadySentRequest(user.getUserId(),user.getConnectedToId());
 		DBObject dbToUsers= toDBUser(user);
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "SENTCONNECTIONS", dbToUsers ) );
@@ -288,12 +325,17 @@ public class UserDAO {
 		update1.put( "$push", new BasicDBObject( "RECEIVEDCONNECTIONS", dbFromUsers ) );
 		BasicDBObject match1 = getIdObject(user.getConnectedToId());
 		WriteResult rs1=collection.update(match1,update1);
-		return rs.isUpdateOfExisting()+"";
+		return "1";
 	}
 	
-	public List<UserVo> getReceivedConnection(String userId){
+	private void checkIfAlreadySentRequest(String userId, String toUserId) throws Exception {
+		getDBUser(userId);
+		
+	}
+
+	public List<UserVo> getReceivedConnection(String userId) throws Exception{
 		DBCursor cur=getDBUser(userId);
-		if (cur == null)return null;
+		if (cur == null || !cur.hasNext())return null;
 		DBObject user = cur.next();
 		 BasicDBList users = (BasicDBList) user.get("RECEIVEDCONNECTIONS");
 		 ArrayList<UserVo> userReceivedList=new ArrayList<>();
@@ -311,7 +353,7 @@ public class UserDAO {
 		 return userReceivedList;
 	}
 	
-	public List<UserVo> getSentConnection(String userId){
+	public List<UserVo> getSentConnection(String userId) throws Exception{
 		DBCursor cur=getDBUser(userId);
 		if (cur == null)return null;
 		DBObject user = cur.next();
@@ -332,6 +374,7 @@ public class UserDAO {
 	}
 	
 	public String connect(UserConnectionVO user) {
+		System.out.println("Updating "+user);
 		DBObject dbUsers= toDBUser(user);
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "CONNECTIONS", dbUsers ) );
@@ -345,14 +388,14 @@ public class UserDAO {
 		rs=collection.update(fromMatch,dbFromUsers);
 		System.out.println("Write result is "+rs.getUpsertedId());
 		changeConnectionStatus(user);
-		return rs.getUpsertedId().toString();
+		return "success";
 	}
 
 	private void changeConnectionStatus(UserConnectionVO user) {
 		BasicDBObject andQuery = new BasicDBObject();
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
 		obj.add(getIdObject(user.getConnectedToId()));
-		obj.add(new BasicDBObject("SENTCONNECTIONS.TOUSERID",user.getUserId() ));
+		obj.add(new BasicDBObject("SENTCONNECTIONS.USERID",user.getUserId() ));
 		andQuery.put("$and", obj);
 		BasicDBObject set = new BasicDBObject(
 			    "$set", 
@@ -367,7 +410,7 @@ public class UserDAO {
 		match.put( "_id",new ObjectId(id) );
 		return match;
 	}
-	public User getConnections(String userId) {
+	public User getConnections(String userId) throws Exception {
 		DBCursor dbUserCursor = getDBUser(userId);
 		if (dbUserCursor == null)return null;
 		DBObject dbuser = dbUserCursor.next();
@@ -387,13 +430,13 @@ public class UserDAO {
 
 	private UserConnectionVO getUserConnectionVO(BasicDBObject dbo) {
 		UserConnectionVO  u = new UserConnectionVO();
-		u.setConnectedToId(dbo.getString("TOUSERID"));
-		u.setToFirstName(dbo.getString("TOFIRSTNAME"));
-		u.setToLastName(dbo.getString("TOLASTNAME"));
+		u.setConnectedToId(dbo.getString("USERID"));
+		u.setToFirstName(dbo.getString("FIRSTNAME"));
+		u.setToLastName(dbo.getString("LASTNAME"));
 		return u;
 	}
 	
-	public User getReceivedConnections(String userId) {
+	public User getReceivedConnections(String userId) throws Exception {
 		DBCursor dbUserCursor = getDBUser(userId);
 		if (dbUserCursor == null)return null;
 		DBObject dbuser = dbUserCursor.next();
@@ -413,9 +456,9 @@ public class UserDAO {
 
 	private UserConnectionVO getFromUserConnection(BasicDBObject dbo) {
 		UserConnectionVO  u = new UserConnectionVO();
-		u.setConnectedToId(dbo.getString("FROMUSERID"));
-		u.setToFirstName(dbo.getString("FROMFIRSTNAME"));
-		u.setToLastName(dbo.getString("FROMLASTNAME"));
+		u.setConnectedToId(dbo.getString("USERID"));
+		u.setToFirstName(dbo.getString("FIRSTNAME"));
+		u.setToLastName(dbo.getString("LASTNAME"));
 		u.setStatus(dbo.getString("STATUS"));
 		return u;
 	}
@@ -436,7 +479,7 @@ public class UserDAO {
 	                     .append("CONNECTIONDATE", new Date());
 	}
 	
-	public List<User> findNearMe(String userid) {
+	public List<User> findNearMe(String userid) throws Exception {
 		LocationVO loc=getUserLocation(userid);
 		BasicDBObject query = new BasicDBObject("LOC",getNearObj(loc.getLat(), loc.getLon()));
 		System.out.println("query issiihhkkh is  " + query);

@@ -35,11 +35,11 @@ public class GroupDAO {
 		collection = MongoConfigaration.getDb().getCollection("groups");
 	}
 	
-	public String addGroup(Group group){
+	public String addGroup(Group group, User user){
 		DBObject dbgroup = toDBObject(group);
 		collection.insert(dbgroup);
 		ObjectId id = (ObjectId)dbgroup.get( "_id" );
-		
+		join(new GroupMember(id.toString(),user.getUserId(),user.getFirstName(),user.getLastName(),user.getImgPath()));
 		DBObject dbUserGroup= toDBUserGroup(group,id.toString());
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "GROUPS", dbUserGroup ) );
@@ -51,6 +51,7 @@ public class GroupDAO {
 	}
 	private DBObject toDBUserGroup(Group group, String groupId) {
 		 return new BasicDBObject("GROUPID", groupId)
+			.append("IMGPATH", group.getImagePath())
 			.append("GROUPNAME", group.getName());
 	}
 
@@ -160,6 +161,7 @@ public class GroupDAO {
 			user.setUserId(dbo.getString("userId"));
 			user.setFirstName(dbo.getString("firstName"));
 			user.setLastName(dbo.getString("lastName"));
+			user.setImgPath(dbo.getString("imgPath"));
 			Date joinDate=dbo.getDate("joinDate");
 			if(joinDate!=null){
 				user.setCreateDate((String)(new SimpleDateFormat("dd/MM/yyyy").format(joinDate)));
@@ -171,7 +173,7 @@ public class GroupDAO {
 	
 	public String join(GroupMember groupMem ){
 		System.out.println("Updating topic "+groupMem);
-		DBObject groupUser= toDBDissObject(groupMem.getUserId(),groupMem.getFirstName(),groupMem.getLastName());
+		DBObject groupUser= toDBDissObject(groupMem.getUserId(),groupMem.getFirstName(),groupMem.getLastName(),groupMem.getImgPath());
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "members", groupUser ) );
 		BasicDBObject match = new BasicDBObject();
@@ -192,10 +194,11 @@ public class GroupDAO {
 		System.out.println("Write result is "+rs.getUpsertedId());
 		return rs.getUpsertedId().toString();
 	}
-	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
+	private DBObject toDBDissObject(String userId, String firstName, String lastName, String imgPath) {
 		 return new BasicDBObject("userId", userId)
          .append("firstName", firstName)
          .append("lastName", lastName)
+         .append("imgPath", imgPath)
          .append("joinDate", new Date());
 	}
 
@@ -229,6 +232,7 @@ public class GroupDAO {
 		cursor.close();
 		return groups;
 	}
-	
+
+
 	
 }

@@ -5,6 +5,7 @@ public class UserPadis {
 	String userName;
 	String padoId;
 	String padiName;
+	String imgPath;
 	public String getUserId() {
 		return userId;
 	}
@@ -28,6 +29,12 @@ public class UserPadis {
 	}
 	public void setPadiName(String padiName) {
 		this.padiName = padiName;
+	}
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 	
 	

@@ -20,12 +20,13 @@ public class GroupMember {
 	}
 
 	public GroupMember(String groupId, String userId, String firstName,
-			String lastName) {
+			String lastName,String imgPath) {
 		super();
 		this.groupId = groupId;
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.imgPath=imgPath;
 	}
 	public String getGroupId() {
 		return groupId;

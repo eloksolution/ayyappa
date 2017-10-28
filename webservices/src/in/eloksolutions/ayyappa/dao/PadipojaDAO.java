@@ -31,18 +31,18 @@ import com.mongodb.WriteResult;
 public class PadipojaDAO {
 	MongoClient mongoClient;
 	DBCollection collection;
-	
+
   @Autowired
   public void setMongoClient(MongoClient mongoClient){
 		this.mongoClient=mongoClient;
 		collection = MongoConfigaration.getDb().getCollection("padipooja");
 	}
 
-	public String addPadipooja(Padipooja padipooja) {
+	public String addPadipooja(Padipooja padipooja, User user) {
 		DBObject dbpadi = padiDBObject(padipooja);
 		collection.insert(dbpadi);
 		ObjectId id = (ObjectId) dbpadi.get("_id");
-		
+		join(new PadiMember(id.toString(),user.getUserId(),user.getFirstName(),user.getLastName(),user.getImgPath()));
 		DBObject dbUserPadi= toDBUserPadi(padipooja,id.toString());
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "PADIS", dbUserPadi ) );
@@ -54,13 +54,14 @@ public class PadipojaDAO {
 	}
 	private DBObject toDBUserPadi(Padipooja padipooja, String padiID) {
 		 return new BasicDBObject("PADIID", padiID)
+		 .append("IMGPATH", padipooja.getImgPath())
 			.append("PADI", padipooja.getName());
 	}
 
 	public static final DBObject padiDBObject(Padipooja padipooja) {
 		Date createDate=null;
 		try {
-			createDate=new SimpleDateFormat("dd/MM/yyyy").parse(padipooja.getDate());
+			createDate=new SimpleDateFormat("dd-MM-yyyy").parse(padipooja.getDate());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -83,7 +84,7 @@ public class PadipojaDAO {
 	}
 	
 	public List<Padipooja> getUserPadiPoojas(String userId) {
-		BasicDBObject query = new BasicDBObject("memId", userId);
+		BasicDBObject query = new BasicDBObject("members.userId", userId);
 		DBCursor cursor = collection.find(query).sort(new  BasicDBObject("createDate", -1));
 		List<Padipooja> padipooja = getPadiPoojasDB(cursor,userId);
 		return padipooja;
@@ -196,6 +197,7 @@ public class PadipojaDAO {
 			user.setUserId(dbo.getString("userId"));
 			user.setFirstName(dbo.getString("firstName"));
 			user.setLastName(dbo.getString("lastName"));
+			user.setImgPath(dbo.getString("imgPath"));
 			Date joinDate=dbo.getDate("joinDate");
 			if(joinDate!=null){
 				user.setCreateDate((String)(new SimpleDateFormat("dd/MM/yyyy").format(joinDate)));
@@ -216,7 +218,7 @@ public class PadipojaDAO {
 	}
 	public String join(PadiMember padiMember ){
 		System.out.println("Updating padiMember "+padiMember);
-		DBObject dbPadiUser= toDBDissObject(padiMember.getUserId(),padiMember.getFirstName(),padiMember.getLastName());
+		DBObject dbPadiUser= toDBDissObject(padiMember.getUserId(),padiMember.getFirstName(),padiMember.getLastName(),padiMember.getImgPath());
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "members", dbPadiUser ) );
 		BasicDBObject match = new BasicDBObject();
@@ -238,10 +240,11 @@ public class PadipojaDAO {
 		return rs.getUpsertedId().toString();
 	}
 	
-	private DBObject toDBDissObject(String userId, String firstName, String lastName) {
+	private DBObject toDBDissObject(String userId, String firstName, String lastName, String imgPath) {
 		 return new BasicDBObject("userId", userId)
         .append("firstName", firstName)
         .append("lastName", lastName)
+         .append("imgPath", imgPath)
         .append("joinDate", new Date());
 	}
 

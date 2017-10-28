@@ -104,7 +104,7 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/requestConnection")
-	public String requestConnection(@RequestBody UserConnectionVO user) {
+	public String requestConnection(@RequestBody UserConnectionVO user) throws Exception {
 		System.out.println("requestConnection userid "+user);
 		return userService.requestConnection(user);
 	}
@@ -118,14 +118,14 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/groups/{userid}")
-	public User getGroups(@PathVariable("userid") String userid, HttpServletRequest request) {
+	public User getGroups(@PathVariable("userid") String userid, HttpServletRequest request) throws Exception  {
 		System.out.println("getGroups userid "+userid);
 		return userService.getGroups(userid);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/topics/{userid}")
-	public User getTopics(@PathVariable("userid") String userid, HttpServletRequest request) {
+	public User getTopics(@PathVariable("userid") String userid, HttpServletRequest request) throws Exception {
 		return userService.getTopics(userid);
 	}
 	
@@ -137,7 +137,7 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/loc/{userid}")
-	public List<User> findNearMe(@PathVariable("userid") String userid, HttpServletRequest request) {
+	public List<User> findNearMe(@PathVariable("userid") String userid, HttpServletRequest request) throws Exception {
 		return userService.findNearMe(userid);
 	}
 	
