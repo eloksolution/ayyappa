@@ -60,8 +60,6 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         }
 
         ImageView imageView;
-
-
         public DataObjectHolder(final View itemView) {
             super(itemView);
             label = (TextView) itemView.findViewById(R.id.title_1);
@@ -83,7 +81,6 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
                     view.getContext().startActivity(groupView);
                 }
             });
-
 
 
             joinBtn = (Button) itemView.findViewById(R.id.join_now);
@@ -111,9 +108,6 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
 
         }
     }
-
-
-
     private void joinEvent(View itemView) {
         GroupJoinHelper groupJoinHelper = new GroupJoinHelper(itemView.getContext());
         GroupMembers groupJoins = memBuildDTOObject();
@@ -132,7 +126,6 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
-
         groupMembers.setUserId(userId);
         groupMembers.setFirstname(firstName+lastName);
         Log.i(LOG_TAG, "Config.getUserId()" + groupId);
@@ -163,7 +156,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         holder.label.setText(mDataset.get(position).getmText1());
         holder.label2.setText(mDataset.get(position).getmText2());
         try {
-            Log.i(LOG_TAG," data set obj "+mDataset.get(position)+" position "+position+" userId "+userId+ " joinStaus "+joinStaus);
+            Log.i(LOG_TAG," data set obj "+mDataset.get(position)+" position "+position+" userId "+userId+ " joinStaus "+joinStaus+"mDataset.get(position).getIsMember())"+mDataset.get(position).getIsMember());
             if(userId.equals((mDataset.get(position).getOwner())) || joinStaus.equals(mDataset.get(position).getIsMember())){
                 System.out.println("mDataset.get(position)"+mDataset.get(position).getIsMember());
                 joinBtn.setVisibility(View.GONE);
@@ -171,10 +164,10 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(mDataset.get(position).getImgResource()!=null)
-            glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
-        else
-            holder.imageView.setImageResource(R.drawable.defaulta);
+        if(mDataset.get(position).getImgResource()!=null) {
+            glide.with(context).load(Config.S3_URL + mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        } else{
+            holder.imageView.setImageResource(R.drawable.defaulta);}
 
         if (mDataset.get(position).getMemberSize()!=0) {
             holder.label3.setText(mDataset.get(position).getMemberSize() + " Joined");

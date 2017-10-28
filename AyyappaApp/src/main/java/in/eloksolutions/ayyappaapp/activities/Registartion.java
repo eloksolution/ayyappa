@@ -30,7 +30,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -235,8 +234,6 @@ public class Registartion extends AppCompatActivity {
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
                 Log.e(tag, "Unable to upload file from the given uri", e);
             }
         }
@@ -250,7 +247,6 @@ public class Registartion extends AppCompatActivity {
                 image.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
                 Log.e(tag, "File path is " + path);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();

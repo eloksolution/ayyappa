@@ -11,21 +11,21 @@ import android.widget.Toast;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
-import in.eloksolutions.ayyappaapp.helper.GetContacts;
+import in.eloksolutions.ayyappaapp.helper.GetSwamiContacts;
 
 
 public class ContactActivity extends AppCompatActivity {
     Context context;
     String userId,userName;
+    ContactActivity contactActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactactivity);
         SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
 
-
       SearchView searchView=(SearchView) findViewById(R.id.searchView);
-        searchView.setQueryHint("Search View");
+        searchView.setQueryHint("Search Swamies");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -47,10 +47,10 @@ public class ContactActivity extends AppCompatActivity {
 
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvContacts);
         rvPadi.setHasFixedSize(true);
-        LinearLayoutManager lmPadi = new LinearLayoutManager(this);
+        LinearLayoutManager lmPadi = new LinearLayoutManager(ContactActivity.this);
         rvPadi.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"user/connections/"+userId;
-        GetContacts getContacts=new GetContacts(context,url,rvPadi);
+        GetSwamiContacts getContacts=new GetSwamiContacts(contactActivity,url,rvPadi);
         getContacts.execute();
 
     }

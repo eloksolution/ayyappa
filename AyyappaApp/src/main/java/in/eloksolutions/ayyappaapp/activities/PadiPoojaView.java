@@ -12,11 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +55,6 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     ImageView edit,delete;
     ImageView padiImage,join_event;
     ImageButton btnInvite;
-
     Button leavebtn;
     CardView card_view;
     String padiPoojaId,REG_TOKEN,ownerId, memId, name,sharesms,eventnamesms;
@@ -63,9 +64,9 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     RelativeLayout   Relative1;
     Context ctx;
     RecyclerView rvPadi;
-
+    public static String joinStatus="Y";
+    String userId, firstName, lastName;
     EventDTO eventDTO;
-    SharedPreferences preference;
     TextView join;
     Glide glide;
     Toolbar toolbar;
@@ -80,10 +81,12 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         System.out.println("Registration token is "+REG_TOKEN);
         memId = preferences.getString("memId", null);
         name = preferences.getString("name", null);
+        LinearLayout joineLayout=(LinearLayout) findViewById(R.id.joined_layout);
         System.out.println("result from eventview" + 19);
         ctx=this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
@@ -100,29 +103,19 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         padiImage=(ImageView) findViewById(R.id.padi_image_view);
         upDate=(TextView) findViewById(R.id.group_update);
         join=(TextView) findViewById(R.id.join);
+        LinearLayout event_layout=(LinearLayout) findViewById(R.id.event_layout);
+        LinearLayout share_layout=(LinearLayout) findViewById(R.id.share_layout);
         no_of_mem = (TextView)findViewById(R.id.joinedcount);
       //  tvname = (TextView)findViewById(R.id.hostmember);
         card_view = (CardView)findViewById(R.id.card_view);
         text1 = (TextView)findViewById(R.id.text1);
         share=(TextView) findViewById(R.id.share_text);
         join_event=(ImageView) findViewById(R.id.join_event);
-
+        SharedPreferences sPreferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        userId= sPreferences.getString("userId",null);
+        firstName=sPreferences.getString("firstName",null);
+        lastName=sPreferences.getString("lastName",null);
         upDate.setOnClickListener(this);
-        join_event.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                join.setVisibility(View.GONE);
-                joinEvent();
-
-                }
-
-
-        });
-
-
-        preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
-
         EventViewHelper eventViewHelper = new EventViewHelper(this);
         String surl = Config.SERVER_URL + "padipooja/padipoojaEdit/"+padiPoojaId;
         try {
@@ -134,9 +127,50 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println(userId+"userid is"+"join status is"+joinStatus+"eventDTO.getIsMember()"+eventDTO.getIsMember()+"eventDTO.getOwner()"+eventDTO.getOwner());
+        try {
+            if(userId.equals(eventDTO.getOwner()) || joinStatus.equals(eventDTO.getIsMember()) ){
+                System.out.println("groupDTO.getIsMember()"+eventDTO.getIsMember());
+                join.setVisibility(View.GONE);
+                join_event.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        join_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                join.setVisibility(View.GONE);
+                join_event.setVisibility(View.GONE);
+                joinEvent();
+
+            }
 
 
-        share.setOnClickListener(new View.OnClickListener() {
+        });
+        joineLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+
+
+        });
+        event_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent padiUdate=new Intent(ctx, PadiPoojaUpdate.class);
+                padiUdate.putExtra("padiPoojaId", ""+padiPoojaId);
+                startActivity(padiUdate);
+
+            }
+
+
+        });
+
+        share_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -256,13 +290,17 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             Gson gson = new Gson();
              eventDTO = gson.fromJson(result, EventDTO.class);
             event_name.setText(eventDTO.getEventName());
+            toolbar.setTitle(eventDTO.getEventName());
             eventnamesms=eventDTO.getEventName();
             toolbar.setTitle(eventDTO.getEventName());
             eventdate.setText(eventDTO.getDate());
             eventtime.setText(eventDTO.gettime());
-            glide.with(ctx).load(Config.S3_URL+eventDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(padiImage);
-            System.out.println("past from eventfromJson.gettime()" + eventDTO.gettime());
-
+            if(eventDTO.getImgPath()!=null) {
+                glide.with(ctx).load(Config.S3_URL + eventDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(padiImage);
+                System.out.println("past from eventfromJson.gettime()" + eventDTO.gettime());
+            }else{
+                glide.with(ctx).load(R.drawable.defaulta).diskCacheStrategy(DiskCacheStrategy.ALL).into(padiImage);
+            }
 //           tvname.setText(fromJson.getOwnerName());
       //     sharesms=name+", is inviting you to join padi pooja on "+fromJson.getDate()+" time"+fromJson.gettime()+" at"+fromJson.getLocation();
             System.out.println("past from event view" + eventDTO.getPast());
@@ -307,11 +345,11 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                 ArrayList results = new ArrayList<PadiObject>();
                 for (RegisterDTO m : eventDTO.getPadiMembers()) {
 
-                    PadiObject mem = new PadiObject(m.getUserId(), m.getFirstName(), R.drawable.ayyappa_logo, m.getLastName());
+                    PadiObject mem = new PadiObject(m.getUserId(), m.getFirstName(), R.drawable.ayyappa_logo, m.getLastName(),m.getImgPath());
                     results.add(mem);
 
                 }
-                MyRecyclerPadiMembers mAdapter = new MyRecyclerPadiMembers(results);
+                MyRecyclerPadiMembers mAdapter = new MyRecyclerPadiMembers(results,ctx);
                 rvPadi.setAdapter(mAdapter);
                 System.out.println("object resul myrecycler results list view is " + results);
             }
@@ -337,10 +375,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
     }
 
     private EventMembers buildDTOObject() {
-        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
-        String userId=preferences.getString("userId",null);
-        String firstName=preferences.getString("firstName",null);
-        String lastName=preferences.getString("lastName",null);
+
         EventMembers eventMembers = new EventMembers();
         eventMembers.setPadiId(padiPoojaId);
         eventMembers.setUserId(userId);
@@ -381,6 +416,17 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
 
         // Necessary to restore the BottomBar's state, otherwise we would
         // lose the current tab on orientation change.
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

@@ -20,8 +20,8 @@ import in.eloksolutions.ayyappaapp.activities.UserView;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.GroupMemberObject;
 
-public class MyRecyclerGroupListMembers extends RecyclerView
-        .Adapter<MyRecyclerGroupListMembers
+public class MyRecyclerViewSwamiContacts extends RecyclerView
+        .Adapter<MyRecyclerViewSwamiContacts
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<GroupMemberObject> mDataset;
@@ -76,7 +76,7 @@ public class MyRecyclerGroupListMembers extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerGroupListMembers(ArrayList<GroupMemberObject> myDataset, Context context) {
+    public MyRecyclerViewSwamiContacts(ArrayList<GroupMemberObject> myDataset, Context context) {
         mDataset = myDataset;
         this.context=context;
     }

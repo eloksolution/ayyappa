@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,6 +64,7 @@ public class TopicView extends AppCompatActivity {
     TransferObserver transferObserver;
     Glide glide;
     int count;
+    Toolbar toolbar;
     String tag="TopicView";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +72,14 @@ public class TopicView extends AppCompatActivity {
         setContentView(R.layout.topic_view);
         user_name=(TextView) findViewById(R.id.user_name);
         date=(TextView) findViewById(R.id.date);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       //  topicName=(TextView) findViewById(R.id.topic_view_title);
         description=(TextView) findViewById(R.id.forum_desc);
         discussionCreate =(ImageView) findViewById(R.id.send_button);
-
-
         addDisscussion =(EditText) findViewById(R.id.topic_text);
         topicImage=(ImageView) findViewById(R.id.forum_image);
-
         context=this;
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId is"+topicId);
@@ -92,15 +95,6 @@ public class TopicView extends AppCompatActivity {
         credentialsProvider();
         setTransferUtility();
 
-     /*   FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabtopic);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent topicUp = new Intent(ctx, TopicUpdate.class);
-                topicUp.putExtra("topicId",""+topicId);
-                startActivity(topicUp);
-            }
-        }); */
         TopicViewHelper gettopicValue=new TopicViewHelper(this);
         String surl = Config.SERVER_URL+"topic/"+topicId;
         System.out.println("url for group topic view list"+surl);
@@ -209,12 +203,15 @@ public class TopicView extends AppCompatActivity {
             Gson gson = new Gson();
              topicDTO = gson.fromJson(result, TopicDTO.class);
             user_name.setText(topicDTO.getOwnerName());
+            toolbar.setTitle(topicDTO.getTopic());
          //   topicName.setText(fromJsonn.getTopic());
             description.setText(topicDTO.getDescription());
-            glide.with(context).load(Config.S3_URL+topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);
-
-
-            System.out.println("object resul myrecycler results list view is " + topicDTO.getDiscussions());
+            if(topicDTO.getImgPath()!=null) {
+                glide.with(context).load(Config.S3_URL + topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);
+            }else{
+                glide.with(context).load(R.drawable.defaulta).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);
+            }
+       //     System.out.println("object resul myrecycler results list view is " + topicDTO.getDiscussions());
             if (topicDTO.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();
                 for (TopicDissDTO d : topicDTO.getDiscussions()) {
@@ -286,5 +283,18 @@ public class TopicView extends AppCompatActivity {
 
         return ret;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
+
+}
 

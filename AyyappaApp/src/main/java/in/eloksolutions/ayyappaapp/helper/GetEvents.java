@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,11 +27,13 @@ public class GetEvents extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvPadi;
+    TextView noData;
 
-    public GetEvents(Context mcontext, String surl, RecyclerView rvPadi) {
+    public GetEvents(Context mcontext, String surl, RecyclerView rvPadi, TextView noData) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvPadi=rvPadi;
+        this.noData=noData;
 
     }
         @Override
@@ -71,8 +75,12 @@ public class GetEvents extends AsyncTask<String, Void, String> {
                     DataObjectPadiPooja obj = new DataObjectPadiPooja(event.getEventName(),event.getDescription(), event.getImagePath(),event.getPadipoojaId(),memberSize,event.getDate(),event.getLocation(),event.getMonth(),event.getDay(),event.getWeek());
                     results.add(obj);
                 }
-                MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results,mcontext);
-                rvPadi.setAdapter(mAdapter);
+                if(!results.isEmpty()) {
+                    MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(results, mcontext);
+                    rvPadi.setAdapter(mAdapter);
+                }else {
+                    noData.setVisibility(View.VISIBLE);
+                }
             }
         }
 

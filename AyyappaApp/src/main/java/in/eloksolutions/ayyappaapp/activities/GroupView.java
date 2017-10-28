@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -53,6 +54,7 @@ public class GroupView extends AppCompatActivity {
     ImageView groupImage,topicCrate;
     TextView groupName, description, noOfJoins,likescount,groupUpdate,groupShare,findMore;
     EditText addTopic;
+    Button post;
     RecyclerView groupTopics;
     private boolean clicked = false;
     ImageView groupJoin,like;
@@ -102,8 +104,11 @@ public class GroupView extends AppCompatActivity {
         groupShare=(TextView) findViewById(R.id.share_text);
         findMore=(TextView) findViewById(R.id.findmore);
          fab = (FloatingActionButton) findViewById(R.id.fabgroup);
+        post=(Button) findViewById(R.id.create_topic);
         CoordinatorLayout group_view_layout = (CoordinatorLayout) findViewById(R.id.group_view_layout);
-
+        LinearLayout event_layout=(LinearLayout) findViewById(R.id.event_layout);
+        LinearLayout share_layout=(LinearLayout) findViewById(R.id.share_layout);
+        LinearLayout join_layout=(LinearLayout) findViewById(R.id.joined_layout);
 
         final Context ctx = this;
 /*        topicCrate.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +120,14 @@ public class GroupView extends AppCompatActivity {
                 startActivity(groupView);
             }
         }); */
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent topicCreate=new Intent(GroupView.this,CreateGroupTopic.class);
+                topicCreate.putExtra("groupId", groupId);
+                startActivity(topicCreate);
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +138,7 @@ public class GroupView extends AppCompatActivity {
         });
 
 
-        noOfJoins.setOnClickListener(new View.OnClickListener() {
+        join_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -135,8 +148,6 @@ public class GroupView extends AppCompatActivity {
 
             }
         });
-
-
 
         findMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,10 +164,9 @@ public class GroupView extends AppCompatActivity {
                 }
             }
         });
-        
 
 
-        groupShare.setOnClickListener(new View.OnClickListener() {
+        share_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -178,7 +188,7 @@ public class GroupView extends AppCompatActivity {
 
 
 
-        groupUpdate.setOnClickListener(new View.OnClickListener() {
+        event_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent groupUdate=new Intent(view.getContext(), GroupUpdate.class);
@@ -209,7 +219,7 @@ public class GroupView extends AppCompatActivity {
         System.out.println("groupDTO.getOwner()"+groupDTO.getOwner()+"  UserId"+userId);
 
         try {
-            if(userId.equals(groupDTO.getOwner()) || groupDTO.getIsMember().equals(joinStatus) ){
+            if(userId.equals(groupDTO.getOwner()) || joinStatus.equals(groupDTO.getIsMember()) ){
                 System.out.println("groupDTO.getIsMember()"+groupDTO.getIsMember());
                 joinButton.setVisibility(View.GONE);
             }
@@ -341,5 +351,16 @@ public class GroupView extends AppCompatActivity {
         boolean ret = true;
         if (!Validation.hasText(addTopic)) ret = false;
         return ret;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     }

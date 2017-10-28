@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -74,8 +73,8 @@ public class CreateGroupTopic extends AppCompatActivity {
         imgView=(ImageView) findViewById(R.id.forum_image);
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         topicName=(EditText) findViewById(R.id.post_text);
-
         final Context ctx = this;
+
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId= preferences.getString("userId",null);
         firstName=preferences.getString("firstName",null);
@@ -172,8 +171,6 @@ public class CreateGroupTopic extends AppCompatActivity {
         startActivityForResult(intent, 1);
 
     }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -187,11 +184,10 @@ public class CreateGroupTopic extends AppCompatActivity {
                         // .setFixAspectRatio(true)
                         .setCropShape(cropShape)
                         // .setAspectRatio(4,2)
-                        .setMinCropResultSize(480,720)
+                        .setMinCropResultSize(480,480)
                         .setMaxCropResultSize(1500,1920)
                         .start(this);
 
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "File path is " + path);
 
 
@@ -199,8 +195,7 @@ public class CreateGroupTopic extends AppCompatActivity {
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
                 Log.e(TAG, "Unable to upload file from the given uri", e);
             }
         }
@@ -214,7 +209,7 @@ public class CreateGroupTopic extends AppCompatActivity {
                 imgView.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
+
                 Log.e(TAG, "File path is " + path);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {

@@ -87,7 +87,7 @@
                             android:textCursorDrawable="@drawable/pen"
                             />
                     </android.support.v7.widget.CardView>
-                    <ayyappa.eloksolutions.in.ayyappaap.adapter.ImageAspectRatio
+                    <in.eloksolutions.ayyappaapp.adapter.ImageAspectRatio
                         android:background="@color/white"
                         android:visibility="gone"
                         android:id="@+id/forum_image"

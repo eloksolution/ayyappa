@@ -8,8 +8,8 @@ public class PadiObject {
     private String firstName;
     private String lastName;
     private int imgResource;
-
-    public PadiObject(String userId, String firstName, int imgResource, String lastName) {
+    private  String imgPath;
+    public PadiObject(String userId, String firstName, int imgResource, String lastName, String imgPath) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,5 +48,22 @@ public class PadiObject {
         this.imgResource = imgResource;
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
 
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    @Override
+    public String toString() {
+        return "PadiObject{" +
+                "userId='" + userId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", imgResource=" + imgResource +
+                ", imgPath='" + imgPath + '\'' +
+                '}';
+    }
 }

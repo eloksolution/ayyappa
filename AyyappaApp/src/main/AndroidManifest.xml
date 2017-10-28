@@ -1,69 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:uses-permissionandroid="http://schemas.android.com/apk/res-auto"
-    package="ayyappa.eloksolutions.in.ayyappaap">
+    package="in.eloksolutions.ayyappaapp">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@drawable/newlogo"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:largeHeap="true"
+        android:supportsRtl="true"
+        android:name="android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".SpalshScreenActivity">
+        <activity android:name=".activities.SpalshScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-
+         <activity
+            android:name=".activities.CreateGroup"
+             android:windowSoftInputMode="stateAlwaysHidden"
+           ></activity>
         <activity
-            android:name=".MainActivity"
-            android:label="AyyappaApp"
-            android:theme="@style/AppTheme" >
-
-            </activity>
-
-        <activity
-            android:name=".CreateGroup"
-            android:label="createGroup"
-            android:theme="@style/AppTheme" >
-
-
-            </activity>
-
-        <activity
-            android:name=".GroupList"
-            android:label="GroupList"
+            android:name=".activities.GroupList"
+            android:label="Groups"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ToppicGroupList"
-            android:label="GroupList"
+            android:name=".activities.ToppicGroupList"
+            android:label="Topics"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".GroupView"
-            android:label="GroupView"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activities.GroupView"
+            android:label="Group"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            ></activity>
+        <activity
+            android:name=".activities.CreateTopic"
+            android:windowSoftInputMode="stateAlwaysHidden"
             >
-        </activity>
-        <activity
-            android:name=".CreateTopic"
-            android:label="AyyappaApp"
-            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -74,142 +61,141 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".MapView"
-            android:label="GroupList"
-            android:theme="@style/AppTheme.NoActionBar" />
-
 
         <activity
-            android:name=".FlexibleActivity"
-            android:label="GroupList"
+            android:name=".activities.CreatePadiPooja"
+            android:label="Create Padi Pooja"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreatePadiPooja"
-            android:label="Create Padipooja"
-            android:theme="@style/AppTheme" />
+            android:name=".activities.PadiPoojaFull"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
         <activity
-            android:name=".PadiPoojaFull"
-            android:label="padipooja"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Registartion"
+            android:name=".activities.Registartion"
             android:label="Registration"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PadiPoojaView"
+            android:name=".activities.PadiPoojaView"
             android:label="PadiPooja View"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+           />
         <activity
-            android:name=".TopicView"
-            android:label="Topic View"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.TopicView"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
         <activity
-            android:name=".GroupUpdate"
-            android:label="GroupUpdate"
-            android:theme="@style/AppTheme" />
+            android:name=".activities.GroupUpdate"
+            android:windowSoftInputMode="stateAlwaysHidden"
+           />
         <activity
-            android:name=".PadiPoojaUpdate"
-            android:label="PadiPooja Update"
-            android:theme="@style/AppTheme" />
+            android:name=".activities.PadiPoojaUpdate"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
         <activity
-            android:name=".TopicUpdate"
-            android:label="Topic Update"
-            android:theme="@style/AppTheme" />
+            android:name=".activities.TopicUpdate"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
         <activity
-            android:name=".UserView"
+            android:name=".activities.UserView"
             android:label="User View"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserUpdate"
-            android:label="User Update"
-            android:theme="@style/AppTheme" />
+            android:name=".activities.UserUpdate"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
         <activity
-            android:name=".CardViewActivity"
-            android:label="AyyappaApp"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".DeekshaActivity"
-            android:label="AyyappaApp"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".DeekshaRules"
-            android:label="AyyappaApp"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Movis"
-            android:label="Movies"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".FeedBackForm"
-            android:label="FeedBackForm"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".PadiViewExample"
-            android:label="Padi View Example"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".WebActivity"
+            android:name=".activities.CardViewActivity"
             android:label="Ayyappa App"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".GroupMembersList"
-            android:label="Ayyappa App"
+            android:name=".activities.DeekshaActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
+        <activity
+            android:name=".activities.DeekshaRules"
+            android:label="Deeksha Rules"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.Movis"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
+        <activity
+            android:name=".activities.FeedBackForm"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
+
+        <activity
+            android:name=".activities.WebActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+           />
+        <activity
+            android:name=".activities.GroupMembersList"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserContactList"
-            android:label="Ayyappa App"
+            android:name=".activities.UserContactList"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserGroupList"
-            android:label="Ayyappa App"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.UserGroupList"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
         <activity
-            android:name=".OwnerView"
-            android:label="Ayyappa App"
+            android:name=".activities.CreateGroupTopic"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
+
+        <activity
+            android:name=".activities.OwnerView"
+            android:windowSoftInputMode="stateAlwaysHidden"
+             />
+
+        <activity
+            android:name=".activities.UserGroups"
+            android:label="User Groups"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".MapsActivity"
-            android:label="Ayyappa App"
+            android:name=".activities.UserGroupsJoined"
+            android:label="User Groups"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".UserGroups"
-            android:label="Ayyappa App"
+            android:name=".activities.UserPadiPoojas"
+            android:label="Swami Padi Poojas"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".UserGroupsJoined"
-            android:label="Ayyappa App"
+            android:name=".activities.Songs"
+            android:label="Ayyappa Songs"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".UserPadiPoojas"
-            android:label="User padiPoojas"
+            android:name=".activities.SwamiRequest"
+            android:label="SwamiRequest"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".CreateGroupTopic"
-            android:label="Create Topic"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Songs"
-            android:label="Songs"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="Songs"
+            android:name=".activities.ContactActivity"
+            android:label="Swami Contact List"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:label="Crop Image"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".messaging.MessagingActivity"></activity>
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_place_api"></meta-data>
+        <activity android:name=".activity.SignInActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Sign In"></activity>
+        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Login"></activity>
+        <activity android:name=".messaging.MessagingActivity" android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".maps.MapsMarkerActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Swamies Near You"  android:theme="@style/AppTheme"></activity>
         <service
-            android:name=".MyFirebaseMessagingService">
+            android:name=".messaging.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -220,11 +206,15 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA4IOpxqEk3uLY6SmyqdqVzQsnreYSpRY0" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
     </application>
 
 </manifest>

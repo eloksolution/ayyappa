@@ -39,9 +39,13 @@ public class GroupList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_list);
         context=this;
-       Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       getSupportActionBar().setTitle("Group List");
+        toolbar.setBackgroundColor(getResources().getColor(R.color.black));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        getSupportActionBar().setTitle("Groups List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +113,17 @@ public class GroupList extends AppCompatActivity {
         topicDTO.setName(firstName+lastName);
         return topicDTO;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
 
 

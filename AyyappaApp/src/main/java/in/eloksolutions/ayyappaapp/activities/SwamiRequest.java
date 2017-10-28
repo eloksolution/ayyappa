@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
@@ -44,16 +45,15 @@ public class SwamiRequest extends AppCompatActivity {
                 startActivity(groupCreate);
             }
         });
-        
-
+        TextView noData=(TextView) findViewById(R.id.tv_no_data);
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
-        userId=preferences.getString("userID",null);
+        userId=preferences.getString("userId",null);
         String url= Config.SERVER_URL+"user/receivedConnections/"+userId;
-        GetSwamiRequests getGroups=new GetSwamiRequests(SwamiRequest.this,url,rvGroups);
+        GetSwamiRequests getGroups=new GetSwamiRequests(SwamiRequest.this,url,rvGroups,noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 

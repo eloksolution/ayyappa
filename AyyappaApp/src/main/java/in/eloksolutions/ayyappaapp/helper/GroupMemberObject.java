@@ -8,12 +8,14 @@ public class GroupMemberObject {
     private String firstName;
     private String lastName;
     private int imgResource;
+   private String imgPath;
 
-    public GroupMemberObject(String userId, String firstName, int imgResource, String lastName) {
+    public GroupMemberObject(String userId, String firstName, int imgResource, String lastName, String imgPath) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.imgResource = imgResource;
+        this.imgPath=imgPath;
     }
 
     public String getUserId() {
@@ -48,5 +50,11 @@ public class GroupMemberObject {
         this.imgResource = imgResource;
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
 
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
 }

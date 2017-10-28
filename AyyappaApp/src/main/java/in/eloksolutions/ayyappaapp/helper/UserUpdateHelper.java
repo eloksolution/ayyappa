@@ -93,7 +93,7 @@ public class UserUpdateHelper {
                 jsonObject.accumulate("city", registerDTO.getCity());
                 jsonObject.accumulate("state", registerDTO.getState());
                 jsonObject.accumulate("password", registerDTO.getPassword());
-
+                jsonObject.accumulate("imgPath", registerDTO.getImgPath());
                 json = jsonObject.toString();
                 System.out.println("json values" + json);
             } catch (Exception e) {

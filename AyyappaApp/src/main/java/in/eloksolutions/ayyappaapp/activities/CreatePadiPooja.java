@@ -6,22 +6,31 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -37,6 +46,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import in.eloksolutions.ayyappaapp.R;
@@ -51,25 +62,28 @@ import in.eloksolutions.ayyappaapp.util.Util;
 public class CreatePadiPooja extends AppCompatActivity implements View.OnClickListener {
     TextView date, time, pin_my_location, contact_number,addImage;
     CheckBox eventList;
-    EditText addresss, event_name, description, website_address, email, phone;
+    EditText addresss, event_name, description, city, email, phone;
     ImageView imgView;
     private TransferUtility transferUtility;
     String imageName, UserId, userName, keyName;
-    static final int REQUEST_LOCATION = 1;
     private int STORAGE_PERMISSION_CODE = 23;
     AmazonS3 s3;
     File fileToUpload;
     File fileToDownload = new File("/storage/sdcard0/Pictures/MY");
-
-
-
+    static final int REQUEST_LOCATION = 1;
+    LocationManager locationManager;
     private static final String TAG = "CreatePadiPooja";
+    double latti,longi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get the view from new_activity.xml
         setContentView(R.layout.create_event);
+       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Create Padipooja");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         transferUtility = UploadS3.getTransferUtility(this);
         final Context ctx = this;
         event_name = (EditText) findViewById(R.id.topic_title);
@@ -79,30 +93,72 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
        // date.setText("" + DateFormat.format("dd/MM/yyyy", System.currentTimeMillis()));
         time = (TextView) findViewById(R.id.time1);
         //time.setText("" + DateFormat.format("hh:mm a", System.currentTimeMillis()));
-        contact_number = (EditText) findViewById(R.id.contact_number);
         pin_my_location = (TextView) findViewById(R.id.pin_my_location);
         addresss = (EditText) findViewById(R.id.Adress);
         imgView=(ImageView) findViewById(R.id.groups_image);
+        city=(EditText) findViewById(R.id.city);
         Button create = (Button) findViewById(R.id.create);
         SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
         UserId = preferences.getString("userId", "");
         userName = preferences.getString("firstName", "") + " " + preferences.getString("secoundName", "");
         date.setOnClickListener(this);
         time.setOnClickListener(this);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String createGroupHelper = saveEventToServer();
-
-
-            }
-        });
-
         credentialsProvider();
-
         // callback method to call the setTransferUtility method
         setTransferUtility();
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        getLocation();
+    }
+    void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if (location != null) {
+                latti = location.getLatitude();
+                longi = location.getLongitude();
+
+                Geocoder gc= new Geocoder(this, Locale.getDefault());
+                // TextView addr = (TextView) main.findViewById(R.id.editText2);
+                String result="x03";
+                try {
+                    List<Address> addressList = gc.getFromLocation(latti,
+                            longi, 1);
+
+                    if (addressList != null && addressList.size() > 0) {
+                        Address address = addressList.get(0);
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                            sb.append(address.getAddressLine(i)).append("\n");
+                        }
+                        sb.append(address.getLocality()).append("\n");
+                        sb.append(address.getPostalCode()).append("\n");
+                        sb.append(address.getCountryName());
+                        result = sb.toString();
+                        addresss.setText(result);
+                        city.setText(address.getLocality());
+
+                    }else {
+                        ((TextView) findViewById(R.id.textView)).
+                                setText("Unable to find current location . Try again later");
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // addr.setText("Address is"+result);
+            }else{
+                //  text.setText("Unabletofind");
+                System.out.println("Unable");
+            }
+        }
 
     }
 
@@ -117,7 +173,6 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         }
 
     }
-
     private void showToTimePicker() {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -126,7 +181,6 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         mTimePicker = DateAndTimePicker.getTimePickerDialog(hour, minute, this, time);
         mTimePicker.show();
     }
-
     public void credentialsProvider(){
 
         // Initialize the Amazon Cognito credentials provider
@@ -184,15 +238,14 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
                         // .setFixAspectRatio(true)
                         .setCropShape(cropShape)
                         // .setAspectRatio(4,2)
-                        .setMinCropResultSize(480,720)
-                        .setMaxCropResultSize(800,1200)
+                        .setMinCropResultSize(480,520)
+                        .setMaxCropResultSize(600,800)
                         .start(this);
 
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
                 Log.e(TAG, "Unable to upload file from the given uri", e);
             }
         }
@@ -206,7 +259,6 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
                 imgView.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "File path is " + path);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -389,7 +441,46 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         if (!Validation.hasText(event_name)) ret = false;
         return ret;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+
+                if (checkValidation () ) {
+                    if (CheckInternet.checkInternetConenction(CreatePadiPooja.this)) {
+                        String createGroupHelper=saveEventToServer();
+                    }else {
+                        CheckInternet.showAlertDialog(CreatePadiPooja.this, "No Internet Connection",
+                                "You don't have internet connection.");
+                    }
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_LOCATION:
+                getLocation();
+                break;
+        }
+    }
     }
 
 

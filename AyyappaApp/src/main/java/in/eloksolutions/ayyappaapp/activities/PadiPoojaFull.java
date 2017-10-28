@@ -10,9 +10,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
 
@@ -35,7 +37,14 @@ public class PadiPoojaFull extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.padipoojafull);
+      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       setSupportActionBar(toolbar);
+       toolbar.setBackgroundColor(getResources().getColor(R.color.black));
+       toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+       getSupportActionBar().setTitle("PadiPoojas List");
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
+       TextView noData=(TextView) findViewById(R.id.tv_no_data);
        RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
@@ -43,7 +52,7 @@ public class PadiPoojaFull extends AppCompatActivity {
        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
        userId=preferences.getString("userId",null);
         String url= Config.SERVER_URL+"padipooja/getpoojas/"+userId;
-        GetEvents getEvents=new GetEvents(context,url,rvPadi);
+        GetEvents getEvents=new GetEvents(context,url,rvPadi, noData);
         getEvents.execute();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_padi);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,5 +100,15 @@ public class PadiPoojaFull extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

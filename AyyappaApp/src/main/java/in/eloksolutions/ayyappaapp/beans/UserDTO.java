@@ -1,5 +1,8 @@
 package in.eloksolutions.ayyappaapp.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by welcome on 7/17/2017.
  */
@@ -17,12 +20,23 @@ public class UserDTO {
     private LatLong loc;
     private String lat;
     private String lon;
+    List<GroupDTO> groups=new ArrayList<GroupDTO>();
+
+    public List<GroupDTO> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<GroupDTO> groups) {
+        this.groups = groups;
+    }
+
     public class LatLong{
         String lat;
         String lon;
         public LatLong(){
 
         }
+
         public String getLat() {
             return lat;
         }
@@ -133,6 +147,14 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LatLong getLoc() {
+        return loc;
+    }
+
+    public void setLoc(LatLong loc) {
+        this.loc = loc;
     }
 
     @Override

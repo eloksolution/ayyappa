@@ -36,6 +36,20 @@
         android:layout_height="fill_parent"
   android:orientation="vertical" >
 
+        <android.support.v7.widget.SearchView
+            android:id="@+id/svSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            app:queryHint="Search Swamies.."
+            app:iconifiedByDefault="false"
+            android:background="@color/white"
+            android:paddingLeft="14dp" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
         <android.support.v7.widget.CardView
             android:id="@+id/cv1"
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -77,11 +91,12 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
+
         <View
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/fab_margin"
             android:background="@color/view" />
-
         <android.support.v7.widget.CardView
             android:id="@+id/cv4"
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -231,77 +246,151 @@
         </LinearLayout>
         </android.support.v7.widget.CardView>
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/fab_margin"
             android:background="@color/view" />
-
         <android.support.v7.widget.CardView
-            android:id="@+id/cv6"
+            android:id="@+id/cv10"
             xmlns:android="http://schemas.android.com/apk/res/android"
             app:cardElevation="0dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/apk/res-auto">
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content"
-            >
             <LinearLayout
-                android:id="@+id/heading_layout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvMovies"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Swamy Ayyappa Mahathyam Movies "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_heading" />
-            </LinearLayout>
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/small_view"
-                android:background="@color/view" />
-            <LinearLayout
-                android:background="@color/white"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="right"
-                android:layout_gravity="center"
-                android:weightSum="3"
-                android:layout_margin="8dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:paddingLeft="10dp"
-                    android:id="@+id/movie_full"
-                    android:layout_gravity="right|center"
-                    android:src="@drawable/fullscreenicon"/>
-            </LinearLayout>
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <GridView
-                    android:id="@+id/gridview"
-                    android:layout_below="@+id/card_view"
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+
+                <LinearLayout
+                    android:id="@+id/heading_layouts"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:verticalSpacing="5dp"
-                    android:horizontalSpacing="5dp"
-                    android:stretchMode="columnWidth"
-                    android:numColumns="1"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/Contacts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Swamies Contacts"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_heading" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/small_view"
+                    android:background="@color/view" />
 
-        </LinearLayout>
-</android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+
+                    android:layout_gravity="center"
+                    android:weightSum="3"
+                    android:layout_margin="8dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:id="@+id/contacts_full"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/fullscreenicon"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/contacts_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/row_activated"
+                    android:paddingBottom="@dimen/fab_marginn"
+                    android:scrollbars="horizontal"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fab_margin"
+            android:background="@color/view" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/movies_card"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            app:cardElevation="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout
+
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+
+                <LinearLayout
+                    android:id="@+id/movies_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/movies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ayyappa Movies"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_heading" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/small_view"
+                    android:background="@color/view" />
+
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+
+                    android:layout_gravity="center"
+                    android:weightSum="3"
+                    android:layout_margin="8dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:id="@+id/movies_full"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/fullscreenicon"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/movies_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/row_activated"
+                    android:paddingBottom="@dimen/fab_marginn"
+                    android:scrollbars="horizontal"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/fab_margin"
@@ -359,15 +448,13 @@
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <GridView
-                        android:id="@+id/gridview_one"
-                        android:layout_below="@+id/card_view"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/songs_recycler"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:verticalSpacing="5dp"
-                        android:horizontalSpacing="5dp"
-                        android:stretchMode="columnWidth"
-                        android:numColumns="1"/>
+                        android:layout_height="wrap_content"
+                        android:divider="@color/row_activated"
+                        android:paddingBottom="@dimen/fab_marginn"
+                        android:scrollbars="horizontal"/>
 
                 </RelativeLayout>
 

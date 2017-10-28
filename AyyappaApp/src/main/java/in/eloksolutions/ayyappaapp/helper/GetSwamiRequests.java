@@ -3,6 +3,8 @@ package in.eloksolutions.ayyappaapp.helper;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,11 +31,13 @@ public class GetSwamiRequests extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
+    TextView noData;
 
-    public GetSwamiRequests(SwamiRequest swamiRequest, String surl, RecyclerView rvGroups) {
+    public GetSwamiRequests(SwamiRequest swamiRequest, String surl, RecyclerView rvGroups, TextView noData) {
         this.swamiRequest = swamiRequest;
         this.surl = surl;
         this.rvGroups = rvGroups;
+        this.noData=noData;
     }
 
     @Override
@@ -58,8 +62,9 @@ public class GetSwamiRequests extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         System.out.println("Get Groups Result is " + result);
         progress.dismiss();
-        if (result != null && result.trim().length() > 0) {
+        if (result != null && result.trim().length() > 0 || result.length() != 0) {
             Gson gson = new Gson();
+            System.out.println("Get else Groups Result is " + result.length());
             Type type = new TypeToken<List<RegisterDTO>>() {
             }.getType();
             List<RegisterDTO> fromJson = gson.fromJson(result, type);
@@ -68,9 +73,13 @@ public class GetSwamiRequests extends AsyncTask<String, Void, String> {
                 DataObjectRequests obj = new DataObjectRequests(requests.getUserId(), requests.getImgPath(), requests.getFirstName(), requests.getLastName(), R.drawable.yes, R.drawable.no);
                 results.add(obj);
             }
-            MyRecyclerViewSwamiRequests mAdapter = new MyRecyclerViewSwamiRequests(results, swamiRequest);
-            rvGroups.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
+            if (!results.isEmpty()) {
+                MyRecyclerViewSwamiRequests mAdapter = new MyRecyclerViewSwamiRequests(results, swamiRequest);
+                rvGroups.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            } else {
+               noData.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

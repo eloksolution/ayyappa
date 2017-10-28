@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -64,7 +64,7 @@ public class GroupUpdate extends AppCompatActivity {
     private int STORAGE_PERMISSION_CODE = 23;
     File fileToDownload = new File("/storage/sdcard0/Pictures/MY");
     AmazonS3 s3;
-
+    Toolbar toolbar;
     TransferUtility transferUtility;
     String TAG="Create Group";
     String keyName,userId,userName;
@@ -73,8 +73,11 @@ public class GroupUpdate extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_group);
-
+        setContentView(R.layout.create_new_group);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Group Update");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         groupId=getIntent().getStringExtra("groupId");
         Log.i(tag, "groupId for GroupUpdate is"+groupId);
 
@@ -87,17 +90,10 @@ public class GroupUpdate extends AppCompatActivity {
         description=(EditText) findViewById(R.id.gdescription);
         gCatagery=(Spinner) findViewById(R.id.gcatagery);
         imgView=(ImageView) findViewById(R.id.img_view);
-        createGroup=(Button) findViewById(R.id.butgcreate);
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         final Context ctx = this;
 
-        createGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                    String createGroupHelper=saveEventToServer();
-            }
-        });
 
       /*  imagePick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,8 +213,7 @@ public class GroupUpdate extends AppCompatActivity {
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
                 Log.e(TAG, "Unable to upload file from the given uri", e);
             }
         }
@@ -232,7 +227,6 @@ public class GroupUpdate extends AppCompatActivity {
                 imgView.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "File path is " + path);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -392,7 +386,6 @@ public class GroupUpdate extends AppCompatActivity {
             GroupDTO fromJsonn = gson.fromJson(result, GroupDTO.class);
             name.setText(fromJsonn.getName());
             description.setText(fromJsonn.getDescription());
-            createGroup.setText("Update Here");
 
         }
     }
@@ -407,6 +400,8 @@ public class GroupUpdate extends AppCompatActivity {
         String groupCatagery = gCatagery.getSelectedItem().toString();
         groupDto.setGroupCatagory(groupCatagery);
         groupDto.setImagePath(keyName);
+        groupDto.setOwnerName(userId);
+        groupDto.setOwnerName(userName);
 
         return groupDto;
     }
@@ -421,20 +416,31 @@ public class GroupUpdate extends AppCompatActivity {
 
 
         }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
         return true;
-
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
 
-            case R.id.exit:
-                finish();
+                if (checkValidation () ) {
+                    if (CheckInternet.checkInternetConenction(GroupUpdate.this)) {
+                        String createGroupHelper=saveEventToServer();
+                    }else {
+                        CheckInternet.showAlertDialog(GroupUpdate.this, "No Internet Connection",
+                                "You don't have internet connection.");
+                    }
+                }
                 return true;
 
             default:

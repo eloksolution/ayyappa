@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -51,7 +51,6 @@ import in.eloksolutions.ayyappaapp.recycleviews.CheckInternet;
 import in.eloksolutions.ayyappaapp.recycleviews.Validation;
 import in.eloksolutions.ayyappaapp.util.Util;
 
-
 /**
  * Created by welcome on 6/27/2017.
  */
@@ -62,12 +61,14 @@ public class CreateGroup extends AppCompatActivity {
     Spinner gCatagery;
     private static int PICK_FROM_GALLERY;
     private int STORAGE_PERMISSION_CODE = 23;
+    File fileToDownload = new File("/storage/sdcard0/Pictures/MY");
     AmazonS3 s3;
     private Button buttonRequestPermission;
     TransferUtility transferUtility;
     String TAG="Create Group";
     String keyName,userId,userName;
     File fileToUpload;
+    Toolbar toolbar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,23 +79,18 @@ public class CreateGroup extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, catageries);
         gCatagery.setAdapter(adapter);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Create New Group");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button createGroup=(Button) findViewById(R.id.butgcreate);
         imgView=(ImageView) findViewById(R.id.img_view);
         Button imagePick=(Button) findViewById(R.id.group_image_add);
-        SharedPreferences preference=getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preference=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId=preference.getString("userId",null);
         userName=preference.getString("firstName",null)+ " " + preference.getString("lastName", null);
         final Context ctx = this;
 
-        createGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String createGroupHelper=saveEventToServer();
-
-            }
-        });
 
         // callback method to call credentialsProvider method.
         credentialsProvider();
@@ -135,7 +131,6 @@ public class CreateGroup extends AppCompatActivity {
 
     public void setFileToUpload(View view){
 
-
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= 19) {
             // For Android versions of KitKat or later, we use a
@@ -153,17 +148,15 @@ public class CreateGroup extends AppCompatActivity {
 
     }
     private void requestStoragePermission(){
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                //If the user has denied the permission previously your code will come to this block
-                //Here you can explain why you need this permission
-                //Explain here why you need this permission
-            }
 
-            //And finally ask for the permission
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
         }
+
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
     }
 
     private boolean isReadStorageAllowed() {
@@ -197,8 +190,7 @@ public class CreateGroup extends AppCompatActivity {
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
                 Log.e(TAG, "Unable to upload file from the given uri", e);
             }
         }
@@ -212,7 +204,6 @@ public class CreateGroup extends AppCompatActivity {
                 imgView.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "File path is " + path);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -331,13 +322,15 @@ public class CreateGroup extends AppCompatActivity {
     private String saveEventToServer() {
         keyName="groups/G_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         GroupDTO groupDto=buildDTOObject();
-        TransferObserver transferObserver = transferUtility.upload(
-                "elokayyappa",     /* The bucket to upload to */
-                keyName,    /* The key for the uploaded object */
-                fileToUpload       /* The file where the data to upload exists */
-        );
+        if(fileToDownload!=null) {
+            TransferObserver transferObserver = transferUtility.upload(
+                    "elokayyappa",     /* The bucket to upload to */
+                    keyName,    /* The key for the uploaded object */
+                    fileToUpload       /* The file where the data to upload exists */
+            );
 
-        transferObserverListener(transferObserver);
+            transferObserverListener(transferObserver);
+        }
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(CreateGroup.this)) {
                 GroupHelper createGroupHelper = new GroupHelper(CreateGroup.this);
@@ -377,25 +370,42 @@ public class CreateGroup extends AppCompatActivity {
     private boolean checkValidation() {
         boolean ret = true;
         if (!Validation.hasText(description)) ret = false;
+
         if (!Validation.hasText(name)) ret = false;
         return ret;
+
+
+
         }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
-            case R.id.exit:
-                finish();
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+
+                if (checkValidation () ) {
+                    if (CheckInternet.checkInternetConenction(CreateGroup.this)) {
+                        String createGroupHelper=saveEventToServer();
+                    }else {
+                        CheckInternet.showAlertDialog(CreateGroup.this, "No Internet Connection",
+                                "You don't have internet connection.");
+                    }
+                }
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-   
+
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -27,7 +28,7 @@ public class ToppicGroupList extends AppCompatActivity {
     Context mcontext;
     AmazonS3 s3;
     TransferUtility transferUtility;
-
+    Toolbar toolbar;
     String topicDesc,topicTitle,topicImage,userId,firstName,lastName;
     @Override
     public void onCreate(Bundle SavedInstanceState){
@@ -40,7 +41,11 @@ public class ToppicGroupList extends AppCompatActivity {
         userId=preferences.getString("userId",null);
         firstName=preferences.getString("firstName",null);
         lastName=preferences.getString("lastName",null);
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Ask a Questions");
+        toolbar.setTitle("Ask a Questions");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);

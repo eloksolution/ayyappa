@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -63,15 +64,9 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
             this.reject = reject;
         }
 
-        public ImageView getUserImage() {
-            return userImage;
-        }
 
-        public void setUserImage(ImageView userImage) {
-            this.userImage = userImage;
-        }
 
-        ImageView accept,reject,userImage;
+        ImageView accept,reject;
         Button joinBtn;
 
         public DataObjectHolder(final View itemView) {
@@ -176,6 +171,12 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
         holder.label.setText(mDataset.get(position).getFirstName() + " " + mDataset.get(position).getLastName());
         holder.accept.setImageResource(mDataset.get(position).getYes());
         holder.reject.setImageResource(mDataset.get(position).getNo());
+        if(mDataset.get(position).getImgPath()!=null) {
+            glide.with(context).load(Config.S3_URL + mDataset.get(position).getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
+            System.out.println("past from eventfromJson.gettime()" + mDataset.get(position).getImgPath());
+        }else{
+            glide.with(context).load(R.drawable.defaulta).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
+        }
 
     }
 

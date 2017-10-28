@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.eloksolutions.ayyappaapp.beans.GroupDTO;
-import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
+import in.eloksolutions.ayyappaapp.beans.UserDTO;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewTopicGroup;
 import in.eloksolutions.ayyappaapp.util.DataObjectGroup;
 import in.eloksolutions.ayyappaapp.util.RestServices;
@@ -24,13 +24,13 @@ import in.eloksolutions.ayyappaapp.util.RestServices;
  * Created by welcome on 6/30/2017.
  */
 
-public class GetGroups extends AsyncTask<String, Void, String> {
+public class GetUserGroups extends AsyncTask<String, Void, String> {
     private Context mcontext;
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
 
-    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups) {
+    public GetUserGroups(Context mcontext, String surl, RecyclerView rvGroups) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvGroups=rvGroups;
@@ -55,20 +55,20 @@ public class GetGroups extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-        System.out.println("Get Groups Result is "+result);
+        System.out.println("Get user Groups Result is "+result);
         progress.dismiss();
         if (result!=null && result.trim().length()>0) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<GroupDTO>>() { }.getType();
-            List<GroupDTO> fromJson = gson.fromJson(result, type);
+            Type type = new TypeToken<List<UserDTO>>() { }.getType();
+            List<UserDTO> fromJson = gson.fromJson(result, type);
             ArrayList<DataObjectGroup> results = new ArrayList<DataObjectGroup>();
-             for (GroupDTO group : fromJson) {
-                 List<RegisterDTO> groupMembers=group.getGroupMembers();
+             for (UserDTO group : fromJson) {
+                 List<GroupDTO> userGroups=group.getGroups();
                  int memberSize=0;
-                 if(groupMembers !=null)
-                     memberSize=groupMembers.size();
-                 DataObjectGroup obj = new DataObjectGroup(group.getName(),group.getDescription(), group.getImagePath(), group.getGroupid(),memberSize,group.getOwner(),group.getIsMember());
-                results.add(obj);
+                 if(userGroups !=null)
+                     memberSize=userGroups.size();
+
+
            }
             if (!results.isEmpty()) {
 

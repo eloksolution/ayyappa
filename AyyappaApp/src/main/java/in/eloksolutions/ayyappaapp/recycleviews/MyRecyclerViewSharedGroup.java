@@ -47,7 +47,6 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
     TransferUtility transferUtility;
     public CreateTopic createTopic;
 
-
     public MyRecyclerViewSharedGroup(ArrayList<DataObjectGroup> myDataset, Context mcontext, AmazonS3 s3, TransferUtility transferUtility, CreateTopic createTopic) {
         mDataset = myDataset;
         this.context = context;
@@ -107,7 +106,6 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
             });
         }
 
-
         @Override
         public void onClick(View v) {
 
@@ -157,7 +155,6 @@ public class MyRecyclerViewSharedGroup extends RecyclerView
         }
         return null;
     }
-
 
     private GroupMembers memBuildDTOObject() {
         GroupMembers groupMembers = new GroupMembers();

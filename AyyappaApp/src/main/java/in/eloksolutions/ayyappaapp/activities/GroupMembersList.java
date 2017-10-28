@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.MenuItem;
 
 import com.google.gson.Gson;
 
@@ -22,7 +22,7 @@ import in.eloksolutions.ayyappaapp.helper.GroupMemberObject;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerGroupListMembers;
 
 
-public class GroupMembersList extends AppCompatActivity implements View.OnClickListener {
+public class GroupMembersList extends AppCompatActivity  {
     Context context;
     RecyclerView rvPadi;
     String groupId,userId;
@@ -58,33 +58,37 @@ public class GroupMembersList extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void onClick(View v) {
-
-        if (v == v) {
-
-        }
-
-    }
     public void setValuesToTextFields(String result) {
         System.out.println("json xxxx from groupview" + result);
-        if (result != null) {
+        if (result != null || result.length() == 0) {
             Gson gson = new Gson();
             GroupDTO fromJsonn = gson.fromJson(result, GroupDTO.class);
             if (fromJsonn.getGroupMembers()!=null) {
                 ArrayList results = new ArrayList<GroupMemberObject>();
                 for (RegisterDTO m : fromJsonn.getGroupMembers()) {
 
-                    GroupMemberObject mem = new GroupMemberObject(m.getUserId(), m.getFirstName(), R.drawable.ayyappa_logo, m.getLastName());
+                    GroupMemberObject mem = new GroupMemberObject(m.getUserId(), m.getFirstName(), R.drawable.ayyappa_logo, m.getLastName(),m.getImgPath());
                     results.add(mem);
 
                 }
-                MyRecyclerGroupListMembers mAdapter = new MyRecyclerGroupListMembers(results);
+                MyRecyclerGroupListMembers mAdapter = new MyRecyclerGroupListMembers(results,context);
                 rvPadi.setAdapter(mAdapter);
                 System.out.println("object resul myrecycler results list view is " + results);
             }
 
             System.out.println("json xxxx from fromJsonn.getGroupMembers().size()" + fromJsonn.getGroupMembers().size());
 
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

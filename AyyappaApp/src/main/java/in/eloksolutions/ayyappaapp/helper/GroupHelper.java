@@ -62,7 +62,7 @@ public class GroupHelper {
                 jsonObject.accumulate("createDate", groupDto.getCreateDate());
                 jsonObject.accumulate("numberOfMembers", groupDto.getNumberOfMembers());
                 jsonObject.accumulate("imagePath", groupDto.getImagePath());
-                jsonObject.accumulate("catgory",groupDto.getGroupCatagory());
+                jsonObject.accumulate("type",groupDto.getGroupCatagory());
                 json = jsonObject.toString();
                 System.out.println("Json is" + json);
 

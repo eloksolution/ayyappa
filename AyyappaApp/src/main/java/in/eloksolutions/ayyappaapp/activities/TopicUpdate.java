@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +36,7 @@ public class TopicUpdate extends AppCompatActivity {
     EditText addDisscussion;
     RecyclerView rvPadi;
     Button topicUpdate;
-
     String topicId;
-
     Context context;
     int count;
     String tag="TopicView";
@@ -48,7 +47,10 @@ public class TopicUpdate extends AppCompatActivity {
         topicName=(TextView) findViewById(R.id.topic_name);
         description=(TextView) findViewById(R.id.topic_descr);
          topicUpdate=(Button) findViewById(R.id.but_topic_update);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Padipooja Update");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId Update is"+topicId);
@@ -83,7 +85,6 @@ public class TopicUpdate extends AppCompatActivity {
             TopicDTO fromJsonn = gson.fromJson(result, TopicDTO.class);
             topicName.setText(fromJsonn.getTopic());
             description.setText(fromJsonn.getDescription());
-
             System.out.println("object resul myrecycler results list view is " + fromJsonn.getDiscussions());
             if (fromJsonn.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();

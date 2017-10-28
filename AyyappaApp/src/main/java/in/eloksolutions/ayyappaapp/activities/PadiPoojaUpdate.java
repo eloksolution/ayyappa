@@ -14,14 +14,16 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -39,7 +41,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
-
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.beans.EventDTO;
@@ -82,10 +83,11 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         padiPoojaId =getIntent().getStringExtra("padiPoojaId");
         Log.i(tag, "padiupdate Id id "+padiPoojaId);
         final Context ctx = this;
-
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Padipooja Update");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Initializes TransferUtility, always do this before using it.
-
         event_name = (EditText) findViewById(R.id.topic_title);
         description = (EditText) findViewById(R.id.discription);
         addImage=(TextView) findViewById(R.id.bg_image);
@@ -93,22 +95,14 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         // date.setText("" + DateFormat.format("dd/MM/yyyy", System.currentTimeMillis()));
         time = (TextView) findViewById(R.id.time1);
         //time.setText("" + DateFormat.format("hh:mm a", System.currentTimeMillis()));
-        contact_number = (EditText) findViewById(R.id.contact_number);
         pin_my_location = (TextView) findViewById(R.id.pin_my_location);
         addresss = (EditText) findViewById(R.id.Adress);
         imgView=(ImageView) findViewById(R.id.groups_image);
-         create = (Button) findViewById(R.id.create);
         SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
         UserId = preferences.getString("userId", "");
         userName = preferences.getString("firstName", "") + " " + preferences.getString("secoundName", "");
         date.setOnClickListener(this);
         time.setOnClickListener(this);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String createGroupHelper=saveEventToServer();
-            }
-        });
 
         // callback method to call credentialsProvider method.
         credentialsProvider();
@@ -138,24 +132,7 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         }
 
     }
-    public void setFileToUpload(View view){
 
-        Intent intent = new Intent();
-        if (Build.VERSION.SDK_INT >= 19) {
-            // For Android versions of KitKat or later, we use a
-            // different intent to ensure
-            // we can get the file path from the returned intent URI
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        } else {
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-        }
-
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
-
-    }
 
     private void showToTimePicker() {
         Calendar mcurrentTime = Calendar.getInstance();
@@ -187,11 +164,30 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
 
     }
 
-
     public void setTransferUtility(){
 
         transferUtility = new TransferUtility(s3, getApplicationContext());
     }
+
+    public void setFileToUpload(View view){
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= 19) {
+            // For Android versions of KitKat or later, we use a
+            // different intent to ensure
+            // we can get the file path from the returned intent URI
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        } else {
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+        }
+
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -211,8 +207,7 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Unable to get the file from the given URI.  See error log for details" + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
                 Log.e(TAG, "Unable to upload file from the given uri", e);
             }
         }
@@ -226,12 +221,13 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
                 imgView.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
-                Toast.makeText(this, "File path is " + path, Toast.LENGTH_LONG).show();
                 Log.e(TAG, "File path is " + path);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
         }
+
+
     }
     public void transferObserverListener(TransferObserver transferObserver){
 
@@ -364,6 +360,7 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
             if (CheckInternet.checkInternetConenction(PadiPoojaUpdate.this)) {
                 PadiUpdateHelper createEventHelper = new PadiUpdateHelper(PadiPoojaUpdate.this);
                 String surl = Config.SERVER_URL + "padipooja/update";
+
                 try {
                     String gId= createEventHelper.new PadiUpdateHere(eventDTO, surl).execute().get();
                     return gId;
@@ -389,8 +386,6 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
             date.setText(eventDTO.getDate());
             time.setText(eventDTO.gettime());
             description.setText(eventDTO.getDescription());
-            create.setText("Update Here");
-
             System.out.println("past from event getmems view" + eventDTO.getPadiMembers());
         }
     }
@@ -424,6 +419,36 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         if (!Validation.hasText(addresss)) ret = false;
         if (!Validation.hasText(event_name)) ret = false;
         return ret;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+
+                if (checkValidation () ) {
+                    if (CheckInternet.checkInternetConenction(PadiPoojaUpdate.this)) {
+                        String createGroupHelper=saveEventToServer();
+                    }else {
+                        CheckInternet.showAlertDialog(PadiPoojaUpdate.this, "No Internet Connection",
+                                "You don't have internet connection.");
+                    }
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
        }
 

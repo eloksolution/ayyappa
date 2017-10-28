@@ -1,4 +1,12 @@
 <?xml version="1.5.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:sl="http://schemas.android.com/tools"
+    android:id="@+id/group_view_layout"
+    android:fitsSystemWindows="true"
+    >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -13,6 +21,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme" />
+        </android.support.design.widget.AppBarLayout>
+
         <ScrollView
             android:layout_marginTop="5dp"
             android:paddingBottom="15dp"
@@ -25,31 +46,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-                <android.support.v7.widget.CardView
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                <CheckBox
-                    android:textSize="16sp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="22dp"
-                    android:id="@+id/topiclist"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:button="@null"
-                    android:text="Topics"
-                    android:layout_width="match_parent"
-                    android:background="@color/white"
-                    android:layout_height="45dp"
-                    android:layout_weight="2"
-                    android:drawableRight="@drawable/arrow_down">
-
-                </CheckBox>
-                </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="8dp"
@@ -71,9 +67,9 @@
                     android:textColor="@android:color/black"
                     android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:hint="Event Title "
+                    android:hint="Padippoja Title "
                     android:maxLength="100"
-                    android:textCursorDrawable="@drawable/pen"
+
                     />
                 </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
@@ -87,7 +83,6 @@
                     android:maxLength="1000"
                     android:paddingBottom="10dp"
                     android:minHeight="200dp"
-                    android:textCursorDrawable="@drawable/pen"
                     android:textSize="16sp"
                     android:visibility="visible"
                     android:background="@color/white"
@@ -213,25 +208,7 @@
                    app:cardBackgroundColor="@color/background"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
-                <EditText
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:textCursorDrawable="@drawable/pen"
-                    android:paddingLeft="20dp"
-                    android:textSize="16sp"
-                    android:id="@+id/contact_number"
-                    android:gravity="left|center"
-                    android:textColor="@android:color/black"
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:hint="Contact Number"
-                    android:inputType="phone"
-                    android:maxLength="15"
-                    />
-                </android.support.v7.widget.CardView>
+                    ></android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/pin_loc_card"
@@ -254,7 +231,6 @@
                 </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
                     android:id="@+id/address_card"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -263,15 +239,10 @@
                     >
 
                     <EditText
-                        android:maxLength="100"
-                        android:minHeight="45dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingRight="20dp"
-                        android:textCursorDrawable="@drawable/pen"
-                        android:visibility="gone"
                         android:paddingLeft="20dp"
-                        android:textSize="16sp"
                         android:id="@+id/Adress"
                         android:gravity="left|center"
                         android:textColor="@android:color/black"
@@ -279,8 +250,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Address"
-                        />
+                         />
                 </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/city_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="5dp"
+                        >
+                    <EditText
+                        android:maxLength="100"
+                        android:minHeight="45dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingLeft="20dp"
+                        android:id="@+id/city"
+                        android:gravity="left|center"
+                        android:textColor="@android:color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address"
+                        />
+</android.support.v7.widget.CardView>
                 </LinearLayout>
                 <android.support.v7.widget.CardView
                     android:layout_marginTop="5dp"
@@ -297,12 +292,12 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:onClick="setFileToUpload"
-                    android:background="@color/white"
+                    android:background="@drawable/btn"
                     android:layout_width="match_parent"
                     android:textSize="16sp"
-                    android:textColor="@color/from"
+                    android:textColor="@color/white"
                     android:layout_height="45dp"
-                    android:text="UploadImage"/>
+                    android:text="Upload Image"/>
                 </android.support.v7.widget.CardView>
                 <LinearLayout
                     android:id="@+id/groups_image_layout"
@@ -311,7 +306,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <ayyappa.eloksolutions.in.ayyappaap.adapter.ImageAspectRatio
+                    <in.eloksolutions.ayyappaapp.adapter.ImageAspectRatio
                         android:visibility="gone"
                         android:src="@drawable/camera"
                         android:adjustViewBounds="true"
@@ -322,19 +317,6 @@
                         />
                 </LinearLayout>
 
-
-                <Button
-                    android:id="@+id/create"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="18dp"
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:textSize="16sp"
-                    android:layout_height="wrap_content"
-                    android:text="Create"/>
-
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -342,3 +324,4 @@
 
 
 </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>

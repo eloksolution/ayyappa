@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -31,7 +33,7 @@ import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
  * Created by welcome on 1/4/2017.
  */
 
-public class UserPadiPoojas extends CardViewActivity {
+public class UserPadiPoojas extends AppCompatActivity {
     Context context;
     private BottomBar bottomBar;
     AmazonS3 s3;
@@ -42,7 +44,7 @@ public class UserPadiPoojas extends CardViewActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.padipoojafull);
         context=this;
-
+        TextView noData=(TextView) findViewById(R.id.tv_no_data);
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
@@ -50,7 +52,7 @@ public class UserPadiPoojas extends CardViewActivity {
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         UserId=preferences.getString("userId", null);
         String url= Config.SERVER_URL+"user/padis/"+UserId;
-        GetEvents getEvents=new GetEvents(context,url,rvPadi);
+        GetEvents getEvents=new GetEvents(context,url,rvPadi,noData);
         getEvents.execute();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_padi);
         fab.setOnClickListener(new View.OnClickListener() {

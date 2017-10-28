@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Ayyappa App</string>
-    <string name="google_place_api">AIzaSyA4IOpxqEk3uLY6SmyqdqVzQsnreYSpRY0</string>
+    <string name="google_place_api">AIzaSyCDjVe3vsBBHqgnGqnBvtGJGGd_wmY5yXA</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="who_can"><center>WHO can do it?</center></string>
     <string name="deeksha_rules">Males: Any one can do it.
@@ -40,9 +40,17 @@ Females: Below age 10 and above 50 can observe deeksha</string>
         • When you or your spouse is preparing meal, make sure you clean the stove before cooking.\n\n
 
 </string>
-     <string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
-news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
-InstanceID token to logcat.</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="refresh_token">Get Fresh Token</string>
+    <string name="desc_google_icon">Google Logo</string>
+    <string name="title_text">Google Sign-In\nQuickstart</string>
+    <string name="signed_out">Signed out</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="loading">Loading…</string>
+      <string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
+        news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
+        InstanceID token to logcat.</string>
     <string name="subscribe_to_news">Subscribe To News</string>
     <string name="log_token">Log Token</string>
 
@@ -50,6 +58,4 @@ InstanceID token to logcat.</string>
     <string name="msg_subscribed">Subscribed to news topic</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="default_notification_channel_name" translatable="true">News</string>
-    Elok • Now
-
 </resources>

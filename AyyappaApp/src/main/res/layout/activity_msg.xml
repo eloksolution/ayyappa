@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/user_view" />
+        android:src="@drawable/firebase_lockup_400" />
 
     <TextView
         android:id="@+id/informationTextView"
@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/subscribeButton"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/standard_field_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
@@ -34,7 +34,7 @@
 
     <Button
         android:id="@+id/logTokenButton"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/standard_field_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/log_token" />

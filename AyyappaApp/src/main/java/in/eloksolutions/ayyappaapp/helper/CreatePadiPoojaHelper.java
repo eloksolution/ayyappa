@@ -10,9 +10,7 @@ import org.json.JSONObject;
 import java.net.URL;
 
 import in.eloksolutions.ayyappaapp.activities.PadiPoojaFull;
-import in.eloksolutions.ayyappaapp.util.RestServices;
 import in.eloksolutions.ayyappaapp.beans.EventDTO;
-import in.eloksolutions.ayyappaapp.activities.PadiPoojaFull;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 
 public class CreatePadiPoojaHelper {
@@ -53,7 +51,7 @@ public class CreatePadiPoojaHelper {
                 jsonObject.accumulate("description", eventDTO.getDescription());
                 jsonObject.accumulate("date", eventDTO.getDate());
                 jsonObject.accumulate("time", eventDTO.getTime());
-                jsonObject.accumulate("memId", eventDTO.getMemId());
+                jsonObject.accumulate("memId", eventDTO.getOwner());
                 jsonObject.accumulate("name", eventDTO.getOwnerName());
                 jsonObject.accumulate("imgPath", eventDTO.getImagePath());
                 json = jsonObject.toString();

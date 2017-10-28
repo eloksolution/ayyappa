@@ -13,7 +13,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -53,7 +55,6 @@ import in.eloksolutions.ayyappaapp.util.Util;
  */
 
 public class CreateTopic extends AppCompatActivity {
-
     String tag = "Create Topic";
     private TextCrawler textCrawler;
     EditText description,editTextTitlePost, editTextDescriptionPost;
@@ -63,7 +64,6 @@ public class CreateTopic extends AppCompatActivity {
     String addTopic;
     String imageName;
     String imageKeyName;
-
     private ViewGroup dropPreview;
     private String currentTitle = "", currentUrl, currentCannonicalUrl,
             currentDescription;
@@ -71,15 +71,21 @@ public class CreateTopic extends AppCompatActivity {
     private int currentItem = 0;
     String userId,username;
     private Bitmap currentImage;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_topic);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Ask a Questions");
+        getSupportActionBar().setTitle("Ask a Questions");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button post = (Button) findViewById(R.id.post);
         description = (EditText) findViewById(R.id.gdescription);
         description.setTypeface(Typeface.DEFAULT);
-          textCrawler = new TextCrawler();
+        textCrawler = new TextCrawler();
         Intent intent = getIntent();
         mcontext=this;
         String action = intent.getAction();
@@ -104,7 +110,6 @@ public class CreateTopic extends AppCompatActivity {
 
         }
         mcontext=this;
-
         credentialsProvider();
         // callback method to call the setTransferUtility method
         setTransferUtility();
@@ -112,12 +117,10 @@ public class CreateTopic extends AppCompatActivity {
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
-        String surl= Config.SERVER_URL+"/group/joined/"+userId;
+        String surl= Config.SERVER_URL+"group/joined/"+userId;
           GetShareGroups getGroups=new GetShareGroups(mcontext,surl,rvGroups,s3,transferUtility,this);
         System.out.println("url for group list"+surl);
         getGroups.execute();
-
-
         post.setOnClickListener(new View.OnClickListener() {
             @Override
 
@@ -143,7 +146,6 @@ public class CreateTopic extends AppCompatActivity {
         topicDTO.setName(username);
         return topicDTO;
     }
-
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
@@ -187,7 +189,6 @@ public class CreateTopic extends AppCompatActivity {
 
             currentImageSet = null;
             currentItem = 0;
-
             currentImage = null;
             currentTitle = currentDescription = currentUrl = currentCannonicalUrl = "";
 
@@ -287,8 +288,6 @@ public class CreateTopic extends AppCompatActivity {
             }else {
                 description.setVisibility(View.VISIBLE);
             }
-
-
             currentTitle = sourceContent.getTitle();
             currentDescription = sourceContent.getDescription();
             currentUrl = sourceContent.getUrl();
@@ -397,6 +396,17 @@ public class CreateTopic extends AppCompatActivity {
         super.onResume();
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 }
 

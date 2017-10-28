@@ -1,13 +1,11 @@
 package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.beans.FeedBackUserTask;
@@ -21,7 +19,7 @@ public class FeedBackForm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.feedbackform);
+        setContentView(R.layout.user_feedback);
         Button submit=(Button) findViewById(R.id.butSubmit);
         final Context ctx=this;
         final TextView etName=(TextView) findViewById(R.id.etName);
@@ -38,9 +36,7 @@ public class FeedBackForm extends AppCompatActivity {
                 String emailid=etEmailid.getText().toString();
                 String comments=etcomment.getText().toString();
                 new FeedBackUserTask(ctx,name,phonenumber,emailid,comments).execute();
-                Toast.makeText(ctx, "Clicking on Register", Toast.LENGTH_LONG).show();
-                Intent feedbaciInt = new Intent(ctx, CardViewActivity.class);
-                startActivity(feedbaciInt);
+
             }
         });
 
