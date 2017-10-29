@@ -18,20 +18,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.activities.SwamiRequest;
+import in.eloksolutions.ayyappaapp.activities.SearchSwamiRequest;
 import in.eloksolutions.ayyappaapp.activities.UserView;
 import in.eloksolutions.ayyappaapp.beans.GroupMembers;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
-import in.eloksolutions.ayyappaapp.helper.SendAcceptTask;
 import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
 
-public class MyRecyclerViewSwamiRequests extends RecyclerView
-        .Adapter<MyRecyclerViewSwamiRequests
+public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
+        .Adapter<MyRecyclerViewSwamiRequestsSearch
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewTopicGroup";
     private ArrayList<DataObjectRequests> mDataset;
-    private SwamiRequest context;
+    private SearchSwamiRequest context;
     private static MyClickListener myClickListener;
     TextView keyName;
     String groupId, userId, firstName, lastName;
@@ -39,7 +38,7 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
     Glide glide;
     ImageView userImage;
 
-    public MyRecyclerViewSwamiRequests(ArrayList<DataObjectRequests> myDataset, SwamiRequest context) {
+    public MyRecyclerViewSwamiRequestsSearch(ArrayList<DataObjectRequests> myDataset, SearchSwamiRequest context) {
         mDataset = myDataset;
         this.context = context;
     }
@@ -117,7 +116,7 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
             if (CheckInternet.checkInternetConenction(context)) {
                 String gurl = Config.SERVER_URL +"user/connect";
                 try {
-                   new SendAcceptTask(userDTo, gurl,context).execute();
+                   //new SendAcceptTask(userDTo, gurl,context).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -151,7 +150,7 @@ public class MyRecyclerViewSwamiRequests extends RecyclerView
     public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public MyRecyclerViewSwamiRequests(ArrayList<DataObjectRequests> myDataset) {
+    public MyRecyclerViewSwamiRequestsSearch(ArrayList<DataObjectRequests> myDataset) {
         mDataset = myDataset;
     }
 

@@ -61,7 +61,7 @@ public class OwnerView extends AppCompatActivity {
         getSupportActionBar().setTitle("Swami Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         OwnerViewHelper gettopicValue = new OwnerViewHelper(this);
-        String surl = Config.SERVER_URL + "user/user/" + userId;
+        String surl = Config.SERVER_URL + "user/user/" + userId+"/"+userId;
         System.out.println("url for group topic view list" + surl);
         try {
             String output = gettopicValue.new UserViewTask(surl).execute().get();
@@ -164,7 +164,7 @@ public class OwnerView extends AppCompatActivity {
             userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
             if (registerDTO.getImgPath() != null) {
                 if (registerDTO.getImgPath().contains("http")) {
-                    glide.with(context).load(registerDTO.getImgPath()).into(userImage);
+                    glide.with(context).load(registerDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
                 } else {
                     glide.with(context).load(Config.S3_URL + registerDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
 

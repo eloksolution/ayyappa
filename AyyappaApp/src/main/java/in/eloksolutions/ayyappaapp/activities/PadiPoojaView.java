@@ -129,7 +129,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         }
         System.out.println(userId+"userid is"+"join status is"+joinStatus+"eventDTO.getIsMember()"+eventDTO.getIsMember()+"eventDTO.getOwner()"+eventDTO.getOwner());
         try {
-            if(userId.equals(eventDTO.getOwner()) || joinStatus.equals(eventDTO.getIsMember()) ){
+            if(userId.equals(eventDTO.getMemId()) || joinStatus.equals(eventDTO.getIsMember()) ){
                 System.out.println("groupDTO.getIsMember()"+eventDTO.getIsMember());
                 join.setVisibility(View.GONE);
                 join_event.setVisibility(View.GONE);

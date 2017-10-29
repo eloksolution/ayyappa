@@ -66,7 +66,7 @@ public class SendAcceptTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         Log.i(tag, "result Response send Tag helper is ::  " +result);
         progress.dismiss();
-        swamiRequest.contacList(registerDto.getUserId());
-
+        swamiRequest.contacList(registerDto.getToUserId());
+        Log.i(tag, "result Response registerDto.getToUserId() ::  " +registerDto.getToUserId());
     }
 }

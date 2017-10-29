@@ -18,6 +18,12 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_collapseMode="parallax"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <in.eloksolutions.ayyappaapp.adapter.ImageAspectRatio
+                android:id="@+id/profile_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/user_view"
+                android:layout_centerHorizontal="true" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -29,13 +35,18 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/nested_scrollview"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
     <RelativeLayout
         android:id="@+id/profile_item"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
         <ScrollView
-            android:scrollbars="none"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
             <RelativeLayout
@@ -45,17 +56,9 @@
                 android:paddingBottom="16.0dip"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/profile_img"
-                    android:layout_width="120.0dip"
-                    android:layout_height="120.0dip"
-                    android:src="@drawable/user_view"
-                    android:layout_centerHorizontal="true" />
-
 
                 <TextView
                     android:gravity="center"
-                    android:text="user Name"
                     android:textSize="30.0sp"
                     android:textStyle="bold"
                     android:textColor="#ff000000"
@@ -88,9 +91,10 @@
                     <Button
                         android:textSize="17.0sp"
                         android:id="@+id/tag_request_text"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Send Swami Request"
+                        android:text="Send Request"
+                        android:padding="10dp"
                         android:onClick="SenTag"
                         android:textColor="@color/white"
                         android:background="@drawable/btn"
@@ -419,5 +423,5 @@
         </ScrollView>
 
     </RelativeLayout>
-
+</android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

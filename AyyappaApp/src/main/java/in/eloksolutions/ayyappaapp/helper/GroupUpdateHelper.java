@@ -93,11 +93,8 @@ public class GroupUpdateHelper {
                 jsonObject.accumulate("groupId", groupDTO.getGroupid());
                 jsonObject.accumulate("name", groupDTO.getName());
                 jsonObject.accumulate("description", groupDTO.getDescription());
-                jsonObject.accumulate("type", groupDTO.getType());
                 jsonObject.accumulate("imagePath", groupDTO.getImagePath());
                 jsonObject.accumulate("catgory", groupDTO.getGroupCatagory());
-                jsonObject.accumulate("owner", groupDTO.getOwner());
-                jsonObject.accumulate("ownerName", groupDTO.getOwnerName());
                 json = jsonObject.toString();
                 System.out.println("json At Group Updated Time values :: " + json);
             } catch (Exception e) {

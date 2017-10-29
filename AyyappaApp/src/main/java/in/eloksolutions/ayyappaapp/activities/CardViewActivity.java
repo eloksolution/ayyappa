@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -57,9 +58,11 @@ public class CardViewActivity extends AppCompatActivity {
     AmazonS3 s3;
     TransferUtility transferUtility;
     RecyclerView mRecyclerView;
+    String searchValues;
     private static String LOG_TAG = "CardViewActivity";
     TextView topic;
     String userId;
+    EditText editText;
     private final String movies[] =  {"Ayyappa janmarahasyam", "Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan", "Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith", "Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas", "Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji", "Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
 
     @Override
@@ -112,6 +115,10 @@ public class CardViewActivity extends AppCompatActivity {
         String deekshaEndDate=preferences.getString("endDate",null);
         userId=preferences.getString("userId",null);
 
+        editText=(EditText) findViewById(R.id.search_name);
+        searchValues=editText.getText().toString();
+        Log.i(TAG,"the search values is"+searchValues);
+
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.event_image);
         final TextView tvDays=(TextView) findViewById(R.id.topic);
         Log.i(TAG,"Deeksha Config.getUserId()"+preferences.getString("userId", null));
@@ -156,13 +163,7 @@ public class CardViewActivity extends AppCompatActivity {
 
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent groupCreate= new Intent(CardViewActivity.this, CreateTopic.class);
-                startActivity(groupCreate);
-            }
-        });
+
 
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
         rvPadi.setHasFixedSize(true);
@@ -176,7 +177,7 @@ public class CardViewActivity extends AppCompatActivity {
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager groups = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(groups);
-        String gurl= Config.SERVER_URL+"group/getfirstgroups";
+        String gurl= Config.SERVER_URL+"group/getfirstgroups/"+userId;
         GetGroups getGroups=new GetGroups(context,gurl,rvGroups);
         System.out.println("url for group list"+gurl);
         getGroups.execute();
@@ -386,12 +387,19 @@ public class CardViewActivity extends AppCompatActivity {
         return av;
     }
 
+    public void searchMethod(View view){
+        Intent topicUp = new Intent(this, SearchSwamiRequest.class);
+        topicUp.putExtra("searchValue",""+searchValues);
+        Log.i(TAG," The Search value is :: "+searchValues);
+        startActivity(topicUp);
 
+    }
     @Override
     protected void onResume() {
         super.onResume();
 
     }
+
 
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();

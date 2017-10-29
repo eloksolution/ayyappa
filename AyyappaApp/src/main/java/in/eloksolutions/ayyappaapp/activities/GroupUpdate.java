@@ -400,9 +400,6 @@ public class GroupUpdate extends AppCompatActivity {
         String groupCatagery = gCatagery.getSelectedItem().toString();
         groupDto.setGroupCatagory(groupCatagery);
         groupDto.setImagePath(keyName);
-        groupDto.setOwnerName(userId);
-        groupDto.setOwnerName(userName);
-
         return groupDto;
     }
 

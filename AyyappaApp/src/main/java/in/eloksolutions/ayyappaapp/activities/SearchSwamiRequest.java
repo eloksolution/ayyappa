@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,16 +23,17 @@ import com.roughike.bottombar.BottomBar;
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
-import in.eloksolutions.ayyappaapp.helper.GetSwamiRequests;
+import in.eloksolutions.ayyappaapp.helper.GetSearchSwamiRequests;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
 
 
-public class SwamiRequest extends AppCompatActivity {
+public class SearchSwamiRequest extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
    TransferUtility transferUtility;
     String userId;
     private BottomBar bottomBar;
+    String Tag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class SwamiRequest extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent groupCreate= new Intent(SwamiRequest.this, CreateGroup.class);
+               Intent groupCreate= new Intent(SearchSwamiRequest.this, CreateGroup.class);
                 startActivity(groupCreate);
             }
         });
@@ -52,8 +54,10 @@ public class SwamiRequest extends AppCompatActivity {
         rvGroups.setLayoutManager(lmPadi);
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
         userId=preferences.getString("userId",null);
-        String url= Config.SERVER_URL+"user/receivedConnections/"+userId;
-        GetSwamiRequests getGroups=new GetSwamiRequests(SwamiRequest.this,url,rvGroups,noData);
+       String searcValue= getIntent().getStringExtra("searchValue");
+        Log.i(Tag,"The value in Search swami requests"+searcValue);
+        String url= Config.SERVER_URL+"user/search/elok"+searcValue;
+        GetSearchSwamiRequests getGroups=new GetSearchSwamiRequests(SearchSwamiRequest.this,url,rvGroups,noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 
@@ -67,7 +71,7 @@ public class SwamiRequest extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.ic_home1:
-                        Intent intent1 = new Intent(SwamiRequest.this, CardViewActivity.class);
+                        Intent intent1 = new Intent(SearchSwamiRequest.this, CardViewActivity.class);
                         startActivity(intent1);
                         break;
 
@@ -76,17 +80,17 @@ public class SwamiRequest extends AppCompatActivity {
                         break;
 
                     case R.id.ic_books:
-                        Intent intent2 = new Intent(SwamiRequest.this, PadiPoojaFull.class);
+                        Intent intent2 = new Intent(SearchSwamiRequest.this, PadiPoojaFull.class);
                         startActivity(intent2);
                         break;
 
                     case R.id.ic_center_focus:
-                        Intent intent3 = new Intent(SwamiRequest.this, MapsMarkerActivity.class);
+                        Intent intent3 = new Intent(SearchSwamiRequest.this, MapsMarkerActivity.class);
                         startActivity(intent3);
                         break;
 
                     case R.id.ic_backup:
-                        Intent intent4 = new Intent(SwamiRequest.this, OwnerView.class);
+                        Intent intent4 = new Intent(SearchSwamiRequest.this, OwnerView.class);
                         startActivity(intent4);
                         break;
                 }
@@ -96,7 +100,7 @@ public class SwamiRequest extends AppCompatActivity {
 
     }
     public void contacList( String userId) {
-       Intent groupView = new Intent(SwamiRequest.this, UserView.class);
+       Intent groupView = new Intent(SearchSwamiRequest.this, UserView.class);
         groupView.putExtra("swamiUSerId", userId);
         startActivity(groupView);
     }

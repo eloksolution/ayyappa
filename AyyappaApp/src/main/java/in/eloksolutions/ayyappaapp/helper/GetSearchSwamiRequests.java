@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.activities.SwamiRequest;
+import in.eloksolutions.ayyappaapp.activities.SearchSwamiRequest;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
-import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewSwamiRequests;
+import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerViewSwamiRequestsSearch;
 import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 
@@ -26,14 +26,14 @@ import in.eloksolutions.ayyappaapp.util.RestServices;
  * Created by welcome on 6/30/2017.
  */
 
-public class GetSwamiRequests extends AsyncTask<String, Void, String> {
-    private SwamiRequest swamiRequest;
+public class GetSearchSwamiRequests extends AsyncTask<String, Void, String> {
+    private SearchSwamiRequest swamiRequest;
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
     TextView noData;
 
-    public GetSwamiRequests(SwamiRequest swamiRequest, String surl, RecyclerView rvGroups, TextView noData) {
+    public GetSearchSwamiRequests(SearchSwamiRequest swamiRequest, String surl, RecyclerView rvGroups, TextView noData) {
         this.swamiRequest = swamiRequest;
         this.surl = surl;
         this.rvGroups = rvGroups;
@@ -74,7 +74,7 @@ public class GetSwamiRequests extends AsyncTask<String, Void, String> {
                 results.add(obj);
             }
             if (!results.isEmpty()) {
-                MyRecyclerViewSwamiRequests mAdapter = new MyRecyclerViewSwamiRequests(results, swamiRequest);
+                MyRecyclerViewSwamiRequestsSearch mAdapter = new MyRecyclerViewSwamiRequestsSearch(results, swamiRequest);
                 rvGroups.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
             } else {

@@ -1,19 +1,19 @@
 package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import in.eloksolutions.ayyappaapp.R;
-import in.eloksolutions.ayyappaapp.beans.DeekshaUserTask;
 import in.eloksolutions.ayyappaapp.config.Config;
 
 
@@ -25,39 +25,27 @@ import in.eloksolutions.ayyappaapp.config.Config;
     EditText description;
     TextView fdate, txtdate;
     String Tag="deksha rules";
+    String tDate,eDate;
+    Context ctx;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.shedule);
-        Button shedule=(Button) findViewById(R.id.button);
         final TextView edate=(TextView) findViewById(R.id.txtdate);
         final TextView tdate=(TextView) findViewById(R.id.fdate);
         final TextView desc=(TextView) findViewById(R.id.description);
-
+      Toolbar  toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Start Deeksha");
+        toolbar.setTitle("Start Deeksha");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Context ctx = this;
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
        final String memId=preferences.getString("userId", null);
         Log.i(Tag,"userid is memId"+memId);
-        shedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = ctx.getSharedPreferences(Config.APP_PREFERENCES, ctx.MODE_PRIVATE);
-                SharedPreferences.Editor edit = sharedPreferences.edit();
-                edit.putString("startDate", tdate.getText().toString());
-                edit.putString("endDate", edate.getText().toString());
-                edit.commit();
-                Log.i(Tag,"Start date is"+sharedPreferences.getString("startDate",null));
-
-                String enddate=edate.getText().toString();
-                String txdate=tdate.getText().toString();
-                String descrip=desc.getText().toString();
-                new DeekshaUserTask(ctx,enddate,txdate,descrip,memId).execute();
-                Intent shesuleDeeksha = new Intent(ctx, CardViewActivity.class);
-                startActivity(shesuleDeeksha);
-            }
-        });
-
+        tDate=tdate.getText().toString();
+        eDate=edate.getText().toString();
         fdate = (TextView) findViewById(R.id.fdate);
             fdate.setText("" + DateFormat.format(" dd-MM-yyyy", System.currentTimeMillis()));
         txtdate = (TextView) findViewById(R.id.txtdate);
@@ -82,7 +70,34 @@ import in.eloksolutions.ayyappaapp.config.Config;
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            case R.id.action_settings:
+                SharedPreferences sharedPreferences = ctx.getSharedPreferences(Config.APP_PREFERENCES, ctx.MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString("startDate", tDate);
+                edit.putString("endDate", eDate);
+                edit.commit();
+                Log.i(Tag,"Start date is"+sharedPreferences.getString("startDate",null));
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
 

@@ -63,7 +63,7 @@ public class GroupList extends AppCompatActivity {
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
-        String url= Config.SERVER_URL+"group/getgroups";
+        String url= Config.SERVER_URL+"group/getgroups/"+userId;
         GetGroups getGroups=new GetGroups(context,url,rvGroups);
         System.out.println("url for group list"+url);
         getGroups.execute();

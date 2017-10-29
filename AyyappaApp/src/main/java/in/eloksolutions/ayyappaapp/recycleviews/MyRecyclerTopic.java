@@ -97,8 +97,8 @@ public class MyRecyclerTopic extends RecyclerView
         holder.label.setText(mDataset.get(position).getName());
        holder.label2.setText(mDataset.get(position).getCreateDate());
         holder.label3.setText(mDataset.get(position).getTopic());
-        if(mDataset.get(position).getImgPath()!=null) {
-            glide.with(mcontext).load(Config.S3_URL + mDataset.get(position).getImgPath()).into(holder.imageView);
+        if(mDataset.get(position).getImgResource()!=null) {
+            glide.with(mcontext).load(Config.S3_URL + mDataset.get(position).getImgResource()).into(holder.imageView);
         }else{
             glide.with(mcontext).load(R.drawable.defaulta).into(holder.imageView);
 
