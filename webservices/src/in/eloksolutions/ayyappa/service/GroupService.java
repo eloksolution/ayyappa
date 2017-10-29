@@ -21,17 +21,16 @@ public class GroupService {
 	public String addGroup(Group group){
 		User owner=userDAO.searchById(group.getOwner());
 		String groupId=groupDAO.addGroup(group,owner);
-		
 		userDAO.addUserGroup(group);
 		return groupId;
 	}
 
-	public List<Group> getGroups() {
-		return groupDAO.getGroups();
+	public List<Group> getGroups(String userId) {
+		return groupDAO.getGroups(userId);
 	}
 	
-	public List<Group> getTopGroups() {
-		return groupDAO.getTopGroups();
+	public List<Group> getTopGroups(String userId) {
+		return groupDAO.getTopGroups(userId);
 	}
 
 	public Group searchById(String groupid,String userId) {

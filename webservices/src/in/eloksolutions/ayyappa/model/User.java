@@ -28,7 +28,8 @@ public class User {
 	private List<UserTopics> userTopics;
 	private List<UserConnectionVO> userConnections;
 	private List<UserPadis> userPadis;
-	
+	private boolean isRequestSent;
+	private boolean isConnected;
 	
 	public User(){
 		
@@ -231,6 +232,18 @@ public class User {
 	}
 	public void setLat(String lat) {
 		this.lat = lat;
+	}
+	public boolean isRequestSent() {
+		return isRequestSent;
+	}
+	public void setRequestSent(boolean isRequestSent) {
+		this.isRequestSent = isRequestSent;
+	}
+	public boolean isConnected() {
+		return isConnected;
+	}
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
 	}
 	@Override
 	public String toString() {

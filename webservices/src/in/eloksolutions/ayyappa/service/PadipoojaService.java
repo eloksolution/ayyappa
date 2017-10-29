@@ -29,8 +29,8 @@ public class PadipoojaService {
 		return padipoojaDao.getTOPPadipooja(userId);
 	}
 
-	public Padipooja searchById(String padipoojaid) {
-		return padipoojaDao.searchById(padipoojaid);
+	public Padipooja searchById(String padipoojaid, String userId) {
+		return padipoojaDao.searchById(padipoojaid,userId);
 	}
 	public String join(PadiMember padiMember ) {
 		padiMember.setImgPath(userDAO.getImagePath(padiMember.getUserId()));
@@ -48,6 +48,4 @@ public class PadipoojaService {
 	public List<Padipooja> getPadipooja(String userId) {
 		return padipoojaDao.getPadiPoojas(userId);
 	}
-
-	
 }

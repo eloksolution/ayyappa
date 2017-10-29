@@ -61,33 +61,37 @@ public class GroupDAO {
 	                     .append("owner", group.getOwner())
 	                     .append("createDate", new Date())
 	                     .append("numberOfMembers", group.getNumberOfMembers())
-	                     .append("type", group.getType())
 	                     .append("imagePath", group.getImagePath())
 	                     .append("catagory", group.getCatgory());
-	   
-	                    
 	}
 	
-	public List<Group> getGroups(){
+	public static final DBObject toUpdateDBObject(Group group) {
+	    return new BasicDBObject("name", group.getName())
+	                     .append("description", group.getDescription())
+	                     .append("imagePath", group.getImagePath())
+	                     .append("catagory", group.getCatgory());
+	}
+	
+	public List<Group> getGroups(String userId){
         DBCursor  cursor = collection.find().sort(new BasicDBObject("createDate", -1));
-        List<Group> groups = getGroupsDB(cursor);
+        List<Group> groups = getGroupsDB(cursor,userId);
         return groups;
 	}
 
-	public List<Group> getTopGroups(){
+	public List<Group> getTopGroups(String userId){
         DBCursor  cursor = collection.find().sort(new BasicDBObject("createDate", -1)).limit(5);
-        List<Group> groups = getGroupsDB(cursor);
+        List<Group> groups = getGroupsDB(cursor,userId);
         return groups;
 	}
 
-	private List<Group> getGroupsDB(DBCursor cursor) {
+	private List<Group> getGroupsDB(DBCursor cursor, String userId) {
 		List<Group> groups=new ArrayList<>();
         while (cursor.hasNext()) { 
            DBObject group = cursor.next();
         	ObjectId mobjid=(ObjectId)group.get("_id");
 			System.out.println("id is  "+mobjid);
 			Group dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"),(Date)group.get("createDate"));
-			List<User> groupMember=getGroupMembers(group);
+			List<User> groupMember=getGroupMembers(group,userId,dbgroup);
 			if(!Util.isListEmpty(groupMember))
 				dbgroup.setGroupMembers(groupMember);
            groups.add(dbgroup);
@@ -96,24 +100,8 @@ public class GroupDAO {
 		return groups;
 	}
 
-	public Group searchById(String groupid,String userId) {
-		Group group=searchById(groupid);
-		 List<User> groupMembers=group.getGroupMembers();
-		 if(!Util.isListEmpty(groupMembers)){
-			 if(isMemberInGroup(groupMembers,userId))
-				 group.setIsMember("Y");
-		 }
-		 return group;
-	}
-	private boolean isMemberInGroup(List<User> groupMembers, String userId) {
-		if(groupMembers==null && groupMembers.size()==0)return false;
-		for(User u:groupMembers){
-			if(u.getUserId()!=null && u.getUserId().equalsIgnoreCase(userId))return true;
-		}
-		return false;
-	}
-
-	public Group searchById(String groupid) {
+	
+	public Group searchById(String groupid, String userId) {
 		BasicDBObject query=new BasicDBObject("_id",new ObjectId(""+groupid));
 		System.out.println("query issiihhkkh is  "+query);
 		 DBCursor  cursor = collection.find(query);
@@ -123,7 +111,7 @@ public class GroupDAO {
 	           ObjectId mobjid=(ObjectId)group.get("_id");
 	           System.out.println("description "+group.get("description"));
 	           dbgroup=new Group((String)mobjid.toString(),(String)group.get("name"),(String)group.get("description"),(String)group.get("owner"),(String)group.get("imagePath"),(Date)group.get("createDate"));
-	           List<User> groupMembers=getGroupMembers(group);
+	           List<User> groupMembers=getGroupMembers(group,userId,dbgroup);
 	           dbgroup.setGroupMembers(groupMembers);
 	        }
 	        cursor.close();
@@ -151,7 +139,7 @@ public class GroupDAO {
 		return groups;
 	}
 	
-	private List<User> getGroupMembers(DBObject group) {
+	private List<User> getGroupMembers(DBObject group, String userId, Group dbGroup) {
 		BasicDBList dbMembers = ( BasicDBList ) group.get( "members" );
 		if(dbMembers==null)return null;
 		List<User> groupMembers=new ArrayList<>();
@@ -159,6 +147,7 @@ public class GroupDAO {
 			BasicDBObject dbo     = ( BasicDBObject ) it.next();
 			User  user = new User();
 			user.setUserId(dbo.getString("userId"));
+			if(userId.equals(user.getUserId()))dbGroup.setIsMember("Y");
 			user.setFirstName(dbo.getString("firstName"));
 			user.setLastName(dbo.getString("lastName"));
 			user.setImgPath(dbo.getString("imgPath"));
@@ -171,6 +160,7 @@ public class GroupDAO {
 		return groupMembers;
 	}
 	
+
 	public String join(GroupMember groupMem ){
 		System.out.println("Updating topic "+groupMem);
 		DBObject groupUser= toDBDissObject(groupMem.getUserId(),groupMem.getFirstName(),groupMem.getLastName(),groupMem.getImgPath());
@@ -203,7 +193,7 @@ public class GroupDAO {
 	}
 
 	public String update(Group group) {
-		DBObject dbGroup=toDBObject(group);
+		DBObject dbGroup=toUpdateDBObject(group);
 		BasicDBObject newDocument = new BasicDBObject();
 		newDocument.append("$set", dbGroup);
 		WriteResult wr=collection.update(
@@ -212,7 +202,7 @@ public class GroupDAO {
 		);
 		return wr.getUpsertedId().toString();
 	}
-
+	
 	public List<Group> getJoinedGroups(String userId) {
 		BasicDBObject query = new BasicDBObject("members.userId", userId);
 		System.out.println("query issiihhkkh is  " + query);
@@ -232,7 +222,4 @@ public class GroupDAO {
 		cursor.close();
 		return groups;
 	}
-
-
-	
 }

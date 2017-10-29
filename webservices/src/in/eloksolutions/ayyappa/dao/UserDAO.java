@@ -313,7 +313,7 @@ public class UserDAO {
 	}
 	
 	public String requestConnect(UserConnectionVO user) throws Exception {
-		checkIfAlreadySentRequest(user.getUserId(),user.getConnectedToId());
+		if(checkIfAlreadySentRequest(user.getUserId(),user.getConnectedToId())) return "2";
 		DBObject dbToUsers= toDBUser(user);
 		BasicDBObject update = new BasicDBObject();
 		update.put( "$push", new BasicDBObject( "SENTCONNECTIONS", dbToUsers ) );
@@ -328,11 +328,32 @@ public class UserDAO {
 		return "1";
 	}
 	
-	private void checkIfAlreadySentRequest(String userId, String toUserId) throws Exception {
-		getDBUser(userId);
-		
+	public boolean checkIfAlreadySentRequest(String userId, String toUserId) throws Exception {
+		BasicDBObject andQuery = new BasicDBObject();
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		obj.add(getIdObject(userId));
+		if(toUserId!=null)obj.add(new BasicDBObject("SENTCONNECTIONS.USERID",toUserId ));
+		else
+			obj.add(new BasicDBObject("SENTCONNECTIONS.USERID","" ));
+		andQuery.put("$and", obj);
+		DBCursor cur= collection.find(andQuery);
+		if (cur == null || !cur.hasNext())return false;
+		return true;
 	}
 
+	public boolean isConnected(String fromUserId, String toUserId) throws Exception {
+		System.out.println("are they connected fromUserId "+fromUserId+" toUserId "+toUserId);
+		BasicDBObject andQuery = new BasicDBObject();
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		obj.add(getIdObject(fromUserId));
+		if(toUserId!=null)obj.add(new BasicDBObject("CONNECTIONS.USERID",toUserId ));
+		else
+			obj.add(new BasicDBObject("CONNECTIONS.USERID","" ));
+		andQuery.put("$and", obj);
+		DBCursor cur= collection.find(andQuery);
+		if (cur == null || !cur.hasNext())return false;
+		return true;
+	}
 	public List<UserVo> getReceivedConnection(String userId) throws Exception{
 		DBCursor cur=getDBUser(userId);
 		if (cur == null || !cur.hasNext())return null;
@@ -505,5 +526,56 @@ public class UserDAO {
 	private Object getCoordObj(double d, double e) {
 		return new BasicDBObject("type","Point" )
 								.append("coordinates", Arrays.asList(new Double[]{d, e}));
+	}
+
+	public User searchUserWithConnection(String fromUserId, String toUserId) {
+		User user=searchById(toUserId);
+		boolean isReqSent=false;
+		try {
+			isReqSent = checkIfAlreadySentRequest(fromUserId, toUserId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		user.setRequestSent(isReqSent);
+		boolean isConnected=false;
+		try {
+			isConnected=isConnected(fromUserId, toUserId);
+			user.setConnected(isConnected);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public List<User> search(String tok) {
+		List<BasicDBObject> or = new ArrayList<BasicDBObject>();
+		BasicDBObject firstNameRegQuery = new BasicDBObject("$regex", ".*"+tok+".*").append("$options", "i");
+		BasicDBObject firstNameQuery = new BasicDBObject("FIRSTNAME",firstNameRegQuery);
+		BasicDBObject lastNameQuery = new BasicDBObject("LASTNAME", firstNameRegQuery);
+		or.add(firstNameQuery);
+		or.add(lastNameQuery);
+		BasicDBObject orQuery=new BasicDBObject("$or", or);
+		System.out.println("Search wury "+orQuery);
+		DBCursor cursor = collection.find(orQuery);
+		List<User> users = new ArrayList<>();
+		while (cursor.hasNext()) {
+			DBObject user = cursor.next();
+			ObjectId mobjid = (ObjectId) user.get("_id");
+			User dbuser = new User((String) mobjid.toString(),
+					(String) user.get("FIRSTNAME"),
+					(String) user.get("LASTNAME"), (String) user.get("MOBILE"),
+					(String) user.get("EMAIL"), (String) user.get("AREA"),
+					(String) user.get("CITY"), (String) user.get("STATE"), (String) user.get("IMGPATH"));
+			DBObject dbo = (DBObject) user.get("LOC");
+			if(dbo!=null){
+				BasicDBList locs = (BasicDBList) dbo.get("coordinates");
+				if (locs != null) {
+					dbuser.setLoc(locs.get(0).toString(), locs.get(1).toString());
+				}
+			}
+			users.add(dbuser);
+		}
+		cursor.close();
+		return users;
 	}
 }

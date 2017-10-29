@@ -49,10 +49,19 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/user/{userid}")
-	public User getUserById(@PathVariable("userid") String userid, HttpServletRequest request) {
-		System.out.println("Fetching all Users with X00001 UserEdit " + userid);
-		User  useredit = userService.searchById(userid);
+	@RequestMapping(value = "/search/{tok}", method = RequestMethod.GET)
+	public List<User> getUsers(@PathVariable("tok") String tok){
+		System.out.println("Request xxxx is coming "+tok);
+		List<User> usercollection = userService.search(tok);
+		System.out.println("Colection is coming "+usercollection);
+		return usercollection;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/user/{fromuserid}/{touserid}")
+	public User getUserById(@PathVariable("fromuserid") String fromUserId,@PathVariable("touserid") String toUserId, HttpServletRequest request) {
+		System.out.println("Fetching all Users with X00001 fromUserId " + fromUserId+" toUserId "+toUserId);
+		User  useredit = userService.searchById(fromUserId,toUserId);
 		System.out.println("Fetching all user details " + useredit);
 		return useredit;
 	}
@@ -109,6 +118,12 @@ public class UserController {
 		return userService.requestConnection(user);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/checkSentConnection")
+	public String checkSentConnection(@RequestBody UserConnectionVO user) throws Exception {
+		System.out.println("checkSentConnection userid "+user);
+		return userService.checkIfAlreadySentRequest(user)?"Y":"N";
+	}
 	@ResponseBody
 	@RequestMapping(value = "/connect")
 	public String connect(@RequestBody UserConnectionVO user) {

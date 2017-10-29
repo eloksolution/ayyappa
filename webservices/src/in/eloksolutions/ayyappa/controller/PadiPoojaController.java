@@ -50,10 +50,10 @@ public class PadiPoojaController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/padipoojaEdit/{padipoojaid}")
-	public Padipooja memberEdit(@PathVariable("padipoojaid") String padipoojaid, HttpServletRequest request) {
-		System.out.println("Fetching all padipoojaid with X00001 memberEdit " + padipoojaid);
-		Padipooja  groupedit = padipoojaService.searchById(padipoojaid);
+	@RequestMapping(value = "/padipoojaEdit/{padipoojaid}/{userid}")
+	public Padipooja memberEdit(@PathVariable("padipoojaid") String padipoojaid, @PathVariable("userid") String userId) {
+		System.out.println("Fetching all padipoojaid with X00001 memberEdit " + padipoojaid+" userid "+userId);
+		Padipooja  groupedit = padipoojaService.searchById(padipoojaid,userId);
 		System.out.println("Fetching all Group details " + groupedit);
 		return groupedit;
 	}

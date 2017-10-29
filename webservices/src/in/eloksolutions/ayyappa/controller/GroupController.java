@@ -28,41 +28,39 @@ public class GroupController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addGroup(@RequestBody Group group){
 		System.out.println("Request is coming "+group);
-		groupService.addGroup(group);
-		return "success";
+		return groupService.addGroup(group);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String updateGroup(@RequestBody GroupVO groupVO){
+	public String updateGroup(@RequestBody Group groupVO){
 		System.out.println("Request is coming groupVO "+groupVO);
-		Group group=new Group(groupVO.getGroupId(),groupVO.getName(),groupVO.getDescription(),groupVO.getOwner(),groupVO.getImagePath());
-		 groupService.update(group);
-		 System.out.println("Updating  is coming groupVO "+group);
+		 groupService.update(groupVO);
+		 System.out.println("Updating  is coming groupVO "+groupVO);
 		 return "success";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getgroups", method = RequestMethod.GET)
-	public List<Group> getGroups( HttpServletRequest request){
-		System.out.println("Request xxxx is coming "+request);
-		List<Group> groupcollection = groupService.getGroups();
+	@RequestMapping(value = "/getgroups/{userid}", method = RequestMethod.GET)
+	public List<Group> getGroups( @PathVariable("userid") String userId){
+		System.out.println("Request xxxx is getGroups "+userId);
+		List<Group> groupcollection = groupService.getGroups(userId);
 		System.out.println("Colection is coming "+groupcollection);
 		return groupcollection;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getfirstgroups", method = RequestMethod.GET)
-	public List<Group> getFirstGroups( HttpServletRequest request){
-		System.out.println("Request xxxx is coming "+request);
-		List<Group> groupcollection = groupService.getTopGroups();
+	@RequestMapping(value = "/getfirstgroups/{userid}", method = RequestMethod.GET)
+	public List<Group> getFirstGroups( @PathVariable("userid") String userId){
+		System.out.println("Request xxxx is coming "+userId);
+		List<Group> groupcollection = groupService.getTopGroups(userId);
 		System.out.println("Colection is coming "+groupcollection);
 		return groupcollection;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/getgroup/{groupid}/{userid}")
-	public Group getGroupById(@PathVariable("groupid") String groupid,@PathVariable("userid") String userId, HttpServletRequest request) {
+	public Group getGroupById(@PathVariable("groupid") String groupid,@PathVariable("userid") String userId) {
 		System.out.println("Fetching all members with X00001 memberEdit " + groupid);
 		Group  groupedit = groupService.searchById(groupid,userId);
 		System.out.println("Fetching all Group details " + groupedit);

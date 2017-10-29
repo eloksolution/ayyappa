@@ -79,5 +79,14 @@ public class UserService {
 	public String updateUserToken(UserVo userVo) {
 		return userDAO.updateUserToken(userVo.getUserId(),userVo.getFcmToken());
 	}
+	public boolean checkIfAlreadySentRequest(UserConnectionVO user) throws Exception {
+		return userDAO.checkIfAlreadySentRequest(user.getUserId(),user.getConnectedToId());
+	}
+	public User searchById(String fromUserId, String toUserId) {
+		return userDAO.searchUserWithConnection(fromUserId,toUserId);
+	}
+	public List<User> search(String tok) {
+		return userDAO.search(tok);
+	}
 	
 }
