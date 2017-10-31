@@ -4,16 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -22,9 +18,7 @@ import com.roughike.bottombar.BottomBar;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
-import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetSearchSwamiRequests;
-import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
 
 
 public class SearchSwamiRequest extends AppCompatActivity {
@@ -34,19 +28,16 @@ public class SearchSwamiRequest extends AppCompatActivity {
     String userId;
     private BottomBar bottomBar;
     String Tag;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_list);
+        setContentView(R.layout.search_list);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Swami Search List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
-      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               Intent groupCreate= new Intent(SearchSwamiRequest.this, CreateGroup.class);
-                startActivity(groupCreate);
-            }
-        });
         TextView noData=(TextView) findViewById(R.id.tv_no_data);
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
@@ -56,12 +47,12 @@ public class SearchSwamiRequest extends AppCompatActivity {
         userId=preferences.getString("userId",null);
        String searcValue= getIntent().getStringExtra("searchValue");
         Log.i(Tag,"The value in Search swami requests"+searcValue);
-        String url= Config.SERVER_URL+"user/search/elok"+searcValue;
+        String url= Config.SERVER_URL+"user/search/"+searcValue;
         GetSearchSwamiRequests getGroups=new GetSearchSwamiRequests(SearchSwamiRequest.this,url,rvGroups,noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+      /*  BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
@@ -96,13 +87,24 @@ public class SearchSwamiRequest extends AppCompatActivity {
                 }
                 return false;
             }
-        });
+        });*/
 
     }
     public void contacList( String userId) {
        Intent groupView = new Intent(SearchSwamiRequest.this, UserView.class);
         groupView.putExtra("swamiUSerId", userId);
         startActivity(groupView);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

@@ -113,17 +113,7 @@ public class GroupList extends AppCompatActivity {
         topicDTO.setName(firstName+lastName);
         return topicDTO;
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.onBackPressed();
-                return true;
 
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }
 
 

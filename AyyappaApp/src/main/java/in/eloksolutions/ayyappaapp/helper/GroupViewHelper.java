@@ -1,16 +1,16 @@
 package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
 import java.net.URL;
 
-
-import in.eloksolutions.ayyappaapp.util.RestServices;
-import in.eloksolutions.ayyappaapp.beans.GroupMembers;
 import in.eloksolutions.ayyappaapp.activities.GroupView;
+import in.eloksolutions.ayyappaapp.beans.GroupMembers;
+import in.eloksolutions.ayyappaapp.util.RestServices;
 
 /**
  * Created by welcome on 7/6/2017.
@@ -58,6 +58,7 @@ public class GroupViewHelper {
             System.out.println("event from eventview" + result);
             progress.dismiss();
 
+
         }
     }
 
@@ -100,9 +101,11 @@ public class GroupViewHelper {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             System.out.println("From Join Event" + result);
             progress.dismiss();
+            Intent groupView=new Intent(mcontext,GroupView.class);
+            groupView.putExtra("groupId",groupMembers.getGroupId());
+            mcontext.startActivity(groupView);
 
         }
     }

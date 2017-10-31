@@ -40,6 +40,7 @@ public class OwnerView extends AppCompatActivity {
     RegisterDTO registerDTO;
     Glide glide;
     TextView contacts;
+    Toolbar toolbar;
     String tag = "TopicView";
 
     @Override
@@ -56,7 +57,7 @@ public class OwnerView extends AppCompatActivity {
         userId = preferences.getString("userId", null);
         Log.i(tag, "userId preferences.getString is" + userId);
         final Context ctx = this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Swami Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -162,6 +163,7 @@ public class OwnerView extends AppCompatActivity {
             registerDTO = gson.fromJson(result, RegisterDTO.class);
             userName.setText(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
+            toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             if (registerDTO.getImgPath() != null) {
                 if (registerDTO.getImgPath().contains("http")) {
                     glide.with(context).load(registerDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
@@ -169,6 +171,9 @@ public class OwnerView extends AppCompatActivity {
                     glide.with(context).load(Config.S3_URL + registerDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
 
                 }
+
+            }else{
+                glide.with(context).load(R.drawable.defaulta).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
 
             }
         }

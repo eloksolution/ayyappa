@@ -32,8 +32,6 @@ public class EventDTO {
 	private  String year;
 	private  String isMember;
 
-
-
 	//list of members
 
 	//list of members

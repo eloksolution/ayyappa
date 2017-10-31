@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 import java.net.URL;
 
 
+import in.eloksolutions.ayyappaapp.activities.PadiPoojaView;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 import in.eloksolutions.ayyappaapp.beans.EventDTO;
 import in.eloksolutions.ayyappaapp.activities.PadiPoojaUpdate;
@@ -99,7 +101,10 @@ public class PadiUpdateHelper {
 
             System.out.println("From Join Event" + result);
             progress.dismiss();
-            mcontext.callBackUpdateUI(eventDTO.getPadipoojaId());
+            Intent padipoojaView=new Intent(mcontext, PadiPoojaView.class);
+            padipoojaView.putExtra("padiPoojaId",eventDTO.getPadipoojaId());
+            mcontext.startActivity(padipoojaView);
+            /*mcontext.callBackUpdateUI(eventDTO.getPadipoojaId());*/
         }
     }
 

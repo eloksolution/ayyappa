@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -56,7 +59,7 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
 
     TextView date, time, pin_my_location, contact_number,addImage;
     CheckBox eventList;
-    EditText addresss, event_name, description, website_address, email, phone;
+    EditText addresss, event_name, description, city, email, phone;
     ImageView imgView;
 
     String imageName, UserId, userName;
@@ -97,9 +100,11 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         //time.setText("" + DateFormat.format("hh:mm a", System.currentTimeMillis()));
         pin_my_location = (TextView) findViewById(R.id.pin_my_location);
         addresss = (EditText) findViewById(R.id.Adress);
+        city=(EditText) findViewById(R.id.city);
         imgView=(ImageView) findViewById(R.id.groups_image);
-        SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
         UserId = preferences.getString("userId", "");
+        Log.i(tag,"the user Id in SharedPreferances :: "+UserId);
         userName = preferences.getString("firstName", "") + " " + preferences.getString("secoundName", "");
         date.setOnClickListener(this);
         time.setOnClickListener(this);
@@ -110,14 +115,16 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         // callback method to call the setTransferUtility method
         setTransferUtility();
         PadiUpdateHelper getGroupsValue=new PadiUpdateHelper(this);
-        String surl = Config.SERVER_URL+"padipooja/padipoojaEdit/"+padiPoojaId;
+        String surl = Config.SERVER_URL+"padipooja/padipoojaEdit/"+padiPoojaId+"/"+UserId;
         System.out.println("url for group list"+surl);
         try {
             String output=getGroupsValue.new PadiUpdateTask(surl).execute().get();
             System.out.println("the output from Group"+output);
             setValuesToTextFields(output);
 
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -132,7 +139,6 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         }
 
     }
-
 
     private void showToTimePicker() {
         Calendar mcurrentTime = Calendar.getInstance();
@@ -170,23 +176,52 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
     }
 
     public void setFileToUpload(View view){
-        Intent intent = new Intent();
-        if (Build.VERSION.SDK_INT >= 19) {
-            // For Android versions of KitKat or later, we use a
-            // different intent to ensure
-            // we can get the file path from the returned intent URI
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        } else {
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+        if(isReadStorageAllowed()) {
+
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT >= 19) {
+                // For Android versions of KitKat or later, we use a
+                // different intent to ensure
+                // we can get the file path from the returned intent URI
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            } else {
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+            }
+
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
+        }else{
+            requestStoragePermission();
+        }
+        credentialsProvider();
+
+        setTransferUtility();
+    }
+    private void requestStoragePermission(){
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)){
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
         }
 
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
-
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
     }
 
+    private boolean isReadStorageAllowed() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -226,8 +261,6 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
                 Exception error = result.getError();
             }
         }
-
-
     }
     public void transferObserverListener(TransferObserver transferObserver){
 
@@ -338,24 +371,24 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    public void callBackUpdateUI(String padiPoojaId){
+  /*  public void callBackUpdateUI(String padiPoojaId){
         Intent padiView=new Intent(this, PadiPoojaView.class);
         padiView.putExtra("padipoojaId", padiPoojaId);
         startActivity(padiView);
 
-    }
+    }*/
     private String saveEventToServer() {
-
-        keyName="padipooja/P_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
+        keyName = "padipooja/P_" + Util.getRandomNumbers() + "_" + System.currentTimeMillis();
         EventDTO eventDTO = buildDTOObject();
-        if(fileToUpload!=null) {
-            TransferObserver transferObserver = transferUtility.upload(
-                    "elokayyappa",     /* The bucket to upload to */
-                    keyName,    /* The key for the uploaded object */
-                    fileToUpload       /* The file where the data to upload exists */
-            );
-            transferObserverListener(transferObserver);
-        }
+        Log.i(TAG,"Padipooja Images File"+fileToUpload);
+        TransferObserver transferObserver = transferUtility.upload(
+                "elokayyappa",     /* The bucket to upload to */
+                keyName,    /* The key for the uploaded object */
+                fileToUpload       /* The file where the data to upload exists */
+        );
+
+        transferObserverListener(transferObserver);
+
         if (checkValidation()) {
             if (CheckInternet.checkInternetConenction(PadiPoojaUpdate.this)) {
                 PadiUpdateHelper createEventHelper = new PadiUpdateHelper(PadiPoojaUpdate.this);
@@ -386,6 +419,8 @@ public class PadiPoojaUpdate extends AppCompatActivity implements View.OnClickLi
             date.setText(eventDTO.getDate());
             time.setText(eventDTO.gettime());
             description.setText(eventDTO.getDescription());
+            addresss.setText(eventDTO.getLocation());
+            city.setText(eventDTO.getCity());
             System.out.println("past from event getmems view" + eventDTO.getPadiMembers());
         }
     }

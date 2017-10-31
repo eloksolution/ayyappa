@@ -16,7 +16,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -83,9 +86,12 @@ public class UserUpdate extends AppCompatActivity {
         userId=getIntent().getStringExtra("userId");
         Log.i(tag, "topicId Update is"+userId);
         final Context ctx = this;
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Swami Profile Update");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         UserUpdateHelper getUserValue=new UserUpdateHelper(this);
-        String surl = Config.SERVER_URL+"user/user/"+userId;
+        String surl = Config.SERVER_URL+"user/user/"+userId+"/"+userId;
         System.out.println("url for group topic view list"+surl);
         try {
             String output=getUserValue.new UserUpdateTask(surl).execute().get();
@@ -96,35 +102,6 @@ public class UserUpdate extends AppCompatActivity {
         }
         image = (ImageView) findViewById(R.id.user_image);
 
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //First checking if the app is already having the permission
-                if(isReadStorageAllowed()){
-                    //If permission is already having then showing the toast
-                    //  Toast.makeText(Registartion.this,"You already have the permission",Toast.LENGTH_LONG).show();
-                    //Existing the method with return
-                    Intent intent = new Intent();
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        // For Android versions of KitKat or later, we use a
-                        // different intent to ensure
-                        // we can get the file path from the returned intent URI
-                        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
-                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                    } else {
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                    }
-
-                    intent.setType("image/*");
-                    startActivityForResult(intent, 1);
-                    return;
-                }
-
-                //If the app has not the permission then asking for the permission
-                requestStoragePermission();
-            }
-        });
         credentialsProvider();
 
         setTransferUtility();
@@ -140,7 +117,6 @@ public class UserUpdate extends AppCompatActivity {
 
     }
     public void credentialsProvider(){
-
 
         // Initialize the Amazon Cognito credentials provider
         CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
@@ -160,29 +136,36 @@ public class UserUpdate extends AppCompatActivity {
         s3.setRegion(Region.getRegion(Regions.US_EAST_1));
 
     }
+
     public void setTransferUtility(){
 
         transferUtility = new TransferUtility(s3, getApplicationContext());
     }
+
     public void setFileToUpload(View view){
+        if(isReadStorageAllowed()) {
 
-        Intent intent = new Intent();
-        if (Build.VERSION.SDK_INT >= 19) {
-            // For Android versions of KitKat or later, we use a
-            // different intent to ensure
-            // we can get the file path from the returned intent URI
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        } else {
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT >= 19) {
+                // For Android versions of KitKat or later, we use a
+                // different intent to ensure
+                // we can get the file path from the returned intent URI
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            } else {
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+            }
+
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
+        }else{
+            requestStoragePermission();
         }
+        credentialsProvider();
 
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
-
+        setTransferUtility();
     }
-
     private void requestStoragePermission(){
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)){
@@ -212,12 +195,12 @@ public class UserUpdate extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             try {
-                // CropImageView.CropShape cropShape = CropImageView.CropShape.RECTANGLE;
+                CropImageView.CropShape cropShape = CropImageView.CropShape.RECTANGLE;
                 Uri uri = data.getData();
                 CropImage.activity(uri)
-                        //     .setGuidelines(CropImageView.Guidelines.ON)
+                        .setGuidelines(CropImageView.Guidelines.ON)
                         // .setFixAspectRatio(true)
-                        //  .setCropShape(cropShape)
+                        .setCropShape(cropShape)
                         // .setAspectRatio(4,2)
                         .setMinCropResultSize(480,720)
                         .setMaxCropResultSize(800,1200)
@@ -226,6 +209,7 @@ public class UserUpdate extends AppCompatActivity {
                 System.out.println("the uri is" + uri);
 
             } catch (Exception e) {
+
                 Log.e(tag, "Unable to upload file from the given uri", e);
             }
         }
@@ -235,7 +219,7 @@ public class UserUpdate extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 image.setVisibility(View.VISIBLE);
-                //imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+              //  image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 image.setImageURI(resultUri);
                 String path = getPath(getApplicationContext(), resultUri);
                 fileToUpload = new File(path);
@@ -354,6 +338,8 @@ public class UserUpdate extends AppCompatActivity {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
+
+
     public void setValuesToTextFields(String result) {
         System.out.println("json xxxx from Topic" + result);
         if (result!=null){
@@ -365,7 +351,7 @@ public class UserUpdate extends AppCompatActivity {
             phoneNumber.setText(fromJsonn.getMobile());
             area.setText(fromJsonn.getArea());
             city.setText(fromJsonn.getCity());
-            userUpdate.setText("Update Here");
+            userUpdate.setText("Update");
             if (fromJsonn.getImgPath()!=null) {
                 glide.with(context).load(Config.S3_URL + fromJsonn.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(image);
             }
@@ -374,9 +360,10 @@ public class UserUpdate extends AppCompatActivity {
         }
 
     private String saveEventToServer() {
-        keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
+
         RegisterDTO registrationrDTO=buildDTOObject();
         if(fileToUpload !=null) {
+            keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
             TransferObserver transferObserver = transferUtility.upload(
                     "elokayyappa",     /* The bucket to upload to */
                     keyName,    /* The key for the uploaded object */
@@ -419,7 +406,7 @@ public class UserUpdate extends AppCompatActivity {
         String rcity=city.getText().toString();
         regTopicDTO.setCity(rcity);
         String are=area.getText().toString();
-        regTopicDTO.setImgPath(rcity);
+        regTopicDTO.setImgPath(keyName);
         regTopicDTO.setArea(are);
 
 
@@ -430,6 +417,17 @@ public class UserUpdate extends AppCompatActivity {
 
 
         return ret;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     }
 

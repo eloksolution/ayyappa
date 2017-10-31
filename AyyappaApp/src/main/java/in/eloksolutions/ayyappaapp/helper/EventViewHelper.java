@@ -1,12 +1,12 @@
 package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
 import java.net.URL;
-
 
 import in.eloksolutions.ayyappaapp.activities.PadiPoojaView;
 import in.eloksolutions.ayyappaapp.util.RestServices;
@@ -93,6 +93,9 @@ public class EventViewHelper {
           //  Intent padiView = new Intent(mcontext, PadiPoojaView.class);
           //  padiView.putExtra("padiPoojaId", padiPoojaId);
           //  mcontext.startActivity(padiView);
+            Intent padipooja=new Intent(mcontext,PadiPoojaView.class);
+            padipooja.putExtra("padiPoojaId", eventMembers.getPadiId());
+            mcontext.startActivity(padipooja);
             progress.dismiss();
         }
     }
@@ -152,8 +155,7 @@ public class EventViewHelper {
         }
         protected void onPostExecute(String result) {
             progress.dismiss();
-           // Toast.makeText(getActivity().getBaseContext(), "Deleted " + event_name.getText() + " event", Toast.LENGTH_LONG).show();
-            //mcontext.startActivity(new Intent(mcontext, MyEventsTabBar.class));
+
         }
 
     }

@@ -48,11 +48,10 @@ import in.eloksolutions.ayyappaapp.util.Constants;
 
 public class PadiPoojaView extends AppCompatActivity implements View.OnClickListener {
 
-
    ExpandableListView listview;
     TextView description, upDate,event_name,eventdate,eventtime, location, no_of_mem, join_status, text1,share;
     ImageButton show, hide;
-    ImageView edit,delete;
+    ImageView edit,delete,unJoin;
     ImageView padiImage,join_event;
     ImageButton btnInvite;
     Button leavebtn;
@@ -103,6 +102,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         padiImage=(ImageView) findViewById(R.id.padi_image_view);
         upDate=(TextView) findViewById(R.id.group_update);
         join=(TextView) findViewById(R.id.join);
+        unJoin=(ImageView) findViewById(R.id.un_join);
         LinearLayout event_layout=(LinearLayout) findViewById(R.id.event_layout);
         LinearLayout share_layout=(LinearLayout) findViewById(R.id.share_layout);
         no_of_mem = (TextView)findViewById(R.id.joinedcount);
@@ -117,7 +117,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         lastName=sPreferences.getString("lastName",null);
         upDate.setOnClickListener(this);
         EventViewHelper eventViewHelper = new EventViewHelper(this);
-        String surl = Config.SERVER_URL + "padipooja/padipoojaEdit/"+padiPoojaId;
+        String surl = Config.SERVER_URL + "padipooja/padipoojaEdit/"+padiPoojaId+"/"+userId;
         try {
             String output=eventViewHelper.new Eventview(surl).execute().get();
             System.out.println("the output from PadiPooja"+output);
@@ -132,6 +132,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             if(userId.equals(eventDTO.getMemId()) || joinStatus.equals(eventDTO.getIsMember()) ){
                 System.out.println("groupDTO.getIsMember()"+eventDTO.getIsMember());
                 join.setVisibility(View.GONE);
+                unJoin.setVisibility(View.GONE);
                 join_event.setVisibility(View.GONE);
             }
         } catch (Exception e) {

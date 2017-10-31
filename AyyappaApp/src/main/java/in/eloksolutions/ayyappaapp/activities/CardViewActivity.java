@@ -62,7 +62,7 @@ public class CardViewActivity extends AppCompatActivity {
     private static String LOG_TAG = "CardViewActivity";
     TextView topic;
     String userId;
-    EditText editText;
+    EditText searchValue;
     private final String movies[] =  {"Ayyappa janmarahasyam", "Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan", "Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith", "Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas", "Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji", "Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
 
     @Override
@@ -115,8 +115,8 @@ public class CardViewActivity extends AppCompatActivity {
         String deekshaEndDate=preferences.getString("endDate",null);
         userId=preferences.getString("userId",null);
 
-        editText=(EditText) findViewById(R.id.search_name);
-        searchValues=editText.getText().toString();
+        searchValue=(EditText) findViewById(R.id.search_name);
+        searchValues=searchValue.getText().toString();
         Log.i(TAG,"the search values is"+searchValues);
 
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.event_image);
@@ -389,8 +389,8 @@ public class CardViewActivity extends AppCompatActivity {
 
     public void searchMethod(View view){
         Intent topicUp = new Intent(this, SearchSwamiRequest.class);
-        topicUp.putExtra("searchValue",""+searchValues);
-        Log.i(TAG," The Search value is :: "+searchValues);
+        topicUp.putExtra("searchValue",""+searchValue.getText().toString());
+        Log.i(TAG," The Search value is :: "+searchValue.getText().toString());
         startActivity(topicUp);
 
     }
