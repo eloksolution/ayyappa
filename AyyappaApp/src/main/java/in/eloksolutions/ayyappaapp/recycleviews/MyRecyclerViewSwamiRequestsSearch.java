@@ -23,6 +23,7 @@ import in.eloksolutions.ayyappaapp.activities.UserView;
 import in.eloksolutions.ayyappaapp.beans.GroupMembers;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
+import in.eloksolutions.ayyappaapp.helper.SendAcceptTaskSearch;
 import in.eloksolutions.ayyappaapp.util.DataObjectRequests;
 
 public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
@@ -46,6 +47,7 @@ public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
     public class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView label;
+        Button sendRequest;
 
         public ImageView getAccept() {
             return accept;
@@ -70,25 +72,21 @@ public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
 
         public DataObjectHolder(final View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.user_name);
-
+            label = (TextView) itemView.findViewById(R.id.title_1);
+            sendRequest=(Button) itemView.findViewById(R.id.send_request);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
-
-            accept = (ImageView) itemView.findViewById(R.id.accept);
-            reject = (ImageView) itemView.findViewById(R.id.reject);
-            userImage = (ImageView) itemView.findViewById(R.id.user_profile);
+            userImage = (ImageView) itemView.findViewById(R.id.activity_image);
             SharedPreferences preferences=context.getSharedPreferences(Config.APP_PREFERENCES,Context.MODE_PRIVATE);
             userId=preferences.getString("userId",null);
             firstName=preferences.getString("firstName",null);
             lastName=preferences.getString("lastName",null);
-            accept.setOnClickListener(new View.OnClickListener() {
+            sendRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i(LOG_TAG, "Adding Listener " + label.getText());
                     DataObjectRequests dataObject = mDataset.get(getAdapterPosition());
                     userSendTag(dataObject);
-
                     Log.i(LOG_TAG, "data object is Listener" + dataObject);
 
                 }
@@ -113,17 +111,17 @@ public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
         RegisterDTO userDTo = buildDTOObject(dataObject);
 
 
-            if (CheckInternet.checkInternetConenction(context)) {
-                String gurl = Config.SERVER_URL +"user/connect";
-                try {
-                   //new SendAcceptTask(userDTo, gurl,context).execute();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                CheckInternet.showAlertDialog(context, "No Internet Connection",
-                        "You don't have internet connection.");
+        if (CheckInternet.checkInternetConenction(context)) {
+            String gurl = Config.SERVER_URL +"user/connect";
+            try {
+                new SendAcceptTaskSearch(userDTo, gurl,context).execute();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {
+            CheckInternet.showAlertDialog(context, "No Internet Connection",
+                    "You don't have internet connection.");
+        }
 
         return null;
     }
@@ -159,7 +157,7 @@ public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.profile_request, parent, false);
+                .inflate(R.layout.profile_search, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -168,8 +166,6 @@ public class MyRecyclerViewSwamiRequestsSearch extends RecyclerView
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getFirstName() + " " + mDataset.get(position).getLastName());
-        holder.accept.setImageResource(mDataset.get(position).getYes());
-        holder.reject.setImageResource(mDataset.get(position).getNo());
         if(mDataset.get(position).getImgPath()!=null) {
             glide.with(context).load(Config.S3_URL + mDataset.get(position).getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage);
             System.out.println("past from eventfromJson.gettime()" + mDataset.get(position).getImgPath());

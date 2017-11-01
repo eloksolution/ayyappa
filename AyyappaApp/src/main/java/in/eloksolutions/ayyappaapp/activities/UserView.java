@@ -47,9 +47,10 @@ public class UserView extends AppCompatActivity {
     TransferUtility transferUtility;
     TransferObserver transferObserver;
     Glide glide;
-    TextView contacts;
+    TextView contacts,sentText;
     ImageView tagRequest;
     String tag="TopicView";
+    static  String requestSentValue="true";
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +62,22 @@ public class UserView extends AppCompatActivity {
         TextView groups=(TextView) findViewById(R.id.user_groups);
         userImage=(ImageView)findViewById(R.id.profile_img);
         sendRequest=(TextView) findViewById(R.id.tag_request_text);
+        sentText=(TextView) findViewById(R.id.friend_text);
         context=this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("User View");
         toolbar.setTitle("User View");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
+        fromUserId=preferences.getString("userId",null);
+        fromFirstName=preferences.getString("firstName",null);
+        fromLastName=preferences.getString("lastName",null);
         swamiUserId=getIntent().getStringExtra("swamiUserId");
         Log.i(tag, "userId is getStringExtra)"+swamiUserId);
         final Context ctx = this;
         UserViewHelper gettopicValue=new UserViewHelper(this);
-        String surl = Config.SERVER_URL+"user/user/"+fromUserId+swamiUserId;
+        String surl = Config.SERVER_URL+"user/user/"+fromUserId+"/"+swamiUserId;
         System.out.println("url for group topic view list"+surl);
         try {
             String output=gettopicValue.new UserViewTask(this,surl).execute().get();
@@ -89,10 +95,7 @@ public class UserView extends AppCompatActivity {
                 startActivity(topicUp);
             }
         });*/
-        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
-        fromUserId=preferences.getString("userId",null);
-        fromFirstName=preferences.getString("firstName",null);
-        fromLastName=preferences.getString("lastName",null);
+
         if (fromUserId.equals(swamiUserId)) {
             sendRequest.setVisibility(View.GONE);
         }
@@ -204,6 +207,11 @@ public class UserView extends AppCompatActivity {
         if (result != null) {
             Gson gson = new Gson();
              registerDTO = gson.fromJson(result, RegisterDTO.class);
+            if(requestSentValue.equals(registerDTO.getRequestSent())){
+                sendRequest.setVisibility(View.GONE);
+                sentText.setVisibility(View.VISIBLE);
+                sentText.setText("you already sended a Request");
+            }
             toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             if(registerDTO.getArea()!=null) {
                 userLocation.setText(registerDTO.getArea());

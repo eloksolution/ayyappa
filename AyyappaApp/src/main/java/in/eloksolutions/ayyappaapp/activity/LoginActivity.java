@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        getLocation();
+
      }
 
     public void signInClick(View view) {
@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     // [START handleSignInResult]
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess()+" msg is "+result.getStatus().getStatusMessage());
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -203,12 +203,12 @@ public class LoginActivity extends AppCompatActivity implements
                     (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
             }
-        }else {
+        }
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
-                Geocoder gc = new Geocoder(this, Locale.getDefault());
+                Geocoder gc= new Geocoder(this, Locale.getDefault());
                 // TextView addr = (TextView) main.findViewById(R.id.editText2);
-                String result = "x03";
+                String result="x03";
                 try {
                     latti = location.getLatitude();
                     longi = location.getLongitude();
@@ -217,18 +217,20 @@ public class LoginActivity extends AppCompatActivity implements
                     if (addressList != null && addressList.size() > 0) {
                         Address address = addressList.get(0);
                         city = address.getLocality();
-                        Log.i(TAG, " CITY IS " + city);
+                        Log.i(TAG," CITY IS "+city);
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
+            }else{
                 System.out.println("Unable");
             }
+
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, RC_SIGN_IN);
-        }
+
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -244,7 +246,7 @@ public class LoginActivity extends AppCompatActivity implements
     // [START signIn]
     private void signIn() {
         Log.i(TAG, "signIn:");
-
+        getLocation();
     }
     // [END signIn]
 
@@ -332,10 +334,13 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public void updateUI(boolean signedIn, RegisterDTO registerDto) {
+        Intent main=null;
         if(signedIn) {
             Util.setPreferances(this, registerDto);
-            startActivity(new Intent(this, CardViewActivity.class));
-        }  else {
+            main = new Intent(this, CardViewActivity.class);
+            startActivity(main);
+        }
+        else {
             Toast.makeText(LoginActivity.this,"Login Failed, Please login",Toast.LENGTH_LONG).show();
         }
     }

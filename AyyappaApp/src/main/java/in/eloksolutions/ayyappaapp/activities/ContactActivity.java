@@ -22,7 +22,7 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactactivity);
-        SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, Context.MODE_PRIVATE);
 
       SearchView searchView=(SearchView) findViewById(R.id.searchView);
         searchView.setQueryHint("Search Swamies");

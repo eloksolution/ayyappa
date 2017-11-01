@@ -24,4 +24,8 @@
     <color name="blue_grey_700">#455A64</color>
     <color name="blue_grey_800">#37474F</color>
     <color name="blue_grey_900">#263238</color>
+    <color name="lblFromName">#777777</color>
+    <color name="title_gray">#434343</color>
+    <color name="bg_msg_you">#5eb964</color>
+    <color name="bg_msg_from">#e5e7eb</color>
 </resources>

@@ -40,7 +40,6 @@ import in.eloksolutions.ayyappaapp.config.Config;
         getSupportActionBar().setTitle("Start Deeksha");
         toolbar.setTitle("Start Deeksha");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Context ctx = this;
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
        final String memId=preferences.getString("userId", null);
         Log.i(Tag,"userid is memId"+memId);
@@ -58,6 +57,15 @@ import in.eloksolutions.ayyappaapp.config.Config;
 
 
 }
+    public void deekshaShare(){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(Config.APP_PREFERENCES, ctx.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("startDate", tDate);
+        edit.putString("endDate", eDate);
+        edit.commit();
+        Log.i(Tag,"Start date is"+sharedPreferences.getString("startDate",null));
+
+    }
     public void onClick(View v) {
 
         if (v == fdate) {
@@ -85,13 +93,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
                 return true;
 
             case R.id.action_settings:
-                SharedPreferences sharedPreferences = ctx.getSharedPreferences(Config.APP_PREFERENCES, ctx.MODE_PRIVATE);
-                SharedPreferences.Editor edit = sharedPreferences.edit();
-                edit.putString("startDate", tDate);
-                edit.putString("endDate", eDate);
-                edit.commit();
-                Log.i(Tag,"Start date is"+sharedPreferences.getString("startDate",null));
-
+                deekshaShare();
                 return true;
 
             default:

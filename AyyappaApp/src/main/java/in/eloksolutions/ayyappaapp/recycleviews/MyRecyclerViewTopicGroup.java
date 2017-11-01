@@ -83,7 +83,7 @@ public class MyRecyclerViewTopicGroup extends RecyclerView
             });
 
 
-            joinBtn = (Button) itemView.findViewById(R.id.join_now);
+            joinBtn = (Button) itemView.findViewById(R.id.send_request);
             joinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

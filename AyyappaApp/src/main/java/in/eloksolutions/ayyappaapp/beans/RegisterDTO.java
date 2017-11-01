@@ -20,8 +20,8 @@ public class RegisterDTO {
     String toUserId;
     String toFirstName;
     String toLastName;
-
-
+    String requestSent;
+    String connected;
 
     public double getLongi() {
         return longi;
@@ -144,6 +144,22 @@ public class RegisterDTO {
         this.toLastName = toLastName;
     }
 
+    public String getRequestSent() {
+        return requestSent;
+    }
+
+    public void setRequestSent(String requestSent) {
+        this.requestSent = requestSent;
+    }
+
+    public String getConnected() {
+        return connected;
+    }
+
+    public void setConnected(String connected) {
+        this.connected = connected;
+    }
+
     @Override
     public String toString() {
         return "RegisterDTO{" +
@@ -162,6 +178,8 @@ public class RegisterDTO {
                 ", toUserId='" + toUserId + '\'' +
                 ", toFirstName='" + toFirstName + '\'' +
                 ", toLastName='" + toLastName + '\'' +
+                ", requestSent='" + requestSent + '\'' +
+                ", connected='" + connected + '\'' +
                 '}';
     }
 }
