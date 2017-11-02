@@ -79,8 +79,8 @@ public class CreateTopic extends AppCompatActivity {
         setContentView(R.layout.create_topic);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Ask a Questions");
-        getSupportActionBar().setTitle("Ask a Questions");
+        toolbar.setTitle("Share your Knowledge");
+        getSupportActionBar().setTitle("Share your Knowledge");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button post = (Button) findViewById(R.id.post);
         description = (EditText) findViewById(R.id.gdescription);
@@ -292,7 +292,7 @@ public class CreateTopic extends AppCompatActivity {
             currentDescription = sourceContent.getDescription();
             currentUrl = sourceContent.getUrl();
             currentCannonicalUrl = sourceContent.getCannonicalUrl();
-            Log.i(tag,"url values when shred :: "+ currentTitle+currentDescription+currentUrl+currentCannonicalUrl);
+            Log.i(tag,"url values when shred :: "+ currentTitle+"description :: "+currentDescription+"currentUrl :: "+currentUrl+"currentCannonicalUrl :: "+currentCannonicalUrl);
 
 
         }

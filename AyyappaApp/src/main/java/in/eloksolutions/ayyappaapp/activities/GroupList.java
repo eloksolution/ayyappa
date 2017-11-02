@@ -26,7 +26,6 @@ import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetGroups;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
 
-
 public class GroupList extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
@@ -45,7 +44,6 @@ public class GroupList extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         getSupportActionBar().setTitle("Groups List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +52,6 @@ public class GroupList extends AppCompatActivity {
                 startActivity(groupCreate);
             }
         });
-
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
         userId= preferences.getString("userId",null);
         firstName=preferences.getString("firstName",null);

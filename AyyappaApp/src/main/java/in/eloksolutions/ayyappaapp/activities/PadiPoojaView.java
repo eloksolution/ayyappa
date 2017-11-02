@@ -85,6 +85,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
         ctx=this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Padipooja View");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rvPadi = (RecyclerView) findViewById(R.id.rv_members);
         rvPadi.setHasFixedSize(true);

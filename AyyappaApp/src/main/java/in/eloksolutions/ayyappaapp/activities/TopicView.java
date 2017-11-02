@@ -15,15 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -43,7 +37,6 @@ import in.eloksolutions.ayyappaapp.helper.TopicViewHelper;
 import in.eloksolutions.ayyappaapp.recycleviews.CheckInternet;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerDisscusion;
 import in.eloksolutions.ayyappaapp.util.DisObject;
-import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -74,6 +67,7 @@ public class TopicView extends AppCompatActivity {
         date=(TextView) findViewById(R.id.date);
          toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Topic View");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       //  topicName=(TextView) findViewById(R.id.topic_view_title);
         description=(TextView) findViewById(R.id.forum_desc);
@@ -92,8 +86,6 @@ public class TopicView extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        credentialsProvider();
-        setTransferUtility();
 
         TopicViewHelper gettopicValue=new TopicViewHelper(this);
         String surl = Config.SERVER_URL+"topic/"+topicId;
@@ -128,83 +120,18 @@ public class TopicView extends AppCompatActivity {
         firstName=preferences.getString("firstName",null);
         lastName=preferences.getString("lastName",null);
     }
-    public void credentialsProvider(){
-
-        // Initialize the Amazon Cognito credentials provider
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "ap-northeast-1:22bb863b-3f88-4322-8cee-9595ce44fc48", // Identity Pool ID
-                Regions.AP_NORTHEAST_1 // Region
-        );
-
-        setAmazonS3Client(credentialsProvider);
-    }
-    public void transferObserverListener(TransferObserver transferObserver){
-
-        //Bitmap bit= ImageUtils.getInstant().getCompressedBitmap(fileToDownload.getAbsolutePath());
-        transferObserver.setTransferListener(new TransferListener(){
-
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                Log.i("File down load status ", state+"");
-                Log.i("File down load id", id+"");
-                if("COMPLETED".equals(state.toString())){
-                    //  Bitmap bit= BitmapFactory.decodeFile(fileToDownload.getAbsolutePath());
-                    //  padiImage.setImageBitmap(bit);
-
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                Log.e("percentage",percentage +"");
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                Log.e("error","error");
-            }
-
-
-        });
-    }
-
-    public void setAmazonS3Client(CognitoCachingCredentialsProvider credentialsProvider){
-
-        // Create an S3 client
-        s3 = new AmazonS3Client(credentialsProvider);
-
-        // Set the region of your S3 bucket
-        s3.setRegion(Region.getRegion(Regions.US_EAST_1));
-
-    }
-
-    public void setTransferUtility(){
-
-        transferUtility = new TransferUtility(s3, getApplicationContext());
-    }
-    public void setFileToDownload(String imageKey){
-        if (Util.isEmpty(imageKey))return;
-
-        transferObserver = transferUtility.download(
-                "elokayyappa",     // The bucket to download from *//*
-                imageKey,    // The key for the object to download *//*
-                fileToDownload        // The file to download the object to *//*
-        );
-
-        transferObserverListener(transferObserver);
-
-    }
 
     public void setValuesToTextFields(String result) {
         System.out.println("json xxxx from Topic" + result);
         if (result!=null){
             Gson gson = new Gson();
              topicDTO = gson.fromJson(result, TopicDTO.class);
+
             user_name.setText(topicDTO.getOwnerName());
             toolbar.setTitle(topicDTO.getTopic());
-         //   topicName.setText(fromJsonn.getTopic());
+            System.out.println("json xxxx from Topic" + topicDTO.getTopic());
+
+            //   topicName.setText(fromJsonn.getTopic());
             description.setText(topicDTO.getDescription());
             if(topicDTO.getImgPath()!=null) {
                 glide.with(context).load(Config.S3_URL + topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);

@@ -79,7 +79,6 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.PadiPoojaView"
-            android:label="PadiPooja View"
             android:windowSoftInputMode="stateAlwaysHidden"
            />
         <activity

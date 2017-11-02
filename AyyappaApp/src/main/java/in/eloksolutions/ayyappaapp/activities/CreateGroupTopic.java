@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +65,7 @@ public class CreateGroupTopic extends AppCompatActivity {
     String keyName,groupId,userId,firstName,lastName;
     File fileToUpload;
     boolean attimage=false;
+    Toolbar toolbar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +76,11 @@ public class CreateGroupTopic extends AppCompatActivity {
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         topicName=(EditText) findViewById(R.id.post_text);
         final Context ctx = this;
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Add a New Topic");
+        getSupportActionBar().setTitle("Add a New Topic");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId= preferences.getString("userId",null);
         firstName=preferences.getString("firstName",null);
@@ -378,7 +384,7 @@ public class CreateGroupTopic extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
         return true;
 
@@ -389,6 +395,17 @@ public class CreateGroupTopic extends AppCompatActivity {
 
             case R.id.exit:
                 finish();
+                return true;
+            case R.id.action_settings:
+
+                if (checkValidation () ) {
+                    if (CheckInternet.checkInternetConenction(CreateGroupTopic.this)) {
+                        String createGroupHelper=saveEventToServer();
+                    }else {
+                        CheckInternet.showAlertDialog(CreateGroupTopic.this, "No Internet Connection",
+                                "You don't have internet connection.");
+                    }
+                }
                 return true;
 
             default:

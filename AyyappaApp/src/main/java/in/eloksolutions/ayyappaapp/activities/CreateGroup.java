@@ -50,7 +50,6 @@ import in.eloksolutions.ayyappaapp.helper.GroupHelper;
 import in.eloksolutions.ayyappaapp.recycleviews.CheckInternet;
 import in.eloksolutions.ayyappaapp.recycleviews.Validation;
 import in.eloksolutions.ayyappaapp.util.Util;
-
 /**
  * Created by welcome on 6/27/2017.
  */
@@ -73,7 +72,6 @@ public class CreateGroup extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_new_group);
-
         String[] catageries = new String[]{"Select Group catagory","Padipooja","Pilgrimage","AyyappaSwami Temples","Ayyappa Stories","Bhakthi News"};
         gCatagery = (Spinner) findViewById(R.id.gcatagery);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -83,21 +81,16 @@ public class CreateGroup extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Create New Group");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         imgView=(ImageView) findViewById(R.id.img_view);
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         SharedPreferences preference=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId=preference.getString("userId",null);
         userName=preference.getString("firstName",null)+ " " + preference.getString("lastName", null);
         final Context ctx = this;
-
-
         // callback method to call credentialsProvider method.
         credentialsProvider();
-
         // callback method to call the setTransferUtility method
         setTransferUtility();
-
         name=(EditText) findViewById(R.id.gname);
         description=(EditText) findViewById(R.id.gdescription);
         gCatagery=(Spinner) findViewById(R.id.gcatagery);
