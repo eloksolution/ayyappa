@@ -24,7 +24,7 @@ public class WebActivity extends AppCompatActivity {
     private void startWebView(String url) {
 
          webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setTextZoom(webView.getSettings().getTextZoom() + 100);
+        webView.getSettings().setTextZoom(webView.getSettings().getTextZoom());
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setSupportZoom(true);

@@ -62,6 +62,13 @@ public class PadiPoojaFull extends AppCompatActivity {
                 startActivity(groupCreate);
             }
         });
+       noData.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent groupCreate= new Intent(PadiPoojaFull.this, CreatePadiPooja.class);
+               startActivity(groupCreate);
+           }
+       });
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();

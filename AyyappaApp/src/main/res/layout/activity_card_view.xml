@@ -194,6 +194,15 @@
                             android:layout_gravity="right|center"
                             android:src="@drawable/fullscreenicon"/>
                     </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_no_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="No Padipooja Create New"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:visibility="invisible" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvPadi_home"
@@ -268,6 +277,15 @@
                     android:src="@drawable/fullscreenicon"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_no_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="No Padipooja Create New"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_groups_home"

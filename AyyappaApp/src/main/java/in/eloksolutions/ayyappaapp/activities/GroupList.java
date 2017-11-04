@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
@@ -31,8 +32,8 @@ public class GroupList extends AppCompatActivity {
     AmazonS3 s3;
    TransferUtility transferUtility;
     String userId, firstName, lastName;
-
     private BottomBar bottomBar;
+    TextView noData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,7 @@ public class GroupList extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.black));
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        noData=(TextView) findViewById(R.id.tv_no_data);
         getSupportActionBar().setTitle("Groups List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
@@ -49,6 +51,13 @@ public class GroupList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                Intent groupCreate= new Intent(GroupList.this, CreateGroup.class);
+                startActivity(groupCreate);
+            }
+        });
+        noData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent groupCreate= new Intent(GroupList.this, CreateGroup.class);
                 startActivity(groupCreate);
             }
         });
@@ -61,7 +70,7 @@ public class GroupList extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"group/getgroups/"+userId;
-        GetGroups getGroups=new GetGroups(context,url,rvGroups);
+        GetGroups getGroups=new GetGroups(context,url,rvGroups,noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 

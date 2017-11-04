@@ -162,7 +162,9 @@ public class OwnerView extends AppCompatActivity {
             Gson gson = new Gson();
             registerDTO = gson.fromJson(result, RegisterDTO.class);
             userName.setText(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
-            userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
+            if(registerDTO.getCity()!=null || registerDTO.getArea()!=null) {
+                userLocation.setText(registerDTO.getCity() + ", " + registerDTO.getArea());
+            }
             toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             if (registerDTO.getImgPath() != null) {
                 if (registerDTO.getImgPath().contains("http")) {

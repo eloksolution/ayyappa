@@ -54,6 +54,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_gravity="center"
+            android:layout_marginTop="12dp"
             android:text="no contact This Name Here"
             android:textAppearance="?android:textAppearanceMedium"
             android:visibility="invisible" />
@@ -63,9 +64,4 @@
 
 </ScrollView>
 
-
-
-
-
-  >
     </android.support.design.widget.CoordinatorLayout>

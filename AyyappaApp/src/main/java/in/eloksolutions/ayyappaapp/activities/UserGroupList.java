@@ -9,11 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import java.util.Map;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
@@ -43,6 +42,7 @@ private BottomBar bottomBar;
                 startActivity(groupView);
             }
         }); */
+        TextView noData=(TextView) findViewById(R.id.tv_no_data);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +56,7 @@ private BottomBar bottomBar;
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"group/getgroups";
-        GetGroups getGroups=new GetGroups(context,url,rvGroups);
+        GetGroups getGroups=new GetGroups(context,url,rvGroups, noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 

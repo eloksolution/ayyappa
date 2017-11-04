@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -57,8 +58,9 @@ public class UserGroupsJoined extends AppCompatActivity {
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
+        TextView noData=(TextView) findViewById(R.id.tv_no_data);
         String url= Config.SERVER_URL+"/group/joined/"+userId;
-        GetGroups getGroups=new GetGroups(context,url,rvGroups);
+        GetGroups getGroups=new GetGroups(context,url,rvGroups, noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 

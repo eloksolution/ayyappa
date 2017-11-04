@@ -297,7 +297,6 @@ public class CreateTopic extends AppCompatActivity {
 
         }
 
-
     };
     private void hideSoftKeyboard() {
         hideSoftKeyboard(description);

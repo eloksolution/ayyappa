@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -58,7 +59,8 @@ public class UserGroups extends AppCompatActivity {
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(lmPadi);
         String url= Config.SERVER_URL+"/group/getGroups/"+userId;
-        GetGroups getGroups=new GetGroups(context,url,rvGroups);
+        TextView noData=(TextView) findViewById(R.id.tv_no_data);
+        GetGroups getGroups=new GetGroups(context,url,rvGroups, noData);
         System.out.println("url for group list"+url);
         getGroups.execute();
 

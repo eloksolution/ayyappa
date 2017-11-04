@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,11 +31,13 @@ public class GetGroups extends AsyncTask<String, Void, String> {
     private ProgressDialog progress;
     String surl;
     RecyclerView rvGroups;
+    TextView noData;
 
-    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups) {
+    public GetGroups(Context mcontext, String surl, RecyclerView rvGroups, TextView noData) {
         this.mcontext = mcontext;
         this.surl=surl;
         this.rvGroups=rvGroups;
+        this.noData=noData;
     }
     @Override
     protected void onPreExecute() {
@@ -76,7 +80,7 @@ public class GetGroups extends AsyncTask<String, Void, String> {
                 rvGroups.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
             }else{
-                System.out.println("Get else Grouping  Result is "+results);
+                noData.setVisibility(View.VISIBLE);
             }
         }
     }

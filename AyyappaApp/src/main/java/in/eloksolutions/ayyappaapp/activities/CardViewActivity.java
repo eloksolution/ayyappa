@@ -114,7 +114,6 @@ public class CardViewActivity extends AppCompatActivity {
         String deekshaStartDate=preferences.getString("startDate",null);
         String deekshaEndDate=preferences.getString("endDate",null);
         userId=preferences.getString("userId",null);
-
         searchValue=(EditText) findViewById(R.id.search_name);
         searchValues=searchValue.getText().toString();
         Log.i(TAG,"the search values is"+searchValues);
@@ -163,22 +162,22 @@ public class CardViewActivity extends AppCompatActivity {
 
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
-
-
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi_home);
         rvPadi.setHasFixedSize(true);
         LinearLayoutManager lmPadi = new LinearLayoutManager(this);
         rvPadi.setLayoutManager(lmPadi);
+        TextView noData=(TextView) findViewById(R.id.tv_no_data);
         String url= Config.SERVER_URL+"padipooja/gettoppoojas/"+userId;
-        GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi);
+        GetEventsHome getEvents=new GetEventsHome(context,url,rvPadi,noData);
         getEvents.execute();
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups_home);
         rvGroups.setHasFixedSize(true);
         LinearLayoutManager groups = new LinearLayoutManager(this);
         rvGroups.setLayoutManager(groups);
+        TextView noDatas=(TextView) findViewById(R.id.tv_no_group);
         String gurl= Config.SERVER_URL+"group/getfirstgroups/"+userId;
-        GetGroups getGroups=new GetGroups(context,gurl,rvGroups);
+        GetGroups getGroups=new GetGroups(context,gurl,rvGroups, noDatas);
         System.out.println("url for group list"+gurl);
         getGroups.execute();
         final ImageView noti=(ImageView) findViewById(R.id.contacts_full);
@@ -198,6 +197,20 @@ public class CardViewActivity extends AppCompatActivity {
             }
         });
         final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
+        noDatas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent padipooj = new Intent(context,CreateGroup.class);
+                startActivity(padipooj);
+            }
+        });
+        noData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent padipooj = new Intent(context,CreatePadiPooja.class);
+                startActivity(padipooj);
+            }
+        });
         padiCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -389,21 +389,24 @@ public class CreateGroupTopic extends AppCompatActivity {
         return true;
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
 
-            case R.id.exit:
-                finish();
+            case android.R.id.home:
+                this.onBackPressed();
                 return true;
             case R.id.action_settings:
 
                 if (checkValidation () ) {
-                    if (CheckInternet.checkInternetConenction(CreateGroupTopic.this)) {
+                    if ((topicName.getText().toString() != null && !topicName.getText().toString().isEmpty())) {
                         String createGroupHelper=saveEventToServer();
+                        Intent groupView = new Intent(CreateGroupTopic.this, GroupView.class);
+                        groupView.putExtra("groupId", ""+groupId);
+                        startActivity(groupView);
                     }else {
-                        CheckInternet.showAlertDialog(CreateGroupTopic.this, "No Internet Connection",
-                                "You don't have internet connection.");
+                        topicName.setError("Enter the Description");
                     }
                 }
                 return true;

@@ -5,10 +5,14 @@ package in.eloksolutions.ayyappaapp.maps;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,8 +32,14 @@ import java.util.List;
 
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.activities.CardViewActivity;
+import in.eloksolutions.ayyappaapp.activities.GroupList;
+import in.eloksolutions.ayyappaapp.activities.OwnerView;
+import in.eloksolutions.ayyappaapp.activities.PadiPoojaFull;
 import in.eloksolutions.ayyappaapp.activities.UserView;
 import in.eloksolutions.ayyappaapp.beans.UserDTO;
+import in.eloksolutions.ayyappaapp.config.Config;
+import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetUserNearMeTask;
 import in.eloksolutions.ayyappaapp.util.Util;
 
@@ -40,22 +50,63 @@ public class MapsMarkerActivity extends AppCompatActivity
         implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener,GoogleMap.OnInfoWindowClickListener {
     private static final String TAG="MapsMarkerActivity";
     GoogleMap googleMap;
+    String sUserId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Retrieve the content view that renders the map.
-        setContentView(R.layout.activity_maps_new);
+        setContentView(R.layout.map_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Swamies Near to You");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        sUserId=preferences.getString("userId",null);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        GetUserNearMeTask task=new GetUserNearMeTask("http://13.59.69.182/AS/user/loc/599ab01ae4b038767fa0f305",this);
+        GetUserNearMeTask task=new GetUserNearMeTask("http://13.59.69.182/AS/user/loc/"+sUserId,this);
         task.execute();
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_home1:
+                        Intent intent1 = new Intent(MapsMarkerActivity.this, CardViewActivity.class);
+                        startActivity(intent1);
+                        break;
+
+                    case R.id.ic_groups:
+                        Intent intent2 = new Intent(MapsMarkerActivity.this, GroupList.class);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.ic_books:
+                        Intent intent3 = new Intent(MapsMarkerActivity.this, PadiPoojaFull.class);
+                        startActivity(intent3);
+                        break;
+
+                    case R.id.ic_center_focus:
+
+                        break;
+
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(MapsMarkerActivity.this, OwnerView.class);
+                        startActivity(intent4);
+                        break;
+                }
+
+                return false;
+            }
+        });
     }
 
     /**
