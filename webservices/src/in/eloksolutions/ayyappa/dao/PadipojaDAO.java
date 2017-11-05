@@ -123,7 +123,7 @@ public class PadipojaDAO {
 					.get("eventName"), (String) padi.get("location"),
 					(String) padi.get("description"),
 					(String) padi.get("date"), (String) padi.get("time"),
-					(String) padi.get("memid"), (String) padi.get("name"), (String) padi.get("imgPath"));
+					(String) padi.get("memId"), (String) padi.get("name"), (String) padi.get("imgPath"));
 			Date date=(Date)padi.get("eventDate");
 			if(date!=null){
 				cal.setTime(date);

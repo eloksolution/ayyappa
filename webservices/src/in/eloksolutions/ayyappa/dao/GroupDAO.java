@@ -59,7 +59,6 @@ public class GroupDAO {
 	    return new BasicDBObject("name", group.getName())
 	                     .append("description", group.getDescription())
 	                     .append("owner", group.getOwner())
-	                     .append("createDate", new Date())
 	                     .append("numberOfMembers", group.getNumberOfMembers())
 	                     .append("imagePath", group.getImagePath())
 	                     .append("catagory", group.getCatgory());

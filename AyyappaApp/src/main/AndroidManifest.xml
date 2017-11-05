@@ -79,6 +79,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.PadiPoojaView"
+            android:label="PadiPooja View"
             android:windowSoftInputMode="stateAlwaysHidden"
            />
         <activity
@@ -196,7 +197,7 @@
         <activity android:name=".activity.SignInActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Sign In"></activity>
         <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Login"></activity>
         <activity android:name=".messaging.MessagingActivity" android:windowSoftInputMode="stateAlwaysHidden"></activity>
-        <activity android:name=".maps.MapsMarkerActivity" android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".maps.MapsMarkerActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Swamies Near You"  android:theme="@style/AppTheme"></activity>
         <service
             android:name=".messaging.MyFirebaseMessagingService">
             <intent-filter>
