@@ -207,12 +207,12 @@ public class UserView extends AppCompatActivity {
         if (result != null) {
             Gson gson = new Gson();
              registerDTO = gson.fromJson(result, RegisterDTO.class);
-            if(requestSentValue.equals(registerDTO.getRequestSent())){
+            if(registerDTO != null && requestSentValue.equals(registerDTO.getRequestSent())){
                 sendRequest.setVisibility(View.GONE);
                 sentText.setVisibility(View.VISIBLE);
                 sentText.setText("you already sended a Request");
             }
-            toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
+            //toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             if(registerDTO.getArea()!=null) {
                 userLocation.setText(registerDTO.getArea());
             }

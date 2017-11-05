@@ -140,7 +140,9 @@ public class Registartion extends AppCompatActivity {
                 }
 
                 //If the app has not the permission then asking for the permission
-                requestStoragePermission();
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if (currentapiVersion >= android.os.Build.VERSION_CODES.M)
+                    requestStoragePermission();
             }
         });
         credentialsProvider();
@@ -362,11 +364,14 @@ public class Registartion extends AppCompatActivity {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
     void getLocation() {
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M && !isLocatioinAllowed()  ){
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        }
 
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -413,7 +418,17 @@ public class Registartion extends AppCompatActivity {
 
     }
 
+    private boolean isLocatioinAllowed() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION);
 
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
     private String saveEventToServer() {
         keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         RegisterDTO registerDto=buildDTOObject();

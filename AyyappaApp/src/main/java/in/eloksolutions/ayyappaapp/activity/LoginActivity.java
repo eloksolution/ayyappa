@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -29,13 +28,11 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-
 import java.util.List;
 import java.util.Locale;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.activities.CardViewActivity;
-
 import in.eloksolutions.ayyappaapp.activities.Registartion;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.config.Config;
@@ -66,21 +63,21 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Log.i("SignInActivity","in the SignInActivity starting ");
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestProfile()
-                .build();
-        // [END configure_signin]
-         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // [START build_client]
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-     }
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestProfile()
+                    .build();
+            // [END configure_signin]
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            // [START build_client]
+            // Build a GoogleApiClient with access to the Google Sign-In API and the
+            // options specified by gso.
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+            getLocation();
+    }
 
     public void signInClick(View view) {
         // [START configure_signin]
@@ -140,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     // [START handleSignInResult]
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess()+" msg is "+result.getStatus().getStatusMessage());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -162,20 +159,20 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private RegisterDTO updateRegistrationOnServer(GoogleSignInAccount acct) {
-            if (CheckInternet.checkInternetConenction(LoginActivity.this)) {
-                RegisterHelper createRegisterHelper = new RegisterHelper(LoginActivity.this);
-                String gurl = Config.SERVER_URL+"user/add";
-                try {
-                    RegisterDTO registerDto= buildDTOObject(acct);
-                    createRegisterHelper.new CreateRegistration(registerDto, gurl).execute();
-                    return registerDto;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                CheckInternet.showAlertDialog(LoginActivity.this, "No Internet Connection",
-                        "You don't have internet connection.");
+        if (CheckInternet.checkInternetConenction(LoginActivity.this)) {
+            RegisterHelper createRegisterHelper = new RegisterHelper(LoginActivity.this);
+            String gurl = Config.SERVER_URL+"user/add";
+            try {
+                RegisterDTO registerDto= buildDTOObject(acct);
+                createRegisterHelper.new CreateRegistration(registerDto, gurl).execute();
+                return registerDto;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {
+            CheckInternet.showAlertDialog(LoginActivity.this, "No Internet Connection",
+                    "You don't have internet connection.");
+        }
         return null;
     }
 
@@ -197,18 +194,18 @@ public class LoginActivity extends AppCompatActivity implements
     // [END handleSignInResult]
     void getLocation() {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (!isLocatioinAllowed() && currentapiVersion >= android.os.Build.VERSION_CODES.M){
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M && !isLocatioinAllowed()  ){
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                     (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
             }
-        }
+        }else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
-                Geocoder gc= new Geocoder(this, Locale.getDefault());
+                Geocoder gc = new Geocoder(this, Locale.getDefault());
                 // TextView addr = (TextView) main.findViewById(R.id.editText2);
-                String result="x03";
+                String result = "x03";
                 try {
                     latti = location.getLatitude();
                     longi = location.getLongitude();
@@ -217,20 +214,18 @@ public class LoginActivity extends AppCompatActivity implements
                     if (addressList != null && addressList.size() > 0) {
                         Address address = addressList.get(0);
                         city = address.getLocality();
-                        Log.i(TAG," CITY IS "+city);
+                        Log.i(TAG, " CITY IS " + city);
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 System.out.println("Unable");
             }
-
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, RC_SIGN_IN);
-
-
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -246,7 +241,7 @@ public class LoginActivity extends AppCompatActivity implements
     // [START signIn]
     private void signIn() {
         Log.i(TAG, "signIn:");
-        getLocation();
+
     }
     // [END signIn]
 
@@ -314,7 +309,7 @@ public class LoginActivity extends AppCompatActivity implements
         //registerDto.setPassword(pass);
         registerDto.setLongi(longi);
         registerDto.setLati(latti);
-       // registerDto.setImgPath(keyName);
+        // registerDto.setImgPath(keyName);
         return registerDto;
     }
     private void showProgressDialog() {
@@ -334,13 +329,10 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public void updateUI(boolean signedIn, RegisterDTO registerDto) {
-        Intent main=null;
         if(signedIn) {
             Util.setPreferances(this, registerDto);
-            main = new Intent(this, CardViewActivity.class);
-            startActivity(main);
-        }
-        else {
+            startActivity(new Intent(this, CardViewActivity.class));
+        }  else {
             Toast.makeText(LoginActivity.this,"Login Failed, Please login",Toast.LENGTH_LONG).show();
         }
     }
