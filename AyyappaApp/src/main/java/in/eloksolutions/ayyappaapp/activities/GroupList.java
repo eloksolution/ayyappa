@@ -119,6 +119,29 @@ public class GroupList extends AppCompatActivity {
         topicDTO.setName(firstName+lastName);
         return topicDTO;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(GroupList.this, CardViewActivity.class);
+                startActivity(home);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
 

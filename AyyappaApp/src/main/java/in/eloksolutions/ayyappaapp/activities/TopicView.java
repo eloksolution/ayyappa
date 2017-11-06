@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -142,15 +143,13 @@ public class TopicView extends AppCompatActivity {
             if (topicDTO.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();
                 for (TopicDissDTO d : topicDTO.getDiscussions()) {
-                    DisObject disObject=new DisObject(d.getUserId(),d.getUserName(),d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
+                    DisObject disObject=new DisObject(d.getUserId(),d.getUserName(),d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.defaulta);
                     results.add(disObject);
 
                 }
                 try {
 
-                    MyRecyclerDisscusion mAdapter = new MyRecyclerDisscusion(results);
-
-
+                    MyRecyclerDisscusion mAdapter = new MyRecyclerDisscusion(results, context);
                     rvPadi.setAdapter(mAdapter);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -211,10 +210,22 @@ public class TopicView extends AppCompatActivity {
         return ret;
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(TopicView.this, CardViewActivity.class);
+                startActivity(home);
                 return true;
 
             default:

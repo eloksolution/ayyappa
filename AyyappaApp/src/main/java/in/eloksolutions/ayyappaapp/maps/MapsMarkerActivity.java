@@ -56,10 +56,10 @@ public class MapsMarkerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         // Retrieve the content view that renders the map.
         setContentView(R.layout.map_view);
-/*        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Swamies Near to You");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
@@ -73,7 +73,7 @@ public class MapsMarkerActivity extends AppCompatActivity
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(2);
+        MenuItem menuItem = menu.getItem(3);
         menuItem.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -138,8 +138,13 @@ public class MapsMarkerActivity extends AppCompatActivity
         Log.i(TAG," User clicked is "+userId);
         // Check if a click count was set, then display the click count.
         if (userId != null) {
+
+            Toast.makeText(this,
+                    marker.getTitle() +
+                            " has been clicked " + userId + " times.",
+                    Toast.LENGTH_SHORT).show();
             Intent userViewInt = new Intent(this, UserView.class);
-            userViewInt.putExtra("swamiUserId",userId);
+            userViewInt.putExtra("userId",userId);
             startActivity(userViewInt);
         }
     }
@@ -161,8 +166,7 @@ public class MapsMarkerActivity extends AppCompatActivity
                 Marker marker= googleMap.addMarker(new MarkerOptions().position(userLoc)
                         .title(u.getFirstName()+","+u.getLastName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo)));
                 marker.setTag(u.getUserId());
-                if(u.getCity()!=null && u.getCity().trim().length()>0)
-                    marker.setSnippet("City "+u.getCity());
+                marker.setSnippet("City "+u.getCity());
                 marker.showInfoWindow();
 
             }
@@ -187,16 +191,28 @@ public class MapsMarkerActivity extends AppCompatActivity
                             " has been clicked " + userId + " times.",
                     Toast.LENGTH_SHORT).show();
             Intent userViewInt = new Intent(this, UserView.class);
-            userViewInt.putExtra("swamiUserId",userId);
+            userViewInt.putExtra("userId",userId);
             startActivity(userViewInt);
         }
         return false;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(MapsMarkerActivity.this, CardViewActivity.class);
+                startActivity(home);
                 return true;
 
             default:

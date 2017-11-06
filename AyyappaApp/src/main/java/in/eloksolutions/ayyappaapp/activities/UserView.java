@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -207,12 +208,12 @@ public class UserView extends AppCompatActivity {
         if (result != null) {
             Gson gson = new Gson();
              registerDTO = gson.fromJson(result, RegisterDTO.class);
-            if(registerDTO != null && requestSentValue.equals(registerDTO.getRequestSent())){
+            if(requestSentValue.equals(registerDTO.getRequestSent())){
                 sendRequest.setVisibility(View.GONE);
                 sentText.setVisibility(View.VISIBLE);
                 sentText.setText("you already sended a Request");
             }
-            //toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
+            toolbar.setTitle(registerDTO.getFirstName() + "  " + registerDTO.getLastName());
             if(registerDTO.getArea()!=null) {
                 userLocation.setText(registerDTO.getArea());
             }
@@ -260,16 +261,27 @@ public class UserView extends AppCompatActivity {
         return ret;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home = new Intent(UserView.this, CardViewActivity.class);
+                startActivity(home);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
 

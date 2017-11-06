@@ -1,12 +1,15 @@
 package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import in.eloksolutions.ayyappaapp.R;
@@ -53,6 +56,29 @@ public class ContactActivity extends AppCompatActivity {
         GetSwamiContacts getContacts=new GetSwamiContacts(contactActivity,url,rvPadi);
         getContacts.execute();
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(ContactActivity.this, CardViewActivity.class);
+                startActivity(home);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     }
 

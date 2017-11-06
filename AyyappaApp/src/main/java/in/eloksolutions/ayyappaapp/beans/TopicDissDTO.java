@@ -10,6 +10,7 @@ public class TopicDissDTO {
     String sPostDate;
     String userName;
     String userId;
+    String imgPath;
 
     public String getDissId() {
         return dissId;
@@ -51,6 +52,14 @@ public class TopicDissDTO {
         this.userId = userId;
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
     @Override
     public String toString() {
         return "TopicDissDTO{" +
@@ -59,6 +68,7 @@ public class TopicDissDTO {
                 ", sPostDate='" + sPostDate + '\'' +
                 ", userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
+                ", imgPath='" + imgPath + '\'' +
                 '}';
     }
 }

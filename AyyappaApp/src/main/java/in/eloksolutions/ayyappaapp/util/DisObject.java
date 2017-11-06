@@ -11,15 +11,15 @@ public class DisObject {
     private String sPostDate;
     private String dissId;
     private String comment;
-    private int imgResource;
+    private int imgPath;
 
-    public DisObject(String userId, String userName, String sPostDate,String dissId, String comment, int imgResource) {
+    public DisObject(String userId, String userName, String sPostDate, String dissId, String comment, int imgPath) {
         this.userId = userId;
         this.userName=userName;
         this.sPostDate = sPostDate;
         this.dissId = dissId;
         this.comment=comment;
-        this.imgResource = imgResource;
+        this.imgPath = imgPath;
     }
 
     public String getUserId() {
@@ -54,12 +54,12 @@ public class DisObject {
         this.comment = comment;
     }
 
-    public int getImgResource() {
-        return imgResource;
+    public int getImgPath() {
+        return imgPath;
     }
 
-    public void setImgResource(int imgResource) {
-        this.imgResource = imgResource;
+    public void setImgPath(int imgPath) {
+        this.imgPath = imgPath;
     }
 
     public String getUserName() {
@@ -78,7 +78,7 @@ public class DisObject {
                 ", sPostDate='" + sPostDate + '\'' +
                 ", dissId='" + dissId + '\'' +
                 ", comment='" + comment + '\'' +
-                ", imgResource=" + imgResource +
+                ", imgPath=" + imgPath +
                 '}';
     }
 }

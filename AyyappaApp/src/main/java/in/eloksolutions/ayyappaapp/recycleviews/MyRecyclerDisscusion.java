@@ -1,5 +1,6 @@
 package in.eloksolutions.ayyappaapp.recycleviews;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,7 +22,7 @@ public class MyRecyclerDisscusion extends RecyclerView
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<DisObject> mDataset;
     private static MyClickListener myClickListener;
-
+Context context;
     public  class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
 
@@ -71,15 +72,16 @@ public class MyRecyclerDisscusion extends RecyclerView
     public void setOnItemClickListener(MyClickListener myClickListener) {
     }
 
-    public MyRecyclerDisscusion(ArrayList<DisObject> myDataset) {
+    public MyRecyclerDisscusion(ArrayList<DisObject> myDataset, Context context) {
         mDataset = myDataset;
+        this.context=context;
     }
  
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cardview, parent, false);
+                .inflate(R.layout.discussion_recycler_list, parent, false);
  
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -90,7 +92,8 @@ public class MyRecyclerDisscusion extends RecyclerView
         holder.label.setText(mDataset.get(position).getUserId());
         holder.label3.setText(mDataset.get(position).getComment());
        holder.label2.setText(mDataset.get(position).getsPostDate());
-        holder.imageView.setImageResource(mDataset.get(position).getImgResource());
+        holder.imageView.setImageResource(mDataset.get(position).getImgPath());
+
     }
  
     public void addItem(DisObject dataObj, int index) {

@@ -1,11 +1,14 @@
 package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,7 +52,7 @@ public class TopicUpdate extends AppCompatActivity {
          topicUpdate=(Button) findViewById(R.id.but_topic_update);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Padipooja Update");
+        getSupportActionBar().setTitle("Topic Update");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
         topicId=getIntent().getStringExtra("topicId");
@@ -89,7 +92,7 @@ public class TopicUpdate extends AppCompatActivity {
             if (fromJsonn.getDiscussions()!=null) {
                 ArrayList results = new ArrayList<DisObject>();
                 for (TopicDissDTO d : fromJsonn.getDiscussions()) {
-                    DisObject disObject=new DisObject(d.getUserId(),d.getUserName(), d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.ayyappa_logo);
+                    DisObject disObject=new DisObject(d.getUserId(),d.getUserName(), d.getsPostDate(),d.getDissId(),d.getComment(),R.drawable.defaulta);
                     results.add(disObject);
 
                 }
@@ -136,5 +139,29 @@ public class TopicUpdate extends AppCompatActivity {
 
         return ret;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(TopicUpdate.this, CardViewActivity.class);
+                startActivity(home);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     }
 

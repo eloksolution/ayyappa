@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,12 @@ public class UserPadiPoojas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.padipoojafull);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.black));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        getSupportActionBar().setTitle("PadiPoojas List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
         TextView noData=(TextView) findViewById(R.id.tv_no_data);
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvPadi);
@@ -125,5 +132,28 @@ public class UserPadiPoojas extends AppCompatActivity {
 
     public void setTransferUtility(){
         transferUtility = new TransferUtility(s3, getApplicationContext());
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home = new Intent(UserPadiPoojas.this, CardViewActivity.class);
+                startActivity(home);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

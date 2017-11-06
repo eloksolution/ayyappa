@@ -47,7 +47,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
             label2 = (TextView) itemView.findViewById(R.id.group_desc);
             count  =(TextView) itemView.findViewById(R.id.badge_notification);
             time=(TextView) itemView.findViewById(R.id.dsate);
-            null_value=(TextView) itemView.findViewById(R.id.null_value);
+            //null_value=(TextView) itemView.findViewById(R.id.null_value);
 
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
@@ -93,7 +93,7 @@ public class MyRecyclerViewAdapterHome extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_card, parent, false);
+                .inflate(R.layout.pr, parent, false);
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
     }

@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -360,10 +361,9 @@ public class UserUpdate extends AppCompatActivity {
         }
 
     private String saveEventToServer() {
-
+        keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
         RegisterDTO registrationrDTO=buildDTOObject();
         if(fileToUpload !=null) {
-            keyName="users/U_"+ Util.getRandomNumbers()+"_"+System.currentTimeMillis();
             TransferObserver transferObserver = transferUtility.upload(
                     "elokayyappa",     /* The bucket to upload to */
                     keyName,    /* The key for the uploaded object */
@@ -419,10 +419,22 @@ public class UserUpdate extends AppCompatActivity {
         return ret;
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home = new Intent(UserUpdate.this, CardViewActivity.class);
+                startActivity(home);
                 return true;
 
             default:
