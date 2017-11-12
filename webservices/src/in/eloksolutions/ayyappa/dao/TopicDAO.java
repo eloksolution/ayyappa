@@ -160,8 +160,11 @@ public class TopicDAO {
 
 	private Topic buildTopic(DBObject topic, ObjectId objid) {
 		Date createDate=(Date)topic.get("CREATEDATE");
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/YYYY");
-		String sDate=sdf.format(createDate);
+		String sDate="";
+		if(createDate!=null){
+			SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/YYYY");
+			 sDate=sdf.format(createDate);
+		}
 		Topic topicVo=new Topic((String)objid.toString(),(String)topic.get("TOPIC"),(String)topic.get("DESCRIPTION"),(String)topic.get("GROUPID"),(String)topic.get("OWNER"),sDate,(String)topic.get("OWNERNAME"),(String)topic.get("IMGPATH"));
 		return topicVo;
 	}

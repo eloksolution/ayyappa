@@ -33,7 +33,7 @@ public class Topic {
 		this.description=description;
 		this.owner=owner;
 		this.groupId=groupId;
-		sCreateDate=createDate;
+		this.sCreateDate=createDate;
 		this.ownerName=ownerName;
 		this.imgPath=imgPath;
 	}
@@ -100,6 +100,12 @@ public class Topic {
 	}
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
+	}
+	public String getsCreateDate() {
+		return sCreateDate;
+	}
+	public void setsCreateDate(String sCreateDate) {
+		this.sCreateDate = sCreateDate;
 	}
 	@Override
 	public String toString() {
