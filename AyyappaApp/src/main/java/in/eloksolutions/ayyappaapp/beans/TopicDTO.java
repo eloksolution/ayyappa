@@ -14,6 +14,7 @@ public class TopicDTO {
     String topic;
     String discussion;
     String createDate;
+    String sCreateDate;
     String owner;
     String imgPath;
     String name;
@@ -116,7 +117,13 @@ List<TopicDissDTO> discussions = new ArrayList<TopicDissDTO>();
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
+    public String getsCreateDate() {
+        return sCreateDate;
+    }
 
+    public void setsCreateDate(String sCreateDate) {
+        this.sCreateDate = sCreateDate;
+    }
     @Override
     public String toString() {
         return "TopicDTO{" +

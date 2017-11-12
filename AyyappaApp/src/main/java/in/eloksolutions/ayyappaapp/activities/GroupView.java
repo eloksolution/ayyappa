@@ -301,8 +301,8 @@ public class GroupView extends AppCompatActivity {
         try {
             String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
-            FirebaseMessaging.getInstance().subscribeToTopic(groupJoins.getGroupId());
-            addingMember(joinmem);
+
+          //  addingMember(joinmem);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -341,11 +341,11 @@ public class GroupView extends AppCompatActivity {
     }
 
     private void addingMember(String result) throws JSONException {
-        JSONObject jsonObject;
-        jsonObject = new JSONObject(result);
+        Log.i("GroupView","result is "+result);
+        JSONObject  jsonObject = new JSONObject(result);
         groupJoin.setVisibility(View.GONE);
         count=count+1;
-       //noOfJoins.setText(count + " members are going");
+       noOfJoins.setText(count + " members are going");
 
     }
     private boolean checkValidation() {

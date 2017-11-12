@@ -46,7 +46,7 @@ import in.eloksolutions.ayyappaapp.util.DisObject;
 
 public class TopicView extends AppCompatActivity {
     ImageView topicImage,discussionCreate;
-    TextView topicName, description,user_name,date;
+    TextView topicName, description,user_name,date,createDate;
     EditText addDisscussion;
     RecyclerView rvPadi;
     String topicId, usersId, firstName, lastName;
@@ -70,8 +70,9 @@ public class TopicView extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Topic View");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      //  topicName=(TextView) findViewById(R.id.topic_view_title);
+        topicName=(TextView) findViewById(R.id.topic_view_title);
         description=(TextView) findViewById(R.id.forum_desc);
+        createDate=(TextView) findViewById(R.id.create_date);
         discussionCreate =(ImageView) findViewById(R.id.send_button);
         addDisscussion =(EditText) findViewById(R.id.topic_text);
         topicImage=(ImageView) findViewById(R.id.forum_image);
@@ -92,9 +93,10 @@ public class TopicView extends AppCompatActivity {
         String surl = Config.SERVER_URL+"topic/"+topicId;
         System.out.println("url for group topic view list"+surl);
         try {
-            String output=gettopicValue.new TopicViewTask(surl).execute().get();
-            System.out.println("the output from Topic"+output);
-            setValuesToTextFields(output);
+            gettopicValue.new TopicViewTask(surl).execute();
+            //String output=gettopicValue.new TopicViewTask(surl).execute().get();
+            //System.out.println("the output from Topic"+output);
+           // setValuesToTextFields(output);
 
 
         }catch (Exception e){
@@ -131,8 +133,8 @@ public class TopicView extends AppCompatActivity {
             user_name.setText(topicDTO.getOwnerName());
             toolbar.setTitle(topicDTO.getTopic());
             System.out.println("json xxxx from Topic" + topicDTO.getTopic());
-
-            //   topicName.setText(fromJsonn.getTopic());
+            createDate.setText(topicDTO.getsCreateDate());
+               topicName.setText(topicDTO.getTopic());
             description.setText(topicDTO.getDescription());
             if(topicDTO.getImgPath()!=null) {
                 glide.with(context).load(Config.S3_URL + topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);

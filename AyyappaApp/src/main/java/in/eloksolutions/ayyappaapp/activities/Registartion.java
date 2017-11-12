@@ -103,8 +103,7 @@ public class Registartion extends AppCompatActivity {
 
                 Log.i(tag, "id is the sharepreferance"+name.getText().toString());
                 String createGroupHelper=saveEventToServer();
-                Intent main = new Intent(ctx, CardViewActivity.class);
-                startActivity(main);
+
             }
         });
 
@@ -118,7 +117,7 @@ public class Registartion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //First checking if the app is already having the permission
-                if(isReadStorageAllowed()){
+                if( isReadStorageAllowed()){
                     //If permission is already having then showing the toast
                   //  Toast.makeText(Registartion.this,"You already have the permission",Toast.LENGTH_LONG).show();
                     //Existing the method with return
@@ -192,7 +191,7 @@ public class Registartion extends AppCompatActivity {
     }
 
     private void requestStoragePermission(){
-
+        if(!canMakeSmores())return ;
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)){
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
@@ -205,6 +204,7 @@ public class Registartion extends AppCompatActivity {
 
     private boolean isReadStorageAllowed() {
         //Getting the permission status
+        if(!canMakeSmores()) return true;
         int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
 
         //If permission is granted returning true
@@ -515,6 +515,11 @@ public class Registartion extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private boolean canMakeSmores(){
+        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

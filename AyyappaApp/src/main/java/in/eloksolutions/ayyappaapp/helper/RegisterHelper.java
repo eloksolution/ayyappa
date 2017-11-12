@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
+import in.eloksolutions.ayyappaapp.activities.CardViewActivity;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 import in.eloksolutions.ayyappaapp.util.Util;
@@ -86,6 +88,8 @@ public class RegisterHelper {
             }
             Log.i(tag, "result is  " +result);
             progress.dismiss();
+            Intent main = new Intent(mcontext, CardViewActivity.class);
+            mcontext.startActivity(main);
         }
 
     }

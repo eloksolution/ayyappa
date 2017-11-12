@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
+        getLocation();
      }
 
     public void signInClick(View view) {
@@ -140,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     // [START handleSignInResult]
     private void handleSignInResult(GoogleSignInResult result) {
+        if(result==null)return;
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
@@ -197,12 +199,13 @@ public class LoginActivity extends AppCompatActivity implements
     // [END handleSignInResult]
     void getLocation() {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (!isLocatioinAllowed() && currentapiVersion >= android.os.Build.VERSION_CODES.M){
+        if (canMakeSmores() && !isLocatioinAllowed()){
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                     (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
             }
+            return;
         }
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
@@ -227,26 +230,29 @@ public class LoginActivity extends AppCompatActivity implements
                 System.out.println("Unable");
             }
 
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
 
+    }
 
+    private boolean canMakeSmores(){
+        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_LOCATION:
+                Log.i(TAG, "onRequestPermissionsResult :");
                 getLocation();
+
                 break;
         }
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [START signIn]
     private void signIn() {
         Log.i(TAG, "signIn:");
-        getLocation();
+       // getLocation();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signIn]
 
@@ -334,10 +340,10 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public void updateUI(boolean signedIn, RegisterDTO registerDto) {
-        Intent main=null;
+
         if(signedIn) {
             Util.setPreferances(this, registerDto);
-            main = new Intent(this, CardViewActivity.class);
+            Intent main = new Intent(this, CardViewActivity.class);
             startActivity(main);
         }
         else {
@@ -347,6 +353,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-
+        Log.i(TAG,"in the cliecked");
     }
 }

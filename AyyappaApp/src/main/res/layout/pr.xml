@@ -103,7 +103,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="date"
                 android:textColor="#ff669900"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>

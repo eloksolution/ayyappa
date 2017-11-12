@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -103,6 +105,7 @@ public class GroupViewHelper {
             super.onPostExecute(result);
             System.out.println("From Join Event" + result);
             progress.dismiss();
+            FirebaseMessaging.getInstance().subscribeToTopic(groupMembers.getGroupId());
             Intent groupView=new Intent(mcontext,GroupView.class);
             groupView.putExtra("groupId",groupMembers.getGroupId());
             mcontext.startActivity(groupView);
