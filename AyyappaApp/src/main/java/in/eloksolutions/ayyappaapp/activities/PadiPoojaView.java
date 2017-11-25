@@ -178,10 +178,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             public void onClick(View v) {
                 try {
                     Intent intent= new Intent();
-                    String sAux ="\n"+event_name+" @Ayyappa\n for more events \n";
-                    //String title= groupName.replaceAll(" ","_")+"@MELZOL";
-                    String msg=sAux+"https://wdq3a.app.goo.gl/?link=https://melzol.in/1/"+padiPoojaId+"&apn=in.melzol" +
-                            "&st="+event_name+"&si=";
+                    String msg="https://play.google.com/store/apps/details?id=in.eloksolutions.ayyappaapp";
                     intent.setAction(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_TEXT,msg);
                     intent.setType("text/plain");

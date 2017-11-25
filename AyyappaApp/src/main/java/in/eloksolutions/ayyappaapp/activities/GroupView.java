@@ -172,10 +172,7 @@ public class GroupView extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     Intent intent= new Intent();
-                    String sAux ="\n"+groupName+" @Ayyappa\n for more Groups \n";
-                    //String title= groupName.replaceAll(" ","_")+"@MELZOL";
-                    String msg=sAux+"https://wdq3a.app.goo.gl/?link=https://melzol.in/1/"+groupId+"&apn=in.melzol" +
-                            "&st="+groupName+"&si=";
+                    String msg="https://play.google.com/store/apps/details?id=in.eloksolutions.ayyappaapp";
                     intent.setAction(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_TEXT,msg);
                     intent.setType("text/plain");
