@@ -278,34 +278,34 @@ public class CardViewActivity extends AppCompatActivity {
                     public void onItemClick(View view, int i) {
                         switch (i) {
                             case 0:
-                                String uri = "https://www.youtube.com/watch?v=vxpEMuM1eBc";
-                                Intent intent = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri = "vxpEMuM1eBc";
+                                Intent intent = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent.putExtra("uri",uri);
                                 startActivity(intent);
                                 break;
                             case 1:
 
-                                String uri1 = "https://www.youtube.com/watch?v=hRtuGEQmm1E";
+                                String uri1 = "vxpEMuM1eBc";
                                 Intent intent1 = new Intent(CardViewActivity.this,WebActivity.class);
                                 intent1.putExtra("uri",uri1);
                                 startActivity(intent1);
                                 break;
                             case 2:
-                                String uri2 = "https://www.youtube.com/watch?v=4wjuDG7WXY8";
-                                Intent intent2 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri2 = "4wjuDG7WXY8";
+                                Intent intent2 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent2.putExtra("uri",uri2);
                                 startActivity(intent2);
                                 break;
                             case 3:
-                                String uri3 = "https://www.youtube.com/watch?v=FTBLd2zz8IU";
-                                Intent intent3 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri3 = "FTBLd2zz8IU";
+                                Intent intent3 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent3.putExtra("uri",uri3);
                                 startActivity(intent3);
                                 break;
                             case 4:
 
-                                String uri4 = "https://www.youtube.com/watch?v=o4vv3PN45Eo";
-                                Intent intent4 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri4 = "o4vv3PN45Eo";
+                                Intent intent4 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent4.putExtra("uri",uri4);
                                 startActivity(intent4);
                                 break;
@@ -333,38 +333,38 @@ public class CardViewActivity extends AppCompatActivity {
                     public void onItemClick(View view, int i) {
                         switch (i) {
                             case 0:
-                                String uri = "https://www.youtube.com/watch?v=ZRYJdPrHiSM";
-                                Intent intent = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri = "ZRYJdPrHiSM";
+                                Intent intent = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent.putExtra("uri",uri);
                                 startActivity(intent);
                                 break;
                             case 1:
-                                String uri1 = "https://www.youtube.com/watch?v=zV0lDPtAUxw";
-                                Intent intent1 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri1 = "zV0lDPtAUxw";
+                                Intent intent1 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent1.putExtra("uri",uri1);
                                 startActivity(intent1);
                                 break;
                             case 2:
-                                String uri2 = "https://www.youtube.com/watch?v=nquYSlnavuM";
-                                Intent intent2 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri2 = "nquYSlnavuM";
+                                Intent intent2 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent2.putExtra("uri",uri2);
                                 startActivity(intent2);
                                 break;
                             case 3:
-                                String uri3 = "https://www.youtube.com/watch?v=pNGdT5obEys";
-                                Intent intent3 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri3 = "pNGdT5obEys";
+                                Intent intent3 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent3.putExtra("uri",uri3);
                                 startActivity(intent3);
                                 break;
                             case 4:
-                                String uri4 = "https://www.youtube.com/watch?v=tzLX8me67wU";
-                                Intent intent4 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri4 = "tzLX8me67wU";
+                                Intent intent4 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent4.putExtra("uri",uri4);
                                 startActivity(intent4);
                                 break;
                             case 5:
-                                String uri5 = "https://www.youtube.com/watch?v=BOjJGALm2kQ";
-                                Intent intent5 = new Intent(CardViewActivity.this,WebActivity.class);
+                                String uri5 = "BOjJGALm2kQ";
+                                Intent intent5 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent5.putExtra("uri",uri5);
                                 startActivity(intent5);
                                 break;
