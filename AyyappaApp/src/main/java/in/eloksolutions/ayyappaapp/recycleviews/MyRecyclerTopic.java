@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.activities.PlayYoutubeActivity;
 import in.eloksolutions.ayyappaapp.activities.TopicView;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.util.TopicObject;
@@ -42,6 +44,7 @@ public class MyRecyclerTopic extends RecyclerView
             label = (TextView) itemView.findViewById(R.id.user_name);
            label2 = (TextView) itemView.findViewById(R.id.date);
             label3=(TextView)  itemView.findViewById(R.id.forum_title);
+            Button btnPalay=(Button) itemView.findViewById(R.id.play);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
             imageView = (ImageView) itemView.findViewById(R.id.image);
@@ -54,6 +57,20 @@ public class MyRecyclerTopic extends RecyclerView
                     Intent topicView=new Intent(view.getContext(), TopicView.class);
                     topicView.putExtra("topicId",dataObject.getTopicId());
                     Log.i(LOG_TAG, "topicId is imag eclick :"+dataObject.getTopicId());
+                    view.getContext().startActivity(topicView);
+                }
+            });
+            btnPalay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i(LOG_TAG, "Adding Topic Listener "+label.getText());
+                    TopicObject dataObject=mDataset.get(getAdapterPosition());
+                    Log.i(LOG_TAG, "data object is Topic Listener"+dataObject);
+                    String video_url=dataObject.getDescription();
+                    String video_code = (video_url.substring(video_url.lastIndexOf("=") + 1));
+                    Intent topicView=new Intent(view.getContext(), PlayYoutubeActivity.class);
+                    topicView.putExtra("uri",video_code);
+                    Log.i(LOG_TAG, "topicId is imag eclick video_code :"+video_code);
                     view.getContext().startActivity(topicView);
                 }
             });

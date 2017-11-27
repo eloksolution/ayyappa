@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ import in.eloksolutions.ayyappaapp.util.DisObject;
 
 public class TopicView extends AppCompatActivity {
     ImageView topicImage,discussionCreate;
-    TextView topicName, description,user_name,date,createDate;
+    TextView topicName, description,user_name,date;
     EditText addDisscussion;
     RecyclerView rvPadi;
     String topicId, usersId, firstName, lastName;
@@ -58,6 +59,7 @@ public class TopicView extends AppCompatActivity {
     TransferObserver transferObserver;
     Glide glide;
     int count;
+    Button playButton;
     Toolbar toolbar;
     String tag="TopicView";
     @Override
@@ -72,10 +74,10 @@ public class TopicView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         topicName=(TextView) findViewById(R.id.topic_view_title);
         description=(TextView) findViewById(R.id.forum_desc);
-        createDate=(TextView) findViewById(R.id.create_date);
         discussionCreate =(ImageView) findViewById(R.id.send_button);
         addDisscussion =(EditText) findViewById(R.id.topic_text);
         topicImage=(ImageView) findViewById(R.id.forum_image);
+        playButton=(Button) findViewById(R.id.play);
         context=this;
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId is"+topicId);
@@ -93,10 +95,9 @@ public class TopicView extends AppCompatActivity {
         String surl = Config.SERVER_URL+"topic/"+topicId;
         System.out.println("url for group topic view list"+surl);
         try {
-            gettopicValue.new TopicViewTask(surl).execute();
-            //String output=gettopicValue.new TopicViewTask(surl).execute().get();
-            //System.out.println("the output from Topic"+output);
-           // setValuesToTextFields(output);
+            String output=gettopicValue.new TopicViewTask(surl).execute().get();
+            System.out.println("the output from Topic"+output);
+            setValuesToTextFields(output);
 
 
         }catch (Exception e){
@@ -112,6 +113,19 @@ public class TopicView extends AppCompatActivity {
                 Intent topicView = new Intent(ctx, TopicView.class);
                 topicView.putExtra("topicId",""+topicId);
                 startActivity(topicView);
+            }
+        });
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                String video_url=topicDTO.getDescription();
+                String video_code = (video_url.substring(video_url.lastIndexOf("=") + 1));
+                Intent topicView=new Intent(view.getContext(), PlayYoutubeActivity.class);
+                topicView.putExtra("uri",video_code);
+
+                view.getContext().startActivity(topicView);
             }
         });
         rvPadi = (RecyclerView) findViewById(R.id.rv_disscussions);
@@ -133,8 +147,8 @@ public class TopicView extends AppCompatActivity {
             user_name.setText(topicDTO.getOwnerName());
             toolbar.setTitle(topicDTO.getTopic());
             System.out.println("json xxxx from Topic" + topicDTO.getTopic());
-            createDate.setText(topicDTO.getsCreateDate());
-               topicName.setText(topicDTO.getTopic());
+
+              topicName.setText(topicDTO.getTopic());
             description.setText(topicDTO.getDescription());
             if(topicDTO.getImgPath()!=null) {
                 glide.with(context).load(Config.S3_URL + topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);
