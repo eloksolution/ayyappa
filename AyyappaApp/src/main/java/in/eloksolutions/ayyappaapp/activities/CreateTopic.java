@@ -143,7 +143,7 @@ public class CreateTopic extends AppCompatActivity {
         topicDTO.setDescription(currentUrl);
         topicDTO.setImgPath(imageKeyName);
         topicDTO.setOwner(userId);
-        topicDTO.setName(username);
+        topicDTO.setOwnerName(username);
         return topicDTO;
     }
     void handleSendText(Intent intent) {
