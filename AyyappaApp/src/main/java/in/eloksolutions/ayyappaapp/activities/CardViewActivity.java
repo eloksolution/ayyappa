@@ -11,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -29,6 +31,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.adapter.AndroidDataAdapter;
@@ -63,6 +67,7 @@ public class CardViewActivity extends AppCompatActivity {
     TextView topic;
     String userId;
     EditText searchValue;
+    TextView month, day, date ,rightMonth,rightDay,rightDate ;
     private final String movies[] =  {"Ayyappa janmarahasyam", "Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan", "Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith", "Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas", "Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji", "Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
 
     @Override
@@ -70,6 +75,12 @@ public class CardViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view);
         // Set up the ViewPager with the sections adapter.
+        month=(TextView) findViewById(R.id.month);
+        day=(TextView) findViewById(R.id.day);
+        date=(TextView) findViewById(R.id.date);
+        rightMonth=(TextView) findViewById(R.id.month_r);
+        rightDay=(TextView) findViewById(R.id.day_r);
+        rightDate=(TextView) findViewById(R.id.date_r);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -109,6 +120,8 @@ public class CardViewActivity extends AppCompatActivity {
         });
         initRecyclerViews();
         songRecyclerViews();
+
+
         context=this;
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         String deekshaStartDate=preferences.getString("startDate",null);
@@ -117,7 +130,8 @@ public class CardViewActivity extends AppCompatActivity {
         searchValue=(EditText) findViewById(R.id.search_name);
         searchValues=searchValue.getText().toString();
         Log.i(TAG,"the search values is"+searchValues);
-
+        Log.i(TAG,"the deekshaEndDate values is"+deekshaEndDate);
+        Log.i(TAG,"the deekshaStartDate values is"+searchValues);
         final ImageView imgDeeksha=(ImageView) findViewById(R.id.event_image);
         final TextView tvDays=(TextView) findViewById(R.id.topic);
         Log.i(TAG,"Deeksha Config.getUserId()"+preferences.getString("userId", null));
@@ -146,12 +160,15 @@ public class CardViewActivity extends AppCompatActivity {
                 diff=daysBetween(startDate,today)+1;
                 noOfDays=daysBetween(startDate,endDate)+1;
                 Log.i(TAG,"Diff date is is "+diff);
+                deeshaDates();
+                deeshaDatesRight();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
             topic.setText(diff+"/"+noOfDays+"");
         }else{
+
             tvDays.setText("Start Deeksha");
             imgDeeksha.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,6 +176,7 @@ public class CardViewActivity extends AppCompatActivity {
                     startActivity(new Intent(context, DeekshaActivity.class));
                 }
             });
+
 
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
@@ -196,7 +214,7 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(padipooj);
             }
         });
-        final ImageView padiCreate=(ImageView) findViewById(R.id.padi_create);
+        final Button padiCreate=(Button) findViewById(R.id.padi_create);
         noDatas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -234,7 +252,7 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
-        final ImageView creategroup=(ImageView) findViewById(R.id.create_group);
+        final Button creategroup=(Button) findViewById(R.id.create_group);
         creategroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,14 +276,72 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
+        try {
+            datacalling();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void datacalling() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy  hh:mm", Locale.ENGLISH);
+        System.out.println("theDate " + DateFormat.format("MMM dd,yyyy  hh:mm", System.currentTimeMillis()));
+        Date theDate = format.parse("" + DateFormat.format("MMM dd,yyyy  hh:mm", System.currentTimeMillis()));
+
+        Calendar myCal = new GregorianCalendar();
+        myCal.setTime(theDate);
+        month.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+        day.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
+        date.setText(""+myCal.get(Calendar.DATE));
+        rightMonth.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+        rightDay.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
+        rightDate.setText(""+myCal.get(Calendar.DATE));
 
 
     }
+    public void deeshaDatesRight()  {
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy  hh:mm", Locale.ENGLISH);
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+
+        String eDate=preferences.getString("endDate",null);
+        Date endDate= null;
+        try {
+            endDate = (new SimpleDateFormat("MMM dd,yyyy  hh:mm")).parse(eDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar myCal = new GregorianCalendar();
+        myCal.setTime(endDate);
+        rightMonth.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).substring(0,3));
+        rightDay.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()).substring(0,3));
+        rightDate.setText(""+myCal.get(Calendar.DATE));
+
+
+    }
+    public void deeshaDates() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy  hh:mm", Locale.ENGLISH);
+        System.out.println("theDate " + DateFormat.format("MMM dd,yyyy  hh:mm", System.currentTimeMillis()));
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        String deekshaStartDate=preferences.getString("startDate",null);
+        String deekshaEndDate=preferences.getString("endDate",null);
+        Date startDate=(new SimpleDateFormat("MMM dd,yyyy  hh:mm")).parse(deekshaStartDate);
+
+
+        Calendar myCal = new GregorianCalendar();
+        myCal.setTime(startDate);
+
+        month.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).substring(0,3));
+        day.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()).substring(0,3));
+        date.setText(""+myCal.get(Calendar.DATE));
+
+
+    }
+
     private void initRecyclerViews() {
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movies_recycler);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         ArrayList<AndroidVersion> av = prepareData();
