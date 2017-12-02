@@ -37,6 +37,7 @@ public class MyRecyclerTopic extends RecyclerView
         TextView label;
        TextView label2,label3;
         ImageView imageView;
+        Button btnPalay;
 
 
         public DataObjectHolder(View itemView) {
@@ -44,7 +45,7 @@ public class MyRecyclerTopic extends RecyclerView
             label = (TextView) itemView.findViewById(R.id.user_name);
            label2 = (TextView) itemView.findViewById(R.id.date);
             label3=(TextView)  itemView.findViewById(R.id.forum_title);
-            Button btnPalay=(Button) itemView.findViewById(R.id.play);
+            btnPalay=(Button) itemView.findViewById(R.id.play);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
             imageView = (ImageView) itemView.findViewById(R.id.image);
@@ -114,6 +115,11 @@ public class MyRecyclerTopic extends RecyclerView
         holder.label.setText(mDataset.get(position).getName());
        holder.label2.setText(mDataset.get(position).getCreateDate());
         holder.label3.setText(mDataset.get(position).getTopic());
+        if(mDataset.get(position).getDescription()!=null){
+            if(mDataset.get(position).getDescription().contains("youtube")) {
+                holder.btnPalay.setVisibility(View.VISIBLE);
+            }
+        }
         if(mDataset.get(position).getImgResource()!=null) {
             glide.with(mcontext).load(Config.S3_URL + mDataset.get(position).getImgResource()).into(holder.imageView);
         }else{

@@ -147,9 +147,16 @@ public class TopicView extends AppCompatActivity {
             user_name.setText(topicDTO.getOwnerName());
             toolbar.setTitle(topicDTO.getTopic());
             System.out.println("json xxxx from Topic" + topicDTO.getTopic());
+            topicName.setText(topicDTO.getTopic());
 
-              topicName.setText(topicDTO.getTopic());
-            description.setText(topicDTO.getDescription());
+            if(topicDTO.getDescription().contains("youtube")){
+                playButton.setVisibility(View.VISIBLE);
+            }else{
+                description.setVisibility(View.VISIBLE);
+                description.setText(topicDTO.getDescription());
+
+            }
+
             if(topicDTO.getImgPath()!=null) {
                 glide.with(context).load(Config.S3_URL + topicDTO.getImgPath()).diskCacheStrategy(DiskCacheStrategy.ALL).into(topicImage);
             }else{

@@ -134,6 +134,7 @@
                         android:autoLink="web"
                         android:paddingTop="0dp"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         android:paddingBottom="10dp"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
@@ -149,6 +150,7 @@
                         android:textColor="@color/white"
                         android:text="Play"
                         android:id="@+id/play"
+                        android:visibility="gone"
                         android:layout_gravity="center"
                         android:background="@drawable/btn"/>
 
