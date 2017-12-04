@@ -155,14 +155,18 @@ public class CardViewActivity extends AppCompatActivity {
                 noOfDays=daysBetween(startDate,endDate)+1;
                 Log.i(TAG,"Diff date is is "+diff);
                 deeshaDates();
-                deeshaDatesRight();
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            topic.setText(diff+"/"+noOfDays+"");
+            topic.setText(diff+" of "+noOfDays+" days");
         }else{
-
+            try {
+                datacalling();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             tvDays.setText("Start Deeksha");
             imgDeeksha.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -270,11 +274,7 @@ public class CardViewActivity extends AppCompatActivity {
                 startActivity(songsIntent);
             }
         });
-        try {
-            datacalling();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
     }
     public void datacalling() throws ParseException {
@@ -287,41 +287,32 @@ public class CardViewActivity extends AppCompatActivity {
         rightDate.setText(""+myCal.get(Calendar.DATE));
     }
 
-    public void deeshaDatesRight()  {
-        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy  hh:mm", Locale.ENGLISH);
+
+    public void deeshaDates() throws ParseException {
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        String deekshaStartDate=preferences.getString("startDate",null);
+        Date startDate=(new SimpleDateFormat("dd-MM-yyyy")).parse(deekshaStartDate);
+        Log.i("CardViewACTIVTY","START DATE "+startDate);
+       Calendar myCal = new GregorianCalendar();
+        myCal.setTime(startDate);
+
+        month.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+        day.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
+        date.setText(""+myCal.get(Calendar.DATE));
 
         String eDate=preferences.getString("endDate",null);
+        Log.i("CardViewACTIVTY","END DATE "+startDate);
         Date endDate= null;
         try {
-            endDate = (new SimpleDateFormat("MMM dd,yyyy  hh:mm")).parse(eDate);
+            endDate = (new SimpleDateFormat("dd-MM-yyyy")).parse(eDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Calendar myCal = new GregorianCalendar();
+         myCal = new GregorianCalendar();
         myCal.setTime(endDate);
-        rightMonth.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).substring(0,3));
-        rightDay.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()).substring(0,3));
+        rightMonth.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+        rightDay.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
         rightDate.setText(""+myCal.get(Calendar.DATE));
-
-
-    }
-    public void deeshaDates() throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy  hh:mm", Locale.ENGLISH);
-        System.out.println("theDate " + DateFormat.format("MMM dd,yyyy  hh:mm", System.currentTimeMillis()));
-        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
-        String deekshaStartDate=preferences.getString("startDate",null);
-        String deekshaEndDate=preferences.getString("endDate",null);
-        Date startDate=(new SimpleDateFormat("MMM dd,yyyy  hh:mm")).parse(deekshaStartDate);
-
-
-        Calendar myCal = new GregorianCalendar();
-        myCal.setTime(startDate);
-
-        month.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).substring(0,3));
-        day.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()).substring(0,3));
-        date.setText(""+myCal.get(Calendar.DATE));
-
 
     }
 
@@ -329,7 +320,7 @@ public class CardViewActivity extends AppCompatActivity {
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movies_recycler);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         ArrayList<AndroidVersion> av = prepareData();
@@ -386,11 +377,7 @@ public class CardViewActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        LinearLayoutManager mLayoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-
-        ArrayList<AndroidVersion> av = prepareSongData();
+             ArrayList<AndroidVersion> av = prepareSongData();
         AndroidDataAdapter movies = new AndroidDataAdapter(getApplicationContext(), av);
         mRecyclerView.setAdapter(movies);
         final Context ctx=this;
