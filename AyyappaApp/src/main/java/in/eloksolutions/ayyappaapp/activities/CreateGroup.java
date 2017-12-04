@@ -85,7 +85,7 @@ public class CreateGroup extends AppCompatActivity {
         Button imagePick=(Button) findViewById(R.id.group_image_add);
         SharedPreferences preference=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId=preference.getString("userId",null);
-        userName=preference.getString("firstName",null)+ " " + preference.getString("lastName", null);
+        userName=preference.getString("firstName",null)+ ", " + preference.getString("lastName", null);
         final Context ctx = this;
         // callback method to call credentialsProvider method.
         credentialsProvider();
@@ -383,6 +383,13 @@ public class CreateGroup extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(CreateGroup.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
 

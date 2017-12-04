@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -11,9 +12,12 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.config.Config;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
+    String userId,userName;
     private ProgressDialog progressDialog;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +26,12 @@ public class WebActivity extends AppCompatActivity {
         String url=intent.getStringExtra("uri");
          webView = (WebView)findViewById(R.id.webView1);
         startWebView(url);
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        String deekshaStartDate=preferences.getString("startDate",null);
+        String deekshaEndDate=preferences.getString("endDate",null);
+        userId=preferences.getString("userId",null);
+        userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
+
     }
     private void startWebView(String url) {
 
@@ -71,6 +81,13 @@ public class WebActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(WebActivity.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
                 Intent home = new Intent(WebActivity.this, CardViewActivity.class);

@@ -23,6 +23,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetEvents;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -32,7 +33,7 @@ import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
 public class PadiPoojaFull extends AppCompatActivity {
     Context context;
     private BottomBar bottomBar;
-    String userId;
+    String userId,userName;
    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,7 @@ public class PadiPoojaFull extends AppCompatActivity {
         rvPadi.setLayoutManager(lmPadi);
        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
        userId=preferences.getString("userId",null);
+       userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
         String url= Config.SERVER_URL+"padipooja/getpoojas/"+userId;
         GetEvents getEvents=new GetEvents(context,url,rvPadi, noData);
         getEvents.execute();
@@ -121,6 +123,13 @@ public class PadiPoojaFull extends AppCompatActivity {
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
+            case R.id.feed:
+                Intent feed=new Intent(PadiPoojaFull.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
+                return true;
             case R.id.action_settings:
                 Intent home=new Intent(PadiPoojaFull.this, CardViewActivity.class);
                 startActivity(home);
@@ -130,4 +139,6 @@ public class PadiPoojaFull extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

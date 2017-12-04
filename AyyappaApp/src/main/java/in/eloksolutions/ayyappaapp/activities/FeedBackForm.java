@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.beans.FeedBackUserTask;
+import in.eloksolutions.ayyappaapp.config.Config;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -20,6 +23,8 @@ import in.eloksolutions.ayyappaapp.beans.FeedBackUserTask;
  */
 
 public class FeedBackForm extends AppCompatActivity {
+    String userName,userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,10 @@ public class FeedBackForm extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button submit=(Button) findViewById(R.id.butSubmit);
         final Context ctx=this;
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
+        userId= preferences.getString("userId",null);
+        userName=preferences.getString("firstName",null)+", "+preferences.getString("lastName",null);
+
         final TextView etName=(TextView) findViewById(R.id.etName);
         final TextView etPhoneNumber=(TextView) findViewById(R.id.etEmailid);
         final TextView etEmailid=(TextView) findViewById(R.id.etPhoneNumber);
@@ -65,6 +74,10 @@ public class FeedBackForm extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(FeedBackForm.this, CardViewActivity.class);

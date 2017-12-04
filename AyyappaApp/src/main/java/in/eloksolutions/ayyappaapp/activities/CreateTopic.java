@@ -94,7 +94,7 @@ public class CreateTopic extends AppCompatActivity {
         dropPreview = (ViewGroup) findViewById(R.id.drop_preview);
         SharedPreferences sharedPreferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId=sharedPreferences.getString("userId", null);
-        username=sharedPreferences.getString("firstName",null);
+        username=sharedPreferences.getString("firstName",null)+", "+sharedPreferences.getString("firstName",null);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent); // Handle text being sent
@@ -400,6 +400,17 @@ public class CreateTopic extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(CreateTopic.this, CardViewActivity.class);
+                startActivity(home);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(username));
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(CreateTopic.this, FeedBackForm.class);
+                startActivity(feed);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

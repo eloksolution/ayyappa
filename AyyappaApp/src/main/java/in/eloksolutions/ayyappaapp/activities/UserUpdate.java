@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -59,7 +60,7 @@ public class UserUpdate extends AppCompatActivity {
     EditText name, description, emailId, password, city, phoneNumber, lastName, area;
     RecyclerView rvPadi;
     Button userUpdate;
-    String userId;
+    String userId,userName;
     Context context;
     int count;
     Glide glide;
@@ -85,6 +86,8 @@ public class UserUpdate extends AppCompatActivity {
         userUpdate=(Button) findViewById(R.id.create);
         context=this;
         userId=getIntent().getStringExtra("userId");
+        SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
         Log.i(tag, "topicId Update is"+userId);
         final Context ctx = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -431,6 +434,13 @@ public class UserUpdate extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(UserUpdate.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));;
                 return true;
             case R.id.action_settings:
                 Intent home = new Intent(UserUpdate.this, CardViewActivity.class);

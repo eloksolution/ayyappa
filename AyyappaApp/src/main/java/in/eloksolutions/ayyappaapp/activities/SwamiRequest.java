@@ -19,13 +19,14 @@ import com.roughike.bottombar.BottomBar;
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.GetSwamiRequests;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 public class SwamiRequest extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
    TransferUtility transferUtility;
-    String userId;
+    String userId, firstName,lastName;
     private BottomBar bottomBar;
     Toolbar toolbar;
     @Override
@@ -46,6 +47,8 @@ public class SwamiRequest extends AppCompatActivity {
         rvGroups.setLayoutManager(lmPadi);
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
         userId=preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
         String url= Config.SERVER_URL+"user/receivedConnections/"+userId;
         GetSwamiRequests getGroups=new GetSwamiRequests(SwamiRequest.this,url,rvGroups,noData);
         System.out.println("url for group list"+url);
@@ -107,6 +110,13 @@ public class SwamiRequest extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(SwamiRequest.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+" "+lastName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(SwamiRequest.this, CardViewActivity.class);

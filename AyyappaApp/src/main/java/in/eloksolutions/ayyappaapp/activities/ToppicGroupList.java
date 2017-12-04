@@ -21,6 +21,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.GetTopicGroups;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 /**
  * Created by welcome on 9/6/2017.
@@ -101,6 +102,13 @@ public class ToppicGroupList extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(ToppicGroupList.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+" "+lastName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(ToppicGroupList.this, CardViewActivity.class);

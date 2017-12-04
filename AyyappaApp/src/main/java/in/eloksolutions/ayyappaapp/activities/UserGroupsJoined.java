@@ -27,12 +27,13 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetGroups;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class UserGroupsJoined extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
    TransferUtility transferUtility;
-    String userId;
+    String userId,userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,10 @@ public class UserGroupsJoined extends AppCompatActivity {
             }
         });
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
-        userId= preferences.getString("userId",null);
+        String deekshaStartDate=preferences.getString("startDate",null);
+        String deekshaEndDate=preferences.getString("endDate",null);
+        userId=preferences.getString("userId",null);
+        userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
@@ -130,6 +134,37 @@ public class UserGroupsJoined extends AppCompatActivity {
     public void setTransferUtility(){
       transferUtility = new TransferUtility(s3, getApplicationContext());
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(UserGroupsJoined.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
+                return true;
+            case R.id.action_settings:
+                Intent home=new Intent(UserGroupsJoined.this, CardViewActivity.class);
+                startActivity(home);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     }
 
 

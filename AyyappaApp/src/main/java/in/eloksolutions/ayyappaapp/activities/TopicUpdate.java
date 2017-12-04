@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.TopicUpdateHelper;
 import in.eloksolutions.ayyappaapp.recycleviews.CheckInternet;
 import in.eloksolutions.ayyappaapp.util.DisObject;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -42,6 +44,7 @@ public class TopicUpdate extends AppCompatActivity {
     String topicId;
     Context context;
     int count;
+    String userId, firstName, lastName;
     String tag="TopicView";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,10 @@ public class TopicUpdate extends AppCompatActivity {
         topicId=getIntent().getStringExtra("topicId");
         Log.i(tag, "topicId Update is"+topicId);
         final Context ctx = this;
-
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
+        userId= preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
         TopicUpdateHelper gettopicValue=new TopicUpdateHelper(this);
         String surl = Config.SERVER_URL+"topic/"+topicId;
         System.out.println("url for group topic view list"+surl);
@@ -153,6 +159,14 @@ public class TopicUpdate extends AppCompatActivity {
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
+            case R.id.feed:
+                Intent feed=new Intent(TopicUpdate.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+" "+lastName));
+                return true;
+
             case R.id.action_settings:
                 Intent home=new Intent(TopicUpdate.this, CardViewActivity.class);
                 startActivity(home);

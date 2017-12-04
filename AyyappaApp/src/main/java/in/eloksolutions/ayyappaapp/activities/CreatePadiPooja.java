@@ -100,7 +100,7 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         Button create = (Button) findViewById(R.id.create);
         SharedPreferences preferences = getSharedPreferences(Config.userId, Context.MODE_PRIVATE);
         UserId = preferences.getString("userId", "");
-        userName = preferences.getString("firstName", "") + " " + preferences.getString("secoundName", "");
+        userName = preferences.getString("firstName", "") + ", " + preferences.getString("secoundName", "");
         date.setOnClickListener(this);
         time.setOnClickListener(this);
         credentialsProvider();
@@ -454,6 +454,14 @@ public class CreatePadiPooja extends AppCompatActivity implements View.OnClickLi
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+
+            case R.id.feed:
+                Intent feed=new Intent(CreatePadiPooja.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
 

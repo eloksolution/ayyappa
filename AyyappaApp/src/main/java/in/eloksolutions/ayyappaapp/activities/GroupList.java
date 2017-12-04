@@ -26,6 +26,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetGroups;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class GroupList extends AppCompatActivity {
     Context context;
@@ -136,6 +137,14 @@ public class GroupList extends AppCompatActivity {
             case R.id.action_settings:
                 Intent home=new Intent(GroupList.this, CardViewActivity.class);
                 startActivity(home);
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(GroupList.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+", "+lastName));
+
                 return true;
 
             default:

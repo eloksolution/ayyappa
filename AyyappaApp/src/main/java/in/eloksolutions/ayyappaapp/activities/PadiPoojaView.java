@@ -45,6 +45,7 @@ import in.eloksolutions.ayyappaapp.recycleviews.CustomAdapter;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerPadiMembers;
 import in.eloksolutions.ayyappaapp.services.RegistrationIntentService;
 import in.eloksolutions.ayyappaapp.util.Constants;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 public class PadiPoojaView extends AppCompatActivity implements View.OnClickListener {
@@ -431,6 +432,13 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
+            case R.id.feed:
+                Intent feed=new Intent(PadiPoojaView.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+" "+lastName));
+                return true;
             case R.id.action_settings:
                 Intent home=new Intent(PadiPoojaView.this, CardViewActivity.class);
                 startActivity(home);
@@ -440,6 +448,7 @@ public class PadiPoojaView extends AppCompatActivity implements View.OnClickList
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 
 }

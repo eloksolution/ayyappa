@@ -428,6 +428,13 @@ public class GroupUpdate extends AppCompatActivity {
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
+            case R.id.feed:
+                Intent feed=new Intent(GroupUpdate.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
+                return true;
             case R.id.action_settings:
 
                 if (checkValidation () ) {

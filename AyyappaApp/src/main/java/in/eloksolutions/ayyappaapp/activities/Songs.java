@@ -1,6 +1,7 @@
 package in.eloksolutions.ayyappaapp.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,12 +13,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.recycleviews.ServicesGridView;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class Songs extends AppCompatActivity {
     GridView grid;
     ImageView add;
     Toolbar toolbar;
+    String firstName,lastName,userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +31,10 @@ public class Songs extends AppCompatActivity {
         getSupportActionBar().setTitle("Songs List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         add = (ImageView) findViewById(R.id.add);
+        SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES,MODE_PRIVATE);
+        userId= preferences.getString("userId",null);
+        firstName=preferences.getString("firstName",null);
+        lastName=preferences.getString("lastName",null);
 
         final String[] services = new String[] {"Ayyappa janmarahasyam", "Ayyappa Swamy Mahatyam", "Ayyappa Telugu ", "Ayyappa Swamy Maha Sarath Babu", "Ayyappa Deeksha Telugu", "Ayyappa Swamy Janma Rahasyam"};
         int [] Images={
@@ -105,6 +113,13 @@ public class Songs extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(Songs.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+" "+lastName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(Songs.this, CardViewActivity.class);

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,9 +40,11 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetEventsHome;
 import in.eloksolutions.ayyappaapp.helper.GetGroups;
+import in.eloksolutions.ayyappaapp.helper.GetSwamiContacts;
 import in.eloksolutions.ayyappaapp.listeners.RecyclerItemClickListener;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
 import in.eloksolutions.ayyappaapp.util.DataObject;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 public class CardViewActivity extends AppCompatActivity {
@@ -65,7 +66,7 @@ public class CardViewActivity extends AppCompatActivity {
     String searchValues;
     private static String LOG_TAG = "CardViewActivity";
     TextView topic;
-    String userId;
+    String userId,userName;
     EditText searchValue;
     TextView month, day, date ,rightMonth,rightDay,rightDate ;
     private final String movies[] =  {"Ayyappa janmarahasyam", "Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan", "Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith", "Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas", "Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji", "Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
@@ -76,10 +77,10 @@ public class CardViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card_view);
         // Set up the ViewPager with the sections adapter.
         month=(TextView) findViewById(R.id.month);
-        day=(TextView) findViewById(R.id.day);
+        //day=(TextView) findViewById(R.id.day);
         date=(TextView) findViewById(R.id.date);
         rightMonth=(TextView) findViewById(R.id.month_r);
-        rightDay=(TextView) findViewById(R.id.day_r);
+        //rightDay=(TextView) findViewById(R.id.day_r);
         rightDate=(TextView) findViewById(R.id.date_r);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -127,6 +128,7 @@ public class CardViewActivity extends AppCompatActivity {
         String deekshaStartDate=preferences.getString("startDate",null);
         String deekshaEndDate=preferences.getString("endDate",null);
         userId=preferences.getString("userId",null);
+        userName=preferences.getString("firstName",null)+", "+preferences.getString("lastName",null);
         searchValue=(EditText) findViewById(R.id.search_name);
         searchValues=searchValue.getText().toString();
          final ImageView imgDeeksha=(ImageView) findViewById(R.id.event_image);
@@ -196,6 +198,15 @@ public class CardViewActivity extends AppCompatActivity {
         GetGroups getGroups=new GetGroups(context,gurl,rvGroups, noDatas);
         System.out.println("url for group list"+gurl);
         getGroups.execute();
+
+        RecyclerView Contacts = (RecyclerView) findViewById(R.id.contacts_home);
+        rvPadi.setHasFixedSize(true);
+        LinearLayoutManager contactLay = new LinearLayoutManager(CardViewActivity.this);
+        rvPadi.setLayoutManager(contactLay);
+        String curl= Config.SERVER_URL+"user/connections/"+userId;
+        GetSwamiContacts getContacts=new GetSwamiContacts(context,curl,rvPadi);
+        getContacts.execute();
+
         final ImageView noti=(ImageView) findViewById(R.id.contacts_full);
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,7 +273,7 @@ public class CardViewActivity extends AppCompatActivity {
         contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent songsIntent = new Intent(context,SwamiRequest.class);
+                Intent songsIntent = new Intent(context,ContactActivity.class);
                 startActivity(songsIntent);
             }
         });
@@ -297,7 +308,7 @@ public class CardViewActivity extends AppCompatActivity {
         myCal.setTime(startDate);
 
         month.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-        day.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
+       // day.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
         date.setText(""+myCal.get(Calendar.DATE));
 
         String eDate=preferences.getString("endDate",null);
@@ -311,7 +322,7 @@ public class CardViewActivity extends AppCompatActivity {
          myCal = new GregorianCalendar();
         myCal.setTime(endDate);
         rightMonth.setText(myCal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-        rightDay.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
+        //rightDay.setText(myCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
         rightDate.setText(""+myCal.get(Calendar.DATE));
 
     }
@@ -363,6 +374,13 @@ public class CardViewActivity extends AppCompatActivity {
                                 Intent intent4 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
                                 intent4.putExtra("uri",uri4);
                                 startActivity(intent4);
+                                break;
+                            case 5:
+
+                                String uri5 = "frhBvKlaoLI";
+                                Intent intent5 = new Intent(CardViewActivity.this,PlayYoutubeActivity.class);
+                                intent5.putExtra("uri",uri5);
+                                startActivity(intent5);
                                 break;
 
                         }
@@ -466,8 +484,31 @@ public class CardViewActivity extends AppCompatActivity {
         super.onResume();
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.card_menu, menu);
 
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+
+            case R.id.feed:
+                Intent feed=new Intent(CardViewActivity.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
 

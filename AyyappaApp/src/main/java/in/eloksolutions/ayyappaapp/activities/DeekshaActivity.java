@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -25,7 +26,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
     EditText description;
     TextView fdate, txtdate;
     String Tag="deksha rules";
-    String tDate,eDate;
+    String tDate,eDate,userName;
     Context ctx;
 
     @Override
@@ -42,6 +43,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
         toolbar.setTitle("Start Deeksha");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
+        userName=preferences.getString("firstName", null)+preferences.getString("lastName", null);
        final String memId=preferences.getString("userId", null);
         Log.i(Tag,"userid is memId"+memId);
         ctx=this;
@@ -99,6 +101,13 @@ import in.eloksolutions.ayyappaapp.config.Config;
                 this.onBackPressed();
                 return true;
 
+            case R.id.feed:
+                Intent feed=new Intent(DeekshaActivity.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
+                return true;
             case R.id.action_settings:
                 deekshaShare();
                 return true;

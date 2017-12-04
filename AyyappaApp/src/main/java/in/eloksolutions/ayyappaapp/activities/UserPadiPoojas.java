@@ -29,6 +29,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetEvents;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 /**
  * Created by welcome on 1/4/2017.
@@ -39,7 +40,7 @@ public class UserPadiPoojas extends AppCompatActivity {
     private BottomBar bottomBar;
     AmazonS3 s3;
     TransferUtility transferUtility;
-    String UserId;
+    String UserId,userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class UserPadiPoojas extends AppCompatActivity {
         rvPadi.setLayoutManager(lmPadi);
         SharedPreferences preferences=getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         UserId=preferences.getString("userId", null);
+        userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
         String url= Config.SERVER_URL+"user/padis/"+UserId;
         GetEvents getEvents=new GetEvents(context,url,rvPadi,noData);
         getEvents.execute();
@@ -146,6 +148,12 @@ public class UserPadiPoojas extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(UserPadiPoojas.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
                 Intent home = new Intent(UserPadiPoojas.this, CardViewActivity.class);

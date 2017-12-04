@@ -30,6 +30,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.SendTagHelper;
 import in.eloksolutions.ayyappaapp.helper.UserViewHelper;
 import in.eloksolutions.ayyappaapp.recycleviews.CheckInternet;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -277,6 +278,13 @@ public class UserView extends AppCompatActivity {
             case R.id.action_settings:
                 Intent home = new Intent(UserView.this, CardViewActivity.class);
                 startActivity(home);
+                return true;
+            case R.id.feed:
+                Intent feed = new Intent(UserView.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(fromFirstName+", "+fromLastName));
                 return true;
 
             default:

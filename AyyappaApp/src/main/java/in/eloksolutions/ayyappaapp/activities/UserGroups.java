@@ -28,12 +28,13 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.BottomNavigationViewHelper;
 import in.eloksolutions.ayyappaapp.helper.GetGroups;
 import in.eloksolutions.ayyappaapp.maps.MapsMarkerActivity;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class UserGroups extends AppCompatActivity {
     Context context;
     AmazonS3 s3;
    TransferUtility transferUtility;
-    String userId;
+    String userId,userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class UserGroups extends AppCompatActivity {
         });
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId= preferences.getString("userId",null);
+        userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
 
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
@@ -150,6 +152,13 @@ public class UserGroups extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(UserGroups.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(UserGroups.this, CardViewActivity.class);

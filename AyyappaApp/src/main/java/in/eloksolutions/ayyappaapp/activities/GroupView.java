@@ -45,6 +45,7 @@ import in.eloksolutions.ayyappaapp.helper.GroupViewHelper;
 import in.eloksolutions.ayyappaapp.helper.TopicHelper;
 import in.eloksolutions.ayyappaapp.recycleviews.CheckInternet;
 import in.eloksolutions.ayyappaapp.recycleviews.Validation;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 /**
@@ -374,6 +375,13 @@ public class GroupView extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(GroupView.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+", "+lastName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(GroupView.this, CardViewActivity.class);

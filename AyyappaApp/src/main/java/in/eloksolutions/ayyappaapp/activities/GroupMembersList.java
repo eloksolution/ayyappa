@@ -22,12 +22,13 @@ import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.GroupMemberHelper;
 import in.eloksolutions.ayyappaapp.helper.GroupMemberObject;
 import in.eloksolutions.ayyappaapp.recycleviews.MyRecyclerGroupListMembers;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 public class GroupMembersList extends AppCompatActivity  {
     Context context;
     RecyclerView rvPadi;
-    String groupId,userId;
+    String groupId,userId,userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class GroupMembersList extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
         userId=preferences.getString("userId",null);
-
+        userName=preferences.getString("firstName",null)+preferences.getString("lastName",null);
         //ImageView createGroup=(ImageView) findViewById(R.id.add);
 
         GroupMemberHelper getGroupsValue=new GroupMemberHelper(this);
@@ -96,6 +97,13 @@ public class GroupMembersList extends AppCompatActivity  {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
+                return true;
+            case R.id.feed:
+                Intent feed=new Intent(GroupMembersList.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
                 return true;
             case R.id.action_settings:
                 Intent home=new Intent(GroupMembersList.this, CardViewActivity.class);

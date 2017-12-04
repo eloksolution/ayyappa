@@ -15,6 +15,7 @@ import android.widget.Toast;
 import in.eloksolutions.ayyappaapp.R;
 import in.eloksolutions.ayyappaapp.config.Config;
 import in.eloksolutions.ayyappaapp.helper.GetSwamiContacts;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 
 public class ContactActivity extends AppCompatActivity {
@@ -45,7 +46,7 @@ public class ContactActivity extends AppCompatActivity {
         });
 
         userId = preferences.getString("userId", null);
-        userName= preferences.getString("firstName", null)+preferences.getString("firstName", null);
+        userName= preferences.getString("firstName", null)+", "+preferences.getString("firstName", null);
         context=this;
 
         RecyclerView rvPadi = (RecyclerView) findViewById(R.id.rvContacts);
@@ -66,20 +67,29 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
             case R.id.action_settings:
-                Intent home=new Intent(ContactActivity.this, CardViewActivity.class);
+                Intent home = new Intent(ContactActivity.this, CardViewActivity.class);
                 startActivity(home);
+                return true;
+            case R.id.feed:
+                Intent feed = new Intent(ContactActivity.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(userName));
+
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
     }
 
 

@@ -397,6 +397,13 @@ public class CreateGroupTopic extends AppCompatActivity {
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
+            case R.id.feed:
+                Intent feed=new Intent(CreateGroupTopic.this, FeedBackForm.class);
+                startActivity(feed);
+                return true;
+            case R.id.share:
+                startActivity(Util.getInviteIntent(firstName+", "+lastName));
+                return true;
             case R.id.action_settings:
 
                 if (checkValidation () ) {
