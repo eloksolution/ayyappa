@@ -79,6 +79,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.PadiPoojaView"
+            android:label="PadiPooja View"
             android:windowSoftInputMode="stateAlwaysHidden"
            />
         <activity
@@ -144,7 +145,7 @@
         <activity
             android:name=".activities.UserContactList"
             android:windowSoftInputMode="stateAlwaysHidden"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.UserGroupList"
             android:windowSoftInputMode="stateAlwaysHidden"
@@ -163,7 +164,7 @@
             android:name=".activities.UserGroups"
             android:label="User Groups"
             android:windowSoftInputMode="stateAlwaysHidden"
-            />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.UserGroupsJoined"
             android:label="User Groups"
@@ -173,29 +174,35 @@
             android:name=".activities.UserPadiPoojas"
             android:label="Swami Padi Poojas"
             android:windowSoftInputMode="stateAlwaysHidden"
-             />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.Songs"
             android:label="Ayyappa Songs"
             android:windowSoftInputMode="stateAlwaysHidden"
-             />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.SwamiRequest"
+            android:label="SwamiRequest"
             android:windowSoftInputMode="stateAlwaysHidden"
-             />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.ContactActivity"
             android:label="Swami Contact List"
             android:windowSoftInputMode="stateAlwaysHidden"
-             />
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:label="Crop Image"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name=".activities.PlayYoutubeActivity"
+            android:label="Swami Contact List"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme" />
         <activity android:name=".activity.SignInActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Sign In"></activity>
         <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Login"></activity>
         <activity android:name=".messaging.MessagingActivity" android:windowSoftInputMode="stateAlwaysHidden"></activity>
-        <activity android:name=".maps.MapsMarkerActivity" android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".maps.MapsMarkerActivity" android:windowSoftInputMode="stateAlwaysHidden" android:label="Swamies Near You"  android:theme="@style/AppTheme"></activity>
         <service
             android:name=".messaging.MyFirebaseMessagingService">
             <intent-filter>

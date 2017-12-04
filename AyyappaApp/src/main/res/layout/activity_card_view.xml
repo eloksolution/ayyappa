@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- This could be your fragment container, or something -->
-    <FrameLayout
-        android:id="@+id/contentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar">
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -22,13 +17,6 @@
     android:id="@+id/scrollView"
     android:background="@color/row_activated"
     tools:context=".MainActivity">
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:sl="http://schemas.android.com/tools"
-        android:id="@+id/group_view_layout"
-        >
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,7 +32,7 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             app:cardElevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
 
             android:background="@color/white"
             xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -133,14 +121,16 @@
         <android.support.v7.widget.CardView
             android:id="@+id/cv5"
             xmlns:android="http://schemas.android.com/apk/res/android"
-            app:cardElevation="2dp"
+            app:cardElevation="0dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/apk/res-auto">
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:paddingBottom="10dp"
                 android:orientation="vertical"
                 >
                 <LinearLayout
@@ -149,8 +139,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical">
-
-                    <TextView
+                <TextView
                         android:id="@+id/tvContacts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -169,8 +158,7 @@
                     android:orientation="horizontal"
                     android:gravity="right"
                     android:layout_gravity="center"
-                    android:weightSum="3"
-                    android:layout_margin="8dp">
+                    android:layout_margin="0dp">
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
@@ -184,7 +172,7 @@
                         android:text="Create Group"/>
                     <ImageView
                         android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_height="30dp"
                         android:paddingLeft="10dp"
                         android:id="@+id/group_list"
                         android:layout_gravity="right|center"
@@ -204,10 +192,10 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_groups_home"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="vertical"
-                    android:divider="@color/row_activated"/>
-
+                    android:layout_height="300dp"
+                    android:divider="@color/row_activated"
+                    android:paddingBottom="@dimen/fab_marginn"
+                    android:scrollbars="horizontal"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <View
@@ -230,10 +218,7 @@
                 android:paddingBottom="20dp"
                 android:orientation="vertical"
                 android:weightSum="6">
-
-
-
-                <LinearLayout
+        <LinearLayout
                     android:id="@+id/heading_layout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -524,10 +509,8 @@
 
 
     </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
-</ScrollView>
 
-    </FrameLayout>
+</ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
