@@ -1,7 +1,9 @@
 package in.eloksolutions.ayyappaapp.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.util.Random;
@@ -51,7 +53,17 @@ public class Util{
         int max=1000;
         return (new Random().nextInt(max-min+1))+min;
     }
-
+    @NonNull
+    public static Intent getInviteIntent(String userName) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,  userName+ " is invited to https://play.google.com/store/apps/details?id=in.eloksolutions.ayyappaapp");
+        sendIntent.setType("text/plain");
+        return sendIntent;
+    }
+    public  static  String getYouTubeImgLink(String videoId){
+        return  "http://img.youtube.com/vi/"+videoId+"/0.jpg";
+    }
     public static boolean isEmpty(String str){
         return str==null||str.trim().length()==0;
     }
