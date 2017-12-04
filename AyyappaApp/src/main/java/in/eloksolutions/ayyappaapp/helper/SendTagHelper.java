@@ -2,6 +2,7 @@ package in.eloksolutions.ayyappaapp.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
+import in.eloksolutions.ayyappaapp.activities.UserView;
 import in.eloksolutions.ayyappaapp.util.RestServices;
 import in.eloksolutions.ayyappaapp.beans.RegisterDTO;
 
@@ -69,7 +71,9 @@ public class SendTagHelper {
         protected void onPostExecute(String result) {
             Log.i(tag, "result Response send Tag helper is ::  " +result);
             progress.dismiss();
-
+            Intent userView=new Intent(mcontext, UserView.class);
+            userView.putExtra("swamiUserId",registerDto.getToUserId());
+            mcontext.startActivity(userView);
 
         }
 

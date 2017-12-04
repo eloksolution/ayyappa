@@ -163,13 +163,7 @@ public class MyRecyclerViewGroup extends RecyclerView
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
-        if(mDataset.get(position).getmText2()!=null) {
-            if(mDataset.get(position).getmText2().contains("youtube")){
-
-            }else{
-                holder.label2.setText(mDataset.get(position).getmText2());
-            }
-        }
+        holder.label2.setText(mDataset.get(position).getmText2());
         glide.with(context).load(Config.S3_URL+mDataset.get(position).getImgResource()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         if (mDataset.get(position).getMemberSize()!=0) {
             holder.label3.setText(mDataset.get(position).getMemberSize() + "Joined");
