@@ -54,13 +54,11 @@ public class GroupViewHelper {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            progress.dismiss();
             if (result != null) {
                 mcontext.setValuesToTextFields(result);
             }
             System.out.println("event from eventview" + result);
-            progress.dismiss();
-
-
         }
     }
 
@@ -105,10 +103,7 @@ public class GroupViewHelper {
             super.onPostExecute(result);
             System.out.println("From Join Event" + result);
             progress.dismiss();
-            FirebaseMessaging.getInstance().subscribeToTopic(groupMembers.getGroupId());
-            Intent groupView=new Intent(mcontext,GroupView.class);
-            groupView.putExtra("groupId",groupMembers.getGroupId());
-            mcontext.startActivity(groupView);
+            mcontext.callback(result,groupMembers);
 
         }
     }

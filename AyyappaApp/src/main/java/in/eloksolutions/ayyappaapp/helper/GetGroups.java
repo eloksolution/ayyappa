@@ -60,7 +60,7 @@ public class GetGroups extends AsyncTask<String, Void, String> {
 
     protected void onPostExecute(String result) {
         System.out.println("Get Groups Result is "+result);
-        progress.dismiss();
+         progress.dismiss();
         if (result!=null && result.trim().length()>0) {
             Gson gson = new Gson();
             Type type = new TypeToken<List<GroupDTO>>() { }.getType();

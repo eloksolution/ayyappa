@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -88,6 +90,11 @@ public class RegisterHelper {
             }
             Log.i(tag, "result is  " +result);
             progress.dismiss();
+            try {
+                FirebaseMessaging.getInstance().subscribeToTopic("GLOBAL");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Intent main = new Intent(mcontext, CardViewActivity.class);
             mcontext.startActivity(main);
         }

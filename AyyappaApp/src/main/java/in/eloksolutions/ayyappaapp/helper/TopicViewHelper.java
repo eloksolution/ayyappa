@@ -44,11 +44,12 @@ public class TopicViewHelper {
         }
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            progress.dismiss();
             if (result!=null){
                 mcontext.setValuesToTextFields(result);
             }
             System.out.println("event Tpic Topicview" + result);
-            progress.dismiss();
+
 
         }
     }

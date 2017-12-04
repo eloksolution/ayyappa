@@ -44,7 +44,7 @@ import in.eloksolutions.ayyappaapp.config.Config;
         SharedPreferences preferences = getSharedPreferences(Config.APP_PREFERENCES, MODE_PRIVATE);
        final String memId=preferences.getString("userId", null);
         Log.i(Tag,"userid is memId"+memId);
-
+        ctx=this;
         fdate = (TextView) findViewById(R.id.fdate);
           //  fdate.setText("" + DateFormat.format(" dd-MM-yyyy", System.currentTimeMillis()));
         txtdate = (TextView) findViewById(R.id.txtdate);

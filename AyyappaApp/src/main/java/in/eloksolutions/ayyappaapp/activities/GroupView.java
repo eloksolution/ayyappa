@@ -86,7 +86,8 @@ public class GroupView extends AppCompatActivity {
         firstName=preferences.getString("firstName",null);
         lastName=preferences.getString("lastName",null);
         Log.i(tag, "groupId is"+groupId);
-        Log.i(tag, "preferences.getString userId is"+userId+","+firstName+""+lastName);
+        Log.i(tag, "groupId is"+groupId);
+        Log.i(tag, "preferences.getString userId is"+groupId+","+firstName+""+lastName);
          toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Group View");
@@ -172,10 +173,7 @@ public class GroupView extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     Intent intent= new Intent();
-                    String sAux ="\n"+groupName+" @Ayyappa\n for more Groups \n";
-                    //String title= groupName.replaceAll(" ","_")+"@MELZOL";
-                    String msg=sAux+"https://wdq3a.app.goo.gl/?link=https://melzol.in/1/"+groupId+"&apn=in.melzol" +
-                            "&st="+groupName+"&si=";
+                    String msg="https://play.google.com/store/apps/details?id=in.eloksolutions.ayyappaapp";
                     intent.setAction(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_TEXT,msg);
                     intent.setType("text/plain");
@@ -213,10 +211,12 @@ public class GroupView extends AppCompatActivity {
             String output=getGroupsValue.new GroupViewTask(surl).execute().get();
             System.out.println("the output from Group"+output);
            // setValuesToTextFields(output);
-
+          //  System.out.println("groupDTO.getImagePath()"+groupDTO.getImagePath());
         }catch (Exception e){
             e.printStackTrace();
         }
+      // System.out.println("groupDTO.getOwner()"+groupDTO.getOwner()+"  UserId"+userId);
+
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,7 +248,6 @@ public class GroupView extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -301,11 +300,20 @@ public class GroupView extends AppCompatActivity {
         try {
             String joinmem=groupJoinHelper.new JoinGroup(groupJoins,surl).execute().get();
             System.out.println("the output from JoinEvent"+joinmem);
-            FirebaseMessaging.getInstance().subscribeToTopic(groupJoins.getGroupId());
-            addingMember(joinmem);
+
+          //  addingMember(joinmem);
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void callback(String result, GroupMembers groupMembers){
+        System.out.println("From Join Event" + result);
+        System.out.println("From Group id "+groupMembers.getGroupId());
+        FirebaseMessaging.getInstance().subscribeToTopic(groupMembers.getGroupId());
+        Intent groupView=new Intent(this,GroupView.class);
+        groupView.putExtra("groupId",groupMembers.getGroupId());
+        startActivity(groupView);
     }
     private void createTopicDialog() {
 
@@ -340,13 +348,12 @@ public class GroupView extends AppCompatActivity {
         });
     }
 
-
     private void addingMember(String result) throws JSONException {
-        JSONObject jsonObject;
-        jsonObject = new JSONObject(result);
+        Log.i("GroupView","result is "+result);
+        JSONObject  jsonObject = new JSONObject(result);
         groupJoin.setVisibility(View.GONE);
         count=count+1;
-       //noOfJoins.setText(count + " members are going");
+       noOfJoins.setText(count + " members are going");
 
     }
     private boolean checkValidation() {
