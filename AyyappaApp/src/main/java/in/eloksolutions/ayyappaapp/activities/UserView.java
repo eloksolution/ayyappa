@@ -205,7 +205,7 @@ public class UserView extends AppCompatActivity {
     }
     public void setValuesToTextFields(String result) {
         System.out.println("json xxxx from User Results" + result);
-        if (result != null && result.trim().length()>0) {
+        if (result != null) {
             Gson gson = new Gson();
              registerDTO = gson.fromJson(result, RegisterDTO.class);
             if(requestSentValue.equals(registerDTO.getRequestSent())){

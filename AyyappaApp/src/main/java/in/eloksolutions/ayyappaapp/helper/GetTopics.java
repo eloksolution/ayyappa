@@ -64,7 +64,7 @@ public class GetTopics extends AsyncTask<String, Void, String> {
                 String events[]=new String[fromJson.size()];
 
                 for (TopicDTO event : fromJson) {
-                    TopicObject obj = new TopicObject(event.getGroupId(),event.getTopicId(), event.getTopic(),event.getDescription(),event.getOwner(),event.getOwnerName(),event.getImgPath(),event.getsCreateDate());
+                    TopicObject obj = new TopicObject(event.getGroupId(),event.getTopicId(), event.getTopic(),event.getDescription(),event.getOwner(),event.getOwnerName(),event.getImgPath(),event.getCreateDate());
                     results.add(obj);
                 }
                 MyRecyclerTopic mAdapter = new MyRecyclerTopic(results,mcontext);

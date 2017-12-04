@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -31,7 +33,7 @@ public class SwamiRequest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.swami_request_list);
+        setContentView(R.layout.group_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.black));
@@ -39,6 +41,14 @@ public class SwamiRequest extends AppCompatActivity {
         getSupportActionBar().setTitle("Swami Request List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
+      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroup);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent groupCreate= new Intent(SwamiRequest.this, CreateGroup.class);
+                startActivity(groupCreate);
+            }
+        });
         TextView noData=(TextView) findViewById(R.id.tv_no_data);
         RecyclerView rvGroups = (RecyclerView) findViewById(R.id.rv_groups);
         rvGroups.setHasFixedSize(true);
