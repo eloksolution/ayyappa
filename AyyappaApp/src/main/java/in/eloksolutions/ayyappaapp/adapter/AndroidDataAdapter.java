@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class AndroidDataAdapter extends RecyclerView.Adapter<AndroidDataAdapter.ViewHolder> {
     private ArrayList<AndroidVersion> arrayList;
     private Context mcontext;
+    Glide glide;
 
     public AndroidDataAdapter(Context context, ArrayList<AndroidVersion> android) {
         this.arrayList = android;
@@ -29,7 +34,8 @@ public class AndroidDataAdapter extends RecyclerView.Adapter<AndroidDataAdapter.
     @Override
     public void onBindViewHolder(AndroidDataAdapter.ViewHolder holder, int i) {
         holder.textView.setText(arrayList.get(i).getrecyclerViewTitleText());
-        holder.imageView.setImageResource(arrayList.get(i).getrecyclerViewImage());
+        glide.with(mcontext).load(Util.getYouTubeImgLink(arrayList.get(i).getrecyclerViewImage())).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+
     }
 
     @Override

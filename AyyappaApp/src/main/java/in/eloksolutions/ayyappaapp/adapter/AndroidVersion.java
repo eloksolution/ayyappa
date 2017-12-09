@@ -6,7 +6,7 @@ package in.eloksolutions.ayyappaapp.adapter;
 
 public class AndroidVersion {
     private String recyclerViewTitleText;
-    private int recyclerViewImage;
+    private String  recyclerViewImage;
 
     public String getrecyclerViewTitleText() {
         return recyclerViewTitleText;
@@ -16,11 +16,11 @@ public class AndroidVersion {
         this.recyclerViewTitleText = recyclerVietTitleText;
     }
 
-    public int getrecyclerViewImage() {
+    public String getrecyclerViewImage() {
         return recyclerViewImage;
     }
 
-    public void setrecyclerViewImage(int recyclerViewImage) {
+    public void setrecyclerViewImage(String recyclerViewImage) {
         this.recyclerViewImage = recyclerViewImage;
     }
 }

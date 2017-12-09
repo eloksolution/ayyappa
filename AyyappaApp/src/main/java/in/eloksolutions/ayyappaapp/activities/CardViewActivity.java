@@ -55,9 +55,9 @@ public class CardViewActivity extends AppCompatActivity {
     ImageView add;
     public static int [] contactImages ={R.drawable.chat_icon, R.drawable.chat_icon,R.drawable.chat_icon};
     public static String [] contactNames={"Contact1","Contact2","Contact 3"};
-    public static int [] songImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
+    public static String [] songImages ={"ZRYJdPrHiSM","zV0lDPtAUxw","nquYSlnavuM","pNGdT5obEys","tzLX8me67wU","BOjJGALm2kQ"};
     public static String [] songNames={"Maladharanam Niyamala Toranam","Harivarasanam Viswamohanam","Baghavan Saranam","Ayyappa new song","Ayyappa song","Ayyappa best song"};
-    public static int [] moviesImages ={R.drawable.ayy1,R.drawable.ayy2,R.drawable.ayy3,R.drawable.ayy4,R.drawable.ayy5,R.drawable.ayy};
+    public static String [] moviesImages ={"vxpEMuM1eBc","zV0lDPtAUxw","nquYSlnavuM","FTBLd2zz8IU","o4vv3PN45Eo","frhBvKlaoLI"};
     public static String [] moviesNames={"Ayyappa Swamy Janma Rahasyam Telugu Movie 2014","Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan","Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith","Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas","Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji","Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
     public static String [] moviesid={"vxpEMuM1eBc","hRtuGEQmm1E","4wjuDG7WXY8","FTBLd2zz8IU","o4vv3PN45Eo","TfT8w5v8KSY"};
     AmazonS3 s3;

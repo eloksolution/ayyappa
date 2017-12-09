@@ -54,13 +54,13 @@ public class PlayYoutubeActivity extends YouTubeBaseActivity {
             }
         });
         final String[] services = new String[] {"Ayyappa janmarahasyam", "Ayyappa Swamy Mahatyam Full Movie | Sarath Babu | Silk Smitha | K Vasu | KV Mahadevan", "Ayyappa Telugu Full Movie Exclusive - Sai Kiran, Deekshith", "Ayyappa Swamy Mahatyam | Full Length Telugu Movie | Sarath Babu, Shanmukha Srinivas", "Ayyappa Deeksha Telugu Full Movie | Suman, Shivaji", "Ayyappa Swamy Janma Rahasyam Telugu Full Movie"};
-        int [] Images={
-                R.drawable.ayy1,
-                R.drawable.ayy2,
-                R.drawable.ayy3,
-                R.drawable.ayy4,
-                R.drawable.ayy5,
-                R.drawable.ayy
+        String [] Images={
+                "vxpEMuM1eBc",
+                "hRtuGEQmm1E",
+                "4wjuDG7WXY8",
+                "FTBLd2zz8IU",
+                "o4vv3PN45Eo",
+                "TfT8w5v8KSY"
 
         };
 

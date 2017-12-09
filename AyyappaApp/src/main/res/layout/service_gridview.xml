@@ -38,54 +38,6 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:id="@+id/listbg1"
-                        android:orientation="vertical"
-                        android:layout_width="80dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_marginBottom="-5dp"
-                            android:lineSpacingExtra="-3dp"
-                            android:textSize="14sp"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:layout_gravity="center"
-                            android:id="@+id/month"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="MAY"/>
-                        <TextView
-                            android:textSize="18sp"
-                            android:layout_gravity="center"
-                            android:id="@+id/date"
-                            android:textAlignment="center"
-                            android:textColor="@color/from"
-                            android:layout_width="wrap_content"
-                            android:textStyle="bold"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="-5dp"
-                            android:text="09"/>
-                        <TextView
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp"
-                            android:lineSpacingExtra="3dp"
-                            android:textSize="14sp"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:layout_gravity="center"
-                            android:id="@+id/day"
-                            android:textAlignment="center"
-                            android:textColor="@color/from"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SAT"/>
-
-                    </LinearLayout>
-                    <LinearLayout
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="20dp"
                         android:background="@color/background"
@@ -124,31 +76,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="11:00 AM"/>
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal"
-                                >
-
-                                <TextView
-                                    android:layout_gravity="center_vertical"
-                                    android:paddingLeft="20dp"
-                                    android:gravity="center"
-                                    android:textSize="10sp"
-                                    android:textColor="@color/radio2"
-                                    android:id="@+id/people_join"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="103 People Joined"/>
-                                <ImageView
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/pen"/>
-                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
