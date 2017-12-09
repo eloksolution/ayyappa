@@ -4,19 +4,21 @@ public class DataObject {
     private String mText1;
     private String mText2;
 
-    private int imgResource;
-    public DataObject(String text1, String text2, int imgResource){
+    private String moviesImages;
+    public DataObject(String text1, String text2, String moviesImages){
         mText1 = text1;
         mText2 = text2;
-        this.imgResource=imgResource;
+        this.moviesImages=moviesImages;
     }
 
-    public int getImgResource() {
-        return imgResource;
+
+
+    public String getMoviesImages() {
+        return moviesImages;
     }
 
-    public void setImgResource(int imgResource) {
-        this.imgResource = imgResource;
+    public void setMoviesImages(String moviesImages) {
+        this.moviesImages = moviesImages;
     }
 
     public String getmText1() {
@@ -41,7 +43,7 @@ public class DataObject {
         return "DataObject{" +
                 "mText1='" + mText1 + '\'' +
                 ", mText2='" + mText2 + '\'' +
-                ", imgResource=" + imgResource +
+                ", moviesImages=" + moviesImages +
                 '}';
     }
 }
