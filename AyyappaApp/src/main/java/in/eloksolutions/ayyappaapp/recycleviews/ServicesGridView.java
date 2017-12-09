@@ -8,15 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import in.eloksolutions.ayyappaapp.R;
+import in.eloksolutions.ayyappaapp.util.Util;
 
 public class ServicesGridView extends BaseAdapter {
     private Context mContext;
     private final String[] web;
-    private final int[] Imageid;
+    private final String[] Imageid;
+    Glide glide;
 
 
-    public ServicesGridView(Context c, String[] web, int[] Imageid ) {
+    public ServicesGridView(Context c, String[] web, String[] Imageid ) {
         mContext = c;
         this.Imageid = Imageid;
         this.web = web;
@@ -56,7 +61,7 @@ public class ServicesGridView extends BaseAdapter {
             TextView textView = (TextView) grid.findViewById(R.id.services);
             ImageView imageView = (ImageView)grid.findViewById(R.id.Icon);
             textView.setText(web[position]);
-            imageView.setImageResource(Imageid[position]);
+        glide.with(mContext).load(Util.getYouTubeImgLink(Imageid[position])).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
         return grid;
     }
 }
